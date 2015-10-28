@@ -1,0 +1,64 @@
+itemGroup.SFArtifacts=SFArtifacts
+
+item.itemThorHammer.name=Mjollnir (Thor Hammer)
+item.itemBasicHammer.name=Basic Asgardian Hammer
+item.lightningRod.basic.name=Basic Lightning Rod
+item.lightningRod.advanced.name=Advanced Lightning Rod
+item.lightningRod.reinforced.name=Reinforced Lightning Rod
+item.lightningRod.ultimate.name=Ultimate Lightning Rod
+item.itemAsgardite.name=Asgardite
+item.itemAsgardianSteelIngot.name=Asgardian Steel Ingot
+item.itemAsgardianBronzeIngot.name=Asgardian Bronze Ingot
+item.sfaFluidBucket.liquefiedAsgardite.name=Liquefied Asgardite Bucket
+item.itemFluidModule.name=Fluid Module
+item.itemEnergyModule.name=Energy Module
+item.itemTeleportModule.name=Teleport Module
+item.itemManual.name=Manual
+item.itemAsgardiumPearl.name=Asgardium Pearl
+item.itemMightyFeather.name=Mighty Feather
+item.itemUberMightyFeather.name=Uber Mighty Feather
+item.itemVibraniumDust.name=Vibranium Dust
+item.itemVibraniumAlloy.name=Vibranium Alloy
+item.itemVibraniumAlloySheet.name=Vibranium Alloy Sheet
+item.itemMold.name=Mold
+item.itemVibraniumShield.name=Vibranium Shield
+item.itemMagnet.name=Magnet
+
+entity.hammerinvoking.name=Falling Hammer
+entity.shieldthrow.name=Moving Shield
+entity.hulk.name=Angry Hulk
+
+tile.blockControlPanel.name=Control Panel
+tile.blockAsgardianBronze.name=Asgardian Bronze Block
+tile.blockAsgardianSteel.name=Asgardian Steel Block
+tile.blockHammerStand.normal.name=Hammer Stand
+tile.blockHammerStand.broken.name=Broken Hammer Stand
+tile.blockOreAsgardite.name=Asgardite Ore
+tile.blockAsgardite.name=Asgardite Block
+tile.blockLiquefiedAsgardite.name=Liquefied Asgardite
+tile.blockOreVibranium.name=Vibranium Ore
+tile.blockOreVibranium.0.name=Vibranium Ore
+tile.blockOreVibranium.35.name=Vibranium Ore Cooking 35%
+tile.blockOreVibranium.75.name=Vibranium Ore Cooking 75%
+tile.blockOreVibranium.100.name=Cooked Vibranium Ore
+tile.blockMightyFoundry.name=Mighty Foundry
+
+tile.blockLightningRodStand.name=Lightning Rod Stand
+tile.blockLightningRodStand.asgardite.name=Lightning Rod Stand
+tile.blockLightningRodStand.bronze.name=Lightning Rod Stand
+tile.blockLightningRodStand.steel.name=Lightning Rod Stand
+tile.blockLiquefier.name=Liquefier
+tile.blockLiquefier.asgardite.name=Liquefier
+tile.blockLiquefier.bronze.name=Liquefier
+tile.blockLiquefier.steel.name=Liquefier
+tile.blockInjector.name=Injector
+tile.blockInjector.asgardite.name=Injector
+tile.blockInjector.bronze.name=Injector
+tile.blockInjector.steel.name=Injector
+tile.blockSoundEmiter.name=Sound Emitter
+tile.blockAsgardianGlass.name=Asgardian Glass
+
+fluid.liquefiedAsgardite=Liquefied Asgardite
+
+achievement.sfartifacts.manual=Read it ALLLLLL!
+achievement.sfartifacts.manual.desc=perfect for the beach
