@@ -1,34 +1,52 @@
-package noelflantier.sfartifacts.common.gui;
+package noelflantier.sfartifacts.common.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import noelflantier.sfartifacts.common.blocks.tiles.TileMachine;
-import noelflantier.sfartifacts.common.gui.slots.FluidsSlots;
+import noelflantier.sfartifacts.common.blocks.tiles.TileInjector;
+import noelflantier.sfartifacts.common.container.slot.FluidsSlots;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
 
-public class ContainerSoundEmitter extends ContainerMachine{
+public class ContainerInjector extends ContainerMachine{
 
 	private int slotId = -1;
-	public ContainerSoundEmitter(InventoryPlayer inventory, TileMachine tile) {
-		super(inventory, tile);
+	
+	public ContainerInjector(InventoryPlayer inventory,TileInjector tile){
+		super(inventory,tile);
 
 		for(int x = 0 ; x < 9 ; x++){
 			this.addSlotToContainer(new Slot(inventory,x,8+18*x,176));
 		}
+		for(int x = 0 ; x < 9 ; x++)
+			for(int y = 0 ; y < 3 ; y++)
+				this.addSlotToContainer(new Slot(inventory,x+y*9+9,8+18*x,118+18*y));
+		
 		this.addSlotToContainer(new FluidsSlots(tile, nextId(),15,75,true,ModFluids.fluidLiquefiedAsgardite));
-	}
-
-	private int nextId(){
-		this.slotId++;
-		return this.slotId;
+		
+		for(int j=0;j<3;j++){
+			for(int i=0;i<2;i++)
+				this.addSlotToContainer(new InjectorSlots(tile, nextId(),53+18*i,23+25*j, false));
+		}
+		
+		for(int j=0;j<3;j++){
+			for(int i=0;i<2;i++)
+				this.addSlotToContainer(new InjectorSlots(tile, nextId(),123+18*i,23+25*j, true));
+		}
 	}
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return true;
 	}
+	
+	private int nextId(){
+		this.slotId++;
+		return this.slotId;
+	}
+
 	@Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index)
     {
@@ -38,15 +56,22 @@ public class ContainerSoundEmitter extends ContainerMachine{
 		{
 			ItemStack stack = slot.getStack();
 			ItemStack result = stack.copy();
-			if (index >= 9){ //To player
-				if (!mergeItemStack(stack, 0, 9, false)){
+			if (index >= 36){ //To player
+				if (!mergeItemStack(stack, 0, 36, false)){
 					return null;
 				}
 			}else{
 				boolean success = false;
 				for(int i = 0 ; i <= this.slotId ; i++){
 					if(this.tmachine.getStackInSlot(i)==null){
-						if(!this.tmachine.isItemValidForSlot(i, stack) || !mergeItemStack(stack, 9+i, 10+i, false))
+						if(!this.tmachine.isItemValidForSlot(i, stack) || !mergeItemStack(stack, 36+i, 37+i, false))
+							success = false;
+						else{
+							success = true;
+							break;
+						}
+					}else if(this.tmachine.getStackInSlot(i).getItem()==slot.getStack().getItem()){
+						if(!mergeItemStack(stack, 36+i, 37+i, false))
 							success = false;
 						else{
 							success = true;
@@ -164,4 +189,26 @@ public class ContainerSoundEmitter extends ContainerMachine{
 
         return flag1;
     }
+
+	private class InjectorSlots extends Slot{
+	
+		public boolean isResult;
+		
+		public InjectorSlots(IInventory inv, int id,int x, int y, boolean isr) {
+			super(inv, id, x, y);
+			this.isResult = isr;
+		}
+		
+		@Override
+	    public boolean isItemValid(ItemStack stack)
+	    {
+	        return !this.isResult;
+	    }    
+	
+		@Override
+		public int getSlotStackLimit()
+	    {
+	        return 64;
+	    }
+	}
 }

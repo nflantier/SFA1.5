@@ -7,11 +7,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import noelflantier.sfartifacts.References;
+import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
+import noelflantier.sfartifacts.client.gui.bases.GuiSFAScreen;
 import noelflantier.sfartifacts.common.handlers.ModGUIs;
 import noelflantier.sfartifacts.common.helpers.InjectorRecipe;
 import noelflantier.sfartifacts.common.helpers.Molds;
-import noelflantier.sfartifacts.common.helpers.guis.GuiComponent;
-import noelflantier.sfartifacts.common.helpers.guis.GuiSFAScreen;
 
 public class CaptainManual  extends BaseManual{
 

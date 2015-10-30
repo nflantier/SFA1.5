@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.Random;
 
 import cofh.api.energy.EnergyStorage;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,6 +19,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import noelflantier.sfartifacts.common.entities.EntityAITargetBlock;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
 import noelflantier.sfartifacts.common.helpers.SoundEmitterHelper;
 import noelflantier.sfartifacts.common.helpers.SoundEmitterHelper.MobsPropertiesForSpawing;
@@ -79,6 +83,7 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 						break;
 					}
 				}
+				this.attractedToSpawner = mpForSpawning.get(r).isAttractedToSpawner;
 				this.spawnCount = spx;
 				if(spx<=0)
 					return false;
@@ -93,6 +98,16 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 				}
 			}
 			return false;
+		}
+		@Override
+		public void entityJustCreated(Entity entity) {
+            entity.getEntityData().setIntArray(SoundEmitterHelper.KEY_SPAWN, new int[]{getSpawnerX(),getSpawnerY(),getSpawnerZ()});
+		}
+		@Override
+		public void entityJustSpawned(Entity entity) {
+			if(entity instanceof EntityLiving && entity instanceof EntityCreature && this.attractedToSpawner){
+				((EntityLiving)entity).targetTasks.addTask(0, new EntityAITargetBlock((EntityCreature) entity, 0,true,false,getSpawnerX(),getSpawnerY(),getSpawnerZ()));
+			}
 		}
 	};
 	

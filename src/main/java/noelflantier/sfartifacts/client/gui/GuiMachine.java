@@ -15,10 +15,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
 import noelflantier.sfartifacts.References;
+import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
+import noelflantier.sfartifacts.client.gui.bases.GuiSFA;
 import noelflantier.sfartifacts.common.blocks.tiles.TileMachine;
-import noelflantier.sfartifacts.common.gui.ContainerMachine;
-import noelflantier.sfartifacts.common.helpers.guis.GuiComponent;
-import noelflantier.sfartifacts.common.helpers.guis.GuiSFA;
+import noelflantier.sfartifacts.common.container.ContainerMachine;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketMachine;
 

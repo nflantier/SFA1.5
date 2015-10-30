@@ -1,4 +1,4 @@
-package noelflantier.sfartifacts.common.gui;
+package noelflantier.sfartifacts.common.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

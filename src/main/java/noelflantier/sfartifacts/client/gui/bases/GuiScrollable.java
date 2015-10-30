@@ -1,4 +1,4 @@
-package noelflantier.sfartifacts.common.helpers.guis;
+package noelflantier.sfartifacts.client.gui.bases;
 
 import java.util.Hashtable;
 
@@ -14,7 +14,7 @@ public class GuiScrollable {
 	public int dir = 0;
 	public Hashtable<Integer, GuiComponent> componentList = new Hashtable<Integer, GuiComponent>();
 	public int x,y;
-	public int tickDelay = 5;
+	public int tickDelay = 2;
 	public int tickInput = 0;
 	public int tickInputWheel = 0;
 	public int tickDelayWheel = 10;

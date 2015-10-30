@@ -16,6 +16,7 @@ import noelflantier.sfartifacts.client.gui.GuiSoundEmitter;
 import noelflantier.sfartifacts.client.gui.GuiTeleport;
 import noelflantier.sfartifacts.client.gui.manual.CaptainManual;
 import noelflantier.sfartifacts.client.gui.manual.GuiManual;
+import noelflantier.sfartifacts.client.gui.manual.HulkManual;
 import noelflantier.sfartifacts.client.gui.manual.ThorManual;
 import noelflantier.sfartifacts.common.blocks.tiles.TileControlPannel;
 import noelflantier.sfartifacts.common.blocks.tiles.TileHammerStand;
@@ -24,15 +25,15 @@ import noelflantier.sfartifacts.common.blocks.tiles.TileLightningRodStand;
 import noelflantier.sfartifacts.common.blocks.tiles.TileLiquefier;
 import noelflantier.sfartifacts.common.blocks.tiles.TileMightyFoundry;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSoundEmitter;
-import noelflantier.sfartifacts.common.gui.ContainerControlPanel;
-import noelflantier.sfartifacts.common.gui.ContainerHammerStandInvoked;
-import noelflantier.sfartifacts.common.gui.ContainerHammerStandNonInvoked;
-import noelflantier.sfartifacts.common.gui.ContainerInjector;
-import noelflantier.sfartifacts.common.gui.ContainerLightningRodStand;
-import noelflantier.sfartifacts.common.gui.ContainerLiquefier;
-import noelflantier.sfartifacts.common.gui.ContainerMightyFoundry;
-import noelflantier.sfartifacts.common.gui.ContainerMoldMaking;
-import noelflantier.sfartifacts.common.gui.ContainerSoundEmitter;
+import noelflantier.sfartifacts.common.container.ContainerControlPanel;
+import noelflantier.sfartifacts.common.container.ContainerHammerStandInvoked;
+import noelflantier.sfartifacts.common.container.ContainerHammerStandNonInvoked;
+import noelflantier.sfartifacts.common.container.ContainerInjector;
+import noelflantier.sfartifacts.common.container.ContainerLightningRodStand;
+import noelflantier.sfartifacts.common.container.ContainerLiquefier;
+import noelflantier.sfartifacts.common.container.ContainerMightyFoundry;
+import noelflantier.sfartifacts.common.container.ContainerMoldMaking;
+import noelflantier.sfartifacts.common.container.ContainerSoundEmitter;
 import noelflantier.sfartifacts.common.items.baseclasses.ItemInventory;
 
 public class ModGUIs implements IGuiHandler{
@@ -47,10 +48,13 @@ public class ModGUIs implements IGuiHandler{
 	public static final int guiIDManual= 7;
 	public static final int guiIDTeleport= 9;
 	public static final int guiIDMightyFoundry = 10;
-	public static final int guiIDThorManual= 60;
-	public static final int guiIDCaptainManual= 61;
 	public static final int guiIDMold= 11;
 	public static final int guiIDSoundEmiter= 12;
+	
+
+	public static final int guiIDThorManual= 60;
+	public static final int guiIDCaptainManual= 61;
+	public static final int guiIDHulkManual= 62;
 
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world,int x, int y, int z) {
@@ -158,6 +162,8 @@ public class ModGUIs implements IGuiHandler{
 			return new ThorManual(player);
 		}else if(ID == ModGUIs.guiIDCaptainManual){
 			return new CaptainManual(player);
+		}else if(ID == ModGUIs.guiIDHulkManual){
+			return new HulkManual(player);
 		}else if(ID == ModGUIs.guiIDTeleport){
 			return new GuiTeleport(player);
 		}else if(ID == ModGUIs.guiIDMold){

@@ -14,15 +14,15 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.SFArtifacts;
+import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
+import noelflantier.sfartifacts.client.gui.bases.GuiImage;
+import noelflantier.sfartifacts.client.gui.bases.GuiSFAScreen;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.handlers.ModGUIs;
 import noelflantier.sfartifacts.common.helpers.HammerStandRecipe;
 import noelflantier.sfartifacts.common.helpers.InjectorRecipe;
 import noelflantier.sfartifacts.common.helpers.PillarMaterials;
 import noelflantier.sfartifacts.common.helpers.PillarStructures;
-import noelflantier.sfartifacts.common.helpers.guis.GuiComponent;
-import noelflantier.sfartifacts.common.helpers.guis.GuiImage;
-import noelflantier.sfartifacts.common.helpers.guis.GuiSFAScreen;
 
 public class ThorManual extends BaseManual{
 	

@@ -1,4 +1,4 @@
-package noelflantier.sfartifacts.common.gui;
+package noelflantier.sfartifacts.common.container;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

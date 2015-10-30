@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.SFArtifacts;
 import noelflantier.sfartifacts.client.gui.GuiMoldMaking;
-import noelflantier.sfartifacts.common.gui.ContainerMoldMaking;
+import noelflantier.sfartifacts.common.container.ContainerMoldMaking;
 import noelflantier.sfartifacts.common.handlers.ModGUIs;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.helpers.Molds;

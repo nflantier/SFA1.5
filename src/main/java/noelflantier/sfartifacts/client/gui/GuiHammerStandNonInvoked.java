@@ -10,13 +10,13 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.SFArtifacts;
+import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
+import noelflantier.sfartifacts.client.gui.bases.GuiSFA;
 import noelflantier.sfartifacts.common.blocks.tiles.TileHammerStand;
-import noelflantier.sfartifacts.common.gui.ContainerHammerStandNonInvoked;
+import noelflantier.sfartifacts.common.container.ContainerHammerStandNonInvoked;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.handlers.ModGUIs;
 import noelflantier.sfartifacts.common.helpers.HammerHelper;
-import noelflantier.sfartifacts.common.helpers.guis.GuiComponent;
-import noelflantier.sfartifacts.common.helpers.guis.GuiSFA;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketInvokStarting;
 

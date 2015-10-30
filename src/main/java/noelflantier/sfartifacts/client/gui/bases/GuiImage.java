@@ -1,4 +1,4 @@
-package noelflantier.sfartifacts.common.helpers.guis;
+package noelflantier.sfartifacts.client.gui.bases;
 
 import java.util.Iterator;
 import java.util.Map;

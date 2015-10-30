@@ -1,6 +1,7 @@
 package noelflantier.sfartifacts.common.handlers;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -8,14 +9,24 @@ import java.util.UUID;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityMooshroom;
+import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -23,15 +34,19 @@ import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import noelflantier.sfartifacts.common.entities.EntityAIMoveToBlock;
+import noelflantier.sfartifacts.common.entities.EntityAITargetBlock;
 import noelflantier.sfartifacts.common.entities.EntityItemStronk;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.helpers.SoundEmitterHelper;
@@ -107,19 +122,6 @@ public class ModEvents {
 		}
 		if(toRemove.size()>0){
 			event.getAffectedEntities().removeAll(toRemove);
-		}
-	}
-	
-	@SubscribeEvent
-	public void LivingFallEvent(LivingFallEvent event) {
-		if(event.distance<5)
-			return;
-		if(event.entityLiving instanceof EntityPlayer){
-			EntityPlayer player = (EntityPlayer)event.entityLiving;
-			if(player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemVibraniumShield && ItemNBTHelper.getBoolean(player.getCurrentEquippedItem(), "CanBlock", false) && !ItemNBTHelper.getBoolean(player.getCurrentEquippedItem(), "IsThrown", false)){
-				if(player.rotationPitch>80)
-					event.distance = (float)event.distance/4<1?0:(float)event.distance/4;
-			}
 		}
 	}
 	
@@ -221,29 +223,70 @@ public class ModEvents {
     	}
     }
 
+	
+	@SubscribeEvent
+	public void LivingFallEvent(LivingFallEvent event) {
+		if(event.entityLiving instanceof EntityPlayer){
+			EntityPlayer player = (EntityPlayer)event.entityLiving;
+			if(player == null)
+				return;
+			
+			ModPlayerStats stats = ModPlayerStats.get(player);
+
+			if(stats!=null && stats.tickHasHulkFleshEffect>0){
+				event.distance = 0;
+			}
+
+			if(event.distance<5)
+				return;
+			if(player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemVibraniumShield 
+					&& ItemNBTHelper.getBoolean(player.getCurrentEquippedItem(), "CanBlock", false) 
+					&& !ItemNBTHelper.getBoolean(player.getCurrentEquippedItem(), "IsThrown", false)){
+				if(player.rotationPitch>80){
+					event.distance = (float)event.distance/4<1?0:(float)event.distance/4;
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onPlayerJump(LivingJumpEvent event) {
+		if(event.entityLiving instanceof EntityPlayer) {
+	    	EntityPlayer player = (EntityPlayer)event.entityLiving;
+			if(player == null)
+				return;
+			ModPlayerStats stats = ModPlayerStats.get(player);
+			if(stats==null)
+				return;
+			if(stats.tickHasHulkFleshEffect>0){
+				player.motionY += 1.45;
+				player.motionX *= 13.2;
+				player.motionZ *= 13.2;
+			}
+		}
+	}
+	
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
     	if(event.phase == Phase.END) {
 	    	EntityPlayer player = event.player;
-			if(player == null && event.side==Side.CLIENT) {
+			if(player == null)
 				return;
-			}
-
+			
 			ModPlayerStats stats = ModPlayerStats.get(player);
-			//System.out.println(player.cameraYaw);
+			if(stats !=null && stats.tickHasHulkFleshEffect>0){
+				stats.tickHasHulkFleshEffect-=1;
+				player.stepHeight = 2F;
+			}else if(player.stepHeight!=0.5F)
+				player.stepHeight = 0.5F;
 			
-
-			//System.out.println("entityhit");
-			
-			//List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox((int)player.posX,y,z,x+1,y+2,z+1));
-			//if item attack item raycast from this item if it touch us throw back  IProjectile canAttackWithItem() entity.damage 
-			//when you put down block interface codeline side
+			if(event.side==Side.CLIENT)
+				return;
 			
 			if(stats.justBlockedAttack>0){
 				stats.justBlockedAttack-=1;
 				if(stats.justBlockedAttack==0){
-					//if(player.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getModifier(ItemVibraniumShield.knockbackModifier.getID())!=null)
-						//player.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).removeModifier(ItemVibraniumShield.knockbackModifier);
+					
 				}
 			}
 			
@@ -291,10 +334,29 @@ public class ModEvents {
 	        }
     	}
     }
-
+    
+    /*@SubscribeEvent
+    public void onEntityJoinedWorld (EntityJoinWorldEvent event){
+    	if(event.entity instanceof EntityLiving && event.entity.getEntityData().hasKey(SoundEmitterHelper.KEY_SPAWN) && !event.world.isRemote){
+    		boolean f = false;
+			Iterator it = ((EntityLiving)event.entity).targetTasks.taskEntries.iterator();
+			while(it.hasNext()){
+				EntityAITaskEntry ai = (EntityAITaskEntry)it.next();
+				System.out.println(ai.action);
+				if(ai.action instanceof EntityAITargetBlock){
+					f = true;
+					break;
+				}
+			}
+			if(!f){
+    			int[] t = event.entity.getEntityData().getIntArray(SoundEmitterHelper.KEY_SPAWN);
+    			((EntityLiving)event.entity).targetTasks.addTask(0, new EntityAITargetBlock((EntityLiving) event.entity, 0,true,false,t[0],t[1],t[2]));		
+			}
+        }
+    }*/
+    
     @SubscribeEvent
     public void onEntityConstructing (EntityEvent.EntityConstructing event){
-    	
         if (event.entity instanceof EntityPlayer && ModPlayerStats.get((EntityPlayer) event.entity) == null){
         	ModPlayerStats.register((EntityPlayer) event.entity);
         }

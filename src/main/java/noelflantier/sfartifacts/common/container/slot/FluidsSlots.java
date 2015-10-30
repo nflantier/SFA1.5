@@ -1,4 +1,4 @@
-package noelflantier.sfartifacts.common.gui.slots;
+package noelflantier.sfartifacts.common.container.slot;
 
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;

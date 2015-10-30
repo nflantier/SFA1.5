@@ -1,4 +1,4 @@
-package noelflantier.sfartifacts.common.gui;
+package noelflantier.sfartifacts.common.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -6,35 +6,24 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import noelflantier.sfartifacts.common.blocks.tiles.TileInjector;
-import noelflantier.sfartifacts.common.gui.slots.FluidsSlots;
-import noelflantier.sfartifacts.common.handlers.ModFluids;
+import noelflantier.sfartifacts.common.blocks.tiles.TileLightningRodStand;
+import noelflantier.sfartifacts.common.items.ItemLightningRod;
 
-public class ContainerInjector extends ContainerMachine{
+public class ContainerLightningRodStand extends ContainerMachine{
 
 	private int slotId = -1;
 	
-	public ContainerInjector(InventoryPlayer inventory,TileInjector tile){
+	public ContainerLightningRodStand(InventoryPlayer inventory,TileLightningRodStand tile){
 		super(inventory,tile);
 
 		for(int x = 0 ; x < 9 ; x++){
-			this.addSlotToContainer(new Slot(inventory,x,8+18*x,176));
+			this.addSlotToContainer(new Slot(inventory,x,8+18*x,136));
 		}
 		for(int x = 0 ; x < 9 ; x++)
 			for(int y = 0 ; y < 3 ; y++)
-				this.addSlotToContainer(new Slot(inventory,x+y*9+9,8+18*x,118+18*y));
+				this.addSlotToContainer(new Slot(inventory,x+y*9+9,8+18*x,78+18*y));
 		
-		this.addSlotToContainer(new FluidsSlots(tile, nextId(),15,75,true,ModFluids.fluidLiquefiedAsgardite));
-		
-		for(int j=0;j<3;j++){
-			for(int i=0;i<2;i++)
-				this.addSlotToContainer(new InjectorSlots(tile, nextId(),53+18*i,23+25*j, false));
-		}
-		
-		for(int j=0;j<3;j++){
-			for(int i=0;i<2;i++)
-				this.addSlotToContainer(new InjectorSlots(tile, nextId(),123+18*i,23+25*j, true));
-		}
+		this.addSlotToContainer(new LightningRodStandSlots(tile, nextId(),80,32));
 	}
 
 	@Override
@@ -65,13 +54,6 @@ public class ContainerInjector extends ContainerMachine{
 				for(int i = 0 ; i <= this.slotId ; i++){
 					if(this.tmachine.getStackInSlot(i)==null){
 						if(!this.tmachine.isItemValidForSlot(i, stack) || !mergeItemStack(stack, 36+i, 37+i, false))
-							success = false;
-						else{
-							success = true;
-							break;
-						}
-					}else if(this.tmachine.getStackInSlot(i).getItem()==slot.getStack().getItem()){
-						if(!mergeItemStack(stack, 36+i, 37+i, false))
 							success = false;
 						else{
 							success = true;
@@ -189,26 +171,23 @@ public class ContainerInjector extends ContainerMachine{
 
         return flag1;
     }
-
-	private class InjectorSlots extends Slot{
 	
-		public boolean isResult;
-		
-		public InjectorSlots(IInventory inv, int id,int x, int y, boolean isr) {
+	private class LightningRodStandSlots extends Slot{
+
+		public LightningRodStandSlots(IInventory inv, int id,int x, int y) {
 			super(inv, id, x, y);
-			this.isResult = isr;
 		}
 		
 		@Override
 	    public boolean isItemValid(ItemStack stack)
 	    {
-	        return !this.isResult;
+	        return stack.getItem() instanceof ItemLightningRod;
 	    }    
-	
+
 		@Override
 		public int getSlotStackLimit()
 	    {
-	        return 64;
+	        return 1;
 	    }
 	}
 }

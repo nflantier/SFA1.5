@@ -21,7 +21,7 @@ public class EntityAIMoveToBlock  extends EntityAIBase{
 		this.xBlock = x;
 		this.yBlock = y;
 		this.zBlock = z;
-		setMutexBits(7);
+		setMutexBits(3);
 	}
 
 	@Override

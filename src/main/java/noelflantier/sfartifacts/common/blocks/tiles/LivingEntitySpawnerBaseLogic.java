@@ -36,8 +36,7 @@ public abstract class LivingEntitySpawnerBaseLogic {
     private int activatingRangeFromPlayer = 25;
 	private int maxNearbyEntities = 50;
 	public int skeletonType = 0;
-	public List<EntityLiving> listE = new ArrayList<EntityLiving>();
-	public List<EntityLiving> listEToRemove = new ArrayList<EntityLiving>();
+	public boolean attractedToSpawner = false;
 	
 	public String getEntityNameToSpawn() {
 		return this.getRandomEntityName();
@@ -59,20 +58,6 @@ public abstract class LivingEntitySpawnerBaseLogic {
 			if (this.getSpawnerWorld().isRemote) {
 				//particles
 			} else {
-				
-				/*for(EntityLiving ec :this.listE){
-	    			if(ec.isDead){
-	    				this.listEToRemove.add(ec);
-	    				continue;
-	    			}
-	    			//PathEntity p = this.getSpawnerWorld().getEntityPathToXYZ(ec,this.getSpawnerX(),this.getSpawnerY(),this.getSpawnerZ(),ec.getNavigator().getPathSearchRange(),true,true,true,true);
-	    			boolean g = ec.getNavigator().tryMoveToXYZ(this.getSpawnerX(), this.getSpawnerY(), this.getSpawnerZ(), 1.0D);
-	    			ec.getMoveHelper().setMoveTo(this.getSpawnerX(), this.getSpawnerY(), this.getSpawnerZ(), 1.0D);
-	    			//boolean g  = ec.getNavigator().setPath(p, 3.0D);
-	    			System.out.println(g);
-	    			if(g)
-	    				this.listEToRemove.add(ec);
-	    		}*/
 				
 				if (this.spawnDelay == -1) {
 					this.resetTimer();
@@ -99,8 +84,8 @@ public abstract class LivingEntitySpawnerBaseLogic {
                     {
                         return;
                     }
-                    entity.getEntityData().setIntArray(SoundEmitterHelper.KEY_SPAWN, new int[]{this.getSpawnerX(),this.getSpawnerY(),this.getSpawnerZ()});
-        			
+                    entityJustCreated(entity);
+                    
                     int j = this.getSpawnerWorld().getEntitiesWithinAABB(entity.getClass(), AxisAlignedBB.getBoundingBox((double)this.getSpawnerX(), (double)this.getSpawnerY(), (double)this.getSpawnerZ(), (double)(this.getSpawnerX() + 1), (double)(this.getSpawnerY() + 1), (double)(this.getSpawnerZ() + 1)).expand((double)(this.spawnRange * 2), 4.0D, (double)(this.spawnRange * 2))).size();
 
                     if (j >= this.maxNearbyEntities)
@@ -116,9 +101,8 @@ public abstract class LivingEntitySpawnerBaseLogic {
                     entity.setLocationAndAngles(d2, d3, d4, this.getSpawnerWorld().rand.nextFloat() * 360.0F, 0.0F);
                     if (( entityliving == null || (entityliving.getCanSpawnHere() || !followVanillaSpawnRules) ) && getSpawnerWorld().getBlock((int)d2, (int)d3, (int)d4) == Blocks.air )
                     {
-                        //entityliving.tasks.addTask(0, new EntityAIMoveToBlock(entityliving,this.getSpawnerX(),this.getSpawnerY(),this.getSpawnerZ()));
                         this.spawnEntity(entity);
-                        //listE.add(entityliving);
+                        entityJustSpawned(entityliving!=null?entityliving:entity);
                         this.getSpawnerWorld().playAuxSFX(2004, this.getSpawnerX(), this.getSpawnerY(), this.getSpawnerZ(), 0);
 
                         if (entityliving != null)
@@ -134,16 +118,7 @@ public abstract class LivingEntitySpawnerBaseLogic {
                 {
                     this.resetTimer();
                 }
-                
-
-        		/*for(EntityLiving ecr :this.listEToRemove){
-        			
-        			this.listE.remove(ecr);
-        		}
-        		this.listEToRemove.clear();*/
 			}
-
-			
 		}
 	}
 
@@ -182,6 +157,8 @@ public abstract class LivingEntitySpawnerBaseLogic {
     public abstract int getSpawnerX();
     public abstract int getSpawnerY();
     public abstract int getSpawnerZ();
+    public abstract void entityJustCreated(Entity entity);
+    public abstract void entityJustSpawned(Entity entity);
 
     public abstract boolean spawnConditions();
     public abstract String getRandomEntityName();

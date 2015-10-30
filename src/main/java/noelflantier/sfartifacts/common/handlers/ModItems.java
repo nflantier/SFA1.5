@@ -11,6 +11,7 @@ import noelflantier.sfartifacts.common.items.ItemAsgardiumPearl;
 import noelflantier.sfartifacts.common.items.ItemBasicHammer;
 import noelflantier.sfartifacts.common.items.ItemEnergyModule;
 import noelflantier.sfartifacts.common.items.ItemFluidModule;
+import noelflantier.sfartifacts.common.items.ItemHulkFlesh;
 import noelflantier.sfartifacts.common.items.ItemLightningRod;
 import noelflantier.sfartifacts.common.items.ItemMagnet;
 import noelflantier.sfartifacts.common.items.ItemManual;
@@ -45,6 +46,7 @@ public class ModItems {
 	public static Item itemMold;
 	public static Item itemVibraniumShield;
 	public static Item itemMagnet;
+	public static Item itemHulkFlesh;
 
 	public static void loadItems() {
 
@@ -108,6 +110,9 @@ public class ModItems {
     	
     	itemMagnet = new ItemMagnet();
     	RegisterHelper.registerItem(itemMagnet);
+    	
+    	itemHulkFlesh = new ItemHulkFlesh();
+    	RegisterHelper.registerItem(itemHulkFlesh);
     	
 	}
 	

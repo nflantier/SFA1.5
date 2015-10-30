@@ -44,13 +44,13 @@ public class RenderEntityHulk extends RenderLiving{
     {
         super.rotateCorpse(p_77043_1_, p_77043_2_, p_77043_3_, p_77043_4_);
 
-        if ((double)p_77043_1_.limbSwingAmount >= 0.01D)
+        /*if ((double)p_77043_1_.limbSwingAmount >= 0.01D)
         {
             float f3 = 13.0F;
             float f4 = p_77043_1_.limbSwing - p_77043_1_.limbSwingAmount * (1.0F - p_77043_4_) + 6.0F;
             float f5 = (Math.abs(f4 % f3 - f3 * 0.5F) - f3 * 0.25F) / (f3 * 0.25F);
             GL11.glRotatef(6.5F * f5, 0.0F, 0.0F, 1.0F);
-        }
+        }*/
     }
 
     protected void rotateCorpse(EntityLivingBase p_77043_1_, float p_77043_2_, float p_77043_3_, float p_77043_4_)

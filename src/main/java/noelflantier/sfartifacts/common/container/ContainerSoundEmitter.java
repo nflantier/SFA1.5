@@ -1,122 +1,52 @@
-package noelflantier.sfartifacts.common.gui;
+package noelflantier.sfartifacts.common.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
-import noelflantier.sfartifacts.common.blocks.tiles.TileLiquefier;
-import noelflantier.sfartifacts.common.blocks.tiles.TileMightyFoundry;
-import noelflantier.sfartifacts.common.gui.slots.FluidsSlots;
+import noelflantier.sfartifacts.common.blocks.tiles.TileMachine;
+import noelflantier.sfartifacts.common.container.slot.FluidsSlots;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
-import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
-import noelflantier.sfartifacts.common.items.ItemMold;
 
-public class ContainerMightyFoundry extends ContainerMachine{
+public class ContainerSoundEmitter extends ContainerMachine{
 
 	private int slotId = -1;
-	
-	public ContainerMightyFoundry(InventoryPlayer inventory,TileMightyFoundry tile){
-		super(inventory,tile);
-		
+	public ContainerSoundEmitter(InventoryPlayer inventory, TileMachine tile) {
+		super(inventory, tile);
+
 		for(int x = 0 ; x < 9 ; x++){
 			this.addSlotToContainer(new Slot(inventory,x,8+18*x,176));
 		}
-		for(int x = 0 ; x < 9 ; x++)
-			for(int y = 0 ; y < 3 ; y++)
-				this.addSlotToContainer(new Slot(inventory,x+y*9+9,8+18*x,118+18*y));
-		
-		this.addSlotToContainer(new FluidsSlots(tile, nextId(),15,75,true,FluidRegistry.LAVA));
-
-		this.addSlotToContainer(new MoldSlots(tile, nextId(),44,23));
-
-		for(int i=0;i<4;i++)
-			this.addSlotToContainer(new MightyFoundrySlots(tile, nextId(),98+18*i,23, false));
-		
-		this.addSlotToContainer(new MightyFoundrySlots(tile, nextId(),148,75, true));
+		this.addSlotToContainer(new FluidsSlots(tile, nextId(),15,75,true,ModFluids.fluidLiquefiedAsgardite));
 	}
 
 	private int nextId(){
 		this.slotId++;
 		return this.slotId;
 	}
-	
+
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return true;
 	}
-
-	private class MightyFoundrySlots extends Slot{
-	
-		public boolean isResult;
-		
-		public MightyFoundrySlots(IInventory inv, int id,int x, int y, boolean isr) {
-			super(inv, id, x, y);
-			this.isResult = isr;
-		}
-		
-		@Override
-	    public boolean isItemValid(ItemStack stack)
-	    {
-	        return this.inventory.isItemValidForSlot(this.getSlotIndex(), stack);
-	    }    
-	
-		@Override
-		public int getSlotStackLimit()
-	    {
-	        return 64;
-	    }
-	}
-	
-	private class MoldSlots extends Slot{
-		
-		
-		public MoldSlots(IInventory inv, int id,int x, int y) {
-			super(inv, id, x, y);
-		}
-		
-		@Override
-	    public boolean isItemValid(ItemStack stack)
-	    {
-	        return this.inventory.isItemValidForSlot(this.getSlotIndex(), stack);
-	    }    
-	
-		@Override
-		public int getSlotStackLimit()
-	    {
-	        return 1;
-	    }
-	}
-
 	@Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index)
     {
 		Slot slot = getSlot(index);
-		if(slot instanceof MoldSlots && ((TileMightyFoundry)this.tmachine).isLocked)
-			return null;
-			
+
 		if (slot != null && slot.getHasStack())
 		{
 			ItemStack stack = slot.getStack();
 			ItemStack result = stack.copy();
-			if (index >= 36){ //To player
-				if (!mergeItemStack(stack, 0, 36, false)){
+			if (index >= 9){ //To player
+				if (!mergeItemStack(stack, 0, 9, false)){
 					return null;
 				}
 			}else{
 				boolean success = false;
 				for(int i = 0 ; i <= this.slotId ; i++){
 					if(this.tmachine.getStackInSlot(i)==null){
-						if(!this.tmachine.isItemValidForSlot(i, stack) || !mergeItemStack(stack, 36+i, 37+i, false))
-							success = false;
-						else{
-							success = true;
-							break;
-						}
-					}else if(this.tmachine.getStackInSlot(i).getItem()==slot.getStack().getItem()){
-						if(!mergeItemStack(stack, 36+i, 37+i, false))
+						if(!this.tmachine.isItemValidForSlot(i, stack) || !mergeItemStack(stack, 9+i, 10+i, false))
 							success = false;
 						else{
 							success = true;
@@ -167,21 +97,17 @@ public class ContainerMightyFoundry extends ContainerMachine{
                 {
                     int l = itemstack1.stackSize + stack.stackSize;
 
-                    if (l <= stack.getMaxStackSize() && l<=slot.getSlotStackLimit())
+                    if (l <= stack.getMaxStackSize())
                     {
                     	stack.stackSize = 0;
                         itemstack1.stackSize = l;
                         slot.onSlotChanged();
                         flag1 = true;
                     }
-                    else if (itemstack1.stackSize < stack.getMaxStackSize() && itemstack1.stackSize< slot.getSlotStackLimit())
+                    else if (itemstack1.stackSize < stack.getMaxStackSize())
                     {
-                    	int m = stack.getMaxStackSize() - itemstack1.stackSize;
-                    	if(m>slot.getSlotStackLimit())
-                    		m = slot.getSlotStackLimit() - itemstack1.stackSize;
-                    	int d = Math.min(m, stack.stackSize);
-                    	stack.stackSize -= d;
-                        itemstack1.stackSize += d;
+                    	stack.stackSize -= stack.getMaxStackSize() - itemstack1.stackSize;
+                        itemstack1.stackSize = stack.getMaxStackSize();
                         slot.onSlotChanged();
                         flag1 = true;
                     }

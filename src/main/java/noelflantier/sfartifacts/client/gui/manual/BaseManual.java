@@ -11,8 +11,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.SFArtifacts;
-import noelflantier.sfartifacts.common.helpers.guis.GuiComponent;
-import noelflantier.sfartifacts.common.helpers.guis.GuiSFAScreen;
+import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
+import noelflantier.sfartifacts.client.gui.bases.GuiSFAScreen;
 
 public abstract class BaseManual extends GuiSFAScreen{
 	public ResourceLocation bground = new ResourceLocation(References.MODID+":textures/gui/guiManuals.png");

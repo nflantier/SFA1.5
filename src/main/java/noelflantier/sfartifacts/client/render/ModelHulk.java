@@ -124,9 +124,8 @@ public class ModelHulk extends ModelBase{
         this.leftArm.rotateAngleZ -= MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
         this.rightArm.rotateAngleX += MathHelper.sin(f2 * 0.067F) * 0.05F;
         this.leftArm.rotateAngleX -= MathHelper.sin(f2 * 0.067F) * 0.05F;*/
-
-        this.head.rotateAngleY = f3 / (180F / (float)Math.PI);
-        this.head.rotateAngleX = f4 / (180F / (float)Math.PI);
+        this.head.rotateAngleY = f3*0.8F / (180F / (float)Math.PI);
+        this.head.rotateAngleX = f4*0.8F / (180F / (float)Math.PI);
         this.leftFoot.rotateAngleX = -1.5F * this.func_78172_a(f, 13.0F) * f1;
         this.rightFoot.rotateAngleX = 1.5F * this.func_78172_a(f, 13.0F) * f1;
         this.leftFoot.rotateAngleY = 0.0F;
@@ -145,8 +144,9 @@ public class ModelHulk extends ModelBase{
     
     public void setLivingAnimations(EntityLivingBase p_78086_1_, float p_78086_2_, float p_78086_3_, float p_78086_4_)
     {
-      	EntityHulk entityirongolem = (EntityHulk)p_78086_1_;
-        int i = p_78086_1_.getDataWatcher().getWatchableObjectInt(16);
+      	EntityHulk entity = (EntityHulk)p_78086_1_;
+        //int i = p_78086_1_.getDataWatcher().getWatchableObjectInt(17);
+      	int i = entity.getAttackFlingTimer();
         if (i > 0)
         {
             this.rightArm.rotateAngleX = -2.0F + 1.5F * this.func_78172_a((float)i - p_78086_4_, 10.0F);

@@ -13,9 +13,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.SFArtifacts;
+import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
+import noelflantier.sfartifacts.client.gui.bases.GuiSFAScreen;
 import noelflantier.sfartifacts.common.handlers.ModGUIs;
-import noelflantier.sfartifacts.common.helpers.guis.GuiComponent;
-import noelflantier.sfartifacts.common.helpers.guis.GuiSFAScreen;
 
 public class GuiManual extends GuiSFAScreen{
 
@@ -50,6 +50,13 @@ public class GuiManual extends GuiSFAScreen{
 			defColor = EnumChatFormatting.BLACK;
 		}});
 		this.manuals.put("captain", ModGUIs.guiIDCaptainManual);
+
+		this.componentList.put("hulk", new GuiComponent(this.guiLeft+10, this.guiTop+30, 60, 10){{
+			addText("Hulk manual", 0, 0);
+			isLink = true;
+			defColor = EnumChatFormatting.BLACK;
+		}});
+		this.manuals.put("hulk", ModGUIs.guiIDHulkManual);
 	}
 	
 	@Override

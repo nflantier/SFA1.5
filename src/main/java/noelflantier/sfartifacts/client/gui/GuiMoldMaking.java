@@ -8,10 +8,10 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import noelflantier.sfartifacts.References;
-import noelflantier.sfartifacts.common.gui.ContainerMoldMaking;
-import noelflantier.sfartifacts.common.helpers.guis.GuiImage;
-import noelflantier.sfartifacts.common.helpers.guis.GuiSFA;
-import noelflantier.sfartifacts.common.helpers.guis.GuiToolTips;
+import noelflantier.sfartifacts.client.gui.bases.GuiImage;
+import noelflantier.sfartifacts.client.gui.bases.GuiSFA;
+import noelflantier.sfartifacts.client.gui.bases.GuiToolTips;
+import noelflantier.sfartifacts.common.container.ContainerMoldMaking;
 
 public class GuiMoldMaking  extends GuiSFA{
 

@@ -1,4 +1,4 @@
-package noelflantier.sfartifacts.common.gui;
+package noelflantier.sfartifacts.common.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -6,20 +6,19 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
-import noelflantier.sfartifacts.References;
-import noelflantier.sfartifacts.common.blocks.tiles.TileControlPannel;
 import noelflantier.sfartifacts.common.blocks.tiles.TileLiquefier;
-import noelflantier.sfartifacts.common.gui.slots.FluidsSlots;
+import noelflantier.sfartifacts.common.blocks.tiles.TileMightyFoundry;
+import noelflantier.sfartifacts.common.container.slot.FluidsSlots;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
-import noelflantier.sfartifacts.common.items.ItemAsgardite;
+import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
+import noelflantier.sfartifacts.common.items.ItemMold;
 
-public class ContainerLiquefier extends ContainerMachine{
+public class ContainerMightyFoundry extends ContainerMachine{
 
 	private int slotId = -1;
 	
-	public ContainerLiquefier(InventoryPlayer inventory,TileLiquefier tile){
+	public ContainerMightyFoundry(InventoryPlayer inventory,TileMightyFoundry tile){
 		super(inventory,tile);
 		
 		for(int x = 0 ; x < 9 ; x++){
@@ -29,26 +28,75 @@ public class ContainerLiquefier extends ContainerMachine{
 			for(int y = 0 ; y < 3 ; y++)
 				this.addSlotToContainer(new Slot(inventory,x+y*9+9,8+18*x,118+18*y));
 		
-		this.addSlotToContainer(new LiquefierSlots(tile, nextId(),57,36));//REAL ID 36
-		this.addSlotToContainer(new FluidsSlots(tile, nextId(),15,75,true,FluidRegistry.WATER));//REAL ID 37
-		this.addSlotToContainer(new FluidsSlots(tile, nextId(),141,75,false,ModFluids.fluidLiquefiedAsgardite));//REAL ID 38
+		this.addSlotToContainer(new FluidsSlots(tile, nextId(),15,75,true,FluidRegistry.LAVA));
+
+		this.addSlotToContainer(new MoldSlots(tile, nextId(),44,23));
+
+		for(int i=0;i<4;i++)
+			this.addSlotToContainer(new MightyFoundrySlots(tile, nextId(),98+18*i,23, false));
+		
+		this.addSlotToContainer(new MightyFoundrySlots(tile, nextId(),148,75, true));
+	}
+
+	private int nextId(){
+		this.slotId++;
+		return this.slotId;
 	}
 	
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return true;
 	}
+
+	private class MightyFoundrySlots extends Slot{
 	
-	private int nextId(){
-		this.slotId++;
-		return this.slotId;
+		public boolean isResult;
+		
+		public MightyFoundrySlots(IInventory inv, int id,int x, int y, boolean isr) {
+			super(inv, id, x, y);
+			this.isResult = isr;
+		}
+		
+		@Override
+	    public boolean isItemValid(ItemStack stack)
+	    {
+	        return this.inventory.isItemValidForSlot(this.getSlotIndex(), stack);
+	    }    
+	
+		@Override
+		public int getSlotStackLimit()
+	    {
+	        return 64;
+	    }
+	}
+	
+	private class MoldSlots extends Slot{
+		
+		
+		public MoldSlots(IInventory inv, int id,int x, int y) {
+			super(inv, id, x, y);
+		}
+		
+		@Override
+	    public boolean isItemValid(ItemStack stack)
+	    {
+	        return this.inventory.isItemValidForSlot(this.getSlotIndex(), stack);
+	    }    
+	
+		@Override
+		public int getSlotStackLimit()
+	    {
+	        return 1;
+	    }
 	}
 
 	@Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index)
     {
 		Slot slot = getSlot(index);
-
+		if(slot instanceof MoldSlots && ((TileMightyFoundry)this.tmachine).isLocked)
+			return null;
+			
 		if (slot != null && slot.getHasStack())
 		{
 			ItemStack stack = slot.getStack();
@@ -119,17 +167,21 @@ public class ContainerLiquefier extends ContainerMachine{
                 {
                     int l = itemstack1.stackSize + stack.stackSize;
 
-                    if (l <= stack.getMaxStackSize())
+                    if (l <= stack.getMaxStackSize() && l<=slot.getSlotStackLimit())
                     {
                     	stack.stackSize = 0;
                         itemstack1.stackSize = l;
                         slot.onSlotChanged();
                         flag1 = true;
                     }
-                    else if (itemstack1.stackSize < stack.getMaxStackSize())
+                    else if (itemstack1.stackSize < stack.getMaxStackSize() && itemstack1.stackSize< slot.getSlotStackLimit())
                     {
-                    	stack.stackSize -= stack.getMaxStackSize() - itemstack1.stackSize;
-                        itemstack1.stackSize = stack.getMaxStackSize();
+                    	int m = stack.getMaxStackSize() - itemstack1.stackSize;
+                    	if(m>slot.getSlotStackLimit())
+                    		m = slot.getSlotStackLimit() - itemstack1.stackSize;
+                    	int d = Math.min(m, stack.stackSize);
+                    	stack.stackSize -= d;
+                        itemstack1.stackSize += d;
                         slot.onSlotChanged();
                         flag1 = true;
                     }
@@ -186,23 +238,4 @@ public class ContainerLiquefier extends ContainerMachine{
 
         return flag1;
     }
-	
-	private class LiquefierSlots extends Slot{
-
-		public LiquefierSlots(IInventory inv, int id,int x, int y) {
-			super(inv, id, x, y);
-		}
-		
-		@Override
-	    public boolean isItemValid(ItemStack stack)
-	    {
-	        return stack.getItem() instanceof ItemAsgardite;
-	    }    
-
-		@Override
-		public int getSlotStackLimit()
-	    {
-	        return 64;
-	    }
-	}
 }

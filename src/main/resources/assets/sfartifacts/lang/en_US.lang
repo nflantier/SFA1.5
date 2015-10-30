@@ -23,10 +23,11 @@ item.itemVibraniumAlloySheet.name=Vibranium Alloy Sheet
 item.itemMold.name=Mold
 item.itemVibraniumShield.name=Vibranium Shield
 item.itemMagnet.name=Magnet
+item.itemHulkFlesh.name=Hulk Flesh
 
 entity.hammerinvoking.name=Falling Hammer
 entity.shieldthrow.name=Moving Shield
-entity.hulk.name=Angry Hulk
+entity.Hulk.name=Angry Hulk
 
 tile.blockControlPanel.name=Control Panel
 tile.blockAsgardianBronze.name=Asgardian Bronze Block
