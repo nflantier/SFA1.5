@@ -20,6 +20,7 @@ import noelflantier.sfartifacts.common.network.messages.PacketPillarConfig;
 import noelflantier.sfartifacts.common.network.messages.PacketRenderPillarModel;
 import noelflantier.sfartifacts.common.network.messages.PacketRenderUpdate;
 import noelflantier.sfartifacts.common.network.messages.PacketSound;
+import noelflantier.sfartifacts.common.network.messages.PacketSoundEmitter;
 import noelflantier.sfartifacts.common.network.messages.PacketTeleport;
 import noelflantier.sfartifacts.common.network.messages.PacketUpgradeHammer;
 import cpw.mods.fml.relauncher.Side;
@@ -33,6 +34,7 @@ public class ModNetworkMessages {
 	    PacketHandler.INSTANCE.registerMessage(PacketLiquefier.class, PacketLiquefier.class, PacketHandler.nextId(), Side.CLIENT);
 	    PacketHandler.INSTANCE.registerMessage(PacketInjector.class, PacketInjector.class, PacketHandler.nextId(), Side.CLIENT);
 	    PacketHandler.INSTANCE.registerMessage(PacketMightyFoundry.class, PacketMightyFoundry.class, PacketHandler.nextId(), Side.CLIENT);
+	    PacketHandler.INSTANCE.registerMessage(PacketSoundEmitter.class, PacketSoundEmitter.class, PacketHandler.nextId(), Side.CLIENT);
 	    PacketHandler.INSTANCE.registerMessage(PacketPillar.class, PacketPillar.class, PacketHandler.nextId(), Side.CLIENT);
 	    PacketHandler.INSTANCE.registerMessage(PacketLightningRodStand.class, PacketLightningRodStand.class, PacketHandler.nextId(), Side.CLIENT);
 	    PacketHandler.INSTANCE.registerMessage(PacketSound.class, PacketSound.class, PacketHandler.nextId(), Side.CLIENT);

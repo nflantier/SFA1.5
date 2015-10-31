@@ -43,7 +43,7 @@ public class ItemHulkFlesh  extends ItemFood{
     		player.addPotionEffect(new PotionEffect(Potion.regeneration.id, tickHulkEffect, 20));
             player.addPotionEffect(new PotionEffect(Potion.resistance.id, tickHulkEffect, 20));
             player.addPotionEffect(new PotionEffect(Potion.fireResistance.id, tickHulkEffect, 1));
-    		player.addPotionEffect(new PotionEffect(Potion.field_76444_x.id, tickHulkEffect, 10));
+    		//player.addPotionEffect(new PotionEffect(Potion.field_76444_x.id, tickHulkEffect, 10));
     		player.addPotionEffect(new PotionEffect(Potion.damageBoost.id, tickHulkEffect, 10));
     		player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, tickHulkEffect, 20));
     		player.addPotionEffect(new PotionEffect(Potion.field_76434_w.id, tickHulkEffect, 20));

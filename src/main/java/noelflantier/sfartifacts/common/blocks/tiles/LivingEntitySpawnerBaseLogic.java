@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import noelflantier.sfartifacts.common.entities.EntityAIMoveToBlock;
+import noelflantier.sfartifacts.common.entities.ai.EntityAIMoveToBlock;
 import noelflantier.sfartifacts.common.helpers.SoundEmitterHelper;
 
 public abstract class LivingEntitySpawnerBaseLogic {
@@ -35,6 +35,7 @@ public abstract class LivingEntitySpawnerBaseLogic {
 	public int minSpawnRange = 0;
     private int activatingRangeFromPlayer = 25;
 	private int maxNearbyEntities = 50;
+	public boolean spawnEntityOnce = false;
 	public int skeletonType = 0;
 	public boolean attractedToSpawner = false;
 	
@@ -159,6 +160,7 @@ public abstract class LivingEntitySpawnerBaseLogic {
     public abstract int getSpawnerZ();
     public abstract void entityJustCreated(Entity entity);
     public abstract void entityJustSpawned(Entity entity);
+    public abstract void finishSpawning();
 
     public abstract boolean spawnConditions();
     public abstract String getRandomEntityName();

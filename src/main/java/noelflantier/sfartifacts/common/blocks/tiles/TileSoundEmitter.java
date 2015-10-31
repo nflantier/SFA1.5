@@ -19,13 +19,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import noelflantier.sfartifacts.common.entities.EntityAITargetBlock;
+import noelflantier.sfartifacts.common.entities.ai.EntityAITargetBlock;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
 import noelflantier.sfartifacts.common.helpers.SoundEmitterHelper;
 import noelflantier.sfartifacts.common.helpers.SoundEmitterHelper.MobsPropertiesForSpawing;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
 import noelflantier.sfartifacts.common.network.messages.PacketFluid;
+import noelflantier.sfartifacts.common.network.messages.PacketInjector;
+import noelflantier.sfartifacts.common.network.messages.PacketSoundEmitter;
 
 public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 	
@@ -84,6 +86,8 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 					}
 				}
 				this.attractedToSpawner = mpForSpawning.get(r).isAttractedToSpawner;
+				this.spawnEntityOnce = mpForSpawning.get(r).isSpawningOnce;
+				
 				this.spawnCount = spx;
 				if(spx<=0)
 					return false;
@@ -109,13 +113,20 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 				((EntityLiving)entity).targetTasks.addTask(0, new EntityAITargetBlock((EntityCreature) entity, 0,true,false,getSpawnerX(),getSpawnerY(),getSpawnerZ()));
 			}
 		}
+		@Override
+		public void finishSpawning() {
+			if(this.spawnEntityOnce){
+				this.spawnEntityOnce = false;
+				isEmitting = false;
+			}
+		}
 	};
 	
 	//INVENTORY
 	public ItemStack[] items = new ItemStack[1];
 	
 	public TileSoundEmitter(){
-		super("Injector");
+		super("Sound Emitter");
 		this.hasFL = true;
 		this.hasRF = true;
     	this.energyCapacity = 500000;
@@ -156,7 +167,7 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 	public void processPackets() {
 	    PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this);
         PacketHandler.sendToAllAround(new PacketFluid(this.xCoord, this.yCoord, this.zCoord, new int[]{this.tank.getFluidAmount()}, new int[]{this.tank.getCapacity()}, new int[]{ModFluids.fluidLiquefiedAsgardite.getID()}),this);
-     
+		PacketHandler.sendToAllAround(new PacketSoundEmitter(this),this);
 	}
 
 	@Override

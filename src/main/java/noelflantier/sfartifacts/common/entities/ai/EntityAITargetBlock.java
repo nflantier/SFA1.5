@@ -1,4 +1,4 @@
-package noelflantier.sfartifacts.common.entities;
+package noelflantier.sfartifacts.common.entities.ai;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAITarget;

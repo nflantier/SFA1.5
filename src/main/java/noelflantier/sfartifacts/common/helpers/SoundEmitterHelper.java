@@ -108,7 +108,7 @@ public class SoundEmitterHelper {
 		addEntity(EntityIronGolem.class,new MobsPropertiesForSpawing(2500,new FluidStack(ModFluids.fluidLiquefiedAsgardite,800),null), true);
 		addEntity(EntityVillager.class,new MobsPropertiesForSpawing(5000,new FluidStack(ModFluids.fluidLiquefiedAsgardite,2000),null), true);
 		
-		addEntity(EntityHulk.class,new MobsPropertiesForSpawing(ModConfig.rfNeededToSpawnHulk,new FluidStack(ModFluids.fluidLiquefiedAsgardite,ModConfig.fluidNeededToSpawnHulk),null,1,false), true);
+		addEntity(EntityHulk.class,new MobsPropertiesForSpawing(ModConfig.rfNeededToSpawnHulk,new FluidStack(ModFluids.fluidLiquefiedAsgardite,ModConfig.fluidNeededToSpawnHulk),null,1,false,true), true);
 		
 		
 		Iterator <Map.Entry<String,Class>>iterator = EntityList.stringToClassMapping.entrySet().iterator();
@@ -132,6 +132,7 @@ public class SoundEmitterHelper {
 		public String nameEntity;
 		public int rfneeded = 0;
 		public boolean isAttractedToSpawner = true;
+		public boolean isSpawningOnce = false;
 		public int nbMaxSpawing = -1;
 		public FluidStack fluidneeded = new FluidStack(ModFluids.fluidLiquefiedAsgardite,0);
 		public List<ItemStack> itemsneeded = null;
@@ -155,6 +156,15 @@ public class SoundEmitterHelper {
 			this.itemsneeded = it;
 			this.nbMaxSpawing = nbMaxSpawning;
 			this.isAttractedToSpawner = attracted;
+		}
+		
+		public MobsPropertiesForSpawing(int rf, FluidStack fl, List<ItemStack> it, int nbMaxSpawning, boolean attracted, boolean once){
+			this.rfneeded = rf;
+			this.fluidneeded = fl;
+			this.itemsneeded = it;
+			this.nbMaxSpawing = nbMaxSpawning;
+			this.isAttractedToSpawner = attracted;
+			this.isSpawningOnce = once;
 		}
 	}
 }

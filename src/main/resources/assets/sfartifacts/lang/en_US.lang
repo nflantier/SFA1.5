@@ -26,7 +26,7 @@ item.itemMagnet.name=Magnet
 item.itemHulkFlesh.name=Hulk Flesh
 
 entity.hammerinvoking.name=Falling Hammer
-entity.shieldthrow.name=Moving Shield
+entity.entityvibraniumshieldthrow.name=Moving Shield
 entity.Hulk.name=Angry Hulk
 
 tile.blockControlPanel.name=Control Panel

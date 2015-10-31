@@ -1,4 +1,4 @@
-package noelflantier.sfartifacts.common.entities;
+package noelflantier.sfartifacts.common.entities.ai;
 
 import org.apache.commons.lang3.StringUtils;
 
