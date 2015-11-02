@@ -108,7 +108,9 @@ public class SoundEmitterHelper {
 		addEntity(EntityIronGolem.class,new MobsPropertiesForSpawing(2500,new FluidStack(ModFluids.fluidLiquefiedAsgardite,800),null), true);
 		addEntity(EntityVillager.class,new MobsPropertiesForSpawing(5000,new FluidStack(ModFluids.fluidLiquefiedAsgardite,2000),null), true);
 		
-		addEntity(EntityHulk.class,new MobsPropertiesForSpawing(ModConfig.rfNeededToSpawnHulk,new FluidStack(ModFluids.fluidLiquefiedAsgardite,ModConfig.fluidNeededToSpawnHulk),null,1,false,true), true);
+		MobsPropertiesForSpawing h = new MobsPropertiesForSpawing(ModConfig.rfNeededToSpawnHulk,new FluidStack(ModFluids.fluidLiquefiedAsgardite,ModConfig.fluidNeededToSpawnHulk),null,1,false,true);
+		h.customY = 200;
+		addEntity(EntityHulk.class,h, true);
 		
 		
 		Iterator <Map.Entry<String,Class>>iterator = EntityList.stringToClassMapping.entrySet().iterator();
@@ -131,6 +133,9 @@ public class SoundEmitterHelper {
 		public Class classEntity;
 		public String nameEntity;
 		public int rfneeded = 0;
+		public int customX = 0;
+		public int customY = 0;
+		public int customZ = 0;
 		public boolean isAttractedToSpawner = true;
 		public boolean isSpawningOnce = false;
 		public int nbMaxSpawing = -1;

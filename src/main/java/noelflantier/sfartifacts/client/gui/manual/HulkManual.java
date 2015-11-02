@@ -64,6 +64,14 @@ public class HulkManual extends BaseManual{
 					addText("Hulk can be lure with the sound emitter,",0,0);
 					addText("you can't kill him but if you hurt him",0,0);
 					addText("really bad he will run away.",0,0);
+					addText("Just before running away he will drop some flesh,",0,10);
+					addText("you can eat them or try to make the Mighty Hulk Ring.",0,0);
+					addText("This ring give you more health regen, more speed,",0,0);
+					addText("step assist, augmented jump, prevent fall damages",0,0);
+					addText("and your bares hand becomes stronger, you can mine",0,0);
+					addText("and fight pretty efficiently with it.",0,0);
+					addText("To equip the ring you have to use Baubles,",0,0);
+					addText("and put the ring in a ring slot.",0,0);
 				}}
 			);
 		}else if(cat.equals("index")){

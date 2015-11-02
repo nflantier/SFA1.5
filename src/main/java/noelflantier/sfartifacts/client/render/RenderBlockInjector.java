@@ -210,7 +210,9 @@ public class RenderBlockInjector extends TileEntitySpecialRenderer  implements I
         				itemEntity2.hoverStart = 0.0F;
         				GL11.glScalef(0.5F, 0.5F, 0.5F);
         				RenderItem.renderInFrame = true;
+        				GL11.glColor4f(1F, 1F, 1F, 1F);
         				RenderManager.instance.renderEntityWithPosYaw(itemEntity2, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+        				GL11.glColor4f(1F, 1F, 1F, 1F);
         				RenderItem.renderInFrame = false;
         	        GL11.glPopMatrix();
             	}

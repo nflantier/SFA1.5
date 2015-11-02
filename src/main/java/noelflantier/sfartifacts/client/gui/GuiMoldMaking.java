@@ -3,6 +3,7 @@ package noelflantier.sfartifacts.client.gui;
 import java.util.Enumeration;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -19,21 +20,21 @@ public class GuiMoldMaking  extends GuiSFA{
 	private static final ResourceLocation moldFilled = new ResourceLocation(References.MODID+":textures/items/mold_filled.png");
 	private static final ResourceLocation moldEmpty = new ResourceLocation(References.MODID+":textures/items/mold_empty.png");
 	public int currentSlot;
+	public int moldMeta;
 	
-	public GuiMoldMaking(InventoryPlayer inventory, IInventory itemInv, int slt) {
-		super(new ContainerMoldMaking(inventory, itemInv, slt));
-		this.currentSlot = slt;
+	public GuiMoldMaking(EntityPlayer player) {
+		super(new ContainerMoldMaking(player));
+		this.currentSlot = player.inventory.currentItem;
+		this.moldMeta = player.getCurrentEquippedItem().getItemDamage();
 		this.xSize = 176;
 		this.ySize = 200;
 	}
 	
 	@Override
 	public void loadComponents(){
-		super.loadComponents();
-		int meta = this.inventorySlots.getSlot(this.currentSlot).getStack().getItemDamage();
-		this.componentList.put("im", 
-			new GuiImage(8+18*this.currentSlot, 176, 16,16 , 0F, 0F, 1F, 1F,meta==0?moldEmpty:moldFilled)
-		);
+		super.loadComponents();this.componentList.put("im", 
+				new GuiImage(8+18*this.currentSlot, 176, 16,16 , 0F, 0F, 1F, 1F,moldMeta==0?moldEmpty:moldFilled)
+				);
 	}
 	
 	@Override

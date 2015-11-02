@@ -87,6 +87,9 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 				}
 				this.attractedToSpawner = mpForSpawning.get(r).isAttractedToSpawner;
 				this.spawnEntityOnce = mpForSpawning.get(r).isSpawningOnce;
+				this.customX = mpForSpawning.get(r).customX;
+				this.customY = mpForSpawning.get(r).customY;
+				this.customZ = mpForSpawning.get(r).customZ;
 				
 				this.spawnCount = spx;
 				if(spx<=0)

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import baubles.api.BaublesApi;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -29,6 +30,7 @@ import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -48,8 +50,10 @@ import net.minecraftforge.event.world.ExplosionEvent;
 import noelflantier.sfartifacts.common.entities.EntityItemStronk;
 import noelflantier.sfartifacts.common.entities.ai.EntityAIMoveToBlock;
 import noelflantier.sfartifacts.common.entities.ai.EntityAITargetBlock;
+import noelflantier.sfartifacts.common.helpers.BaublesHelper;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.helpers.SoundEmitterHelper;
+import noelflantier.sfartifacts.common.items.ItemMightyHulkRing;
 import noelflantier.sfartifacts.common.items.ItemVibraniumShield;
 import noelflantier.sfartifacts.common.items.baseclasses.MiningHammerBase;
 import cpw.mods.fml.common.eventhandler.Event.Result;
@@ -125,38 +129,6 @@ public class ModEvents {
 		}
 	}
 	
-	/*@SubscribeEvent
-	public void LivingHurtEvent(LivingHurtEvent event) {
-		if(event.entityLiving instanceof EntityPlayer){
-			EntityPlayer player = (EntityPlayer)event.entityLiving;
-			if(player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemVibraniumShield){
-				if(event.source == event.source.fall){
-					float r = (float)player.fallDistance / 10;
-					System.out.println(player.fallDistance);
-					player.fallDistance = 0;
-				}
-				//ModPlayerStats stats = ModPlayerStats.get(player);
-				//stats.justBlockedAttack = 5;
-				IAttributeInstance at =  event.entityLiving.getEntityAttribute(SharedMonsterAttributes.knockbackResistance);//.setBaseValue(1);
-				if (at.getModifier(knockbackModifier.getID()) != null){
-					at.removeModifier(knockbackModifier);
-			    }
-	            at.applyModifier(knockbackModifier);
-				//event.setCanceled(true);
-			//}else{
-				//if(event.entityLiving.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getModifier(ItemVibraniumShield.knockbackModifier.getID())!=null)
-					//event.entityLiving.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).removeModifier(ItemVibraniumShield.knockbackModifier);
-			//}
-			//System.out.println(event.entityLiving.attackedAtYaw+"  "+event.source.getSourceOfDamage().rotationYaw+"   "+event.entity.rotationYaw);
-			//event.entityLiving.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(0);
-		//}
-		//attacked 0-90 0--270
-		//rotyaw  0->90   aa 90->0
-		//rotyaw  90->360   aa 0->-270
-		//if(event.entity.rotationYaw-70)
-		
-	}*/
-	
     @SubscribeEvent
     public void onTick(ServerTickEvent evt) {
     	if(evt.phase == Phase.END) {
@@ -178,27 +150,7 @@ public class ModEvents {
     			this.listChick.add((EntityChicken)evt.entity);
     	}
     }
-   /* 
-    @SubscribeEvent
-    public void LivingDeathEvent(LivingDeathEvent evt){
-    	//this.listChick.clear();
-    	if(evt.entity instanceof EntityChicken){
-    		if(this.listChick.contains((EntityChicken)evt.entity)){
-    			Random rand = new Random();
-				if(rand.nextFloat()<(float)ModConfig.chanceToSpawnMightyFeather){
-					float f1 = rand.nextFloat() * 0.8F+0.1F;
-					float f2 = rand.nextFloat() * 0.8F+0.1F;
-					float f3 = rand.nextFloat() * 0.8F+0.1F;
-					System.out.println(""+this.listChick.size()+"  "+evt.entityLiving);
-					evt.entityLiving.worldObj.spawnEntityInWorld(new EntityItem(evt.entityLiving.worldObj, evt.entity.posX+f1, evt.entity.posY+f2, evt.entity.posZ+f3, new ItemStack(ModItems.itemMightyFeather,1,0)));
-				}
-    			this.listChick.remove((EntityChicken)evt.entity);
-				System.out.println(""+this.listChick.size());
-    		}
-    	}
-    }
     
-    */
     @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent event) {
     	if(event.phase == Phase.END) {
@@ -236,9 +188,6 @@ public class ModEvents {
 			if(stats!=null && stats.tickHasHulkFleshEffect>0){
 				event.distance = 0;
 			}
-
-			if(event.distance<5)
-				return;
 			if(player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemVibraniumShield 
 					&& ItemNBTHelper.getBoolean(player.getCurrentEquippedItem(), "CanBlock", false) 
 					&& !ItemNBTHelper.getBoolean(player.getCurrentEquippedItem(), "IsThrown", false)){
@@ -255,6 +204,7 @@ public class ModEvents {
 	    	EntityPlayer player = (EntityPlayer)event.entityLiving;
 			if(player == null)
 				return;
+			
 			ModPlayerStats stats = ModPlayerStats.get(player);
 			if(stats==null)
 				return;
@@ -334,27 +284,7 @@ public class ModEvents {
 	        }
     	}
     }
-    
-    /*@SubscribeEvent
-    public void onEntityJoinedWorld (EntityJoinWorldEvent event){
-    	if(event.entity instanceof EntityLiving && event.entity.getEntityData().hasKey(SoundEmitterHelper.KEY_SPAWN) && !event.world.isRemote){
-    		boolean f = false;
-			Iterator it = ((EntityLiving)event.entity).targetTasks.taskEntries.iterator();
-			while(it.hasNext()){
-				EntityAITaskEntry ai = (EntityAITaskEntry)it.next();
-				System.out.println(ai.action);
-				if(ai.action instanceof EntityAITargetBlock){
-					f = true;
-					break;
-				}
-			}
-			if(!f){
-    			int[] t = event.entity.getEntityData().getIntArray(SoundEmitterHelper.KEY_SPAWN);
-    			((EntityLiving)event.entity).targetTasks.addTask(0, new EntityAITargetBlock((EntityLiving) event.entity, 0,true,false,t[0],t[1],t[2]));		
-			}
-        }
-    }*/
-    
+        
     @SubscribeEvent
     public void onEntityConstructing (EntityEvent.EntityConstructing event){
         if (event.entity instanceof EntityPlayer && ModPlayerStats.get((EntityPlayer) event.entity) == null){

@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -45,15 +46,22 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.common.entities.ai.EntityAIJumpAndCollide;
+import noelflantier.sfartifacts.common.entities.ai.EntityAITargetBlock;
 import noelflantier.sfartifacts.common.handlers.ModItems;
 
 public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAttackMob{
 
     private boolean isRunningAway = false;
+    private int runningAwayTimer = -1;
     private int flingAttackTimer = 0;
     private int destroyAroundTimer = 0;
     private int jumpAndDestroyAroundTimer = 0;
     private Random rdm = new Random();
+    private EntityAINearestAttackableTarget aiNearest;
+    private EntityAIHurtByTarget aiHurt;
+    private EntityAITargetBlock aiTargetAway;
+    private int animationSmash = 0;
+    private int lastLoot = 0;
     
     private static final IEntitySelector attackEntitySelector = new IEntitySelector(){
         public boolean isEntityApplicable(Entity p_82704_1_)
@@ -68,8 +76,11 @@ public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAt
         this.tasks.addTask(1, new EntityAIJumpAndCollide(this, EntityPlayer.class, 2.0D, true));
         this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 2.0D, true));
         this.tasks.addTask(5, new EntityAIWatchClosest(this, EntityPlayer.class, 100.0F));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
-        this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
+        aiNearest = new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true);
+        aiHurt = new EntityAIHurtByTarget(this, false);
+        aiTargetAway = new EntityAITargetBlock(this, 0,true,false,(int)this.posX+1000,(int)this.posY+100,(int)this.posZ+1000);
+        this.targetTasks.addTask(1, aiNearest);
+        this.targetTasks.addTask(2, aiHurt);
         
         this.setSize(2.5F, 4.5F);
         this.getNavigator().setCanSwim(true);
@@ -83,6 +94,7 @@ public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAt
 		nbt.setInteger("flingAttackTimer", flingAttackTimer);
 		nbt.setInteger("destroyAroundTimer", destroyAroundTimer);
 		nbt.setInteger("jumpAndDestroyAroundTimer", jumpAndDestroyAroundTimer);		
+		nbt.setInteger("lastLoot", lastLoot);		
     }
 
     public void readEntityFromNBT(NBTTagCompound nbt){
@@ -91,22 +103,16 @@ public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAt
 		flingAttackTimer = nbt.getInteger("flingAttackTimer");
 		destroyAroundTimer = nbt.getInteger("destroyAroundTimer");
 		jumpAndDestroyAroundTimer = nbt.getInteger("jumpAndDestroyAroundTimer");
+		lastLoot = nbt.getInteger("lastLoot");
     }
     
     protected void fall(float p_70069_1_){
     	
     }
-    @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2){
-        if (isEntityInvulnerable()){
-            return false;
-        }{
-            return super.attackEntityFrom(par1DamageSource, par2);
-        }
-    }
+    
     protected void applyEntityAttributes(){
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(1000.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(500.0D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.8D);
         this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(100.0D);
         this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(20.0D);
@@ -114,7 +120,6 @@ public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAt
 
     protected void entityInit(){
         super.entityInit();
-        this.dataWatcher.addObject(16, Byte.valueOf((byte)0));
     }
 
     protected void collideWithEntity(Entity p_82167_1_){
@@ -124,10 +129,33 @@ public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAt
     
     protected boolean isAIEnabled(){
         return true;
-    }   
+    }
     
-    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_){
-        this.dropItem(ModItems.itemHulkFlesh, 1);
+    protected void dropFewItems(boolean p_70628_1_, int loot){
+    	dropWithCurrentLoot();
+    }
+
+    public void dropWithCurrentLoot(){
+    	int nb = 1;
+    	if (lastLoot > 0){
+            nb += this.rand.nextInt(lastLoot);
+        }
+        this.dropItem(ModItems.itemHulkFlesh, nb);
+    }
+    
+    @Override
+    public boolean attackEntityFrom(DamageSource ds, float par2){
+        if (isEntityInvulnerable()){
+            return false;
+        }else{
+            Entity entity = ds.getEntity();
+            int loot = 0;
+        	if (entity instanceof EntityPlayer){
+        		loot = EnchantmentHelper.getLootingModifier((EntityLivingBase)entity);
+	        }
+        	lastLoot = loot;
+            return super.attackEntityFrom(ds, par2);
+        }
     }
     
     protected void attackEntity(Entity p_70785_1_, float p_70785_2_){
@@ -157,11 +185,19 @@ public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAt
         if (p_70103_1_ == 4)
         {
             this.flingAttackTimer = 10;
+        }else if (p_70103_1_ == 18)
+        {
+            this.animationSmash = 10;
         }
         else
         {
             super.handleHealthUpdate(p_70103_1_);
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getAnimationSmash(){
+        return this.animationSmash;
     }
     
     @SideOnly(Side.CLIENT)
@@ -177,12 +213,32 @@ public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAt
         if(this.flingAttackTimer>0)
         	this.flingAttackTimer-=1;
         
+        if(this.animationSmash>0)
+        	this.animationSmash-=1;
+        
         if(this.worldObj.isRemote)
         	return;
         
-        if(this.getHealth()<this.getMaxHealth()/2){
+        if(this.getHealth()-1<this.getMaxHealth()/2 && !this.isRunningAway){
         	this.isRunningAway = true;
+        	this.targetTasks.removeTask(aiNearest);
+        	this.targetTasks.removeTask(aiHurt);
+        	this.targetTasks.addTask(0,aiTargetAway);
+        	runningAwayTimer = 100;
         }
+        if(this.runningAwayTimer>0)
+        	this.runningAwayTimer-=1;
+
+        if(this.runningAwayTimer==50){
+        	this.noClip = true;
+        	dropWithCurrentLoot();
+        	this.motionX *= 15;
+        	this.motionZ *= 15;
+        	this.motionY+=8.0D;
+    	}
+        
+        if(this.runningAwayTimer==0)
+        	this.setDead();
         
         if(this.destroyAroundTimer>0)
         	this.destroyAroundTimer-=1;
@@ -212,6 +268,8 @@ public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAt
     }
 
     public void smashAround(){
+        this.worldObj.setEntityState(this, (byte)18);
+        animationSmash = 10;
         int hulkx = MathHelper.floor_double(this.posX);
         int hulky = MathHelper.floor_double(this.posY);
         int hulkz = MathHelper.floor_double(this.posZ);
@@ -275,11 +333,13 @@ public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAt
     }
 
     public boolean isEntityInvulnerable(){
+    	if(this.runningAwayTimer>0)
+    		return true;
         return super.isEntityInvulnerable();
     }
     
     protected boolean canDespawn(){
-        return false;
+        return this.runningAwayTimer<=0?true:false;
     }
     
 	@Override

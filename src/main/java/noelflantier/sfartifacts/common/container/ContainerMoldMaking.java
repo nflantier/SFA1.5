@@ -8,6 +8,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import noelflantier.sfartifacts.common.blocks.tiles.TileMightyFoundry;
+import noelflantier.sfartifacts.common.items.baseclasses.ItemInventory;
 
 public class ContainerMoldMaking extends Container{
 
@@ -15,12 +17,12 @@ public class ContainerMoldMaking extends Container{
 	public int currentSlot;
 	public IInventory itemInv;
 	
-	public ContainerMoldMaking(InventoryPlayer inventory, IInventory itemInv, int slt){
-		this.currentSlot = slt;
-		this.itemInv = itemInv;
+	public ContainerMoldMaking(EntityPlayer player){
+		this.currentSlot = player.inventory.currentItem;
+		this.itemInv = new ItemInventory(player);
 		for(int x = 0 ; x < 9 ; x++){
-			if(x!=slt)
-				this.addSlotToContainer(new Slot(inventory,x,8+18*x,176));
+			if(x!=currentSlot)
+				this.addSlotToContainer(new Slot(player.inventory,x,8+18*x,176));
 		}
 		for(int y = 0 ; y < 9 ; y++)
 			for(int x = 0 ; x < 9 ; x++)
@@ -56,12 +58,19 @@ public class ContainerMoldMaking extends Container{
 	public boolean canInteractWith(EntityPlayer player) {
 		return true;
 	}
-
+	
+    public void detectAndSendChanges(){
+    	super.detectAndSendChanges();
+    	//if(!this.getSlot(currentSlot).getHasStack())
+    }
+    
 	@Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index)
     {
 		Slot slot = getSlot(index);
-
+		if(!this.getSlot(currentSlot).getHasStack())
+			return null;
+		
 		if (slot != null && slot.getHasStack())
 		{
 			ItemStack stack = slot.getStack();

@@ -57,10 +57,12 @@ public class ModConfig {
 			shieldProtection = config.get("Vibranium Shield", "angle", 90, "The Angle in degrees your shield deflect damages around you ex:90 = 45 to your left 45 to your right").getInt();
 			isShieldBlockOnlyWhenShift = config.get("Vibranium Shield", "shift", true, "Is the shield block damages only when you shift with it").getBoolean();
 
-			rfNeededToSpawnDefault = config.get("Sound Emiter", "rf/spawn", 10, "The amount of RF energy needed to spawn a living entity by default").getInt();
-			fluidNeededToSpawnDefault = config.get("Sound Emiter", "fluid/spawn", 10, "The amount of Milibucket needed to spawn a living entity by default").getInt();
-			rfNeededToSpawnHulk = config.get("Sound Emiter", "rf/spawn", 495000, "The amount of RF energy needed to spawn HULK").getInt();
-			fluidNeededToSpawnHulk = config.get("Sound Emiter", "fluid/spawn", 95000, "The amount of Milibucket needed to spawn HULK").getInt();
+			rfNeededToSpawnDefault = config.get("Sound Emiter", "rf/spawnD", 10, "The amount of RF energy needed to spawn a living entity by default").getInt();
+			fluidNeededToSpawnDefault = config.get("Sound Emiter", "fluid/spawnD", 10, "The amount of Milibucket needed to spawn a living entity by default").getInt();
+			
+			rfNeededToSpawnHulk = config.get("Sound Emiter", "rf/spawnH", 495000, "The amount of RF energy needed to spawn HULK").getInt();
+			fluidNeededToSpawnHulk = config.get("Sound Emiter", "fluid/spawnH", 95000, "The amount of Milibucket needed to spawn HULK").getInt();
+			
 			areFrequenciesShown = config.get("Sound Emiter", "show frequencies", false, "If set to true you'll have all the frequencies for each mobs shown in your list").getBoolean();
 			
 			isPillarEmitParticles = config.get(Configuration.CATEGORY_GENERAL, "pillars particles", true, "Is the pillars emit particles").getBoolean();

@@ -24,6 +24,8 @@ item.itemMold.name=Mold
 item.itemVibraniumShield.name=Vibranium Shield
 item.itemMagnet.name=Magnet
 item.itemHulkFlesh.name=Hulk Flesh
+item.itemAsgardianRing.name=Asgardian Ring
+item.itemMightyHulkRing.name=Mighty Hulk Ring
 
 entity.hammerinvoking.name=Falling Hammer
 entity.entityvibraniumshieldthrow.name=Moving Shield

@@ -38,6 +38,9 @@ public abstract class LivingEntitySpawnerBaseLogic {
 	public boolean spawnEntityOnce = false;
 	public int skeletonType = 0;
 	public boolean attractedToSpawner = false;
+	public int customX = 0;
+	public int customY = 0;
+	public int customZ = 0;
 	
 	public String getEntityNameToSpawn() {
 		return this.getRandomEntityName();
@@ -99,7 +102,7 @@ public abstract class LivingEntitySpawnerBaseLogic {
                     double d3 = (double)(this.getSpawnerY() + this.getSpawnerWorld().rand.nextInt(3) - 1);
                     double d4 = (double)this.getSpawnerZ() + (this.getSpawnerWorld().rand.nextDouble() - this.getSpawnerWorld().rand.nextDouble()) * (double)this.spawnRange;
                     EntityLiving entityliving = entity instanceof EntityLiving ? (EntityLiving)entity : null;
-                    entity.setLocationAndAngles(d2, d3, d4, this.getSpawnerWorld().rand.nextFloat() * 360.0F, 0.0F);
+                    entity.setLocationAndAngles(d2+this.customX, d3+this.customY, d4+this.customZ, this.getSpawnerWorld().rand.nextFloat() * 360.0F, 0.0F);
                     if (( entityliving == null || (entityliving.getCanSpawnHere() || !followVanillaSpawnRules) ) && getSpawnerWorld().getBlock((int)d2, (int)d3, (int)d4) == Blocks.air )
                     {
                         this.spawnEntity(entity);
@@ -114,11 +117,13 @@ public abstract class LivingEntitySpawnerBaseLogic {
                         flag = true;
                     }
                 }
-
-                if (flag)
-                {
+                this.customX = 0;
+                this.customY = 0;
+                this.customZ = 0;
+                if (flag){
                     this.resetTimer();
                 }
+                finishSpawning();
 			}
 		}
 	}

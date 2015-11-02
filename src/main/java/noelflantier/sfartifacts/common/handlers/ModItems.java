@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import noelflantier.sfartifacts.common.blocks.FilledBucket;
 import noelflantier.sfartifacts.common.helpers.RegisterHelper;
 import noelflantier.sfartifacts.common.items.ItemAsgardianBronzeIngot;
+import noelflantier.sfartifacts.common.items.ItemAsgardianRing;
 import noelflantier.sfartifacts.common.items.ItemAsgardianSteelIngot;
 import noelflantier.sfartifacts.common.items.ItemAsgardite;
 import noelflantier.sfartifacts.common.items.ItemAsgardiumPearl;
@@ -16,6 +17,7 @@ import noelflantier.sfartifacts.common.items.ItemLightningRod;
 import noelflantier.sfartifacts.common.items.ItemMagnet;
 import noelflantier.sfartifacts.common.items.ItemManual;
 import noelflantier.sfartifacts.common.items.ItemMightyFeather;
+import noelflantier.sfartifacts.common.items.ItemMightyHulkRing;
 import noelflantier.sfartifacts.common.items.ItemMold;
 import noelflantier.sfartifacts.common.items.ItemThorHammer;
 import noelflantier.sfartifacts.common.items.ItemUberMightyFeather;
@@ -47,6 +49,8 @@ public class ModItems {
 	public static Item itemVibraniumShield;
 	public static Item itemMagnet;
 	public static Item itemHulkFlesh;
+	public static Item itemAsgardianRing;
+	public static Item itemMightyHulkRing;
 
 	public static void loadItems() {
 
@@ -113,6 +117,12 @@ public class ModItems {
     	
     	itemHulkFlesh = new ItemHulkFlesh();
     	RegisterHelper.registerItem(itemHulkFlesh);
+    	
+    	itemAsgardianRing = new ItemAsgardianRing();
+    	RegisterHelper.registerItem(itemAsgardianRing);
+    	
+    	itemMightyHulkRing = new ItemMightyHulkRing();
+    	RegisterHelper.registerItem(itemMightyHulkRing);
     	
 	}
 	

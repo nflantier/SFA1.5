@@ -9,6 +9,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
+import noelflantier.sfartifacts.client.render.ModelHulk;
 import noelflantier.sfartifacts.client.render.RenderBlockControlPanel;
 import noelflantier.sfartifacts.client.render.RenderBlockHammerStand;
 import noelflantier.sfartifacts.client.render.RenderBlockInjector;
@@ -119,7 +120,7 @@ public class ClientProxy extends CommonProxy{
         RenderingRegistry.registerEntityRenderingHandler(EntityHammerMinning.class, new RenderEntityHammerMining());
         RenderingRegistry.registerEntityRenderingHandler(EntityHammerInvoking.class, new RenderEntityHammerInvoking());
         RenderingRegistry.registerEntityRenderingHandler(EntityShieldThrow.class, new RenderEntityShieldThrow());
-        RenderingRegistry.registerEntityRenderingHandler(EntityHulk.class, new RenderEntityHulk());
+        RenderingRegistry.registerEntityRenderingHandler(EntityHulk.class, new RenderEntityHulk(new ModelHulk(), 1.0F));
     			
     	ModKeyBindings.loadBindings();
 		FMLCommonHandler.instance().bus().register(new ModKeyInput());

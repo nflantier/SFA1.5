@@ -89,7 +89,16 @@ public class ItemMold extends ItemSFA{
 			list.add(it0);
 		}
 	}
-		
+
+
+	@Override
+	public boolean onDroppedByPlayer(ItemStack stack, EntityPlayer player){
+		if(player.openContainer.windowId==ModGUIs.guiIDMold){
+			return false;
+		}
+		return true;
+    }
+	
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {

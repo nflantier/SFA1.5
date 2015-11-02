@@ -29,7 +29,6 @@ public class ModRecipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemFluidModule,1,0),  "GGG", "GTG", "GPG", 'P', Blocks.piston, 'G', Blocks.glass, 'T', Items.cauldron));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemEnergyModule,1,0),  "BBB", "BRB", "BDB", 'A', ModItems.itemAsgardite, 'B', ModItems.itemAsgardite, 'R', Blocks.redstone_block, 'D', Items.diamond));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemMagnet,1,0),  "B B", "S S", "SDS", 'S',ModItems.itemAsgardianSteelIngot,'B',Items.iron_ingot,'D',ModItems.itemEnergyModule));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockSoundEmiter,1,0),  "GGG", "BMB", "BEB", 'G', ModBlocks.blockAsgardianGlass,'M',ModItems.itemMagnet,'B',ModBlocks.blockAsgardianSteel, 'E',ModItems.itemEnergyModule));
 		
 		
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModBlocks.blockControlPanel,1,0), ModItems.itemEnergyModule, Blocks.redstone_torch, Items.repeater));
@@ -56,6 +55,11 @@ public class ModRecipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockMightyFoundry,1,0),  "APA", "ATA", "AEA", 'E', ModItems.itemEnergyModule,'T',ModItems.itemFluidModule, 'A',ModBlocks.blockAsgardianSteel, 'P',Blocks.piston));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemVibraniumAlloySheet,1,0),  "AAA", "AAA", "AAA", 'A', ModItems.itemVibraniumAlloy));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.itemMold,1,0), Items.paper, Blocks.sand, Blocks.sand, Blocks.sand, Blocks.sand, Blocks.sand, Blocks.sand, Blocks.sand, Blocks.sand));
+		
+		
+		//HULK
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockSoundEmiter,1,0),  "GGG", "BMB", "BEB", 'G', ModBlocks.blockAsgardianGlass,'M',ModItems.itemMagnet,'B',ModBlocks.blockAsgardianSteel, 'E',ModItems.itemEnergyModule));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemAsgardianRing,1,0),  " S ", "S S", " S ", 'S', ModItems.itemAsgardianSteelIngot));
 	}
 	
 	public static void loadOreDictionnaryRecipe(){

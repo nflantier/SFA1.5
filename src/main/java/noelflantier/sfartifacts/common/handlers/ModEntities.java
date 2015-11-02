@@ -14,14 +14,12 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 public class ModEntities {
 
 	public static void  loadEntities(){
-		createEntity(EntityHammerMinning.class,"thorhammerthrow", EntityRegistry.findGlobalUniqueEntityId(), 100, 5, true);
-		createEntity(EntityHammerInvoking.class,"thorhammerinvoking", EntityRegistry.findGlobalUniqueEntityId(), 100, 5, true);
-		createEntity(EntityItemParticle.class,"itemparticle", EntityRegistry.findGlobalUniqueEntityId(), 32, 5, true);
-		createEntity(EntityItemStronk.class,"itemstronk", EntityRegistry.findGlobalUniqueEntityId(), 32, 5, true);
-		createEntity(EntityShieldThrow.class,"vibraniumshieldthrow", EntityRegistry.findGlobalUniqueEntityId(), 100, 5, true);
-		int hulkid = EntityRegistry.findGlobalUniqueEntityId();
-		createEntity(EntityHulk.class,"Hulk", hulkid, 100, 1, true);
-		createEgg(hulkid, 0x239925, 0x136B23);
+		createEntity(EntityHammerMinning.class,"thorhammerthrow", 0, 100, 5, true);
+		createEntity(EntityHammerInvoking.class,"thorhammerinvoking", 1, 100, 5, true);
+		createEntity(EntityItemParticle.class,"itemparticle", 2, 32, 5, true);
+		createEntity(EntityItemStronk.class,"itemstronk", 3, 32, 5, true);
+		createEntity(EntityShieldThrow.class,"vibraniumshieldthrow", 4, 100, 5, true);
+		createEntityWithEgg(EntityHulk.class,"Hulk", 5, 100, 1, true, 0x239925, 0x136B23);
 		//EntityRegistry.findGlobalUniqueEntityId()
 	}
 	
@@ -30,7 +28,14 @@ public class ModEntities {
 	}
 	
 	public static void createEntity(Class <? extends Entity > entityClass, String entityName, int id, int dist, int freq, boolean velo){
-    	createEntity(entityClass,entityName,id);
+    	createEntity(entityClass,entityName,EntityRegistry.findGlobalUniqueEntityId());
+    	EntityRegistry.registerModEntity(entityClass, entityName, id, SFArtifacts.instance, dist, freq, velo);
+	}
+	
+	public static void createEntityWithEgg(Class <? extends Entity > entityClass, String entityName, int id, int dist, int freq, boolean velo, int color1, int color2){
+    	int tid = EntityRegistry.findGlobalUniqueEntityId();
+		createEntity(entityClass,entityName,tid);
+		createEgg(tid, color1, color2);
     	EntityRegistry.registerModEntity(entityClass, entityName, id, SFArtifacts.instance, dist, freq, velo);
 	}
 	

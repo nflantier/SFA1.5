@@ -13,7 +13,18 @@ import noelflantier.sfartifacts.common.handlers.ModBlocks;
 import noelflantier.sfartifacts.common.handlers.ModItems;
 
 public enum InjectorRecipe {
-	
+	MIGHTYHULKRING(
+			new ArrayList(){{
+				add(new ItemStack(ModItems.itemAsgardianRing,1));
+				add(new ItemStack(ModItems.itemHulkFlesh,4));
+			}}
+			,
+			ModItems.itemMightyHulkRing
+			,
+			5000
+			,
+			5000
+		),
 	VIBRANIUMALLOY(
 		new ArrayList(){{
 			add(new ItemStack(Items.iron_ingot,1));

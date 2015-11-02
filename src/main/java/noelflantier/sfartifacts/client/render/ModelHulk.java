@@ -32,30 +32,24 @@ public class ModelHulk extends ModelBase{
         this.rightLeg.setRotationPoint(-14.0F, -7.0F, -1.0F);
         this.rightLeg.addBox(0.0F, 0.0F, 1.0F, 13, 17, 13, 0.0F);
         this.setRotateAngle(rightLeg, -0.3490658503988659F, 0.0F, 0.0F);
-        this.rightLeg.mirror = true;
         this.leftFoot = new ModelRenderer(this, 52, 96);
         this.leftFoot.setRotationPoint(2.0F, 9.0F, -5.0F);
         this.leftFoot.addBox(0.0F, 0.0F, 0.0F, 11, 15, 11, 0.0F);
-        this.leftFoot.mirror = true;
         this.rightArm = new ModelRenderer(this, 0, 126);
         this.rightArm.setRotationPoint(-37.0F, -24.0F, 0.0F);
         this.rightArm.addBox(0.0F, 0.0F, 0.0F, 15, 29, 15, 0.0F);
-        this.rightArm.mirror = true;
         this.setRotateAngle(rightArm, -0.4363323129985824F, 0.0F, 0.17453292519943295F);
         this.leftLeg = new ModelRenderer(this, 0, 96);
         this.leftLeg.setRotationPoint(1.0F, -7.0F, -1.0F);
         this.leftLeg.addBox(0.0F, 0.0F, 1.0F, 13, 17, 13, 0.0F);
-        this.leftLeg.mirror = true;
         this.setRotateAngle(leftLeg, -0.3490658503988659F, 0.0F, 0.0F);
         this.leftArm = new ModelRenderer(this, 0, 126);
         this.leftArm.setRotationPoint(22.0F, -20.0F, 0.0F);
         this.leftArm.addBox(0.0F, 0.0F, 0.0F, 15, 29, 15, 0.0F);
-        this.leftArm.mirror = true;
         this.setRotateAngle(leftArm, -0.4363323129985824F, 0.0F, -0.17453292519943295F);
         this.leftUpperArm = new ModelRenderer(this, 60, 126);
         this.leftUpperArm.setRotationPoint(12.0F, -30.0F, -6.0F);
         this.leftUpperArm.addBox(0.0F, 0.0F, 0.0F, 13, 26, 13, 0.0F);
-        this.leftUpperArm.mirror = true;
         this.setRotateAngle(leftUpperArm, 0.3490658503988659F, 0.0F, -0.6108652381980153F);
         this.pec = new ModelRenderer(this, 0, 0);
         this.pec.setRotationPoint(-21.0F, -35.0F, -15.0F);
@@ -71,7 +65,6 @@ public class ModelHulk extends ModelBase{
         this.rightUpperArm = new ModelRenderer(this, 60, 126);
         this.rightUpperArm.setRotationPoint(-23.0F, -38.0F, -6.0F);
         this.rightUpperArm.addBox(0.0F, 0.0F, 0.0F, 13, 26, 13, 0.0F);
-        this.rightUpperArm.mirror = true;
         this.setRotateAngle(rightUpperArm, 0.3490658503988659F, 0.0F, 0.6108652381980153F);
         this.head = new ModelRenderer(this, 0, 170);
         this.head.setRotationPoint(-7.0F, -52.0F, -12.0F);
@@ -144,13 +137,22 @@ public class ModelHulk extends ModelBase{
     
     public void setLivingAnimations(EntityLivingBase p_78086_1_, float p_78086_2_, float p_78086_3_, float p_78086_4_)
     {
+    	super.setLivingAnimations(p_78086_1_, p_78086_2_, p_78086_3_, p_78086_4_);
+    	
       	EntityHulk entity = (EntityHulk)p_78086_1_;
-        //int i = p_78086_1_.getDataWatcher().getWatchableObjectInt(17);
-      	int i = entity.getAttackFlingTimer();
-        if (i > 0)
-        {
-            this.rightArm.rotateAngleX = -2.0F + 1.5F * this.func_78172_a((float)i - p_78086_4_, 10.0F);
-            this.leftArm.rotateAngleX = -2.0F + 1.5F * this.func_78172_a((float)i - p_78086_4_, 10.0F);
+
+      	int smash = entity.getAnimationSmash();
+      	int fling = entity.getAttackFlingTimer();
+      	
+        if (fling > 0){
+            this.rightArm.rotateAngleX = -2.0F + 1.5F * this.func_78172_a((float)fling - p_78086_4_, 10.0F);
+            this.leftArm.rotateAngleX = -2.0F + 1.5F * this.func_78172_a((float)fling - p_78086_4_, 10.0F);
+        }else if(smash > 0){
+            this.rightArm.rotateAngleX = -1 + 0.8F * this.func_78172_a((float)smash - p_78086_4_, 10.0F);
+            this.leftArm.rotateAngleX = -1 + 0.8F * this.func_78172_a((float)smash - p_78086_4_, 10.0F);
+      	}else{
+            this.rightArm.rotateAngleX = (-0.2F + 1.5F * this.func_78172_a(p_78086_2_, 13.0F)) * p_78086_3_;
+            this.leftArm.rotateAngleX = (-0.2F - 1.5F * this.func_78172_a(p_78086_2_, 13.0F)) * p_78086_3_;
         }
     }
 

@@ -103,7 +103,7 @@ public class ModGUIs implements IGuiHandler{
 					return null;
 			}
 		}else if(ID == ModGUIs.guiIDMold){
-			return new ContainerMoldMaking(player.inventory, new ItemInventory(player), player.inventory.currentItem);
+			return new ContainerMoldMaking(player);
 		}
 		return null;
 	}
@@ -167,7 +167,7 @@ public class ModGUIs implements IGuiHandler{
 		}else if(ID == ModGUIs.guiIDTeleport){
 			return new GuiTeleport(player);
 		}else if(ID == ModGUIs.guiIDMold){
-			return new GuiMoldMaking(player.inventory, new ItemInventory(player), player.inventory.currentItem);
+			return new GuiMoldMaking(player);
 		}
 		return null;
 	}

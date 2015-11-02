@@ -16,7 +16,7 @@ import noelflantier.sfartifacts.common.handlers.ModPlayerStats;
 
 public class ItemHulkFlesh  extends ItemFood{
 
-	public static int tickHulkEffect = 1000;
+	public static int tickHulkEffect = 1500;
 	public static int jumpBoostDuration = tickHulkEffect;
 	    
 	public ItemHulkFlesh(){
