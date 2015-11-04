@@ -73,8 +73,8 @@ public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAt
     public EntityHulk(World world){
         super(world);
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIJumpAndCollide(this, EntityPlayer.class, 2.0D, true));
-        this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 2.0D, true));
+        this.tasks.addTask(1, new EntityAIJumpAndCollide(this, EntityPlayer.class, 1.2D, true));
+        this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.2D, true));
         this.tasks.addTask(5, new EntityAIWatchClosest(this, EntityPlayer.class, 100.0F));
         aiNearest = new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true);
         aiHurt = new EntityAIHurtByTarget(this, false);
@@ -104,6 +104,10 @@ public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAt
 		destroyAroundTimer = nbt.getInteger("destroyAroundTimer");
 		jumpAndDestroyAroundTimer = nbt.getInteger("jumpAndDestroyAroundTimer");
 		lastLoot = nbt.getInteger("lastLoot");
+    }
+
+    public boolean canBreatheUnderwater(){
+        return true;
     }
     
     protected void fall(float p_70069_1_){

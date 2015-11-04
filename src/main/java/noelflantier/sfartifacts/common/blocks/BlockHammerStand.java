@@ -134,9 +134,7 @@ public class BlockHammerStand extends BlockSFAContainer {
 	    	if(side==1 && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem()==ModItems.itemBasicHammer && ItemNBTHelper.getInteger(player.getCurrentEquippedItem(), "Mode", 1)==0){
 	    		TileHammerStand ths= (TileHammerStand)tile;
 	    		if(ths.items[0]!=null){
-	    			
 		    		if(!world.isRemote && ths.curentRecipe!=null){
-		    			
 		    			if(ths.curentRecipe.recipe.itemStillHere()){
 		    				ths.curentRecipe.recipe.age++;
 		    				if(ths.curentRecipe.recipe.age%2==0)
@@ -153,15 +151,20 @@ public class BlockHammerStand extends BlockSFAContainer {
 			    		return true;
 		    		}
 		    		
-	    			List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x-1,y,z-1,x+1,y+2,z+1));
-
+	    			List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x,y,z,x+1,y+2,z+1));
     				if (!world.isRemote){
+    					if(items.isEmpty())
+    						return true;
+    					boolean flag = false;
 						for(HammerStandRecipe hsr : HammerStandRecipe.values()){
-							if(hsr.recipe.canCraft(items,  ths.items[0])){
+							if(hsr.recipe.canCraft(items,  ths.items[0]) && !flag){
 								ths.curentRecipe = hsr;
+								flag = true;
 								break;
 							}
 						}
+						if(!flag)
+							ths.curentRecipe = null;
     				}
 	    		}
 	    		return true;

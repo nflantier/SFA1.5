@@ -156,11 +156,8 @@ public class BlockMaterialsTE extends BlockSFAContainer{
 		/*if(player!=null && cei!=null && cei.getItem() instanceof ItemBasicHammer){
 			
 		}*/
-		
-		if(world.isRemote)
-            return false;
 
-		if(player!=null && cei!=null && cei.getItem() instanceof ItemBasicHammer){
+		if(player!=null && cei!=null && cei.getItem() instanceof ItemBasicHammer && !world.isRemote){
 			if(mode==0){
 				PillarHelper.checkStructure(world, player, x, y, z, false);
 			}
@@ -181,7 +178,7 @@ public class BlockMaterialsTE extends BlockSFAContainer{
 				}
 			}
 		}
-    	if(cei!=null && FluidContainerRegistry.isContainer(cei)){
+    	if(cei!=null && FluidContainerRegistry.isContainer(cei) && !world.isRemote){
     		TileEntity t = world.getTileEntity(x, y, z);
     		if(t!=null &&  t instanceof TileBlockPillar && ((TileBlockPillar)t).hasMaster()){
     			TileMasterPillar tmp = ((TileBlockPillar)t).getMasterTile();
@@ -208,16 +205,17 @@ public class BlockMaterialsTE extends BlockSFAContainer{
 					}
 	    		}
     		}
-    		
+    		return true;
     	}
 		
-		if(cei==null){
+		if(cei==null && !world.isRemote){
 			if(player.capabilities.isCreativeMode){
 				TileEntity t = world.getTileEntity(x, y, z);
 				if(t!=null &&  t instanceof TileBlockPillar  && ((TileBlockPillar)t).hasMaster())
 					((TileBlockPillar)t).getMasterTile().receiveEnergy(ForgeDirection.UNKNOWN, 500000, false);
 			}
     		showData(world,x,y,z,player);
+    		return true;
 		}
 		return false;
     }

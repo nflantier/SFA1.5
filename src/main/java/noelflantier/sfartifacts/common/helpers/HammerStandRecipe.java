@@ -37,14 +37,14 @@ public enum HammerStandRecipe {
 		"Magnet"
 	),
 	CAPACITY(
-			new CapacityRecipe(
-				new ArrayList(){{
-					add(new ItemStack(ModItems.itemEnergyModule,1,0));
-				}}
-			),
-			"Capacity",
-			"Unlimited forging"
+		new CapacityRecipe(
+			new ArrayList(){{
+				add(new ItemStack(ModItems.itemEnergyModule,1,0));
+			}}
 		),
+		"Capacity",
+		"Unlimited forging"
+	),
 	LIGHTNING(
 		new LightningRecipe(
 			new ArrayList(){{

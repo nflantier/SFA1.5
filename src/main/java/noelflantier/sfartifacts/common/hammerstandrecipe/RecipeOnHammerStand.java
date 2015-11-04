@@ -37,6 +37,8 @@ public abstract class RecipeOnHammerStand {
 			if(!item.isEntityAlive())
 				flag = false;
 		}
+		if(!flag)
+			itemOnSpot.clear();
 		return flag;
 	}
 
@@ -51,16 +53,21 @@ public abstract class RecipeOnHammerStand {
 				}
 			}
 		}
+		itemOnSpot.clear();
 		this.age = 0;
 		//this.item.getEntityItem().stackSize = this.item.getEntityItem().stackSize-quantity;
 	}
 	
 	public boolean canCraft(List<EntityItem> items, ItemStack stack){
+		if(items.isEmpty())
+			return false;
 		for (ItemStack st : recipe){
+			boolean flag = false;
 			for(EntityItem it:items){
 				if(st.getItem()==it.getEntityItem().getItem() && st.getItemDamage()==it.getEntityItem().getItemDamage()){
-					if(st.stackSize<=it.getEntityItem().stackSize){
+					if(st.stackSize<=it.getEntityItem().stackSize && !flag){
 						itemOnSpot.add(it);
+						flag = true;
 						break;
 					}
 				}
@@ -69,6 +76,8 @@ public abstract class RecipeOnHammerStand {
 		boolean eq = itemOnSpot.size()==recipe.size();
 		if(!eq)
 			itemOnSpot.clear();
+
+		System.out.println(eq+"  "+this.recipe+"   "+this.itemOnSpot);
 		return eq;
 	}
 }

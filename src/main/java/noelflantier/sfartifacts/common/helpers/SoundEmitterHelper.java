@@ -60,6 +60,14 @@ public class SoundEmitterHelper {
 		return cid;
 	}
 
+	public static String[] getNameAndFrequency(int freq){
+		ArrayList<Integer> f = SoundEmitterHelper.getIdsForFrequency(freq);
+		String[] s = new String[f.size()];
+		for(int i = 0;i<f.size();i++)
+			s[i] = SoundEmitterHelper.spawningRulesIDForRules.get(f.get(i)).nameEntity;
+		return s;
+	}
+	
 	public static int addEntity(Class cl, MobsPropertiesForSpawing mpfs, boolean setfrequency, String name){
 		mpfs.nameEntity = name;
 		return addEntity(cl,mpfs, setfrequency);

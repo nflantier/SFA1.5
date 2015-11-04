@@ -37,19 +37,19 @@ public class PacketSoundEmitterGui implements IMessage, IMessageHandler<PacketSo
 		TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x,message.y, message.z);
 		if(te instanceof TileSoundEmitter){
 			if(message.mode==0){
-				((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).frequencyEmited = message.frequency;
+				//((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).frequencyEmited = message.frequency;
 				((TileSoundEmitter)te).frequencyEmited = message.frequency;
 			}
 			if(message.mode==1){
-				((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).frequencySelected = message.frequency;
+				//((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).frequencySelected = message.frequency;
 				((TileSoundEmitter)te).frequencySelected = message.frequency;
 			}
 			if(message.mode==2){
-				((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).isEmitting = false;
-				((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).frequencyEmited = 0;
-				((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).entitiesNameForSpawning = null;
-				((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).mpForSpawning = null;
-				((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).entityNameForSpawning = "";
+				//((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).isEmitting = false;
+				//((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).frequencyEmited = 0;
+				//((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).entitiesNameForSpawning = null;
+				//((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).mpForSpawning = null;
+				//((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).entityNameForSpawning = "";
 				((TileSoundEmitter)te).isEmitting = false;
 				((TileSoundEmitter)te).frequencyEmited = 0;
 				((TileSoundEmitter)te).entitiesNameForSpawning = null;
@@ -57,23 +57,24 @@ public class PacketSoundEmitterGui implements IMessage, IMessageHandler<PacketSo
 				((TileSoundEmitter)te).entityNameForSpawning = "";
 			}
 			if(message.mode==3){
-				((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).isEmitting = true;
+				//((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).isEmitting = true;
 				((TileSoundEmitter)te).isEmitting = true;
 			}
 			if(message.mode==4){
-				ArrayList<Integer> f = SoundEmitterHelper.getIdsForFrequency(message.frequency);
+				/*ArrayList<Integer> f = SoundEmitterHelper.getIdsForFrequency(message.frequency);
 				String[] s = new String[f.size()];
 				for(int i = 0;i<f.size();i++)
 					s[i] = SoundEmitterHelper.spawningRulesIDForRules.get(f.get(i)).nameEntity;
-				
+				*/
+				String[] s = SoundEmitterHelper.getNameAndFrequency(message.frequency);
 				if(((TileSoundEmitter)te).listScannedFrequency.containsKey(message.frequency))
 						((TileSoundEmitter)te).listScannedFrequency.remove(message.frequency);
 				((TileSoundEmitter)te).listScannedFrequency.put(message.frequency, s);
 				
 				
-				if(((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).listScannedFrequency.containsKey(message.frequency))
-					((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).listScannedFrequency.remove(message.frequency);
-				((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).listScannedFrequency.put(message.frequency, s);
+				//if(((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).listScannedFrequency.containsKey(message.frequency))
+					//((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).listScannedFrequency.remove(message.frequency);
+				//((TileSoundEmitter)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).listScannedFrequency.put(message.frequency, s);
 			}
 		}
 		return null;

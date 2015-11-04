@@ -71,7 +71,7 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 		}
 		@Override
 		public boolean spawnConditions() {
-			if(getEnergyStored(ForgeDirection.UNKNOWN)<=0)
+			if(getEnergyStored(ForgeDirection.UNKNOWN)<=0 || getFluidTanks().get(0).getFluidAmount()<=0)
 				return false;
 			int r = entitiesNameForSpawning==null?-1:entitiesNameForSpawning.size()==0?-1:entitiesNameForSpawning.size()==1?0:random.nextInt(entitiesNameForSpawning.size()-1);
 			entityNameForSpawning = r>=0?entitiesNameForSpawning.get(r):"";
@@ -79,12 +79,13 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 				int nbmax = mpForSpawning.get(r).nbMaxSpawing==-1?this.maxSpawnCount:mpForSpawning.get(r).nbMaxSpawing;
 				int spx = 0;
 				for(int i = nbmax;i>=this.minSpawnCount;i--){
-					if(getFluidTanks().get(0).getFluidAmount()>=mpForSpawning.get(r).fluidneeded.amount * spx
-							&& getEnergyStored(ForgeDirection.UNKNOWN)>=mpForSpawning.get(r).rfneeded * spx){
+					if(getFluidTanks().get(0).getFluidAmount()>=mpForSpawning.get(r).fluidneeded.amount * nbmax
+							&& getEnergyStored(ForgeDirection.UNKNOWN)>=mpForSpawning.get(r).rfneeded * nbmax){
 						spx = i;
 						break;
 					}
 				}
+				
 				this.attractedToSpawner = mpForSpawning.get(r).isAttractedToSpawner;
 				this.spawnEntityOnce = mpForSpawning.get(r).isSpawningOnce;
 				this.customX = mpForSpawning.get(r).customX;
@@ -244,6 +245,24 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 		if(this.isItemValidForSlot(slot, stack))
 			return true;
 		return false;
+	}
+	
+	public void writeToItem(ItemStack stack){
+	    if(stack == null) {
+	        return;
+	    }
+	    if(stack.stackTagCompound == null) {
+	        stack.stackTagCompound = new NBTTagCompound();
+	    }
+	    NBTTagCompound root = stack.stackTagCompound;
+	    writeToNBT(root);
+	}
+
+	public void readFromItem(ItemStack stack){
+	    if(stack == null || stack.stackTagCompound == null) {
+	        return;
+	    }
+	    readFromNBT(stack.stackTagCompound);
 	}
 	
 	@Override

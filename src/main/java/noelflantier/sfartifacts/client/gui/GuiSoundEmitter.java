@@ -120,6 +120,12 @@ public class GuiSoundEmitter extends GuiMachine{
 			}else{
 				//SET IS EMITING FALSE WHEN SOMEHTING IS ALLREADY EMITITNG
 				PacketHandler.INSTANCE.sendToServer(new PacketSoundEmitterGui(this.tile.xCoord,this.tile.yCoord,this.tile.zCoord,this.lastFrequency,2));
+				this.tile.isEmitting = false;
+				this.tile.frequencyEmited = 0;
+				this.tile.entitiesNameForSpawning = null;
+				this.tile.mpForSpawning = null;
+				this.tile.entityNameForSpawning = "";
+				
 				this.componentList.get("txta").addText("stop_emitting____"+this.tile.frequencyEmited, 0, 0);
 				this.getButtonById(3).displayString = "EMIT";
 			}
@@ -179,6 +185,7 @@ public class GuiSoundEmitter extends GuiMachine{
 			
 			//SET THE SELECETED FREQ
 			PacketHandler.INSTANCE.sendToServer(new PacketSoundEmitterGui(this.tile.xCoord,this.tile.yCoord,this.tile.zCoord,this.lastFrequency,1));
+			this.tile.frequencySelected = this.lastFrequency;
 			
 			this.lastScanningResult = SoundEmitterHelper.getIdsForFrequency(this.lastFrequency);
 			this.isScanning = true;
@@ -186,15 +193,23 @@ public class GuiSoundEmitter extends GuiMachine{
 			this.componentList.get("txta").addText("f_"+this.lastFrequency, 0, 0);
 			this.componentList.get("txta").addText("..", 0, 0);
 			if(this.lastScanningResult.size()>0){
-				if(!ModConfig.areFrequenciesShown)
+				if(!ModConfig.areFrequenciesShown){
 					PacketHandler.INSTANCE.sendToServer(new PacketSoundEmitterGui(this.tile.xCoord,this.tile.yCoord,this.tile.zCoord,this.lastFrequency,4));
+					String[] s = SoundEmitterHelper.getNameAndFrequency(this.lastFrequency);
+					if(this.tile.listScannedFrequency.containsKey(this.lastFrequency))
+						this.tile.listScannedFrequency.remove(this.lastFrequency);
+					this.tile.listScannedFrequency.put(this.lastFrequency, s);
+					
+				}
 			}
 			if(emit){
 				this.isEmitting = true;
 				if(this.lastScanningResult.size()>0){
 					//SET THE EMITE FREQ AND SET ISEMITING TO TRUE
 					PacketHandler.INSTANCE.sendToServer(new PacketSoundEmitterGui(this.tile.xCoord,this.tile.yCoord,this.tile.zCoord,this.lastFrequency,0));
+					this.tile.frequencyEmited = this.lastFrequency;
 					PacketHandler.INSTANCE.sendToServer(new PacketSoundEmitterGui(this.tile.xCoord,this.tile.yCoord,this.tile.zCoord,this.lastFrequency,3));
+					this.tile.isEmitting = true;
 				}
 			}
 		}

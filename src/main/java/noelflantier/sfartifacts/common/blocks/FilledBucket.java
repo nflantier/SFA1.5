@@ -5,9 +5,11 @@ import java.util.List;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBucket;
@@ -105,25 +107,37 @@ public class FilledBucket extends ItemBucket{
         }
     }
 
-    public boolean tryPlaceContainedLiquid (World world, int clickX, int clickY, int clickZ, int type)
-    {
-        if (world.isAirBlock(clickX, clickY, clickZ) && world.getBlock(clickX, clickY, clickZ).getMaterial().isSolid())
-        {
+    public boolean tryPlaceContainedLiquid (World world, int clickX, int clickY, int clickZ, int meta){
+    	/*super.tryPlaceContainedLiquid(world, clickX, clickY, clickZ);
+    	if (world.isAirBlock(clickX, clickY, clickZ) && world.getBlock(clickX, clickY, clickZ).getMaterial().isSolid()){
             return false;
-        }
-        else
-        {
+        }else{
             try
             {
                 if (ModFluids.fluidBlocks[type] == null)
                     return false;
-
                 world.setBlock(clickX, clickY, clickZ, ModFluids.fluidBlocks[type], 0, 3); // TODO: Merge liquids
             }
             catch (ArrayIndexOutOfBoundsException ex)
             {
                 return false;
             }
+
+            return true;
+        }*/
+        Material material = world.getBlock(clickX, clickY, clickZ).getMaterial();
+        boolean flag = !material.isSolid();
+
+        if (!world.isAirBlock(clickX, clickY, clickZ) && !flag){
+            return false;
+        }else{
+            if (!world.isRemote && flag && !material.isLiquid())
+            {
+            	world.func_147480_a(clickX, clickY, clickZ, true);
+            }
+            if (ModFluids.fluidBlocks[meta] == null)
+                return false;
+            world.setBlock(clickX, clickY, clickZ, ModFluids.fluidBlocks[meta], 0, 3);
 
             return true;
         }

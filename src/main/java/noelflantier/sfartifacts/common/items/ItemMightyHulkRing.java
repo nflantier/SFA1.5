@@ -45,7 +45,7 @@ public class ItemMightyHulkRing  extends ItemSFA implements IBauble{
 		attributes.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), 
 				new AttributeModifier("Bauble modifier", 20, 0));
 		attributes.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), 
-				new AttributeModifier("Bauble modifier", 0.2, 0));
+				new AttributeModifier("Bauble modifier", 0.13, 0));
 		MinecraftForge.EVENT_BUS.register(this);
 		
 	}
@@ -112,7 +112,7 @@ public class ItemMightyHulkRing  extends ItemSFA implements IBauble{
 		if(ip!=null && BaublesHelper.hasItemClass(ItemMightyHulkRing.class	, ip)){
 			event.target.hitByEntity(event.entity);
             float damages = (float)event.entityLiving.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
-            damages = damages>1?damages*4:8;
+            damages = damages>1?damages*5:10;
             int knockback = 4;
             event.target.attackEntityFrom(DamageSource.causePlayerDamage(event.entityPlayer), damages);
             event.target.addVelocity((double)(-MathHelper.sin(event.entity.rotationYaw * (float)Math.PI / 180.0F) * (float)knockback * 0.5F), 0.3D, (double)(MathHelper.cos(event.entity.rotationYaw * (float)Math.PI / 180.0F) * (float)knockback * 0.5F));

@@ -1,61 +1,9 @@
 package noelflantier.sfartifacts.common.handlers;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
-import baubles.api.BaublesApi;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.ai.attributes.RangedAttribute;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntitySilverfish;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityMooshroom;
-import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.player.FillBucketEvent;
-import net.minecraftforge.event.world.ExplosionEvent;
-import noelflantier.sfartifacts.common.entities.EntityItemStronk;
-import noelflantier.sfartifacts.common.entities.ai.EntityAIMoveToBlock;
-import noelflantier.sfartifacts.common.entities.ai.EntityAITargetBlock;
-import noelflantier.sfartifacts.common.helpers.BaublesHelper;
-import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
-import noelflantier.sfartifacts.common.helpers.SoundEmitterHelper;
-import noelflantier.sfartifacts.common.items.ItemMightyHulkRing;
-import noelflantier.sfartifacts.common.items.ItemVibraniumShield;
-import noelflantier.sfartifacts.common.items.baseclasses.MiningHammerBase;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -63,10 +11,26 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.Log;
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
+import noelflantier.sfartifacts.common.entities.EntityItemStronk;
+import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
+import noelflantier.sfartifacts.common.items.ItemVibraniumShield;
+import noelflantier.sfartifacts.common.items.baseclasses.MiningHammerBase;
 
 public class ModEvents {
 	protected long serverTickCount = 0;
@@ -294,33 +258,26 @@ public class ModEvents {
     
     @SubscribeEvent
     public void bucketFill (FillBucketEvent evt){
-        if (evt.current.getItem() == Items.bucket && evt.target.typeOfHit == MovingObjectType.BLOCK)
-        {
+        if (evt.current.getItem() == Items.bucket && evt.target.typeOfHit == MovingObjectType.BLOCK){
             int hitX = evt.target.blockX;
             int hitY = evt.target.blockY;
             int hitZ = evt.target.blockZ;
 
-            if (evt.entityPlayer != null && !evt.entityPlayer.canPlayerEdit(hitX, hitY, hitZ, evt.target.sideHit, evt.current))
-            {
+            if (evt.entityPlayer != null && !evt.entityPlayer.canPlayerEdit(hitX, hitY, hitZ, evt.target.sideHit, evt.current)){
                 return;
             }
 
             Block bID = evt.world.getBlock(hitX, hitY, hitZ);
-            for (int id = 0; id < ModFluids.fluidBlocks.length; id++)
-            {
-                if (bID == ModFluids.fluidBlocks[id])
-                {
-                    if (evt.entityPlayer.capabilities.isCreativeMode)
-                    {
+            for (int id = 0; id < ModFluids.fluidBlocks.length; id++){
+                if (bID == ModFluids.fluidBlocks[id]){
+                	if (evt.entityPlayer.capabilities.isCreativeMode){
                         evt.world.setBlockToAir( hitX, hitY, hitZ);
                     }
-                    else
-                    {
+                    else{
                         evt.world.setBlockToAir( hitX, hitY, hitZ);
-                        }
-
-                        evt.setResult(Result.ALLOW);
-                        evt.result = new ItemStack(ModItems.itemFilledBucket, 1, id);
+                    }
+                	evt.setResult(Result.ALLOW);
+                	evt.result = new ItemStack(ModItems.itemFilledBucket, 1, id);
                 }
             }
         }
