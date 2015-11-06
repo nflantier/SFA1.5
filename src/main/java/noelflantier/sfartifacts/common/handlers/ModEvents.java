@@ -6,6 +6,7 @@ import java.util.Random;
 
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -17,20 +18,28 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.S20PacketEntityProperties;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import noelflantier.sfartifacts.common.entities.EntityItemStronk;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
+import noelflantier.sfartifacts.common.helpers.Utils;
 import noelflantier.sfartifacts.common.items.ItemVibraniumShield;
 import noelflantier.sfartifacts.common.items.baseclasses.MiningHammerBase;
+import noelflantier.sfartifacts.common.network.PacketHandler;
+import noelflantier.sfartifacts.common.network.messages.PacketExtendedEntityProperties;
 
 public class ModEvents {
 	protected long serverTickCount = 0;
@@ -147,11 +156,6 @@ public class ModEvents {
 			if(player == null)
 				return;
 			
-			ModPlayerStats stats = ModPlayerStats.get(player);
-
-			if(stats!=null && stats.tickHasHulkFleshEffect>0){
-				event.distance = 0;
-			}
 			if(player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemVibraniumShield 
 					&& ItemNBTHelper.getBoolean(player.getCurrentEquippedItem(), "CanBlock", false) 
 					&& !ItemNBTHelper.getBoolean(player.getCurrentEquippedItem(), "IsThrown", false)){
@@ -161,39 +165,31 @@ public class ModEvents {
 			}
 		}
 	}
-
-	@SubscribeEvent
-	public void onPlayerJump(LivingJumpEvent event) {
-		if(event.entityLiving instanceof EntityPlayer) {
-	    	EntityPlayer player = (EntityPlayer)event.entityLiving;
-			if(player == null)
-				return;
-			
-			ModPlayerStats stats = ModPlayerStats.get(player);
-			if(stats==null)
-				return;
-			if(stats.tickHasHulkFleshEffect>0){
-				player.motionY += 1.45;
-				player.motionX *= 13.2;
-				player.motionZ *= 13.2;
-			}
-		}
-	}
 	
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
     	if(event.phase == Phase.END) {
+			
 	    	EntityPlayer player = event.player;
 			if(player == null)
 				return;
-			
+
 			ModPlayerStats stats = ModPlayerStats.get(player);
+			if(stats.tickJustEatHulkFlesh>0)
+				stats.tickJustEatHulkFlesh-=1;
 			if(stats !=null && stats.tickHasHulkFleshEffect>0){
 				stats.tickHasHulkFleshEffect-=1;
-				player.stepHeight = 2F;
-			}else if(player.stepHeight!=0.5F)
-				player.stepHeight = 0.5F;
-			
+				if(event.side==Side.CLIENT)
+					player.stepHeight = 2F;
+				float f = Utils.isPlayerInFluid(player,1.22F);
+				player.motionX *= f;
+				player.motionZ *= f;
+			}else if(stats.tickHasHulkFleshEffect==0){
+				stats.tickHasHulkFleshEffect=-1;
+				if(event.side==Side.CLIENT)
+					player.stepHeight = 0.5F;
+			}
+
 			if(event.side==Side.CLIENT)
 				return;
 			
@@ -214,7 +210,7 @@ public class ModEvents {
 					ItemNBTHelper.setBoolean(player.getCurrentEquippedItem(), "IsMoving", false);
 			}
 			
-			if(event.side==Side.SERVER){
+			//if(event.side==Side.SERVER){
 				if(stats.isMovingWithHammer){
 					if(!stats.justStartMoving){
 		    			stats.isMovingWithHammer = !player.onGround;
@@ -225,7 +221,7 @@ public class ModEvents {
 	    			stats.tickMovingWithHammer -= 1;
 	    		}else
 	    			stats.tickMovingWithHammer = 0;	
-			}
+			//}
     	}
     }
     
@@ -248,12 +244,52 @@ public class ModEvents {
 	        }
     	}
     }
+    
+    /*@SubscribeEvent   //No need because respawn call clone
+    public void playerRespawn(PlayerRespawnEvent event){
+    	//syncExtendedProperties(event.player, event.player.worldObj);
+    }*/
+    
+    @SubscribeEvent    //Not really needed because it call entityjoinworld
+    public void playerChangedDimension(PlayerChangedDimensionEvent event){
+    	syncExtendedProperties(event.player, event.player.worldObj);
+    	syncAttributes(event.player);
+     }
+    
+    @SubscribeEvent
+    public void onEntityJoining (EntityJoinWorldEvent event){
+    	syncExtendedProperties(event.entity, event.world);
+    	syncAttributes(event.entity);
+    }
         
+    public void syncExtendedProperties(Entity entity ,World world){
+    	if(entity instanceof EntityPlayer && !world.isRemote && ModPlayerStats.get((EntityPlayer) entity)!=null){
+    		if(entity instanceof EntityPlayerMP)
+    			PacketHandler.sendToPlayerMP(new PacketExtendedEntityProperties((EntityPlayer)entity),(EntityPlayerMP)entity);
+    	}
+    }
+    
+    public void syncAttributes(Entity entity){
+    	if(!entity.worldObj.isRemote && entity instanceof EntityPlayerMP && entity instanceof EntityPlayer)
+    		((EntityPlayerMP)entity).playerNetServerHandler.sendPacket(new S20PacketEntityProperties(entity.getEntityId(), ((EntityPlayer)entity).getAttributeMap().getAllAttributes()));
+    }
+    
     @SubscribeEvent
     public void onEntityConstructing (EntityEvent.EntityConstructing event){
         if (event.entity instanceof EntityPlayer && ModPlayerStats.get((EntityPlayer) event.entity) == null){
         	ModPlayerStats.register((EntityPlayer) event.entity);
         }
+    }
+    
+    @SubscribeEvent
+    public void onClonePlayer(PlayerEvent.Clone event) {
+    	if(ModPlayerStats.get(event.original)!=null){
+	    	NBTTagCompound compound = new NBTTagCompound();
+	    	ModPlayerStats.get(event.original).saveNBTData(compound);
+	    	ModPlayerStats.get(event.entityPlayer).loadNBTData(compound);
+	    	syncExtendedProperties(event.entity, event.entityPlayer.worldObj);
+	    	syncAttributes(event.entityPlayer);
+    	}
     }
     
     @SubscribeEvent

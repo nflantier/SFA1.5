@@ -35,7 +35,7 @@ import noelflantier.sfartifacts.common.items.baseclasses.MiningHammerBase;
 
 public class ItemThorHammer extends MiningHammerBase implements IItemHasModes{
 
-	public static ToolMaterial HAMMER_3 = EnumHelper.addToolMaterial("HAMMER_3", 10, -1, 280.0F, 20.0F, -1);
+	public static ToolMaterial HAMMER_3 = EnumHelper.addToolMaterial("HAMMER_3", 10, -1, 65.0F, 20.0F, -1);
 	public List<ItemMode> modes = new ArrayList<>();
 	
 	public static int energyMining = ModConfig.rfMining;

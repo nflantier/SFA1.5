@@ -7,6 +7,9 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 import noelflantier.sfartifacts.client.render.ModelHulk;
@@ -130,5 +133,10 @@ public class ClientProxy extends CommonProxy{
 	public void postinit(FMLPostInitializationEvent event) {
 		super.postinit(event);
 	}
+	
+	@Override
+	public EntityPlayer getPlayerEntity(MessageContext ctx) {
+		 return (ctx.side.isClient() ? Minecraft.getMinecraft().thePlayer : super.getPlayerEntity(ctx));
+		}
   
 }

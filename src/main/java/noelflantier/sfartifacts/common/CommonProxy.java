@@ -1,5 +1,6 @@
 package noelflantier.sfartifacts.common;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.MinecraftForge;
 import noelflantier.sfartifacts.References;
@@ -27,6 +28,7 @@ import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 
@@ -66,5 +68,9 @@ public class CommonProxy {
     	ModOreDictionary.checkOreDictionary();
     	ModOreDictionary.loadOres();
     	ModRecipes.loadRecipes();
+	}
+	
+	public EntityPlayer getPlayerEntity(MessageContext ctx) {
+		return ctx.getServerHandler().playerEntity;
 	}
 }

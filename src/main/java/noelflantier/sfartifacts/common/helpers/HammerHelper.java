@@ -39,6 +39,8 @@ import noelflantier.sfartifacts.common.handlers.ModGUIs;
 import noelflantier.sfartifacts.common.handlers.ModPlayerStats;
 import noelflantier.sfartifacts.common.items.ItemThorHammer;
 import noelflantier.sfartifacts.common.items.baseclasses.MiningHammerBase;
+import noelflantier.sfartifacts.common.network.PacketHandler;
+import noelflantier.sfartifacts.common.network.messages.PacketExtendedEntityProperties;
 
 public class HammerHelper {
 	
@@ -523,8 +525,9 @@ public class HammerHelper {
 			{
 				player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), potionEffect));
 			}
-
+			
 			player.playerNetServerHandler.sendPacket(new S1FPacketSetExperience(player.experience, player.experienceTotal, player.experienceLevel));
+			
 			FMLCommonHandler.instance().firePlayerChangedDimensionEvent(player, startWorld.provider.dimensionId, destinationWorld.provider.dimensionId);
 		}
 		entity.setLocationAndAngles(tx, ty, tz, 0, entity.rotationPitch);

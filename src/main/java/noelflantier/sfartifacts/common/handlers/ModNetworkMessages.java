@@ -1,9 +1,10 @@
 package noelflantier.sfartifacts.common.handlers;
 
+import cpw.mods.fml.relauncher.Side;
 import noelflantier.sfartifacts.common.network.PacketHandler;
-import noelflantier.sfartifacts.common.network.messages.PacketSoundEmitterGui;
 import noelflantier.sfartifacts.common.network.messages.PacketEnchantHammer;
 import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
+import noelflantier.sfartifacts.common.network.messages.PacketExtendedEntityProperties;
 import noelflantier.sfartifacts.common.network.messages.PacketFluid;
 import noelflantier.sfartifacts.common.network.messages.PacketHammerConfig;
 import noelflantier.sfartifacts.common.network.messages.PacketInjector;
@@ -21,9 +22,9 @@ import noelflantier.sfartifacts.common.network.messages.PacketRenderPillarModel;
 import noelflantier.sfartifacts.common.network.messages.PacketRenderUpdate;
 import noelflantier.sfartifacts.common.network.messages.PacketSound;
 import noelflantier.sfartifacts.common.network.messages.PacketSoundEmitter;
+import noelflantier.sfartifacts.common.network.messages.PacketSoundEmitterGui;
 import noelflantier.sfartifacts.common.network.messages.PacketTeleport;
 import noelflantier.sfartifacts.common.network.messages.PacketUpgradeHammer;
-import cpw.mods.fml.relauncher.Side;
 
 public class ModNetworkMessages {
 
@@ -41,6 +42,7 @@ public class ModNetworkMessages {
 	    PacketHandler.INSTANCE.registerMessage(PacketParticleMoving.class, PacketParticleMoving.class, PacketHandler.nextId(), Side.CLIENT);
 	    PacketHandler.INSTANCE.registerMessage(PacketParticleGlobal.class, PacketParticleGlobal.class, PacketHandler.nextId(), Side.CLIENT);
 	    PacketHandler.INSTANCE.registerMessage(PacketRenderPillarModel.class, PacketRenderPillarModel.class, PacketHandler.nextId(), Side.CLIENT);
+	    PacketHandler.INSTANCE.registerMessage(PacketExtendedEntityProperties.class, PacketExtendedEntityProperties.class, PacketHandler.nextId(), Side.CLIENT);
 	    
 	    PacketHandler.INSTANCE.registerMessage(PacketSoundEmitterGui.class, PacketSoundEmitterGui.class, PacketHandler.nextId(), Side.SERVER);	    
 	    PacketHandler.INSTANCE.registerMessage(PacketMachine.class, PacketMachine.class, PacketHandler.nextId(), Side.SERVER);

@@ -1,11 +1,6 @@
 package noelflantier.sfartifacts.common.handlers;
 
-import java.lang.ref.WeakReference;
-
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -22,6 +17,7 @@ public class ModPlayerStats implements IExtendedEntityProperties{
 	public boolean justStopMoving = false;
 	public boolean justStartMoving = false;
 	public int tickHasHulkFleshEffect = 0;
+	public int tickJustEatHulkFlesh = 0;
 	public int justBlockedAttack = 0;
     
     public ModPlayerStats(){
@@ -42,6 +38,7 @@ public class ModPlayerStats implements IExtendedEntityProperties{
         tTag.setBoolean("justStartMoving", this.justStartMoving);
         tTag.setInteger("justBlockedAttack", this.justBlockedAttack);
         tTag.setInteger("tickHasHulkFleshEffect", this.tickHasHulkFleshEffect);
+        tTag.setInteger("tickJustEatHulkFlesh", this.tickJustEatHulkFlesh);
         compound.setTag(PROP_NAME, tTag);
 	}
 
@@ -56,6 +53,7 @@ public class ModPlayerStats implements IExtendedEntityProperties{
         this.justStartMoving = properties.getBoolean("justStartMoving");
         this.justBlockedAttack = properties.getInteger("justBlockedAttack");
         this.tickHasHulkFleshEffect = properties.getInteger("tickHasHulkFleshEffect");
+        this.tickJustEatHulkFlesh = properties.getInteger("tickJustEatHulkFlesh");
 	}
 
 	@Override
