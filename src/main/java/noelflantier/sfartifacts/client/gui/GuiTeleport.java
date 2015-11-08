@@ -117,40 +117,17 @@ public class GuiTeleport  extends GuiSFA{
 			this.coord.addComponent(i, gce);
 			y += 10;
         }
+		this.coord.showArrows = true;
+		this.coord.setArrowsPositionAndAlpha(guiLeft+170, guiTop+42, 106, 0.3F);
 	}
-	
-	public void getInput(){
-		
-		this.tickInput--;
-		if(tickInput>0)return;
-		
-		this.tickInput = 0;
-		int w = Mouse.getEventDWheel();
 
-		if(w<0 && this.tmpti!=w){
-			this.coord.incIndex();
-			this.tickInput = 2;
-		}else if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
-			this.coord.incIndex();
-			this.tickInput = 10;
-		}else if(w>0 && this.tmpti!=w){
-			this.coord.decIndex();
-			this.tickInput = 2;
-		}else if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
-			this.coord.decIndex();
-			this.tickInput = 10;
-		}else if((Keyboard.isKeyDown(this.mc.gameSettings.keyBindInventory.getKeyCode()) || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) 
-				&& !this.componentList.get("tfname").textFieldList.get(0).isFocused() && !this.componentList.get("tfcoord").textFieldList.get(0).isFocused()){
-			//this.player.closeScreen();
-		}
-		this.tmpti = w;
+	public void drawOver(int x, int y){
+		this.coord.showTheArrows(x, y);
 	}
 	
 	@Override
     public void drawGuiContainerForegroundLayer(int x, int y){
 		super.drawGuiContainerForegroundLayer(x-guiLeft,y-guiTop);
-		this.getInput();
-		
 		for(int i = this.coord.currentIndex ; i < this.coord.currentIndex + this.coord.maxComponent ; i++){
 			if(this.coord.componentList.get(i)==null)break;
 	    	this.coord.componentList.get(i).scrolableMarge = this.coord.currentIndex*10;
@@ -163,24 +140,10 @@ public class GuiTeleport  extends GuiSFA{
 		Minecraft.getMinecraft().getTextureManager().bindTexture(bground);
 		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
 	}
-
-	/*@Override
-	protected void keyTyped(char par1, int par2) {
-		//super.keyTyped(par1, par2);
-	    if(par2 == this.mc.gameSettings.keyBindInventory.getKeyCode() && !this.componentList.get("tfname").textFieldList.get(0).isFocused() && !this.componentList.get("tfcoord").textFieldList.get(0).isFocused()) {
-	      super.keyTyped(par1, par2);
-	    }
-	    this.componentList.get("tfcoord").textFieldList.get(0).textboxKeyTyped(par1, par2);
-	    this.componentList.get("tfname").textFieldList.get(0).textboxKeyTyped(par1, par2);
-	}*/
 	
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
 		super.mouseClicked(x, y, button);
-
-		//this.componentList.get("tfcoord").textFieldList.get(0).mouseClicked(x-guiLeft, y-guiTop, button);
-		//this.componentList.get("tfname").textFieldList.get(0).mouseClicked(x-guiLeft, y-guiTop, button);
-		
 		Enumeration<Integer> enumKeyE = this.coord.componentList.keys();		
 		while (enumKeyE.hasMoreElements()) {
 		    int key = enumKeyE.nextElement();
@@ -196,8 +159,8 @@ public class GuiTeleport  extends GuiSFA{
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
-		//this.componentList.get("tfcoord").textFieldList.get(0).updateCursorCounter();
-		//this.componentList.get("tfname").textFieldList.get(0).updateCursorCounter();
+		this.coord.input();
+		
 		if(this.selectedCoord!=-1 && this.coord.componentList.get(this.selectedCoord)!=null){
 			this.coord.componentList.get(this.selectedCoord).defColor = EnumChatFormatting.GREEN;
 			this.getButtonById(1).enabled = true;

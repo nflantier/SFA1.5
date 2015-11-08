@@ -20,10 +20,14 @@ public class RenderEntityHulk extends RenderLiving{
 
     private ModelHulk hulkModel;
     private static final ResourceLocation hulkTexture = new ResourceLocation(References.MODID+":textures/entities/hulk.png");
-   
-    public RenderEntityHulk(ModelBase model, float shadow){
-        super(model, shadow);
+    
+    public RenderEntityHulk(){
+        super(new ModelHulk(), 1.0F);
     }
+    
+    /*public RenderEntityHulk(ModelBase model, float shadow){
+        super(model, shadow);
+    }*/
 
     public void doRender(EntityHulk p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_){
         BossStatus.setBossStatus(p_76986_1_, true);

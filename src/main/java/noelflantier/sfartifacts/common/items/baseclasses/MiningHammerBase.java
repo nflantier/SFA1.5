@@ -18,7 +18,8 @@ public class MiningHammerBase extends ToolHammerBase{
 	public boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player) {
 		int radius = ItemNBTHelper.getInteger(stack, "Radius", 0);
 		int depth = 0;
-		return getEnergyStored(stack) >= this.energyMining ? HammerHelper.breakaBlockWithoutMop(stack, x, y, z, radius, depth, player) : super.onBlockStartBreak(stack, x, y, z, player);
-	}
+		boolean mine = HammerHelper.breakOnMinning(stack, x, y, z, radius, depth, player);
+		return mine ? true : super.onBlockStartBreak(stack, x, y, z, player);
+		}
 	
 }

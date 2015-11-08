@@ -85,7 +85,7 @@ public class ItemBasicHammer extends ItemSFA implements IItemHasModes{
 			TileEntity tc = world.getTileEntity(ItemNBTHelper.getInteger(stack, "cx", -1), 
 					ItemNBTHelper.getInteger(stack, "cy", -1), ItemNBTHelper.getInteger(stack, "cz", -1));
 			ITileCanBeMaster tcbm = (ITileCanBeMaster)tm;
-			if(tcbm.getChildsList()!=null){
+			if(tm!=null && tcbm!=null && tcbm.getChildsList()!=null){
 				if(tcbm.getChildsList().contains(tc)){
 					tcbm.getChildsList().remove(tc);
 					player.addChatComponentMessage(new ChatComponentText("Machine allready connected to that pillar. It has been removed."));
@@ -98,9 +98,13 @@ public class ItemBasicHammer extends ItemSFA implements IItemHasModes{
 					}
 					player.addChatComponentMessage(new ChatComponentText("Machine connected!"));
 				}
+			}else if(tm==null){
+				ItemNBTHelper.setBoolean(stack, "hasmaster", false);
 			}
 			//ItemNBTHelper.setBoolean(stack, "hasmaster", false);
-			ItemNBTHelper.setBoolean(stack, "haschild", false);
+			if(ItemNBTHelper.getBoolean(stack, "haschild", false) && ItemNBTHelper.getBoolean(stack, "hasmaster", false)){
+				ItemNBTHelper.setBoolean(stack, "haschild", false);
+			}
 			return true;
 		}
 		

@@ -1,5 +1,6 @@
 package noelflantier.sfartifacts.common.blocks.tiles;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -70,6 +71,13 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
         processPackets();
     }
 
+	@Override
+    public void setVariables(Object... params){
+    	if(params[0] instanceof Coord4){
+    		this.master = (Coord4)params[0];
+    	}
+    }
+    
 	public abstract void processPackets();
 	public abstract void processMachine();
 	
@@ -362,6 +370,24 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 	@Override
 	public boolean canExtractItem(int slot, ItemStack stack, int side) {
 		return true;
+	}
+
+	@Override
+	public void addToWaila(List<String> list) {
+		list.add("Status : "+(this.isManualyEnable?"ON":"OFF")+"");
+		if(this.hasMaster())
+			list.add("Pillar at : "+this.master.x+", "+this.master.y+", "+this.master.z);
+		else
+			list.add("Not connected to a pillar");
+		list.add("Energy : "+NumberFormat.getNumberInstance().format(this.getEnergyStored(ForgeDirection.UNKNOWN))+" RF / "+NumberFormat.getNumberInstance().format(this.getMaxEnergyStored(ForgeDirection.UNKNOWN))+" RF");
+		if(this.getFluidTanks().size()>0 && hasFL){
+			for(int i = 0 ; i < this.getFluidTanks().size() ; i++){
+				list.add(this.getFluidTanks().get(i).getFluid().getLocalizedName()+" : "+
+					NumberFormat.getNumberInstance().format(this.getFluidTanks().get(i).getFluidAmount())+" MB / "+
+					NumberFormat.getNumberInstance().format(this.getFluidTanks().get(i).getCapacity())+" MB");
+			}
+		}
+		
 	}
 
 }

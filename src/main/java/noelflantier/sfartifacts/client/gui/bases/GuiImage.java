@@ -22,6 +22,7 @@ public class GuiImage extends GuiComponent{
 	public float minv = 0;
 	public float maxu = 1;
 	public float maxv = 1;
+	public float alpha = 1;
 	
 	public GuiImage(int x, int y, ResourceLocation rl){
 		super(x, y);
@@ -51,7 +52,7 @@ public class GuiImage extends GuiComponent{
 		Minecraft.getMinecraft().renderEngine.bindTexture(this.rl);
 		GL11.glPushMatrix();
 			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glColor4f(1f, 1f, 1f, 1f);
+			GL11.glColor4f(1f, 1f, 1f, alpha);
 	        float f = 0.0625F;
 	        float f1 = 0.0625F;
 	        Tessellator tessellator = Tessellator.instance;
@@ -70,7 +71,7 @@ public class GuiImage extends GuiComponent{
 		Minecraft.getMinecraft().renderEngine.bindTexture(this.rl);
 		GL11.glPushMatrix();
 			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glColor4f(1f, 1f, 1f, 1f);
+			GL11.glColor4f(1f, 1f, 1f, alpha);
 	        float f = 0.015625F;
 	        Tessellator tessellator = Tessellator.instance;
 	        tessellator.startDrawingQuads();

@@ -43,7 +43,6 @@ public class SoundEmitterHelper {
 	public static Random seedingFrequency = new Random(133769);
 	public static String KEY_SPAWN = "SpawnedBySoundEmitter";
 	
-	public static SoundEmitterHelper instance = new SoundEmitterHelper();
 	public static Map<Integer, MobsPropertiesForSpawing> spawningRulesIDForRules = new HashMap<Integer, MobsPropertiesForSpawing>();
 	public static Map<Class,Integer> classForID = new HashMap<Class,Integer>();
 	public static Map<Integer,Integer> frequencyForID = new HashMap<Integer,Integer>();
@@ -118,7 +117,7 @@ public class SoundEmitterHelper {
 		
 		MobsPropertiesForSpawing h = new MobsPropertiesForSpawing(ModConfig.rfNeededToSpawnHulk,new FluidStack(ModFluids.fluidLiquefiedAsgardite,ModConfig.fluidNeededToSpawnHulk),null,1,false,true);
 		h.customY = 200;
-		addEntity(EntityHulk.class,h, true);
+		addEntity(EntityHulk.class,h, true,"Hulk");
 		
 		
 		Iterator <Map.Entry<String,Class>>iterator = EntityList.stringToClassMapping.entrySet().iterator();
@@ -128,8 +127,10 @@ public class SoundEmitterHelper {
         		if(!classForID.containsKey(entry.getValue())){
         			addEntity(entry.getValue(),new MobsPropertiesForSpawing(ModConfig.rfNeededToSpawnDefault,new FluidStack(ModFluids.fluidLiquefiedAsgardite,ModConfig.fluidNeededToSpawnDefault),null), true, entry.getKey());
         		}else{
-        			if(spawningRulesIDForRules.get(classForID.get(entry.getValue()))!=null)
-        				spawningRulesIDForRules.get(classForID.get(entry.getValue())).nameEntity = entry.getKey();
+        			if(spawningRulesIDForRules.get(classForID.get(entry.getValue()))!=null){
+        				if(spawningRulesIDForRules.get(classForID.get(entry.getValue())).nameEntity=="" || spawningRulesIDForRules.get(classForID.get(entry.getValue())).nameEntity==null)
+        					spawningRulesIDForRules.get(classForID.get(entry.getValue())).nameEntity = entry.getKey();
+        			}
         		}
         	}
         }

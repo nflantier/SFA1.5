@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import noelflantier.sfartifacts.common.blocks.tiles.TileLiquefier;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSoundEmitter;
+import noelflantier.sfartifacts.common.helpers.Coord4;
 
 public class PacketSoundEmitter implements IMessage, IMessageHandler<PacketSoundEmitter, IMessage> {
 	
@@ -48,8 +49,7 @@ public class PacketSoundEmitter implements IMessage, IMessageHandler<PacketSound
 	    buf.writeInt(x);
 	    buf.writeInt(y);
 	    buf.writeInt(z);
-	    buf.writeBoolean(isEmitting);
-		
+	    buf.writeBoolean(isEmitting);	
 	}
 }
 

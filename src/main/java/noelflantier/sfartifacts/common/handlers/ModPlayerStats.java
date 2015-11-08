@@ -19,6 +19,7 @@ public class ModPlayerStats implements IExtendedEntityProperties{
 	public int tickHasHulkFleshEffect = 0;
 	public int tickJustEatHulkFlesh = 0;
 	public int justBlockedAttack = 0;
+	public float changeStep = 0F;
     
     public ModPlayerStats(){
     }
@@ -35,6 +36,7 @@ public class ModPlayerStats implements IExtendedEntityProperties{
         tTag.setInteger("tickMovingWithHammer", this.tickMovingWithHammer);
         tTag.setInteger("tickToUpdate", this.tickToUpdate);
         tTag.setBoolean("justStopMoving", this.justStopMoving);
+        tTag.setFloat("changeStep", this.changeStep);
         tTag.setBoolean("justStartMoving", this.justStartMoving);
         tTag.setInteger("justBlockedAttack", this.justBlockedAttack);
         tTag.setInteger("tickHasHulkFleshEffect", this.tickHasHulkFleshEffect);
@@ -51,6 +53,7 @@ public class ModPlayerStats implements IExtendedEntityProperties{
         this.tickToUpdate = properties.getInteger("tickToUpdate");
         this.justStopMoving = properties.getBoolean("justStopMoving");
         this.justStartMoving = properties.getBoolean("justStartMoving");
+        this.changeStep = properties.getFloat("changeStep");
         this.justBlockedAttack = properties.getInteger("justBlockedAttack");
         this.tickHasHulkFleshEffect = properties.getInteger("tickHasHulkFleshEffect");
         this.tickJustEatHulkFlesh = properties.getInteger("tickJustEatHulkFlesh");

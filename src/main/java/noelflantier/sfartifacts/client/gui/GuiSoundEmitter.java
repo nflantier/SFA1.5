@@ -85,7 +85,7 @@ public class GuiSoundEmitter extends GuiMachine{
 			return;
 		if(byPassPopUp)
 			byPassPopUp = false;
-		
+		System.out.println(button.id);
 		if(button.id==0){//-
 			if(this.buttonPressed==0 || this.buttonPressed==-1){
 				if(this.currentTickButton<0){
@@ -153,6 +153,7 @@ public class GuiSoundEmitter extends GuiMachine{
 		}
 		if(this.currentTickScanning==110+this.currentRes*5 && this.currentRes<this.lastScanningResult.size()){
 			this.componentList.get("txta").addText(SoundEmitterHelper.spawningRulesIDForRules.get(this.lastScanningResult.get(this.currentRes)).nameEntity, 0, 0);
+			this.componentList.get("txta").addText("c:_"+this.getStrConditionsFrequency(this.lastFrequency), 0, 0);
 			this.currentRes++;
 		}
 		if(this.currentTickScanning==115+this.lastScanningResult.size()*5)
@@ -169,6 +170,7 @@ public class GuiSoundEmitter extends GuiMachine{
 				this.componentList.get("txta").addText("start_emit:", 0, 0);
 				if(this.lastScanningResult.size()>0){
 					this.componentList.get("txta").addText("emitting____"+this.lastFrequency, 0, 0);
+					this.componentList.get("txta").addText("c:_"+this.getStrConditionsFrequency(this.lastFrequency), 0, 0);
 					this.getButtonById(3).displayString = "STOP";
 				}else
 					this.componentList.get("txta").addText("cant_emit_", 0, 0);
@@ -317,8 +319,10 @@ public class GuiSoundEmitter extends GuiMachine{
 			defColor = EnumChatFormatting.DARK_GRAY;
 			globalScale = 0.6F;
 		}});
-		if(this.tile.isEmitting)
+		if(this.tile.isEmitting){
 			this.componentList.get("txta").addText("emitting____"+this.tile.frequencyEmited, 0, 0);
+			this.componentList.get("txta").addText("c:_"+this.getStrConditionsFrequency(this.tile.frequencyEmited), 0, 0);
+		}
 		
 		this.componentList.put("tffreq", new GuiComponent(44, 22, 50, 10){{
 			defColor = EnumChatFormatting.DARK_GRAY;
@@ -349,6 +353,29 @@ public class GuiSoundEmitter extends GuiMachine{
 		loadListFrequency();
 	}
 	
+	public String getStrNameId(int id){
+		return SoundEmitterHelper.spawningRulesIDForRules.get(id).nameEntity;
+	}
+
+	public String getStrConditionsId(int id){
+		String s = "";
+		if(SoundEmitterHelper.spawningRulesIDForRules.get(id)!=null){
+			s = SoundEmitterHelper.spawningRulesIDForRules.get(id).rfneeded
+				+"RF "+SoundEmitterHelper.spawningRulesIDForRules.get(id).fluidneeded.amount+"MB";
+		}
+		return s;
+	}
+
+	public String getStrConditionsFrequency(int freq){
+		String s = "";
+		if(SoundEmitterHelper.getIdsForFrequency(freq)!=null && SoundEmitterHelper.getIdsForFrequency(freq).get(0)!=null 
+				&& SoundEmitterHelper.spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(freq).get(0))!=null){
+			s = SoundEmitterHelper.spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(freq).get(0)).rfneeded
+				+"RF "+SoundEmitterHelper.spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(freq).get(0)).fluidneeded.amount+"MB";
+		}
+		return s;
+	}
+	
 	public void loadListFrequency(){
 		this.listFrequency = new GuiScrollable(10);
         int y = 10;
@@ -364,9 +391,9 @@ public class GuiSoundEmitter extends GuiMachine{
 	        	int freq = entry.getKey();
 	        	int id = entry.getValue();
 	        	if(!allFrequency.containsKey(freq))
-	        		allFrequency.put(freq, new String[]{SoundEmitterHelper.spawningRulesIDForRules.get(id).nameEntity});
+	        		allFrequency.put(freq, new String[]{getStrNameId(id)});
 	        	else
-	        		allFrequency.get(freq)[allFrequency.get(id).length] = SoundEmitterHelper.spawningRulesIDForRules.get(id).nameEntity;
+	        		allFrequency.get(freq)[allFrequency.get(id).length] = getStrNameId(id);
 	        }
 			iterator = allFrequency.entrySet().iterator();
 		}else 
@@ -375,7 +402,7 @@ public class GuiSoundEmitter extends GuiMachine{
         while (iterator.hasNext()){
         	Map.Entry<Integer, String[]> entry = iterator.next();
 
-	    	GuiComponent gce = new GuiComponent(guiLeft+15, guiTop+y, 100,10);
+	    	GuiComponent gce = new GuiComponent(guiLeft+15, guiTop+y, 130,10);
 			gce.addText(entry.getKey()+" : "+arrayToString(entry.getValue()), 0,0);
 	    	gce.isLink=true;
 	    	gce.defColor=EnumChatFormatting.DARK_GRAY;
@@ -383,6 +410,8 @@ public class GuiSoundEmitter extends GuiMachine{
 			y += 10;
 			i +=1;
         }
+        this.listFrequency.showArrows = true;
+        this.listFrequency.setArrowsPositionAndAlpha(this.guiLeft+142,this.guiTop-1,93,0.3F);
 	}
 	
 	public String arrayToString(String[] p){

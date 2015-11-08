@@ -172,27 +172,22 @@ public class ItemMightyHulkRing  extends ItemBaubles implements IBauble{
 		attributes.clear();
 		fillModifiers(attributes, stack);
 		player.getAttributeMap().removeAttributeModifiers(attributes);
-		/*if(!player.worldObj.isRemote)
-			syncAttributes(player);*/
+		if(player instanceof EntityPlayer){
+			ModPlayerStats stats = ModPlayerStats.get((EntityPlayer)player);
+			stats.changeStep = 0.5F;
+		}
 		player.stepHeight = 0.5F;
 		if(player.getHealth()>player.getMaxHealth())
 			player.setHealth(player.getMaxHealth());
 	}
-	
-	/*
-	public void syncAttributes(Entity entity){
-    	if(!entity.worldObj.isRemote && entity instanceof EntityPlayerMP && entity instanceof EntityPlayer){
-    		((EntityPlayerMP)entity).playerNetServerHandler.sendPacket(new S20PacketEntityProperties(entity.getEntityId(), ((EntityPlayer)entity).getAttributeMap().getAllAttributes()));
-    	}
-    }*/
-   
+	   
 	void fillModifiers(Multimap<String, AttributeModifier> attributes, ItemStack stack) {
 		attributes.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), 
 				new AttributeModifier(getUUID(stack),"SFA modifier", 20, 0));
 		attributes.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), 
 				new AttributeModifier(getUUID(stack),"SFA modifier", 0.13, 0));
 		attributes.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), 
-				new AttributeModifier(getUUID(stack),"SFA modifier", 10, 0));
+				new AttributeModifier(getUUID(stack),"SFA modifier", 8, 0));
 	}
 	
 	@Override

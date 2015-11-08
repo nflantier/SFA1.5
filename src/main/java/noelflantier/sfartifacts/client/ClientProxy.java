@@ -123,7 +123,7 @@ public class ClientProxy extends CommonProxy{
         RenderingRegistry.registerEntityRenderingHandler(EntityHammerMinning.class, new RenderEntityHammerMining());
         RenderingRegistry.registerEntityRenderingHandler(EntityHammerInvoking.class, new RenderEntityHammerInvoking());
         RenderingRegistry.registerEntityRenderingHandler(EntityShieldThrow.class, new RenderEntityShieldThrow());
-        RenderingRegistry.registerEntityRenderingHandler(EntityHulk.class, new RenderEntityHulk(new ModelHulk(), 1.0F));
+        RenderingRegistry.registerEntityRenderingHandler(EntityHulk.class, new RenderEntityHulk());
     			
     	ModKeyBindings.loadBindings();
 		FMLCommonHandler.instance().bus().register(new ModKeyInput());

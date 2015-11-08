@@ -131,7 +131,7 @@ public class EntityHammerInvoking extends EntityThrowable  implements IEntityAdd
 		ItemStack st = new ItemStack(ModItems.itemThorHammer);
 		if(mop.typeOfHit==MovingObjectType.BLOCK){
 			if(this.worldObj.getBlock(mop.blockX, mop.blockY, mop.blockZ)!=ModBlocks.blockHammerStand)
-			HammerHelper.breakthablock(this.worldObj, mop.blockX, mop.blockY, mop.blockZ);
+			HammerHelper.breakthablock(this.worldObj, mop.blockX, mop.blockY, mop.blockZ, this);
 			//HammerHelper.breakingSequenceSimple(st,  mop.blockX, mop.blockY, mop.blockZ, 1, 1,this.invoker==null?Minecraft.getMinecraft().thePlayer:this.invoker, mop);
 		}else if(mop.typeOfHit==MovingObjectType.ENTITY && mop.entityHit!=null && mop.entityHit instanceof EntityLivingBase){
 			mop.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, null), ((ToolHammerBase)st.getItem()).getDamageVsEntity());

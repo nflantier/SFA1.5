@@ -66,8 +66,8 @@ public class ItemHulkFlesh  extends ItemFood{
 				return;
 			if(stats.tickHasHulkFleshEffect>0){
 				player.motionY += 1.45;
-				player.motionX *= 5.2;
-				player.motionZ *= 5.2;
+				player.motionX *= 10.2;
+				player.motionZ *= 10.2;
 			}
 		}
 	}

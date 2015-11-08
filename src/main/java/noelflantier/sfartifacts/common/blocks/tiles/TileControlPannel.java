@@ -1,5 +1,7 @@
 package noelflantier.sfartifacts.common.blocks.tiles;
 
+import java.util.List;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -73,4 +75,12 @@ public class TileControlPannel extends TileSFA implements ITileCanBeSidedToPilla
     	if(nbt.getBoolean("hasmaster"))
     		this.master = new Coord4(nbt.getInteger("masterx"),nbt.getInteger("mastery"),nbt.getInteger("masterz"));
     }
+
+	@Override
+	public void addToWaila(List<String> list) {
+		if(this.hasMaster())
+			list.add("Pillar at : "+this.master.x+", "+this.master.y+", "+this.master.z);
+		else
+			list.add("Not connected to a pillar");	
+	}
 }

@@ -55,26 +55,21 @@ public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAt
     private int runningAwayTimer = -1;
     private int flingAttackTimer = 0;
     private int destroyAroundTimer = 0;
+    private int randomDropTimer = 0;
     private int jumpAndDestroyAroundTimer = 0;
     private Random rdm = new Random();
     private EntityAINearestAttackableTarget aiNearest;
     private EntityAIHurtByTarget aiHurt;
     private EntityAITargetBlock aiTargetAway;
+    public int countFleshDropped = 0;
     private int animationSmash = 0;
     private int lastLoot = 0;
-    
-    private static final IEntitySelector attackEntitySelector = new IEntitySelector(){
-        public boolean isEntityApplicable(Entity p_82704_1_)
-        {
-            return p_82704_1_ instanceof EntityLivingBase;
-        }
-    };
     
     public EntityHulk(World world){
         super(world);
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIJumpAndCollide(this, EntityPlayer.class, 1.2D, true));
-        this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.2D, true));
+        this.tasks.addTask(1, new EntityAIJumpAndCollide(this, EntityPlayer.class, 0.8D, true));
+        this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 0.8D, true));
         this.tasks.addTask(5, new EntityAIWatchClosest(this, EntityPlayer.class, 100.0F));
         aiNearest = new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true);
         aiHurt = new EntityAIHurtByTarget(this, false);
@@ -93,8 +88,10 @@ public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAt
 		nbt.setBoolean("isRunningAway", isRunningAway);
 		nbt.setInteger("flingAttackTimer", flingAttackTimer);
 		nbt.setInteger("destroyAroundTimer", destroyAroundTimer);
+		nbt.setInteger("randomDropTimer", randomDropTimer);
 		nbt.setInteger("jumpAndDestroyAroundTimer", jumpAndDestroyAroundTimer);		
-		nbt.setInteger("lastLoot", lastLoot);		
+		nbt.setInteger("lastLoot", lastLoot);
+		nbt.setInteger("countFleshDropped", countFleshDropped);
     }
 
     public void readEntityFromNBT(NBTTagCompound nbt){
@@ -102,8 +99,10 @@ public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAt
 		isRunningAway = nbt.getBoolean("isRunningAway");
 		flingAttackTimer = nbt.getInteger("flingAttackTimer");
 		destroyAroundTimer = nbt.getInteger("destroyAroundTimer");
+		randomDropTimer = nbt.getInteger("randomDropTimer");
 		jumpAndDestroyAroundTimer = nbt.getInteger("jumpAndDestroyAroundTimer");
 		lastLoot = nbt.getInteger("lastLoot");
+		countFleshDropped = nbt.getInteger("countFleshDropped");
     }
 
     public boolean canBreatheUnderwater(){
@@ -116,10 +115,10 @@ public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAt
     
     protected void applyEntityAttributes(){
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(500.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(800.0D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.8D);
         this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(100.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(20.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(12.0D);
     }
 
     protected void entityInit(){
@@ -158,6 +157,11 @@ public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAt
         		loot = EnchantmentHelper.getLootingModifier((EntityLivingBase)entity);
 	        }
         	lastLoot = loot;
+        	if(!this.worldObj.isRemote && this.countFleshDropped<3 && this.randomDropTimer<=0 && this.rdm.nextFloat()<=0.1F && par2>10){
+        		this.randomDropTimer = 500;
+        		this.countFleshDropped +=1;
+                this.dropItem(ModItems.itemHulkFlesh, 1);
+        	}
             return super.attackEntityFrom(ds, par2);
         }
     }
@@ -213,7 +217,9 @@ public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAt
     {
         super.onLivingUpdate();
        
-
+        if(this.randomDropTimer>0)
+        	this.randomDropTimer-=1;
+        
         if(this.flingAttackTimer>0)
         	this.flingAttackTimer-=1;
         

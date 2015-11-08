@@ -147,7 +147,7 @@ public class EntityHammerMinning extends EntityThrowable{
 		}
 		
 		if(st != null && st.getItem() != null && st.getItem() instanceof MiningHammerBase)
-			if(!HammerHelper.breakingSequenceStack(st,  mop.blockX, mop.blockY, mop.blockZ, 1, 1,(EntityPlayer)this.getThrower(), mop))this.isCommingBack = true;
+			if(!HammerHelper.breakOnImpact(st,  mop.blockX, mop.blockY, mop.blockZ, 1, 1,(EntityPlayer)this.getThrower(), mop, this))this.isCommingBack = true;
 		
 	}
 

@@ -44,20 +44,16 @@ import noelflantier.sfartifacts.common.network.messages.PacketExtendedEntityProp
 
 public class HammerHelper {
 	
-	public static boolean breakingSequenceSimple(ItemStack stack, int x, int y, int z, int breakRadius, int breakDepth, EntityPlayer player, MovingObjectPosition mop){
-		return breakaBlockWithMop(stack, x, y, z, breakRadius, breakDepth, player, mop);
+	public static boolean breakOnImpact(ItemStack stack, int x, int y, int z, int breakRadius, int breakDepth, EntityPlayer player, MovingObjectPosition mop, Entity entityHit){
+		return ((MiningHammerBase)stack.getItem()).getEnergyStored(stack) >= ((MiningHammerBase)stack.getItem()).energyMining && (breakRadius > 0) ? breakaBlockWithMop(stack, x, y, z, breakRadius, breakDepth, player, mop, entityHit, -1) : false;
 	}
 	
-	public static boolean breakingSequenceStack(ItemStack stack, int x, int y, int z, int breakRadius, int breakDepth, EntityPlayer player, MovingObjectPosition mop){
-		return ((MiningHammerBase)stack.getItem()).getEnergyStored(stack) >= ((MiningHammerBase)stack.getItem()).energyMining && (breakRadius > 0) ? breakaBlockWithMop(stack, x, y, z, breakRadius, breakDepth, player, mop) : false;
+	public static boolean breakOnMinning(ItemStack stack, int x, int y, int z, int breakRadius, int breakDepth, EntityPlayer player){
+		return ((MiningHammerBase)stack.getItem()).getEnergyStored(stack) >= ((MiningHammerBase)stack.getItem()).energyMining && (breakRadius > 0) ? breakaBlockWithMop(stack, x, y, z, breakRadius, breakDepth, player, rayTraceMining(player.worldObj, player, 4.5d), null, 1) : false;
 	}
-
-	public static boolean breakingSequenceSlot(int slot, int x, int y, int z, int breakRadius, int breakDepth, EntityPlayer player, MovingObjectPosition mop){
-		ItemStack stack = player.inventory.getStackInSlot(slot);
-		return ((MiningHammerBase)stack.getItem()).getEnergyStored(stack) >= ((MiningHammerBase)stack.getItem()).energyMining && (breakRadius > 0) ? breakaBlockWithMop(stack, x, y, z, breakRadius, breakDepth, player, mop) : false;
-	}
-	
+	/*
 	public static boolean breakaBlockWithoutMop(ItemStack stack, int x, int y, int z, int breakRadius, int breakDepth, EntityPlayer player){
+		//return breakaBlockWithMop(stack,x,y,z,breakRadius,breakDepth,player,rayTraceMining(player.worldObj, player, 4.5d));
 		Block block = player.worldObj.getBlock(x,y,z);
 		int meta = player.worldObj.getBlockMetadata(x,y,z);
 		boolean effective = false;
@@ -80,7 +76,7 @@ public class HammerHelper {
 			return true;
 		}
 		int sideHit = mop.sideHit;
-
+		
 		int xRange = breakRadius;
 		int yRange = breakRadius;
 		int zRange = breakDepth;
@@ -130,9 +126,8 @@ public class HammerHelper {
 		}
 		return true;
 	}
-	
-	public static boolean breakaBlockWithMop(ItemStack stack, int x, int y, int z, int breakRadius, int breakDepth, EntityPlayer player, MovingObjectPosition mop){
-		
+	*/
+	public static boolean breakaBlockWithMop(ItemStack stack, int x, int y, int z, int breakRadius, int breakDepth, EntityPlayer player, MovingObjectPosition mop, Entity entityHit, int rangeMining){
 		
 		Block block = player.worldObj.getBlock(x,y,z);
 		
@@ -184,13 +179,22 @@ public class HammerHelper {
 				break;
 		}
 		
+		boolean soundOnRange = false;
+		
 		for (int xPos = x - xRange; xPos <= x + xRange; xPos++)
 		{
 			for (int yPos = y + yOffset - yRange; yPos <= y + yOffset + yRange; yPos++)
 			{
 				for (int zPos = z - zRange; zPos <= z + zRange; zPos++)
 				{
-					breakthablock(stack, player.worldObj, xPos, yPos, zPos, sideHit, player, refStrength, true);
+					if(rangeMining<=0)soundOnRange = true;
+					else soundOnRange = Math.abs(x - xPos) <= rangeMining && Math.abs(y - yPos) <= rangeMining && Math.abs(z - zPos) <= rangeMining;
+					
+					Block tblock = player.worldObj.getBlock(xPos, yPos, zPos);
+					if(entityHit!=null && tblock.canEntityDestroy(player.worldObj, xPos, yPos, zPos, entityHit))
+						breakthablock(stack, player.worldObj, xPos, yPos, zPos, sideHit, player, refStrength, soundOnRange);
+					else if (entityHit == null)
+						breakthablock(stack, player.worldObj, xPos, yPos, zPos, sideHit, player, refStrength, soundOnRange);
 				}
 			}
 		}
@@ -210,7 +214,7 @@ public class HammerHelper {
 		return true;
 	}
 	
-	public static void breakthablock(World world, int x, int y, int z)
+	public static void breakthablock(World world, int x, int y, int z, Entity entity)
 	{
 		if (world.isAirBlock(x, y, z))
 			return;
@@ -218,7 +222,7 @@ public class HammerHelper {
 		Block block = world.getBlock(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
 
-		if(block==Blocks.bedrock)
+		if(block==Blocks.bedrock || !block.canEntityDestroy(world, x, y, z, entity))
 			return ;
 		
 		if (!world.isRemote)
@@ -227,7 +231,7 @@ public class HammerHelper {
 			world.setBlockToAir(x, y, z);
 			world.markBlockForUpdate(x, y, z);
 		};
-
+		
 		if (!world.isRemote) {
 
 		}
@@ -268,7 +272,7 @@ public class HammerHelper {
 				((EntityPlayerMP)player).playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, world));
 				return;
 			}
-		};
+		}
 				
 		//((MiningHammerBase)stack.getItem()).extractEnergy(stack, ((MiningHammerBase)stack.getItem()).energyPerO, false);
 		extractEnergyInHammer(stack,((ItemThorHammer)stack.getItem()).energyMining );

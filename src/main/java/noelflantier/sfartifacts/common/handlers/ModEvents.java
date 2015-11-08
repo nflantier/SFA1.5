@@ -175,29 +175,32 @@ public class ModEvents {
 				return;
 
 			ModPlayerStats stats = ModPlayerStats.get(player);
-			if(stats.tickJustEatHulkFlesh>0)
-				stats.tickJustEatHulkFlesh-=1;
-			if(stats !=null && stats.tickHasHulkFleshEffect>0){
-				stats.tickHasHulkFleshEffect-=1;
-				if(event.side==Side.CLIENT)
-					player.stepHeight = 2F;
-				float f = Utils.isPlayerInFluid(player,1.22F);
-				player.motionX *= f;
-				player.motionZ *= f;
-			}else if(stats.tickHasHulkFleshEffect==0){
-				stats.tickHasHulkFleshEffect=-1;
-				if(event.side==Side.CLIENT)
-					player.stepHeight = 0.5F;
+			if(stats !=null){
+				if(stats.changeStep>0F){
+					player.stepHeight = stats.changeStep;
+					stats.changeStep = 0F;
+				}
+				if(stats.tickJustEatHulkFlesh>0)
+					stats.tickJustEatHulkFlesh-=1;
+				if(stats.tickHasHulkFleshEffect>0){
+					stats.tickHasHulkFleshEffect-=1;
+					if(event.side==Side.CLIENT)
+						player.stepHeight = 2F;
+					float f = Utils.isPlayerInFluid(player,1.22F);
+					player.motionX *= f;
+					player.motionZ *= f;
+				}else if(stats.tickHasHulkFleshEffect==0){
+					stats.tickHasHulkFleshEffect=-1;
+					if(event.side==Side.CLIENT)
+						player.stepHeight = 0.5F;
+				}
 			}
-
+			
 			if(event.side==Side.CLIENT)
 				return;
 			
 			if(stats.justBlockedAttack>0){
 				stats.justBlockedAttack-=1;
-				if(stats.justBlockedAttack==0){
-					
-				}
 			}
 			
 			if(stats.isMovingWithHammer){
@@ -210,18 +213,16 @@ public class ModEvents {
 					ItemNBTHelper.setBoolean(player.getCurrentEquippedItem(), "IsMoving", false);
 			}
 			
-			//if(event.side==Side.SERVER){
-				if(stats.isMovingWithHammer){
-					if(!stats.justStartMoving){
-		    			stats.isMovingWithHammer = !player.onGround;
-		    			if(!stats.isMovingWithHammer)
-		    				stats.justStopMoving=true;
-					}
-					stats.justStartMoving = false;
-	    			stats.tickMovingWithHammer -= 1;
-	    		}else
-	    			stats.tickMovingWithHammer = 0;	
-			//}
+			if(stats.isMovingWithHammer){
+				if(!stats.justStartMoving){
+	    			stats.isMovingWithHammer = !player.onGround;
+	    			if(!stats.isMovingWithHammer)
+	    				stats.justStopMoving=true;
+				}
+				stats.justStartMoving = false;
+    			stats.tickMovingWithHammer -= 1;
+    		}else
+    			stats.tickMovingWithHammer = 0;
     	}
     }
     

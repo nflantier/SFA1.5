@@ -64,6 +64,7 @@ public class HulkManual extends BaseManual{
 					addText("Hulk can be lure with the sound emitter,",0,0);
 					addText("you can't kill him but if you hurt him",0,0);
 					addText("really bad he will run away.",0,0);
+					addText("Hulk frequency's echo: -361",0,0);
 					addText("Just before running away he will drop some flesh,",0,10);
 					addText("try to use a weapon with loot to have multiple",0,0);
 					addText("flesh dropped, you can eat them or try to make",0,0);
@@ -82,6 +83,17 @@ public class HulkManual extends BaseManual{
 						addText("and put the ring in a ring slot.",0,0);
 					}}
 				);
+
+		}else if(cat.equals("freq")){
+			this.componentList.put("p1", 
+					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
+						defColor = EnumChatFormatting.BLACK;
+						addText("If you want all the frequencies of all the mobs",0,0);
+						addText("presents in your game, there is an option in the",0,0);
+						addText("config to show them all in the sound emiter GUI.",0,0);
+					}}
+				);
+
 		}else if(cat.equals("index")){
 
 			this.componentList.put("sound", new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
@@ -104,6 +116,13 @@ public class HulkManual extends BaseManual{
 				isLink = true;
 			}});
 			this.manuals.put("hulkring", -1);
+			
+			this.componentList.put("freq", new GuiComponent(this.guiLeft+10, this.guiTop+50, 100, 10){{
+				defColor = EnumChatFormatting.BLACK;
+				addText("Mob frequencies", 0, 0);
+				isLink = true;
+			}});
+			this.manuals.put("freq", -1);
 			
 		}
 	}

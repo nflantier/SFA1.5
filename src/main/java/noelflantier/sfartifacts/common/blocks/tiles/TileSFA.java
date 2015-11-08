@@ -6,7 +6,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
-public abstract class TileSFA  extends TileEntity {
+public abstract class TileSFA  extends TileEntity implements IHasWailaContent{
 
     public String name;
     public int side = -1;

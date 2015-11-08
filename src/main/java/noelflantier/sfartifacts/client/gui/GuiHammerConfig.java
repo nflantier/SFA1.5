@@ -91,6 +91,9 @@ public class GuiHammerConfig extends GuiSFA{
 		
 		if(this.hammer==null) return;
 
+		if(this.enchantOpen)
+			this.enchantSc.input();
+		
 		if(this.hammer.getItem() instanceof ItemThorHammer){
 			this.componentList.get("radius").replaceString(0, "Radius : "+ItemNBTHelper.getInteger(this.hammer, "Radius", 0));
 			((GuiButton)this.buttonList.get(0)).visible = true;
@@ -214,7 +217,8 @@ public class GuiHammerConfig extends GuiSFA{
 				this.enchantSc.addComponent(i, gce);
 				y += 10;
 	        }
-			
+			this.enchantSc.showArrows = true;
+			this.enchantSc.setArrowsPositionAndAlpha(guiLeft+167, guiTop+25, 83, 0.3F);
 		}
 	}
 
@@ -241,54 +245,24 @@ public class GuiHammerConfig extends GuiSFA{
 			}
 		}
 	}
-	
-	public void getInput(){
-		if(this.hammer==null) return;
-		
-		this.tickInput--;
-		if(tickInput>0)return;
-		
-		this.tickInput = 0;
-		int w = Mouse.getEventDWheel();
 
-		if(this.enchantOpen){
-			if(w<0 || Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
-				this.enchantSc.incIndex();
-				this.tickInput = 20;
-			}
-			if(w>0 || Keyboard.isKeyDown(Keyboard.KEY_UP)){
-				this.enchantSc.decIndex();
-				this.tickInput = 20;
-			}
-		}
+	public void drawOver(int x, int y){
+		if(this.enchantOpen)
+			this.enchantSc.showTheArrows(x, y);
 	}
-
-	@Override
-    public void drawScreen(int x, int y, float f){
-    	super.drawScreen(x, y, f);
-	}
-
 	@Override
     public void drawGuiContainerForegroundLayer(int x, int y){
 		super.drawGuiContainerForegroundLayer(x-guiLeft,y-guiTop);
 
 		if(this.hammer==null) return;
-		
-		this.getInput();
-
 		if(this.enchantOpen){
 			GL11.glPushMatrix();
-	        //GL11.glDisable(GL11.GL_LIGHTING);
-			//GL11.glEnable(GL11.GL_BLEND);
-			Minecraft.getMinecraft().getTextureManager().bindTexture(bground);
-	
-			GL11.glColor4f(1f, 1f, 1f, 1f);
-			drawTexturedModalRect(30, 30,0 , 0, 150,100);
-			drawTexturedModalRect(174, 30,this.xSize-20 , 0, 20,100);
-			drawTexturedModalRect(30, 120,0 , this.ySize-20, 150,20);
-			drawTexturedModalRect(174, 120,this.xSize-20 , this.ySize-20, 20,20);
-			//GL11.glDisable(GL11.GL_BLEND);
-	        //GL11.glEnable(GL11.GL_LIGHTING);
+				Minecraft.getMinecraft().getTextureManager().bindTexture(bground);
+				GL11.glColor4f(1f, 1f, 1f, 1f);
+				drawTexturedModalRect(30, 30,0 , 0, 150,100);
+				drawTexturedModalRect(174, 30,this.xSize-20 , 0, 20,100);
+				drawTexturedModalRect(30, 120,0 , this.ySize-20, 150,20);
+				drawTexturedModalRect(174, 120,this.xSize-20 , this.ySize-20, 20,20);
 			GL11.glPopMatrix();
 			
 			NBTTagList nbttaglist = this.hammer.stackTagCompound.getTagList("EnchStored", 10);

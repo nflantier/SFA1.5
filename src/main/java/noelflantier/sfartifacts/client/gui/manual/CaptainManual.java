@@ -132,6 +132,7 @@ public class CaptainManual  extends BaseManual{
 					addText("angle around you.",10,0);
 					addText("- You have to press SHIFT to shield you and block",10,0);
 					addText("damages.",10,0);
+					addText("To see how to forge it go look at Molding Recipe.",0,0);
 				}}
 			);
 		}else if(cat.equals("index")){

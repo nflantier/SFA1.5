@@ -100,8 +100,8 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 					st.amount = st.amount*spx;
 					extractEnergy(ForgeDirection.UNKNOWN, mpForSpawning.get(r).rfneeded*spx, false);
 					drain(ForgeDirection.UNKNOWN, st, true);
-					this.minSpawnRange = 10;
-					this.spawnRange = 15;
+					this.minSpawnRange = 5;
+					this.spawnRange = 10;
 					return true;
 				}
 			}
@@ -309,4 +309,9 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 			}
 		}
     }
+
+	@Override
+	public void addToWaila(List<String> list) {
+		super.addToWaila(list);
+	}
 }

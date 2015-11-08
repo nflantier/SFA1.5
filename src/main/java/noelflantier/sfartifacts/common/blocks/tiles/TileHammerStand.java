@@ -1,5 +1,7 @@
 package noelflantier.sfartifacts.common.blocks.tiles;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -214,5 +216,13 @@ public class TileHammerStand extends TileSFA implements IInventory, ITileCanHave
 	@Override
 	public World getWorld() {
 		return this.worldObj;
+	}
+
+	@Override
+	public void addToWaila(List<String> list) {
+		if(this.hasMaster())
+			list.add("Pillar at : "+this.master.x+", "+this.master.y+", "+this.master.z);
+		else
+			list.add("Not connected to a pillar");
 	}
 }

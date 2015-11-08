@@ -27,9 +27,10 @@ item.itemHulkFlesh.name=Hulk Flesh
 item.itemAsgardianRing.name=Asgardian Ring
 item.itemMightyHulkRing.name=Mighty Hulk Ring
 
-entity.hammerinvoking.name=Falling Hammer
-entity.entityvibraniumshieldthrow.name=Moving Shield
-entity.Hulk.name=Angry Hulk
+entity.sfartifacts.thorhammerinvoking.name=Falling Hammer
+entity.sfartifacts.thorhammerthrow.name=Mining Hammer
+entity.sfartifacts.vibraniumshieldthrow.name=Moving Shield
+entity.sfartifacts.hulk.name=Angry Hulk
 
 tile.blockControlPanel.name=Control Panel
 tile.blockAsgardianBronze.name=Asgardian Bronze Block

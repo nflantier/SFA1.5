@@ -1,5 +1,6 @@
 package noelflantier.sfartifacts.compatibilities;
 
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -22,18 +23,20 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.chunk.IChunkProvider;
+import noelflantier.sfartifacts.common.blocks.BlockOreVibranium;
+import noelflantier.sfartifacts.common.blocks.tiles.IHasWailaContent;
 import noelflantier.sfartifacts.common.blocks.tiles.TileControlPannel;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSFA;
 
 @Optional.Interface(iface = "mcp.mobius.waila.api.IWailaDataProvider", modid = "Waila")
 public class WailaHandler implements IWailaDataProvider {
-	  private class WailaWorldWrapper extends World {
-	    private World wrapped;
+	private class WailaWorldWrapper extends World {
+		private World wrapped;
 
 	    private WailaWorldWrapper(World wrapped) {
-	      super(wrapped.getSaveHandler(), wrapped.getWorldInfo().getWorldName(), wrapped.provider, new WorldSettings(wrapped.getWorldInfo()), wrapped.theProfiler);
-	      this.wrapped = wrapped;
-	      this.isRemote = wrapped.isRemote;
+	    super(wrapped.getSaveHandler(), wrapped.getWorldInfo().getWorldName(), wrapped.provider, new WorldSettings(wrapped.getWorldInfo()), wrapped.theProfiler);
+	      	this.wrapped = wrapped;
+	      	this.isRemote = wrapped.isRemote;
 	    }
 
 	    @Override
@@ -67,14 +70,15 @@ public class WailaHandler implements IWailaDataProvider {
 	    public Entity getEntityByID(int p_73045_1_) {
 	      return null;
 	    }
-	  }
+	}
 	  
-	 public static final WailaHandler INSTANCE = new WailaHandler();
+	public static final WailaHandler INSTANCE = new WailaHandler();
 	 
-	 @Optional.Method(modid = "Waila")
-	 public static void load(IWailaRegistrar register) {
-		 register.registerBodyProvider(INSTANCE, TileSFA.class);
-	 }
+	@Optional.Method(modid = "Waila")
+	public static void load(IWailaRegistrar register) {
+		register.registerBodyProvider(INSTANCE, TileSFA.class);
+		register.registerBodyProvider(INSTANCE, BlockOreVibranium.class);
+	}
 
 	@Override
 	@Optional.Method(modid = "Waila")
@@ -97,68 +101,17 @@ public class WailaHandler implements IWailaDataProvider {
 	    MovingObjectPosition pos = accessor.getPosition();
 	    int x = pos.blockX, y = pos.blockY, z = pos.blockZ;
 	    World world = new WailaWorldWrapper(player.worldObj);
-	    Block block = world.getBlock(x, y, z);
 	    TileEntity te = world.getTileEntity(x, y, z);
-	    Item item = Item.getItemFromBlock(block);
-	    NBTTagCompound trueNbt = new NBTTagCompound();
+	    Block b = world.getBlock(x, y, z);
 	    
 		((ITaggedList<String, String>) currenttip).removeEntries("RFEnergyStorage");
-		
-		/*if(te instanceof TileControlPannel){
-	    	te.writeToNBT(trueNbt);
-			currenttip.add(String.format("Pillar at : %s%s,%s,%s%s",EnumChatFormatting.WHITE,trueNbt.getInteger("pillarX"),trueNbt.getInteger("pillarY"),
-					trueNbt.getInteger("pillarZ"),EnumChatFormatting.RESET));
-		}*/
-		/*
-		if(te instanceof TileEntityMultiBlockPillar){
-			
-		    if(accessor.getNBTData().hasKey("hasMaster"))
-		    	trueNbt = accessor.getNBTData();
-		    else
-		    	te.writeToNBT(trueNbt);
-
-			TileEntityMultiBlockPillar tep = (TileEntityMultiBlockPillar) te;
-			if(trueNbt.getBoolean("hasMaster")){
-				
-				currenttip.add(String.format("Pillar : "+PillarStructures.getStructureFromId(trueNbt.getInteger("structureId")).name()));
-				currenttip.add(String.format("Material : "+PillarMaterials.getMaterialFromId(trueNbt.getInteger("materialId")).name()));
-				if(!trueNbt.getBoolean("isMaster"))
-					currenttip.add(String.format("Master at : %s%s,%s,%s%s",EnumChatFormatting.WHITE,trueNbt.getInteger("masterX"),trueNbt.getInteger("masterY"),
-							trueNbt.getInteger("masterZ"),EnumChatFormatting.RESET));
-				else
-					currenttip.add(String.format("This is the master"));
-				
-				currenttip.add(String.format("%s : %s%s%s / %s%s%s RF","Energy", EnumChatFormatting.WHITE, NumberFormat.getNumberInstance().format(trueNbt.getInteger("rf")), 
-						EnumChatFormatting.RESET, EnumChatFormatting.WHITE,NumberFormat.getNumberInstance().format(PillarStructures.getStructureFromId(trueNbt.getInteger("structureId")).capacity),EnumChatFormatting.RESET));
-				List<FluidTank> ft = ((ISFAFluid)te).getFluidTanks();
-				for(FluidTank f: ft){
-					if(f.getFluid().getFluid().getName()!=null)
-					currenttip.add(String.format("%s : %s%s%s / %s%s%s MB",Character.toUpperCase(f.getFluid().getFluid().getName().charAt(0)) + f.getFluid().getFluid().getName().substring(1), EnumChatFormatting.WHITE, NumberFormat.getNumberInstance().format(f.getFluidAmount()), 
-							EnumChatFormatting.RESET, EnumChatFormatting.WHITE,NumberFormat.getNumberInstance().format(f.getCapacity()),EnumChatFormatting.RESET));
-				}
-			}
-		}		
-		*/
-		/*
-		if(te instanceof TileLiquefier || te instanceof TileInjector || te instanceof TileMightyFoundry){
-	    	te.writeToNBT(trueNbt);
-			currenttip.add(String.format("%s : %s%s%s / %s%s%s RF","Energy", EnumChatFormatting.WHITE, NumberFormat.getNumberInstance().format(trueNbt.getInteger("rf")), 
-					EnumChatFormatting.RESET, EnumChatFormatting.WHITE,NumberFormat.getNumberInstance().format(((TileEntitySFAEnergy)te).getMaxEnergyStored(ForgeDirection.UNKNOWN)),EnumChatFormatting.RESET));
-			List<FluidTank> ft = ((ISFAFluid)te).getFluidTanks();
-			for(FluidTank f: ft){
-				if(f.getFluid()!=null && f.getCapacity()!=0 && f.getFluid().getFluid().getName()!=null)
-				currenttip.add(String.format("%s : %s%s%s / %s%s%s MB",Character.toUpperCase(f.getFluid().getFluid().getName().charAt(0)) + f.getFluid().getFluid().getName().substring(1), EnumChatFormatting.WHITE, NumberFormat.getNumberInstance().format(f.getFluidAmount()), 
-						EnumChatFormatting.RESET, EnumChatFormatting.WHITE,NumberFormat.getNumberInstance().format(f.getCapacity()),EnumChatFormatting.RESET));
-			}
+		if( te instanceof IHasWailaContent){
+			((IHasWailaContent)te).addToWaila(currenttip);
+		}   
+		if(b instanceof BlockOreVibranium){
+			int meta = world.getBlockMetadata(x, y, z);
+			currenttip.add("Cooked process : "+NumberFormat.getNumberInstance().format((float)meta/(float)15*(float)100)+" %");
 		}
-		
-		if(te instanceof TileLightningRodStand){
-			te.writeToNBT(trueNbt);
-			currenttip.add(String.format("%s : %s%s%s / %s%s%s RF","Energy", EnumChatFormatting.WHITE, NumberFormat.getNumberInstance().format(trueNbt.getInteger("rf")), 
-					EnumChatFormatting.RESET, EnumChatFormatting.WHITE,NumberFormat.getNumberInstance().format(((TileEntitySFAEnergy)te).getMaxEnergyStored(ForgeDirection.UNKNOWN)),EnumChatFormatting.RESET));
-			
-		}
-			*/    
 		return currenttip;
 	}
 

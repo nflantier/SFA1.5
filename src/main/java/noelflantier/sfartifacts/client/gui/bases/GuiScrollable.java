@@ -6,6 +6,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import noelflantier.sfartifacts.References;
 
 public class GuiScrollable {
 
@@ -16,8 +18,12 @@ public class GuiScrollable {
 	public int x,y;
 	public int tickDelay = 2;
 	public int tickInput = 0;
+	public boolean showArrows = false;
 	public int tickInputWheel = 0;
 	public int tickDelayWheel = 10;
+	private static final ResourceLocation guiselements = new ResourceLocation(References.MODID+":textures/gui/guisElements.png");
+	public GuiImage arrowUp = new GuiImage(64, 16, 32,32 , 0F, 0.5F, 0.5F, 1F, guiselements);
+	public GuiImage arrowDown = new GuiImage(64, 16, 32,32 , 0.5F, 0.5F, 1F, 1F, guiselements);
 	
 	
 	public GuiScrollable(int maxComponent){
@@ -74,20 +80,27 @@ public class GuiScrollable {
 		this.currentIndex = this.currentIndex>0?this.currentIndex-1:0;
 	}
 	
+	public void setArrowsPositionAndAlpha(int x, int y, int dec, float alpha){
+		arrowUp.x = x;
+		arrowUp.y = y;
+		arrowDown.x = x;
+		arrowDown.y = y+dec;
+		arrowUp.alpha = alpha;
+		arrowDown.alpha = alpha;
+	} 
+	
+	public void showTheArrows(int x, int y){
+		arrowUp.draw(x, y);
+		arrowDown.draw(x, y);
+	}
+	
 	public void show(int x, int y){
+		if(showArrows)
+			showTheArrows(x,y);
 		for(int i = this.currentIndex ; i < this.currentIndex + this.maxComponent ; i++){
 			if(this.componentList.get(i)==null)break;
 	    	this.componentList.get(i).scrolableMarge = this.currentIndex*10;
 		    this.componentList.get(i).draw(x,y);
-		}
-	}
-	
-	public void draw(){
-		for(int i = this.currentIndex ; i < this.currentIndex + this.maxComponent ; i++){
-			if(this.componentList.get(i)==null)break;
-	    	this.componentList.get(i).scrolableMarge = this.currentIndex*10;
-		    this.componentList.get(i).draw(x, y);
-	    
 		}
 	}
 }

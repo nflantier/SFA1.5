@@ -63,7 +63,7 @@ public class CommonProxy {
 
 	public void postinit(FMLPostInitializationEvent event) {
     	InterMods.loadConfig();
-    	SoundEmitterHelper.instance.loadSpawningRules();
+    	SoundEmitterHelper.loadSpawningRules();
 		ModAchievements.registerAchievementPane();
     	ModOreDictionary.checkOreDictionary();
     	ModOreDictionary.loadOres();
