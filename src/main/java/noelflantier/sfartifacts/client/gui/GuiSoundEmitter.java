@@ -85,7 +85,6 @@ public class GuiSoundEmitter extends GuiMachine{
 			return;
 		if(byPassPopUp)
 			byPassPopUp = false;
-		System.out.println(button.id);
 		if(button.id==0){//-
 			if(this.buttonPressed==0 || this.buttonPressed==-1){
 				if(this.currentTickButton<0){
@@ -120,48 +119,46 @@ public class GuiSoundEmitter extends GuiMachine{
 			}else{
 				//SET IS EMITING FALSE WHEN SOMEHTING IS ALLREADY EMITITNG
 				PacketHandler.INSTANCE.sendToServer(new PacketSoundEmitterGui(this.tile.xCoord,this.tile.yCoord,this.tile.zCoord,this.lastFrequency,2));
+		
+				this.componentList.get("txta").addText("stop_emitting_"+this.tile.frequencyEmited, 0, 0);				
+				
 				this.tile.isEmitting = false;
 				this.tile.frequencyEmited = 0;
 				this.tile.entitiesNameForSpawning = null;
 				this.tile.mpForSpawning = null;
 				this.tile.entityNameForSpawning = "";
-				
-				this.componentList.get("txta").addText("stop_emitting____"+this.tile.frequencyEmited, 0, 0);
 				this.getButtonById(3).displayString = "EMIT";
 			}
 		}
 	}
 
 	public void scanning(){
-		if(this.currentTickScanning==50 || this.currentTickScanning==30 || this.currentTickScanning==95)
+		if(this.currentTickScanning==30 || this.currentTickScanning==60)
 			this.componentList.get("txta").replaceString(2, "..");
-		if(this.currentTickScanning==5 || this.currentTickScanning==45 || this.currentTickScanning==55 || this.currentTickScanning==90)
+		if(this.currentTickScanning==5 || this.currentTickScanning==25 || this.currentTickScanning==35 || this.currentTickScanning==55)
 			this.componentList.get("txta").replaceString(2, "....");
-		if(this.currentTickScanning==10 || this.currentTickScanning==40 || this.currentTickScanning==60 || this.currentTickScanning==85)
+		if(this.currentTickScanning==10 || this.currentTickScanning==20 || this.currentTickScanning==40 || this.currentTickScanning==50)
 			this.componentList.get("txta").replaceString(2, "......");
-		if(this.currentTickScanning==15 || this.currentTickScanning==35 || this.currentTickScanning==65 || this.currentTickScanning==85)
+		if(this.currentTickScanning==15 || this.currentTickScanning==35 || this.currentTickScanning==45)
 			this.componentList.get("txta").replaceString(2, "........");
-		if(this.currentTickScanning==20 || this.currentTickScanning==30 || this.currentTickScanning==70 || this.currentTickScanning==80)
-			this.componentList.get("txta").replaceString(2, "..........");
-		if(this.currentTickScanning==25 || this.currentTickScanning==75)
-			this.componentList.get("txta").replaceString(2, "............");
-		if(this.currentTickScanning==100)
+		
+		if(this.currentTickScanning==65)
 			this.componentList.get("txta").replaceString(2, "_________");
-		if(this.currentTickScanning==105){
+		if(this.currentTickScanning==70){
 			String str = this.lastScanningResult.size()+"  echo found.";
 			this.componentList.get("txta").addText(""+str, 0, 0);
 		}
-		if(this.currentTickScanning==110+this.currentRes*5 && this.currentRes<this.lastScanningResult.size()){
+		if(this.currentTickScanning==75+this.currentRes*5 && this.currentRes<this.lastScanningResult.size()){
 			this.componentList.get("txta").addText(SoundEmitterHelper.spawningRulesIDForRules.get(this.lastScanningResult.get(this.currentRes)).nameEntity, 0, 0);
-			this.componentList.get("txta").addText("c:_"+this.getStrConditionsFrequency(this.lastFrequency), 0, 0);
+			showCond("txta");
 			this.currentRes++;
 		}
-		if(this.currentTickScanning==115+this.lastScanningResult.size()*5)
+		if(this.currentTickScanning==80+this.lastScanningResult.size()*5)
 			this.componentList.get("txta").addText("_________", 0, 0);
-		if(this.currentTickScanning==115+this.lastScanningResult.size()*5)
+		if(this.currentTickScanning==80+this.lastScanningResult.size()*5)
 			this.componentList.get("txta").addText("end", 0, 0);
 		
-		if(this.currentTickScanning>=150+this.lastScanningResult.size()*5){
+		if(this.currentTickScanning>=100+this.lastScanningResult.size()*5){
 			this.isScanning = false;
 			this.currentRes = 0;
 			this.currentTickScanning=0;
@@ -170,12 +167,21 @@ public class GuiSoundEmitter extends GuiMachine{
 				this.componentList.get("txta").addText("start_emit:", 0, 0);
 				if(this.lastScanningResult.size()>0){
 					this.componentList.get("txta").addText("emitting____"+this.lastFrequency, 0, 0);
-					this.componentList.get("txta").addText("c:_"+this.getStrConditionsFrequency(this.lastFrequency), 0, 0);
+					showCond("txta");
 					this.getButtonById(3).displayString = "STOP";
 				}else
 					this.componentList.get("txta").addText("cant_emit_", 0, 0);
 			}
 		}
+	}
+	
+	public void showCond(String key){
+		this.componentList.get(key).addText("c:_"+this.getStrConditionsFrequency(this.lastFrequency), 0, 0);
+		if(this.tile.getEnergyStored(ForgeDirection.UNKNOWN)<getRFNeededForFrequency(this.lastFrequency))
+			this.componentList.get(key).addText("!!not_enough_rf", 0, 0);
+		if(this.tile.getFluidTanks().get(0).getFluidAmount()<getFLNeededForFrequency(this.lastFrequency))
+			this.componentList.get(key).addText("!!not_enough_fluid", 0, 0);
+				
 	}
 	
 	public void startScanning(boolean emit){
@@ -321,7 +327,8 @@ public class GuiSoundEmitter extends GuiMachine{
 		}});
 		if(this.tile.isEmitting){
 			this.componentList.get("txta").addText("emitting____"+this.tile.frequencyEmited, 0, 0);
-			this.componentList.get("txta").addText("c:_"+this.getStrConditionsFrequency(this.tile.frequencyEmited), 0, 0);
+			this.lastFrequency = this.tile.frequencyEmited;
+			showCond("txta");
 		}
 		
 		this.componentList.put("tffreq", new GuiComponent(44, 22, 50, 10){{
@@ -366,13 +373,31 @@ public class GuiSoundEmitter extends GuiMachine{
 		return s;
 	}
 
+	public int getRFNeededForFrequency(int freq){
+		int rf = 0;
+		if(SoundEmitterHelper.getIdsForFrequency(freq)!=null 
+				&& SoundEmitterHelper.getIdsForFrequency(freq).size()>0 
+				&& SoundEmitterHelper.getIdsForFrequency(freq).get(0)!=null 
+				&& SoundEmitterHelper.spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(freq).get(0))!=null){
+			rf = SoundEmitterHelper.spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(freq).get(0)).rfneeded;
+		}
+		return rf;
+	}
+
+	public int getFLNeededForFrequency(int freq){
+		int fl = 0;
+		if(SoundEmitterHelper.getIdsForFrequency(freq)!=null 
+				&& SoundEmitterHelper.getIdsForFrequency(freq).size()>0 
+				&& SoundEmitterHelper.getIdsForFrequency(freq).get(0)!=null 
+				&& SoundEmitterHelper.spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(freq).get(0))!=null){
+			fl = SoundEmitterHelper.spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(freq).get(0)).fluidneeded.amount;
+		}
+		return fl;
+	}
+	
 	public String getStrConditionsFrequency(int freq){
 		String s = "";
-		if(SoundEmitterHelper.getIdsForFrequency(freq)!=null && SoundEmitterHelper.getIdsForFrequency(freq).get(0)!=null 
-				&& SoundEmitterHelper.spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(freq).get(0))!=null){
-			s = SoundEmitterHelper.spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(freq).get(0)).rfneeded
-				+"RF "+SoundEmitterHelper.spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(freq).get(0)).fluidneeded.amount+"MB";
-		}
+		s = getRFNeededForFrequency(freq)+"RF_"+getFLNeededForFrequency(freq)+"MB";
 		return s;
 	}
 	

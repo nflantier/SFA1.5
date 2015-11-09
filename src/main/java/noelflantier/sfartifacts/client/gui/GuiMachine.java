@@ -74,7 +74,14 @@ public abstract class GuiMachine extends GuiSFA{
 	@Override
 	public void loadComponents(){
 		super.loadComponents();
-		
+		this.componentManual.put("ma", new GuiComponent(guiLeft+18, guiTop+90, 100, 10){{
+			globalScale = 0.6F;
+			addText("Asgardian machine processing task can be turned", 0, 0);
+			addText("on and off by clicking the appropriate button.", 0, 0);
+			addText("If you want to stop their extract and recieve", 0, 0);
+			addText("task of fluid and rf, you have to apply a", 0, 0);
+			addText("redstone signal.", 0, 0);
+		}});
 		Iterator <Map.Entry<Integer, Integer>>iterator = sidedButton.entrySet().iterator();
         while (iterator.hasNext()){
         	Entry<Integer, Integer> entry = iterator.next();

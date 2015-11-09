@@ -44,9 +44,6 @@ public class BlockSoundEmitter  extends ABlockNBT{
 
 	@Override
 	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-	  if(side == ForgeDirection.UP) { //stop drips
-	    return false;
-	  }
 	  return true;
 	}
 	

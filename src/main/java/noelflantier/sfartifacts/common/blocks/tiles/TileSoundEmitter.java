@@ -93,9 +93,9 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 				this.customZ = mpForSpawning.get(r).customZ;
 				
 				this.spawnCount = spx;
-				if(spx<=0)
+				if(spx<=0){
 					return false;
-				else{
+				}else{
 					FluidStack st = mpForSpawning.get(r).fluidneeded.copy();
 					st.amount = st.amount*spx;
 					extractEnergy(ForgeDirection.UNKNOWN, mpForSpawning.get(r).rfneeded*spx, false);

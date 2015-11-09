@@ -66,7 +66,7 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 		super.updateEntity();
         if(this.worldObj.isRemote)
         	return;
-        if(this.isManualyEnable)
+        if(this.isManualyEnable && !this.isRedStoneEnable)
         	processMachine();
         processPackets();
     }
@@ -214,7 +214,7 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		if(!this.init || this.isRedStoneEnable || !this.isManualyEnable || fluid==null || this.fluidAndSide==null || !this.fluidAndSide.containsKey(fluid) 
+		if(!this.init || this.isRedStoneEnable || /*!this.isManualyEnable ||*/ fluid==null || this.fluidAndSide==null || !this.fluidAndSide.containsKey(fluid) 
 				|| !this.fluidAndSide.get(fluid).contains(from.ordinal()) ){
 			return false;
 		}
@@ -223,7 +223,7 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 
 	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-		if(!this.init || this.isRedStoneEnable || !this.isManualyEnable || fluid==null || this.fluidAndSide==null || !this.fluidAndSide.get(fluid).contains(from.ordinal()) ){
+		if(!this.init || this.isRedStoneEnable || /*!this.isManualyEnable ||*/ fluid==null || this.fluidAndSide==null || !this.fluidAndSide.get(fluid).contains(from.ordinal()) ){
 			return false;
 		}
 		return true;
@@ -257,12 +257,12 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-		return this.isRedStoneEnable||!this.isManualyEnable?0:this.storage.receiveEnergy(maxReceive, simulate);
+		return this.isRedStoneEnable/*||!this.isManualyEnable*/?0:this.storage.receiveEnergy(maxReceive, simulate);
 	}
 	
 	@Override
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-		return this.isRedStoneEnable||!this.isManualyEnable?0:this.storage.extractEnergy(maxExtract, simulate);
+		return this.isRedStoneEnable/*||!this.isManualyEnable*/?0:this.storage.extractEnergy(maxExtract, simulate);
 	}
 	
 	@Override
@@ -374,7 +374,7 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 
 	@Override
 	public void addToWaila(List<String> list) {
-		list.add("Status : "+(this.isManualyEnable?"ON":"OFF")+"");
+		list.add("Status : "+(this.worldObj.getBlockPowerInput(xCoord, yCoord, zCoord)>0?"Processing and port disable":this.isManualyEnable?"Processing enable":"Processing disable")+"");
 		if(this.hasMaster())
 			list.add("Pillar at : "+this.master.x+", "+this.master.y+", "+this.master.z);
 		else

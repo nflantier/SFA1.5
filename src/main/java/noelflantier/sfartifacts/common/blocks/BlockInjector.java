@@ -64,9 +64,6 @@ public class BlockInjector extends ABlockNBT implements IBlockUsingMaterials{
 
 	@Override
 	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-	  if(side == ForgeDirection.UP) { //stop drips
-	    return false;
-	  }
 	  return true;
 	}
 

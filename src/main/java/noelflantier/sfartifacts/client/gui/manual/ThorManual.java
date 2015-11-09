@@ -139,10 +139,6 @@ public class ThorManual extends BaseManual{
 					addText("on any asgardian or RF machine even from other",10,0);
 					addText(" mods. Then the pillar will distribute his RF power",10,0);
 					addText("to the connected machines.",10,0);
-					
-					/*addText("- Get block with their metadata : you just have to be",5,10);
-					addText("change the hammer mode by shift right clicking in the",5,0);
-					addText("air",10,0);*/
 				}}
 			);	
 		this.componentList.put("bhammer", new GuiComponent(this.guiLeft+10, this.guiTop+145, 35, 10){{
@@ -162,19 +158,6 @@ public class ThorManual extends BaseManual{
 					addText("- Show pillars structures : place an asgardian block",10,0);
 					addText("of any materials on the ground and shift right click",10,0);
 					addText("it to see in 3D all the pillars structures you can do.",10,0);
-					/*addText("- Build pillars : once the structure is done, right",10,0);
-					addText("click on the highest block of the pillar and it will",10,0);
-					addText("setup the structure if you did it right.",10,0);
-					
-					addText("- Link pillars and machines : once you have a working",0,0);
-					addText("pillar right click on it and then shift right click",0,0);
-					addText("on any asgardian or RF machine even from other mods.",0,0);
-					addText("Then the pillar will distribute his RF power to the",0,0);
-					addText("connected machines.",0,0);*/
-					
-					/*addText("- Get block with their metadata : you just have to be",5,10);
-					addText("change the hammer mode by shift right clicking in the",5,0);
-					addText("air",10,0);*/
 				}}
 			);			
 			

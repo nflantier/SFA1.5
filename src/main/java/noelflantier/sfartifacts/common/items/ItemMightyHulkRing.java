@@ -153,7 +153,7 @@ public class ItemMightyHulkRing  extends ItemBaubles implements IBauble{
 	public void onWornTick(ItemStack stack, EntityLivingBase player) {
 		super.onWornTick(stack, player);
 		if (player.getHealth() < player.getMaxHealth())//REGEN
-			player.heal(0.5F);
+			player.heal(0.2F);
          	 
 		if(player.stepHeight <1)//STEP
 			player.stepHeight = 1F;
