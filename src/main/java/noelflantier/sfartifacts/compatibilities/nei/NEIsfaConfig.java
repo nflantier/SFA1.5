@@ -23,8 +23,12 @@ public class NEIsfaConfig  implements IConfigureNEI {
 	@Optional.Method(modid = "NotEnoughItems")
 	@Override
 	public void loadConfig() {
-	    API.registerRecipeHandler(new InjectorRecipeHandler());
-	    API.registerUsageHandler(new InjectorRecipeHandler());
+	    API.registerRecipeHandler(new InjectorRecipeUsageHandler());
+	    API.registerUsageHandler(new InjectorRecipeUsageHandler());
+	    API.registerRecipeHandler(new MightyFoundryRecipeUsageHandler());
+	    API.registerUsageHandler(new MightyFoundryRecipeUsageHandler());
+	    API.registerRecipeHandler(new MoldFilledRecipeUsageHandler());
+	    API.registerUsageHandler(new MoldFilledRecipeUsageHandler());
 	}
 
 }

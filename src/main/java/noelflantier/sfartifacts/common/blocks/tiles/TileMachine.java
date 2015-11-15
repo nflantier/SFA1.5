@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
@@ -39,6 +40,7 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 	//ENERGY
 	public boolean isTransferCaped = false;
     public int energyCapacity = 0;
+    
     //public int rf;
     public EnergyStorage storage = new EnergyStorage(0,0,0);
     public List<ForgeDirection> recieveSides = new ArrayList<>();
@@ -52,6 +54,7 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 	public Hashtable<Fluid, List<Integer>> fluidAndSide;
 	
 	//machine
+	public Random randomMachine = new Random();
 	
 	public TileMachine(){
 		
@@ -68,6 +71,8 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
         	return;
         if(this.isManualyEnable && !this.isRedStoneEnable)
         	processMachine();
+        if(randomMachine.nextFloat()<getRandomTickChance())
+        	processAtRandomTicks();
         processPackets();
     }
 
@@ -77,7 +82,12 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
     		this.master = (Coord4)params[0];
     	}
     }
-    
+
+    public float getRandomTickChance(){
+    	return 0F;
+    }
+    public void processAtRandomTicks(){
+    }
 	public abstract void processPackets();
 	public abstract void processMachine();
 	
@@ -110,7 +120,6 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
         
         //FLUID
         this.tank.writeToNBT(nbt);
-        //nbt.setInteger("tankCapacity", this.tankCapacity);
         
         //INVENTORY
         NBTTagCompound[] tag = new NBTTagCompound[this.getItems().length];
@@ -123,25 +132,8 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 		}
 
 		//ENERGY
-        //nbt.setInteger("rf", this.getEnergyStored(ForgeDirection.UNKNOWN));
 		this.storage.writeToNBT(nbt);
         nbt.setInteger("lastEnergyStoredAmount", this.lastEnergyStoredAmount);
-        
-      /*  int[] dirext = new int[this.extractSides.size()];
-        int i = 0;
-        for(ForgeDirection direction : this.extractSides){
-        	dirext[i] = direction.ordinal();
-        	i++;
-        }
-    	nbt.setIntArray("tabextract", dirext);
-
-        int[] dirrec = new int[this.recieveSides.size()];
-        int j = 0;
-        for(ForgeDirection direction : this.recieveSides){
-        	dirrec[j] = direction.ordinal();
-        	j++;
-        }
-    	nbt.setIntArray("tabrecieve", dirrec);*/
     	
     	//Control
     	nbt.setBoolean("manualyEnabled", this.isManualyEnable);
@@ -156,10 +148,6 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 
     	//FLUID
         this.tank.readFromNBT(nbt);
-		//this.tank.setCapacity(this.tankCapacity);
-        //this.tankCapacity = nbt.getInteger("tankCapacity");
-		//this.tank.setCapacity(this.tankCapacity);
-		
 		//INVENTORY
 		NBTTagCompound[] tag = new NBTTagCompound[this.getItems().length];
 		for (int i = 0; i < this.getItems().length; i++)
@@ -169,23 +157,10 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 		}
         
 		//ENERGY
-		//this.storage.setCapacity(this.capacity);
 		this.storage.readFromNBT(nbt);
 		
-		//this.storage.setMaxTransfer(this.capacity/this.ratioTransfer);
-		//this.rf = nbt.getInteger("rf");
 		this.lastEnergyStoredAmount = nbt.getInteger("lastEnergyStoredAmount");
-		
-        /*int[] dirext = nbt.getIntArray("tabextract");
-        for(int i = 0 ; i < dirext.length ; i++){
-        	this.extractSides.add(ForgeDirection.getOrientation(dirext[i]));
-        }
-
-        int[] dirrec = nbt.getIntArray("tabrecieve");
-        for(int i = 0 ; i < dirrec.length ; i++){
-        	this.recieveSides.add(ForgeDirection.getOrientation(dirrec[i]));
-        }*/
-        
+		        
         //Control
         this.isManualyEnable = nbt.getBoolean("manualyEnabled");
     }
@@ -336,7 +311,7 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		return false;
+		return super.isUseableByPlayer(player);
 	}
 
 	@Override

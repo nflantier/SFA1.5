@@ -14,6 +14,7 @@ public class PacketMightyFoundry implements IMessage, IMessageHandler<PacketMigh
 	public int x;
 	public int y;
 	public int z;
+	public boolean isRunning;
 	public boolean isLocked;
 	public double progression;
 	
@@ -26,6 +27,7 @@ public class PacketMightyFoundry implements IMessage, IMessageHandler<PacketMigh
 		this.y = te.yCoord;
 		this.z = te.zCoord;
 		this.isLocked = te.isLocked;
+		this.isRunning = te.isRunning;
 		this.progression = te.progression;
 	}
 	
@@ -34,6 +36,7 @@ public class PacketMightyFoundry implements IMessage, IMessageHandler<PacketMigh
 		TileEntity te = Minecraft.getMinecraft().thePlayer.worldObj.getTileEntity(message.x,message.y, message.z);
 		if(te!=null && te instanceof TileMightyFoundry) {
 			((TileMightyFoundry)te).progression = message.progression;
+			((TileMightyFoundry)te).isRunning = message.isRunning;
 		}
 		return null;
 	}
@@ -43,6 +46,7 @@ public class PacketMightyFoundry implements IMessage, IMessageHandler<PacketMigh
 	    y = buf.readInt();
 	    z = buf.readInt();
 	    isLocked = buf.readBoolean();
+	    isRunning = buf.readBoolean();
 	    progression = buf.readDouble();
 		
 	}
@@ -52,6 +56,7 @@ public class PacketMightyFoundry implements IMessage, IMessageHandler<PacketMigh
 	    buf.writeInt(y);
 	    buf.writeInt(z);
 	    buf.writeBoolean(isLocked);
+	    buf.writeBoolean(isRunning);
 	    buf.writeDouble(progression);
 	}
 }

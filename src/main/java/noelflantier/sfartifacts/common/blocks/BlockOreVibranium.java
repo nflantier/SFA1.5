@@ -135,7 +135,7 @@ public class BlockOreVibranium extends BlockSFA {
     	if(world.isRemote)
     		return;
     	
-    	int tick = tickBase;//600
+    	int tick = tickBase;
 
         for(int i = 0 ; i < this.tabC.length ; i++){
         	Block b = world.getBlock(x+this.tabC[i][0], y+this.tabC[i][1], z+this.tabC[i][2]);

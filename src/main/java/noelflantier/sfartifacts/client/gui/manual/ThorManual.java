@@ -36,7 +36,7 @@ public class ThorManual extends BaseManual{
 			isLink = true;
 			defColor = EnumChatFormatting.BLACK;
 		}});
-		this.manuals.put("manuals", ModGUIs.guiIDManual);
+		this.links.put("manuals", ModGUIs.guiIDManual);
 
 		this.componentList.put("slash", new GuiComponent(this.guiLeft+this.xSize/2-12, this.guiTop+10, 50, 10){{
 			addText("  /", 0, 0);
@@ -54,7 +54,7 @@ public class ThorManual extends BaseManual{
 				isLink = true;
 				defColor = EnumChatFormatting.BLACK;
 			}});
-			this.manuals.put("index", -1);
+			this.links.put("index", -1);
 		}
 		
 		if(cat.equals("materials")){
@@ -93,7 +93,7 @@ public class ThorManual extends BaseManual{
 				addText("Next->", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("pillars2", -1);
+			this.links.put("pillars2", -1);
 
 		}else if(cat.equals("pillars2")){
 
@@ -124,7 +124,7 @@ public class ThorManual extends BaseManual{
 				addText("<-Prev", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("pillars", -1);
+			this.links.put("pillars", -1);
 		}else if(cat.equals("bhammer2")){
 			this.componentList.put("p1", 
 				new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
@@ -146,7 +146,7 @@ public class ThorManual extends BaseManual{
 				addText("<-Prev", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("bhammer", -1);	
+			this.links.put("bhammer", -1);	
 		}else if(cat.equals("bhammer")){
 
 			this.componentList.put("p1", 
@@ -166,7 +166,7 @@ public class ThorManual extends BaseManual{
 				addText("Next->", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("bhammer2", -1);
+			this.links.put("bhammer2", -1);
 			
 		}else if(cat.equals("liquefier")){
 
@@ -184,8 +184,7 @@ public class ThorManual extends BaseManual{
 					
 					addText("Water can be inserted from all sides. Asgardite can be",0,10);
 					addText("inserted from all sides. Liquefied asgardite can only",0,0);
-					addText("be extracted from the back. You can apply a redstone",0,0);
-					addText("signal to enable or disable the liquefier.",0,0);
+					addText("be extracted from the back.",0,0);
 				}}
 			);
 
@@ -205,16 +204,19 @@ public class ThorManual extends BaseManual{
 					
 					addText("Liquefied asgardite can only be inserted from the",0,10);
 					addText("back. Recipes materials can be inserted from all sides.",0,0);
-					addText("You can apply a redstone signal to enable or disable",0,0);
-					addText("the liquefier.",0,0);
 				}}
 			);
 
 		}else if(cat.equals("irecipe")){
+			this.componentList.put("p", 
+				new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
+					defColor = EnumChatFormatting.BLACK;
+					addText("Recipe you can do in the injector :",0,0);
+				}});
 			this.componentList.put("p1", 
-					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
+					new GuiComponent(this.guiLeft+15, this.guiTop+40, 100, 10){{
 						defColor = EnumChatFormatting.BLACK;
-						addText("Recipe you can do in the injector :",0,0);
+						globalScale = 0.6F;
 						addText("",0,0);
 						for(InjectorRecipe ir : InjectorRecipe.values()){
 							String str = StatCollector.translateToLocal(ir.result.getUnlocalizedName()+".name")+" ( ";
@@ -223,9 +225,9 @@ public class ThorManual extends BaseManual{
 								if(i+1!=ir.recipe.size())
 									str+=", ";
 							}
+							str+=" | "+ir.energyAmount+" RF | "+ir.fluidAmount+" MB )";
 							addText(str,0,0);
-							str=" | "+ir.energyAmount+" RF | "+ir.fluidAmount+" MB )";
-							addText(str,0,0);
+							//addText(str,0,0);
 						}
 					}}
 				);
@@ -277,7 +279,7 @@ public class ThorManual extends BaseManual{
 				addText("<-Prev", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("hu2", -1);
+			this.links.put("hu2", -1);
 		}else if(cat.equals("hu2")){
 			this.componentList.put("p1", 
 				new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
@@ -296,13 +298,13 @@ public class ThorManual extends BaseManual{
 				addText("Next->", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("hu3", -1);
+			this.links.put("hu3", -1);
 			this.componentList.put("hu", new GuiComponent(this.guiLeft+10, this.guiTop+145, 35, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("<-Prev", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("hu", -1);
+			this.links.put("hu", -1);
 		}else if(cat.equals("hu")){
 			this.componentList.put("p1", 
 				new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
@@ -374,7 +376,7 @@ public class ThorManual extends BaseManual{
 				addText("Next->", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("ps2", -1);
+			this.links.put("ps2", -1);
 		}else if(cat.equals("ps2")){
 			this.componentList.put("p1", 
 					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
@@ -391,13 +393,13 @@ public class ThorManual extends BaseManual{
 				addText("Next->", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("ps3", -1);
+			this.links.put("ps3", -1);
 			this.componentList.put("ps", new GuiComponent(this.guiLeft+10, this.guiTop+145, 35, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("<-Prev", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("ps", -1);
+			this.links.put("ps", -1);
 		}else if(cat.equals("ps3")){
 			this.componentList.put("p1", 
 					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
@@ -414,7 +416,7 @@ public class ThorManual extends BaseManual{
 				addText("<-Prev", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("ps2", -1);
+			this.links.put("ps2", -1);
 		}else if(cat.equals("pe")){
 			this.componentList.put("p1", 
 				new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
@@ -472,7 +474,7 @@ public class ThorManual extends BaseManual{
 					defColor = EnumChatFormatting.BLACK;
 					addText("To find a lot of asgardite ore easily, find an extreme",0,0);
 					addText("hills biome, you'll see ores on the surface.",0,0);
-					addText("Steel or bronze pillars are worth building instead",0,0);
+					addText("Steel or bronze pillars are worth building instead",0,10);
 					addText("of waiting your asgardite pillar to fill.",0,0);
 				}}
 			);
@@ -482,21 +484,21 @@ public class ThorManual extends BaseManual{
 				addText("Materials", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("materials", -1);
+			this.links.put("materials", -1);
 
 			this.componentList.put("pillars", new GuiComponent(this.guiLeft+10, this.guiTop+40, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Pillars", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("pillars", -1);
+			this.links.put("pillars", -1);
 
 			this.componentList.put("bhammer", new GuiComponent(this.guiLeft+10, this.guiTop+50, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Basic Hammer", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("bhammer", -1);
+			this.links.put("bhammer", -1);
 
 
 			this.componentList.put("liquefier", new GuiComponent(this.guiLeft+10, this.guiTop+60, 100, 10){{
@@ -504,7 +506,7 @@ public class ThorManual extends BaseManual{
 				addText("Liquefier", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("liquefier", -1);
+			this.links.put("liquefier", -1);
 
 
 			this.componentList.put("injector", new GuiComponent(this.guiLeft+10, this.guiTop+70, 100, 10){{
@@ -512,91 +514,91 @@ public class ThorManual extends BaseManual{
 				addText("Injector", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("injector", -1);
+			this.links.put("injector", -1);
 
 			this.componentList.put("hammers", new GuiComponent(this.guiLeft+10, this.guiTop+80, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("HammerStand", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("hammers", -1);
+			this.links.put("hammers", -1);
 			
 			this.componentList.put("thammer", new GuiComponent(this.guiLeft+10, this.guiTop+90, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Thor's Hammer", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("thammer", -1);
+			this.links.put("thammer", -1);
 
 			this.componentList.put("uf", new GuiComponent(this.guiLeft+10, this.guiTop+100, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("(Uber) Mighty Feather", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("uf", -1);
+			this.links.put("uf", -1);
 
 			this.componentList.put("howto", new GuiComponent(this.guiLeft+10, this.guiTop+120, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("How to progress", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("howto", -1);
+			this.links.put("howto", -1);
 
 			this.componentList.put("tips", new GuiComponent(this.guiLeft+10, this.guiTop+130, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Some tips", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("tips", -1);
+			this.links.put("tips", -1);
 			
 			this.componentList.put("ps", new GuiComponent(this.guiLeft+150, this.guiTop+30, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Pillar structures", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("ps", -1);
+			this.links.put("ps", -1);
 			
 			this.componentList.put("pe", new GuiComponent(this.guiLeft+150, this.guiTop+40, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Pillar passive energy", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("pe", -1);
+			this.links.put("pe", -1);
 			
 			this.componentList.put("pfe", new GuiComponent(this.guiLeft+150, this.guiTop+50, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Pillar fluid energy", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("pfe", -1);
+			this.links.put("pfe", -1);
 			
 			this.componentList.put("hu", new GuiComponent(this.guiLeft+150, this.guiTop+60, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Hammer upgrades", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("hu", -1);
+			this.links.put("hu", -1);
 			
 			this.componentList.put("hurecipe", new GuiComponent(this.guiLeft+150, this.guiTop+70, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Upgrades recipes", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("hurecipe", -1);
+			this.links.put("hurecipe", -1);
 			
 			this.componentList.put("hc", new GuiComponent(this.guiLeft+150, this.guiTop+80, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Hammer config", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("hc", -1);
+			this.links.put("hc", -1);
 			
 			this.componentList.put("irecipe", new GuiComponent(this.guiLeft+150, this.guiTop+90, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Injector recipes", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("irecipe", -1);
+			this.links.put("irecipe", -1);
 		}
 	}
 	

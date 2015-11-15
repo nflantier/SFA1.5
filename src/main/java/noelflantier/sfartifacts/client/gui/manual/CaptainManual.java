@@ -25,7 +25,7 @@ public class CaptainManual  extends BaseManual{
 			isLink = true;
 			defColor = EnumChatFormatting.BLACK;
 		}});
-		this.manuals.put("manuals", ModGUIs.guiIDManual);		
+		this.links.put("manuals", ModGUIs.guiIDManual);		
 		
 		this.componentList.put("slash", new GuiComponent(this.guiLeft+this.xSize/2-12, this.guiTop+10, 50, 10){{
 			addText("  /", 0, 0);
@@ -43,7 +43,7 @@ public class CaptainManual  extends BaseManual{
 				isLink = true;
 				defColor = EnumChatFormatting.BLACK;
 			}});
-			this.manuals.put("index", -1);
+			this.links.put("index", -1);
 		}
 		
 		
@@ -142,42 +142,42 @@ public class CaptainManual  extends BaseManual{
 				addText("Vibranium ore", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("vore", -1);
+			this.links.put("vore", -1);
 
 			this.componentList.put("molds", new GuiComponent(this.guiLeft+10, this.guiTop+40, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Molds", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("molds", -1);
+			this.links.put("molds", -1);
 			
 			this.componentList.put("foundry", new GuiComponent(this.guiLeft+10, this.guiTop+50, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Mighty foundry", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("foundry", -1);
+			this.links.put("foundry", -1);
 			
 			this.componentList.put("foundryr", new GuiComponent(this.guiLeft+10, this.guiTop+60, 120, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Molding Recipe", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("foundryr", -1);
+			this.links.put("foundryr", -1);
 			
 			this.componentList.put("moldp", new GuiComponent(this.guiLeft+10, this.guiTop+70, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Molds pattern", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("moldp", -1);
+			this.links.put("moldp", -1);
 			
 			this.componentList.put("shield", new GuiComponent(this.guiLeft+10, this.guiTop+80, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Vibranium Shield", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("shield", -1);
+			this.links.put("shield", -1);
 		}
 	}
 }

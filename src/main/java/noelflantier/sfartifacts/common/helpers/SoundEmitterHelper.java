@@ -58,7 +58,29 @@ public class SoundEmitterHelper {
 			setRandomFrequencyForId(cid);
 		return cid;
 	}
-
+	
+	public static int getRFNeededForFrequency(int freq){
+		int rf = 0;
+		if(getIdsForFrequency(freq)!=null 
+				&& getIdsForFrequency(freq).size()>0 
+				&& getIdsForFrequency(freq).get(0)!=null 
+				&& spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(freq).get(0))!=null){
+			rf = spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(freq).get(0)).rfneeded;
+		}
+		return rf;
+	}
+	
+	public static int getFLNeededForFrequency(int freq){
+		int fl = 0;
+		if(getIdsForFrequency(freq)!=null 
+				&& getIdsForFrequency(freq).size()>0 
+				&& getIdsForFrequency(freq).get(0)!=null 
+				&& spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(freq).get(0))!=null){
+			fl = spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(freq).get(0)).fluidneeded.amount;
+		}
+		return fl;
+	}
+	
 	public static String[] getNameAndFrequency(int freq){
 		ArrayList<Integer> f = SoundEmitterHelper.getIdsForFrequency(freq);
 		String[] s = new String[f.size()];

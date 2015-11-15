@@ -17,7 +17,7 @@ import noelflantier.sfartifacts.client.gui.bases.GuiSFAScreen;
 public abstract class BaseManual extends GuiSFAScreen{
 	public ResourceLocation bground = new ResourceLocation(References.MODID+":textures/gui/guiManuals.png");
 	public EntityPlayer player;
-	public Hashtable<String,Integer> manuals = new Hashtable<String,Integer>();
+	public Hashtable<String,Integer> links = new Hashtable<String,Integer>();
 	public boolean catOpen = false;
 	public String currentCat = "index";
 	
@@ -44,7 +44,7 @@ public abstract class BaseManual extends GuiSFAScreen{
 
 	@Override
 	public void initGui() {
-		this.manuals = new Hashtable<String,Integer>();
+		this.links = new Hashtable<String,Integer>();
 		this.componentList = new Hashtable<String, GuiComponent>();
 		super.initGui();
 	}
@@ -61,9 +61,9 @@ public abstract class BaseManual extends GuiSFAScreen{
 		while (enumKey.hasMoreElements()) {
 		    String key = enumKey.nextElement();
 		    if(this.componentList.get(key).clicked(x, y)){
-	    		if(this.manuals.get(key)>0){
+	    		if(this.links.get(key)>0){
 	    			this.mc.thePlayer.closeScreen();
-	    			player.openGui(SFArtifacts.instance, this.manuals.get(key), Minecraft.getMinecraft().theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
+	    			player.openGui(SFArtifacts.instance, this.links.get(key), Minecraft.getMinecraft().theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
 	    		}else{
 	    			this.currentCat = key;
 	    			this.catOpen = true;

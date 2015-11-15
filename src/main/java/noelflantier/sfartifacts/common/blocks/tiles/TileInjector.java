@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import cofh.api.energy.EnergyStorage;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -43,6 +44,7 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials,ITi
 		this.tankCapacity = 100000;
 		this.tank.setCapacity(this.tankCapacity);
 	}	
+	
 	@Override
 	public void init(){
 		super.init();
@@ -64,7 +66,7 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials,ITi
 		PacketHandler.sendToAllAround(new PacketFluid(this.xCoord, this.yCoord, this.zCoord, new int[]{this.tank.getFluidAmount()}, new int[]{this.tank.getCapacity()}, new int[]{ModFluids.fluidLiquefiedAsgardite.getID()}),this);
 		PacketHandler.sendToAllAround(new PacketInjector(this),this);
 	}
-	
+    
 	@Override
 	public void processMachine() {
         if(!this.isRedStoneEnable){
@@ -89,6 +91,7 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials,ITi
         	this.processInventory();
         }
 	}
+	
 	public boolean processInventory(){
 		if(this.items[0]!=null){
 			if(this.tank.getFluidAmount()<this.tank.getCapacity()){
@@ -115,7 +118,7 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials,ITi
 					&& this.tank.getFluidAmount()>=cr.fluidAmount/this.tickToInject){
 				this.currentTickToInject[idline]-=1;
 				
-				if(this.getRandom(this.getBlockMetadata())){
+				if(this.getRandom(this.getBlockMetadata(),this.randomMachine)){
 					this.extractEnergy(ForgeDirection.UNKNOWN, cr.energyAmount/this.tickToInject, false);
 					this.tank.drain(cr.fluidAmount/this.tickToInject, true);
 				}

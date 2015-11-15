@@ -154,6 +154,7 @@ public class TileMightyFoundry extends TileMachine implements ITileGlobalNBT{
 		}
 		return true;
 	}
+	
 	public void writeToItem(ItemStack stack){
 	    if(stack == null) {
 	        return;
@@ -267,5 +268,16 @@ public class TileMightyFoundry extends TileMachine implements ITileGlobalNBT{
 	@Override
 	public void setLastEnergyStored(int lastEnergyStored) {
 		this.lastEnergyStoredAmount = lastEnergyStored;
+	}
+
+	@Override
+	public void addToWaila(List<String> list) {
+		super.addToWaila(list);
+		if(this.isRunning){
+			boolean hasm = this.getStackInSlot(2)==null&&this.getStackInSlot(3)==null&&this.getStackInSlot(4)==null&&this.getStackInSlot(5)==null;
+			list.add("Forging : "+(!this.isLocked?"Mold not locked":!hasm?(this.progression*100)+"%":"No materials"));
+		}else{
+			list.add(""+(this.getStackInSlot(1)==null?"No mold":!this.isLocked?"Mold not locked":"Mold locked"));
+		}
 	}
 }

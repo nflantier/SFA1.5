@@ -31,8 +31,7 @@ public class ContainerHammerStandInvoked extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return true;
-		//return player.getDistanceSq(this.tile.xCoord+0.5F, this.tile.yCoord+0.5F, this.tile.zCoord+0.5F)<=64;
+		return tile.isUseableByPlayer(player);
 	}
 	
 	private int nextId(){

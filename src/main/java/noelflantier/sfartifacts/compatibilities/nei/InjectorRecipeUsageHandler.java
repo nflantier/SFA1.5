@@ -17,7 +17,7 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 
-public class InjectorRecipeHandler extends TemplateRecipeHandler {
+public class InjectorRecipeUsageHandler extends TemplateRecipeHandler {
 
 	@Override
 	public String getRecipeName() {
@@ -29,22 +29,24 @@ public class InjectorRecipeHandler extends TemplateRecipeHandler {
 		return (References.MODID+":textures/gui/nei/guiInjector.png");
 	}
 
-	  @Override
-	  public void loadTransferRects() {
-	    transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(149, 32, 16, 16), "SFArtifactsInjector", new Object[0]));
-	  }
+	@Override
+	public void loadTransferRects() {
+		transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(149, 32, 16, 16), "SFArtifactsInjector", new Object[0]));
+	}
 	  
 	@Override
 	public void loadUsageRecipes(ItemStack ingredient) {
-		/*for(InjectorRecipe ir : InjectorRecipe.values()){
-			ItemStack output = new ItemStack(ir.result);
-			if(ingredient.getItem() == ir.result && ingredient.getItemDamage()==output.getItemDamage()){
-				for(Hashtable <Item, Integer> h : ir.recipe){
-					InjectorRecipeNei res = new InjectorRecipeNei(h, ir.result);
+		if(ingredient == null) {
+			return;
+		}
+		for(InjectorRecipe ir : InjectorRecipe.values()){
+			for(ItemStack it : ir.recipe){
+				if(it.getItem()==ingredient.getItem() && it.getItemDamage()==ingredient.getItemDamage()){
+					InjectorRecipeNei res = new InjectorRecipeNei(ir, ir.result);
 					arecipes.add(res);
 				}
 			}
-		}*/
+		}
 	}
 	
 	@Override

@@ -17,7 +17,7 @@ public class HulkManual extends BaseManual{
 			isLink = true;
 			defColor = EnumChatFormatting.BLACK;
 		}});
-		this.manuals.put("manuals", ModGUIs.guiIDManual);		
+		this.links.put("manuals", ModGUIs.guiIDManual);		
 		
 		this.componentList.put("slash", new GuiComponent(this.guiLeft+this.xSize/2-12, this.guiTop+10, 50, 10){{
 			addText("  /", 0, 0);
@@ -35,7 +35,7 @@ public class HulkManual extends BaseManual{
 				isLink = true;
 				defColor = EnumChatFormatting.BLACK;
 			}});
-			this.manuals.put("index", -1);
+			this.links.put("index", -1);
 		}
 		
 		
@@ -101,28 +101,28 @@ public class HulkManual extends BaseManual{
 				addText("Sound Emitter", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("sound", -1);
+			this.links.put("sound", -1);
 
 			this.componentList.put("hulk", new GuiComponent(this.guiLeft+10, this.guiTop+40, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Hulk", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("hulk", -1);
+			this.links.put("hulk", -1);
 			
 			this.componentList.put("hulkring", new GuiComponent(this.guiLeft+10, this.guiTop+50, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Mighty Hulk Ring", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("hulkring", -1);
+			this.links.put("hulkring", -1);
 			
-			this.componentList.put("freq", new GuiComponent(this.guiLeft+10, this.guiTop+50, 100, 10){{
+			this.componentList.put("freq", new GuiComponent(this.guiLeft+10, this.guiTop+60, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Mob frequencies", 0, 0);
 				isLink = true;
 			}});
-			this.manuals.put("freq", -1);
+			this.links.put("freq", -1);
 			
 		}
 	}

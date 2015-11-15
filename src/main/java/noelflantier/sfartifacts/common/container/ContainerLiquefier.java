@@ -36,7 +36,7 @@ public class ContainerLiquefier extends ContainerMachine{
 	
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return true;
+		return tmachine.isUseableByPlayer(player);
 	}
 	
 	private int nextId(){

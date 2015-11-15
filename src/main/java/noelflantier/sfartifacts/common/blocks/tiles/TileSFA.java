@@ -1,5 +1,6 @@
 package noelflantier.sfartifacts.common.blocks.tiles;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -50,6 +51,10 @@ public abstract class TileSFA  extends TileEntity implements IHasWailaContent{
         readFromNBT(pkt.func_148857_g());
     }
     
+	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+		return worldObj.getTileEntity(xCoord, yCoord, zCoord) != this ? false : entityplayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64;
+	}
+	
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);

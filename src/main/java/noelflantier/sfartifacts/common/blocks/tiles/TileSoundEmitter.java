@@ -313,5 +313,11 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 	@Override
 	public void addToWaila(List<String> list) {
 		super.addToWaila(list);
+		String str = "";
+		if(this.getEnergyStored(ForgeDirection.UNKNOWN)<SoundEmitterHelper.getRFNeededForFrequency(this.frequencyEmited))
+			str += "Not enough RF";
+		if(this.getFluidTanks().get(0).getFluidAmount()<SoundEmitterHelper.getFLNeededForFrequency(this.frequencyEmited))
+			str += str == ""?"Not enough Fluid":" and Fluid";
+		list.add("Emiting : "+(this.isEmitting?str==""?this.frequencyEmited+" "+SoundEmitterHelper.spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(this.frequencyEmited).get(0)).nameEntity:""+str:"No"));
 	}
 }

@@ -7,12 +7,14 @@ import noelflantier.sfartifacts.common.blocks.tiles.TileHammerStand;
 
 public class ContainerHammerStandNonInvoked  extends Container {
 
+	private TileHammerStand tile;
 	public ContainerHammerStandNonInvoked(InventoryPlayer inventory,TileHammerStand tile) {
+		this.tile = tile;
 	}
-
+	
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return true;
+		return tile.isUseableByPlayer(player);
 	}
 
 }

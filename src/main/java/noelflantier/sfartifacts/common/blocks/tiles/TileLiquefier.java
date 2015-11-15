@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import cofh.api.energy.EnergyStorage;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,6 +35,7 @@ public class TileLiquefier extends TileMachine implements ITileUsingMaterials,IT
 	public FluidStack fluidNeededPerOneItem = new FluidStack(FluidRegistry.WATER, 200);
 	public FluidStack fluidGivenPerOneItem = new FluidStack(ModFluids.fluidLiquefiedAsgardite, 1000);
 	public FluidTank tankMelt = new FluidTank(10000);
+	public int[][] offsetWater = new int[][]{{0,-1,0},{1,-1,0},{-1,-1,0},{0,-1,1},{1,-1,1},{-1,-1,1},{0,-1,-1},{1,-1,-1},{-1,-1,-1}};
 	
 	//INVENTORY
 	public ItemStack[] items = new ItemStack[3];
@@ -71,7 +73,27 @@ public class TileLiquefier extends TileMachine implements ITileUsingMaterials,IT
         PacketHandler.sendToAllAround(new PacketFluid(this.xCoord, this.yCoord, this.zCoord, new int[]{this.tank.getFluidAmount(), this.tankMelt.getFluidAmount()}, new int[]{this.tank.getCapacity(), this.tankMelt.getCapacity()}, new int[]{ModFluids.fluidLiquefiedAsgardite.getID(), FluidRegistry.WATER.getID()}),this);
         PacketHandler.sendToAllAround(new PacketLiquefier(this),this);
 	}
-	
+
+	@Override
+    public void processAtRandomTicks(){
+		if(this.getFluidTanks().get(1).getFluidAmount()>=this.getFluidTanks().get(1).getCapacity())
+			return;
+		int wateramount = 0;
+		if(!this.getRandom(this.getBlockMetadata(),this.randomMachine)){
+			wateramount += 15;
+		}
+    	for(int i = 0;i<this.offsetWater.length;i++){
+    		if(this.worldObj.getBlock(xCoord+this.offsetWater[i][0], yCoord+this.offsetWater[i][1], zCoord+this.offsetWater[i][2])==Blocks.water)
+    			wateramount+=1;
+    	}
+    	this.fill(ForgeDirection.DOWN, new FluidStack(FluidRegistry.WATER,wateramount), true);
+    }
+
+	@Override
+    public float getRandomTickChance(){
+    	return 0.18F;
+    }
+    
 	@Override
 	public void processMachine() {
         if(!this.isRedStoneEnable){
@@ -142,7 +164,7 @@ public class TileLiquefier extends TileMachine implements ITileUsingMaterials,IT
 				FluidStack fs = this.fluidGivenPerOneItem.copy();
 				fs.amount = fs.amount/this.tickToMelt;
 				this.tank.fill(fs, true);
-				if(this.getRandom(this.getBlockMetadata())){
+				if(this.getRandom(this.getBlockMetadata(),this.randomMachine)){
 					this.tankMelt.drain(this.fluidNeededPerOneItem.amount/this.tickToMelt, true);
 					this.extractEnergy(ForgeDirection.UNKNOWN, this.energyNeededPerOneItem/this.tickToMelt, false);
 				}

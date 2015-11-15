@@ -63,6 +63,9 @@ public class GuiLiquefier extends GuiMachine{
 			globalScale = 0.6F;
 			addText("This machine will turn asgardite into liquefied", 0, 0);
 			addText("asgardite, it will use RF an water to do so.", 0, 0);
+			addText("If you put water source under this machine it will", 0, 0);
+			addText("passively drain from it, it can drain from a 3x3", 0, 0);
+			addText("zone right under it.", 0, 0);
 		}});
 	}
 	

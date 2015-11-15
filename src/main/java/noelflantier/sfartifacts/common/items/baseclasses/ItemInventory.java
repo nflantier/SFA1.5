@@ -20,7 +20,6 @@ public class ItemInventory implements IInventory{
 
 	public ItemInventory(EntityPlayer player, int id){
 		this(player);
-		//System.out.println(""+id);
 	}
 	public void setInv(){
 		if(this.player.getCurrentEquippedItem()==null)

@@ -14,9 +14,7 @@ public interface ITileUsingMaterials {
 	default void setNaturalEnergy(int ne, int id){
 		ne = getNaturalEnergy(id);
 	};
-	default boolean getRandom(int id){
-		Random rd = new Random();
-		int f = rd.nextInt(100);
-		return f>getNaturalEnergy(id);
+	default boolean getRandom(int id, Random r){
+		return r.nextInt(100)>getNaturalEnergy(id);
 	}
 }

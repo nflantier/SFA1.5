@@ -177,9 +177,9 @@ public class GuiSoundEmitter extends GuiMachine{
 	
 	public void showCond(String key){
 		this.componentList.get(key).addText("c:_"+this.getStrConditionsFrequency(this.lastFrequency), 0, 0);
-		if(this.tile.getEnergyStored(ForgeDirection.UNKNOWN)<getRFNeededForFrequency(this.lastFrequency))
+		if(this.tile.getEnergyStored(ForgeDirection.UNKNOWN)<SoundEmitterHelper.getRFNeededForFrequency(this.lastFrequency))
 			this.componentList.get(key).addText("!!not_enough_rf", 0, 0);
-		if(this.tile.getFluidTanks().get(0).getFluidAmount()<getFLNeededForFrequency(this.lastFrequency))
+		if(this.tile.getFluidTanks().get(0).getFluidAmount()<SoundEmitterHelper.getFLNeededForFrequency(this.lastFrequency))
 			this.componentList.get(key).addText("!!not_enough_fluid", 0, 0);
 				
 	}
@@ -372,32 +372,10 @@ public class GuiSoundEmitter extends GuiMachine{
 		}
 		return s;
 	}
-
-	public int getRFNeededForFrequency(int freq){
-		int rf = 0;
-		if(SoundEmitterHelper.getIdsForFrequency(freq)!=null 
-				&& SoundEmitterHelper.getIdsForFrequency(freq).size()>0 
-				&& SoundEmitterHelper.getIdsForFrequency(freq).get(0)!=null 
-				&& SoundEmitterHelper.spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(freq).get(0))!=null){
-			rf = SoundEmitterHelper.spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(freq).get(0)).rfneeded;
-		}
-		return rf;
-	}
-
-	public int getFLNeededForFrequency(int freq){
-		int fl = 0;
-		if(SoundEmitterHelper.getIdsForFrequency(freq)!=null 
-				&& SoundEmitterHelper.getIdsForFrequency(freq).size()>0 
-				&& SoundEmitterHelper.getIdsForFrequency(freq).get(0)!=null 
-				&& SoundEmitterHelper.spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(freq).get(0))!=null){
-			fl = SoundEmitterHelper.spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(freq).get(0)).fluidneeded.amount;
-		}
-		return fl;
-	}
 	
 	public String getStrConditionsFrequency(int freq){
 		String s = "";
-		s = getRFNeededForFrequency(freq)+"RF_"+getFLNeededForFrequency(freq)+"MB";
+		s = SoundEmitterHelper.getRFNeededForFrequency(freq)+"RF_"+SoundEmitterHelper.getFLNeededForFrequency(freq)+"MB";
 		return s;
 	}
 	

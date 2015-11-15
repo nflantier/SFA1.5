@@ -30,11 +30,16 @@ public enum Molds {
 	public static int globalID = 0;
 	public ItemStack ingredients;
 	public ItemStack result;
+	public ItemStack mold;
 	
 	private Molds(String name, int[] recipe, ItemStack ingredients, ItemStack result){
 		this.name = name;
 		this.recipe = recipe;
 		this.ID = nextGlobalID();
+		ItemStack it0 = new ItemStack(ModItems.itemMold, 1, this.ID);
+		it0 = ItemNBTHelper.setInteger(it0, "idmold", this.ID);
+		it0 = ItemNBTHelper.setIntegerArray(it0, "moldstructure", this.recipe);
+		this.mold = it0;
 		this.ingredients = ingredients;
 		this.result = result;
 	}
