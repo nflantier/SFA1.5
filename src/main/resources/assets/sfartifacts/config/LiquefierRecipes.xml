@@ -1,0 +1,11 @@
+<recipes>
+    <recipe name="Liquefied Asgardite" energyCost="100" fluidCost="0">
+		<input>
+			<itemStack modID="sfartifacts" itemName="itemAsgardite"/>
+			<fluidStack itemName="water" amount="200" />
+		</input>
+		<output>
+			<fluidStack itemName="liquefiedAsgardite" amount="1000" />
+		</output>
+    </recipe>
+</recipes>

@@ -21,13 +21,20 @@ import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
 import noelflantier.sfartifacts.common.network.messages.PacketFluid;
 import noelflantier.sfartifacts.common.network.messages.PacketInjector;
+import noelflantier.sfartifacts.common.recipes.ISFARecipe;
+import noelflantier.sfartifacts.common.recipes.IUseSFARecipes;
+import noelflantier.sfartifacts.common.recipes.RecipeBase;
+import noelflantier.sfartifacts.common.recipes.RecipeOutput;
+import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
+import noelflantier.sfartifacts.common.recipes.handler.InjectorRecipesHandler;
 
-public class TileInjector extends TileMachine implements ITileUsingMaterials,ITileGlobalNBT{
+public class TileInjector extends TileMachine implements ITileUsingMaterials, ITileGlobalNBT, IUseSFARecipes{
 
 	//PROCESSING
 	public int tickToInject = 10;
 	public boolean isRunning[] = new boolean[3];
 	public int currentTickToInject[] = new int[3];
+	public String currentRecipeName[] = new String[]{"none","none","none"};
 	public int currentRecipeId[] = new int[3];
 
 	//INVENTORY
@@ -112,7 +119,47 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials,ITi
 	}
 	
 	public void isRunningProcess(int idline){
-		if(this.currentRecipeId[idline]!=-1){
+		if(this.currentRecipeName[idline]!=null && !this.currentRecipeName[idline].equals("none")){
+			ISFARecipe recipe = RecipesRegistry.instance.getRecipeForUsage(getUsageName(),this.currentRecipeName[idline]);
+			if(recipe!=null && this.getEnergyStored(ForgeDirection.UNKNOWN)>=recipe.getEnergyCost()/this.tickToInject 
+					&& this.getFluidTanks().get(0).getFluidAmount()>recipe.getFluidCost()/this.tickToInject){
+				this.currentTickToInject[idline]-=1;
+				if(this.getRandom(this.getBlockMetadata(),this.randomMachine)){
+					this.extractEnergy(ForgeDirection.UNKNOWN, recipe.getEnergyCost()/this.tickToInject, false);
+					this.tank.drain(recipe.getFluidCost()/this.tickToInject, true);
+				}
+				if(this.currentTickToInject[idline]<=0){
+					if(RecipesRegistry.instance.canRecipeStack(recipe, getOutputStacks(idline))){
+						int size = recipe.getOutputs().size();
+						for(RecipeOutput ro : recipe.getOutputs()){
+							if(ro.canStackWithItemStack(items[idline*2+6+1]) && size>0){
+								size-=1;
+								if(items[idline*2+6+1]==null){
+									items[idline*2+6+1] = ro.getOutputItem().copy();
+								}else{
+									items[idline*2+6+1].stackSize+=ro.getOutputItem().stackSize;
+								}
+							}else if(ro.canStackWithItemStack(items[idline*2+6+1+1]) && size>0){
+								size-=1;
+								if(items[idline*2+6+1+1]==null){
+									items[idline*2+6+1+1] = ro.getOutputItem().copy();
+								}else{
+									items[idline*2+6+1+1].stackSize+=ro.getOutputItem().stackSize;
+								}
+							}
+							if(size<=0){
+								break;
+							}
+						}
+					}
+					this.isRunning[idline] = false;
+					this.currentRecipeName[idline] = "none";
+				}
+			}else{
+				this.currentRecipeName[idline] = "";
+			}
+		}
+		/*if(this.currentRecipeId[idline]!=-1){
 			InjectorRecipe cr = InjectorRecipe.values()[this.currentRecipeId[idline]];
 			if(this.getEnergyStored(ForgeDirection.UNKNOWN)>=cr.energyAmount/this.tickToInject 
 					&& this.tank.getFluidAmount()>=cr.fluidAmount/this.tickToInject){
@@ -142,68 +189,49 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials,ITi
 					}
 				}
 			}
-		}
+		}*/
 	}
-
+	
 	public void isNotRunningProcess(int idline){
 		this.currentTickToInject[idline] = this.tickToInject;
-		this.currentRecipeId[idline]=-1;
-		InjectorRecipe irf = null;
+		this.currentRecipeName[idline]= "none";
 
-		for(int idcase =0;idcase<2;idcase++){
-			if(this.items[idline*2+idcase+1]!=null){
-
-				for(InjectorRecipe ir : InjectorRecipe.values()){
-					if(ir.recipe.size()>1){
-						int ad = (idcase==0)?1:-1;
-						if(this.checkContainsItem(ir, this.items[idline*2+idcase+1]) && this.checkContainsItem(ir, this.items[idline*2+idcase+ad+1])  
-								&& this.items[idline*2+idcase+1].getItem()!=this.items[idline*2+idcase+ad+1].getItem()){
-							irf = ir;
-							break;
-						}
-					}else{
-						if(this.checkContainsItem(ir, this.items[idline*2+idcase+1])){
-							irf = ir;
-							break;
-						}
-					}
-				}
-				
-			}
-			if(irf!=null && this.tank.getFluidAmount()>=irf.fluidAmount 
-					&& this.getEnergyStored(ForgeDirection.UNKNOWN)>=irf.energyAmount){
-				for(int idcaseres =0;idcaseres<2;idcaseres++){
-					if( ( this.items[idline*2+idcaseres+6+1]!=null && this.items[idline*2+idcaseres+6+1].stackSize+1<=this.items[idline*2+idcaseres+6+1].getMaxStackSize() 
-							&& this.items[idline*2+idcaseres+6+1].getItem()==irf.result ) || this.items[idline*2+idcaseres+6+1]==null){
-						this.currentRecipeId[idline] = irf.ordinal();
+		List<ISFARecipe> recipes = RecipesRegistry.instance.getOrderedRecipes(this, RecipesRegistry.instance.getInputFromItemStack(getInputStacks(idline)));
+		if(recipes!=null && !recipes.isEmpty()){
+			for(ISFARecipe recipe : recipes){
+				if(recipe!=null && recipe.getOutputs()!=null){
+					if(RecipesRegistry.instance.canRecipeStack(recipe, getOutputStacks(idline))){
+						this.currentRecipeName[idline]=recipe.getUid();
 						this.isRunning[idline] = true;
-						
-						if(irf.recipe.size()>1){// && idcaseres == 0
-							int itsize = getStackSize(irf,this.items[idline*2+idcase+1]);
-							if(this.items[idline*2+idcase+1].stackSize==itsize){
-								this.items[idline*2+idcase+1]=null;
-							}else
-								this.items[idline*2+idcase+1].stackSize-=itsize;
-							
-							int itsize2 = getStackSize(irf,this.items[idline*2+idcase+1+1]);
-							if(this.items[idline*2+idcase+1+1].stackSize==itsize2){
-								this.items[idline*2+idcase+1+1]=null;
-							}else
-								this.items[idline*2+idcase+1+1].stackSize-=itsize2;
+						if(recipe.getInputs().size()<=1){
+							if(items[idline*2+1] == null || !recipe.getInputs().get(0).isItemStackSame(items[idline*2+1]))
+								items[idline*2+1+1] = RecipesRegistry.instance.processRecipeOnInput(recipe, items[idline*2+1+1]);
+							items[idline*2+1] = RecipesRegistry.instance.processRecipeOnInput(recipe, items[idline*2+1]);
+						}else{
+							items[idline*2+1+1] = RecipesRegistry.instance.processRecipeOnInput(recipe, items[idline*2+1+1]);
+							items[idline*2+1] = RecipesRegistry.instance.processRecipeOnInput(recipe, items[idline*2+1]);	
 						}
-						if(irf.recipe.size()<=1){				
-							if(this.items[idline*2+idcase+1].stackSize==irf.recipe.get(0).stackSize){
-								this.items[idline*2+idcase+1]=null;
-							}else
-								this.items[idline*2+idcase+1].stackSize-=irf.recipe.get(0).stackSize;
-						}
-						return;
+						break;
 					}
 				}
 			}
 		}
 	}
 
+	public List<ItemStack> getInputStacks(int idline){
+		return new ArrayList<ItemStack>(){{
+			add(items[idline*2+1]);
+			add(items[idline*2+1+1]);
+		}};
+	}
+	
+	public List<ItemStack> getOutputStacks(int idline){
+		return new ArrayList<ItemStack>(){{
+			add(items[idline*2+1+6]);
+			add(items[idline*2+1+1+6]);
+		}};
+	}
+	
 	public int getStackSize(InjectorRecipe ir, ItemStack stack){
 		for(ItemStack sta : ir.recipe){
 			if(sta.getItem()==stack.getItem() && sta.getItemDamage()==stack.getItemDamage()){
@@ -262,6 +290,9 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials,ITi
 
         for(int i =0;i<this.currentRecipeId.length;i++)
         	nbt.setInteger("currentRecipeId"+i, this.currentRecipeId[i]);
+        
+        //for(int i =0;i<this.currentRecipeName.length;i++)
+        //	nbt.setString("currentRecipeName"+i, this.currentRecipeName[i]);
     }
 
     @Override
@@ -276,6 +307,9 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials,ITi
         
         for(int i =0;i<this.currentRecipeId.length;i++)
     		this.currentRecipeId[i] = nbt.getInteger("currentRecipeId"+i);
+        
+        //for(int i =0;i<this.currentRecipeName.length;i++)
+    		//this.currentRecipeName[i] = nbt.getString("currentRecipeName"+i);
     }
     
 	@Override
@@ -321,5 +355,22 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials,ITi
 	@Override
 	public void setLastEnergyStored(int lastEnergyStored) {
 		this.lastEnergyStoredAmount = lastEnergyStored;
+	}
+	
+	@Override
+	public String getUsageName() {
+		return InjectorRecipesHandler.USAGE_INJECTOR;
+	}
+	@Override
+	public int getEnergy() {
+		return this.getEnergyStored(ForgeDirection.UNKNOWN);
+	}
+	@Override
+	public int getFluid() {
+		return this.getFluidTanks().get(0).getFluidAmount();
+	}
+	@Override
+	public Class<? extends RecipeBase> getClassOfRecipe() {
+		return RecipeBase.class;
 	}
 }

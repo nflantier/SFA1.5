@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import noelflantier.sfartifacts.common.handlers.ModBlocks;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 
-public class ConfigByHandRecipe extends RecipeOnHammerStand {
+/*public class ConfigByHandRecipe extends RecipeOnHammerStand {
 	
 	public ConfigByHandRecipe(List<ItemStack> recipe){
 		super(recipe);
@@ -28,4 +28,4 @@ public class ConfigByHandRecipe extends RecipeOnHammerStand {
 		//return !ItemNBTHelper.getBoolean(stack, "CanBeConfigByHand", false) && item.getEntityItem().getItem()==Item.getItemFromBlock(ModBlocks.blockControlPanel) && item.getEntityItem().stackSize >= quantity;
 	}
 	
-}
+}*/

@@ -18,10 +18,17 @@ import noelflantier.sfartifacts.common.handlers.ModOreDictionary;
 import noelflantier.sfartifacts.common.handlers.ModRecipes;
 import noelflantier.sfartifacts.common.handlers.ModTileEntities;
 import noelflantier.sfartifacts.common.helpers.SoundEmitterHelper;
+import noelflantier.sfartifacts.common.recipes.handler.HammerUpgradesRecipesHandler;
+import noelflantier.sfartifacts.common.recipes.handler.InjectorRecipesHandler;
+import noelflantier.sfartifacts.common.recipes.handler.LiquefierRecipesHandler;
+import noelflantier.sfartifacts.common.recipes.handler.MightyFoundryRecipesHandler;
 import noelflantier.sfartifacts.common.world.ModWorldGenOre;
 import noelflantier.sfartifacts.common.world.village.ComponentPillar;
 import noelflantier.sfartifacts.common.world.village.VillagePillarHandler;
 import noelflantier.sfartifacts.compatibilities.InterMods;
+
+import java.io.File;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
@@ -37,7 +44,8 @@ public class CommonProxy {
 	public ModEvents sfaEvents = new ModEvents();
 	
 	public void preInit(FMLPreInitializationEvent event) {
-		ModConfig.init(event.getSuggestedConfigurationFile());
+		//ModConfig.init(event.getSuggestedConfigurationFile());
+		ModConfig.init(event);
         MinecraftForge.EVENT_BUS.register(sfaEvents);
         FMLCommonHandler.instance().bus().register(sfaEvents);
     	ModItems.loadItems();
@@ -68,6 +76,13 @@ public class CommonProxy {
     	ModOreDictionary.checkOreDictionary();
     	ModOreDictionary.loadOres();
     	ModRecipes.loadRecipes();
+    	
+    	InjectorRecipesHandler.getInstance().loadRecipes();
+    	//InjectorRecipesHandler.getInstance().getRecipes().forEach((s)->s.debug());
+    	HammerUpgradesRecipesHandler.getInstance().loadRecipes();
+    	//HammerUpgradesRecipesHandler.getInstance().getRecipes().forEach((s)->s.debug());
+    	//LiquefierRecipesHandler.getInstance().loadRecipes();
+    	//MightyFoundryRecipesHandler.getInstance().loadRecipes();
 	}
 	
 	public EntityPlayer getPlayerEntity(MessageContext ctx) {

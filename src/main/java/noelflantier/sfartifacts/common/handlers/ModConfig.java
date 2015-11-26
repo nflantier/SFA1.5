@@ -2,10 +2,14 @@ package noelflantier.sfartifacts.common.handlers;
 
 import java.io.File;
 
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.common.config.Configuration;
+import noelflantier.sfartifacts.References;
 
 public class ModConfig {
 	
+
+	public static boolean useOldRegistration;
 	
 	public static int rfNeededThorHammer;
 	public static int rfMining;
@@ -31,12 +35,18 @@ public class ModConfig {
 	public static int fluidNeededToSpawnDefault;
 	public static boolean areFrequenciesShown;
 	
-	public String catThorhammer = "Thor s Hammer";
 	public static Configuration config;
+	public static File configDirectory;
 	
-	public static void init(File confFile) {
+	public static void init(FMLPreInitializationEvent event) {
+		if( configDirectory == null){
+			configDirectory = new File(event.getModConfigurationDirectory(), References.MODID.toLowerCase());
+		    if(!configDirectory.exists()) {
+		    	configDirectory.mkdir();
+		    }
+		}
 		if (config == null) {
-			config = new Configuration(confFile);
+			config = new Configuration(new File(configDirectory, References.NAME+".cfg"));
 			syncConfig();
 		}
 	}
@@ -72,6 +82,9 @@ public class ModConfig {
 			isManualSpawning = config.get(Configuration.CATEGORY_GENERAL, "manual spawn", true, "Is the manual spawn at player on new log in").getBoolean();
 			chanceToSpawnMightyFeather = config.get(Configuration.CATEGORY_GENERAL, "chance to drop mighty feather", 0.35, "Chance that chickens hit by lightning drop mighty feather [0-1]").getDouble();
 			tickToCookVibraniumOres = config.get(Configuration.CATEGORY_GENERAL, "ticks", 6000, "The number of ticks needed to vibranium ores to be cooked 20 tick = 1 s").getInt();
+			
+
+			useOldRegistration = config.get("Utils", "Use old registration", false, "In the newer version registered name have changed so if you have an id error set this to true").getBoolean();
 		}
 		catch (Exception e) {
 			e.printStackTrace();

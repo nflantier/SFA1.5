@@ -6,7 +6,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 
-public class ThrowToMoveRecipe  extends RecipeOnHammerStand {
+/*public class ThrowToMoveRecipe  extends RecipeOnHammerStand {
 	
 	public ThrowToMoveRecipe(List<ItemStack> recipe){
 		super(recipe);
@@ -25,4 +25,4 @@ public class ThrowToMoveRecipe  extends RecipeOnHammerStand {
 		//return !ItemNBTHelper.getBoolean(stack, "CanMagnet", false) && item.getEntityItem().getItem()==ModItems.itemEnergyModule && item.getEntityItem().stackSize >= quantity;
 	}
 	
-}
+}*/

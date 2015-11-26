@@ -2,29 +2,43 @@ package noelflantier.sfartifacts.common.hammerstandrecipe;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
 
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
+import noelflantier.sfartifacts.common.items.baseclasses.ToolHammerBase;
+import noelflantier.sfartifacts.common.recipes.ISFARecipe;
+import noelflantier.sfartifacts.common.recipes.RecipeHammerUpgrades;
+import noelflantier.sfartifacts.common.recipes.RecipeHammerUpgrades.NbtTagToAdd;
+import noelflantier.sfartifacts.common.recipes.RecipeInput;
 
-public abstract class RecipeOnHammerStand {
+public class RecipeOnHammerStand {
 
 	public int age;
 	public int maxAge;
-	public List<ItemStack> recipe;
+	public ISFARecipe recipe;
 	public List<EntityItem> itemOnSpot = new ArrayList<EntityItem>();
+	public ItemStack hammer;
+	public boolean isEnchantBook;
+	public boolean isValid = true;
 
-	public RecipeOnHammerStand(List<ItemStack> recipe){
+	public RecipeOnHammerStand(ISFARecipe recipe, List<EntityItem> list, ItemStack hammer){
 		this.age = 0;
 		this.maxAge = 10;
 		this.recipe = recipe;
-	}
-	public RecipeOnHammerStand(){
-		this.age = 0;
-		this.maxAge = 10;
+		isEnchantBook = RecipeHammerUpgrades.class.cast(this.recipe).isEnchantBook();
+		this.hammer = hammer;
+		isValid = addItemSpot(list);
 	}
 	
 	public boolean isDone(){
@@ -42,42 +56,118 @@ public abstract class RecipeOnHammerStand {
 		return flag;
 	}
 
-	public void end(ItemStack hammer) {		
-		for (ItemStack st : recipe){
-			for(EntityItem ei:itemOnSpot){
-				if(st.getItem()==ei.getEntityItem().getItem() && st.getItemDamage()==ei.getEntityItem().getItemDamage()){
-					if(st.stackSize<=ei.getEntityItem().stackSize){
-						ei.getEntityItem().stackSize-=st.stackSize;
+	public void end(ItemStack hammer) {
+		if(this.isEnchantBook){
+			for (RecipeInput ri : recipe.getInputs()){
+				for(EntityItem ei:itemOnSpot){
+					if(ri.getInputItem().getItem()==ei.getEntityItem().getItem()){
+						NBTTagList list = ei.getEntityItem().getTagCompound().getTagList("StoredEnchantments", 10);
+						hammer.addEnchantment(Enchantment.enchantmentsList[list.getCompoundTagAt(0).getInteger("id")], list.getCompoundTagAt(0).getInteger("lvl"));
+						
+						if (!hammer.getTagCompound().hasKey("EnchStored", 9))
+							hammer.getTagCompound().setTag("EnchStored", new NBTTagList());
+						NBTTagList nbttaglist = hammer.getTagCompound().getTagList("EnchStored", 10);
+				        NBTTagCompound nbttagcompound = new NBTTagCompound();
+				        nbttagcompound.setShort("id", (short)Enchantment.enchantmentsList[list.getCompoundTagAt(0).getInteger("id")].effectId);
+				        nbttagcompound.setShort("lvl", (short)((byte)list.getCompoundTagAt(0).getInteger("lvl")));
+				        nbttagcompound.setBoolean("enable", true);
+				        nbttaglist.appendTag(nbttagcompound);
+						ei.getEntityItem().stackSize-=ri.getInputItem().stackSize;
 						break;
 					}
 				}
 			}
+		}else{
+			for(NbtTagToAdd tag :RecipeHammerUpgrades.class.cast(recipe).getNbtTagList()){
+				addTagToHammer(tag, hammer);
+			}
+		}
+
+		for (RecipeInput ri : recipe.getInputs()){
+			this.itemOnSpot.stream()
+				.filter((i)->i.getEntityItem()!=null 
+				&& i.getEntityItem().getItem()==ri.getInputItem().getItem() 
+				&& i.getEntityItem().getItemDamage()==ri.getInputItem().getItemDamage())
+				.forEach((s)->s.getEntityItem().stackSize -= ri.getInputItem().stackSize);
 		}
 		itemOnSpot.clear();
 		this.age = 0;
-		//this.item.getEntityItem().stackSize = this.item.getEntityItem().stackSize-quantity;
+	}
+
+	public void addTagToHammer(NbtTagToAdd tag, ItemStack stack){
+		if(tag.type.equals("boolean")){
+			hammer = ItemNBTHelper.setBoolean(hammer, tag.name, tag.value.equals("true"));
+		}else if(tag.type.equals("int")){
+			if(tag.process.equals("adding"))
+				stack = ItemNBTHelper.setInteger(stack, tag.name, ItemNBTHelper.getInteger(stack, tag.name, 0)+Integer.parseInt(tag.value));
+			else
+				stack = ItemNBTHelper.setInteger(stack, tag.name, Integer.parseInt(tag.value));
+		}else if(tag.type.equals("double")){
+			if(tag.process.equals("adding"))
+				stack = ItemNBTHelper.setDouble(stack, tag.name, ItemNBTHelper.getDouble(stack, tag.name, 0)+Double.parseDouble(tag.value));
+			else
+				stack = ItemNBTHelper.setDouble(stack, tag.name, Double.parseDouble(tag.value));
+		}else if(tag.type.equals("long")){
+			if(tag.process.equals("adding"))
+				stack = ItemNBTHelper.setLong(stack, tag.name, Long.parseLong(tag.value));
+			else
+				stack = ItemNBTHelper.setLong(stack, tag.name, ItemNBTHelper.getLong(stack, tag.name, 0)+Long.parseLong(tag.value));
+		}
 	}
 	
-	public boolean canCraft(List<EntityItem> items, ItemStack stack){
-		if(items.isEmpty())
-			return false;
-		for (ItemStack st : recipe){
-			boolean flag = false;
+	public boolean addItemSpot(List<EntityItem> items){
+		List<RecipeInput> listr = recipe.getInputs();
+		boolean flag = false;
+		if(this.isEnchantBook){
 			for(EntityItem it:items){
-				if(st.getItem()==it.getEntityItem().getItem() && st.getItemDamage()==it.getEntityItem().getItemDamage()){
-					if(st.stackSize<=it.getEntityItem().stackSize && !flag){
-						itemOnSpot.add(it);
-						flag = true;
-						break;
-					}
+				if(it.getEntityItem().hasTagCompound()){
+					NBTTagList list = it.getEntityItem().getTagCompound().getTagList("StoredEnchantments", 10);
+					if (list.tagCount() < 1) continue;
+					Enchantment enchant = Enchantment.enchantmentsList[list.getCompoundTagAt(0).getInteger("id")];
+					if(!((ToolHammerBase)hammer.getItem()).isEnchantValid(enchant))continue;
+					NBTTagList tl = ItemNBTHelper.getTagList(hammer, "EnchStored", 10);
+			        LinkedHashMap linkedhashmap = new LinkedHashMap();
+			        if (tl != null){
+			    		for (int i = 0; i < tl.tagCount(); ++i)
+			    	        {
+			    	            short short1 = tl.getCompoundTagAt(i).getShort("id");
+			    	            short short2 = tl.getCompoundTagAt(i).getShort("lvl");
+			    	            linkedhashmap.put(Integer.valueOf(short1), Integer.valueOf(short2));
+			    	        }
+			            }
+					if(linkedhashmap.containsKey(list.getCompoundTagAt(0).getInteger("id")))continue;
+					itemOnSpot.add(it);
+					break;
 				}
 			}
+			return itemOnSpot.size()>0;
 		}
-		boolean eq = itemOnSpot.size()==recipe.size();
-		if(!eq)
-			itemOnSpot.clear();
+		
+		for (RecipeInput ri : listr){
+			items.stream()
+				.filter((i)->i.getEntityItem()!=null 
+					&& i.getEntityItem().getItem()==ri.getInputItem().getItem() 
+					&& i.getEntityItem().getItemDamage()==ri.getInputItem().getItemDamage()
+					&& i.getEntityItem().stackSize>=ri.getInputItem().stackSize)
+				.forEach(itemOnSpot::add);			
+		}
+		if(itemOnSpot.size()<=0)
+			return false;
 
-		System.out.println(eq+"  "+this.recipe+"   "+this.itemOnSpot);
-		return eq;
+		for(NbtTagToAdd tag :RecipeHammerUpgrades.class.cast(recipe).getNbtTagList()){
+			if (hammerHasTag(tag, hammer))
+				return false;
+		}
+		
+		return itemOnSpot.size()>0;
+	}
+	
+	public boolean hammerHasTag(NbtTagToAdd tag, ItemStack stack){
+		if(tag.process.equals("adding"))
+			return false;
+		if(tag.type.equals("boolean")){
+			return ItemNBTHelper.getBoolean(stack, tag.name, false);
+		}
+		return ItemNBTHelper.verifyExistance(hammer, tag.name);
 	}
 }

@@ -146,6 +146,7 @@ public class SoundEmitterHelper {
         while (iterator.hasNext()){
         	Map.Entry<String,Class> entry = iterator.next();
         	if(Utils.getAllSuperclasses(entry.getValue()).contains(EntityLivingBase.class) && !Modifier.isAbstract( entry.getValue().getModifiers() )){
+        		//System.out.println(".......................................................... "+entry.getKey()+"    "+entry.getValue());
         		if(!classForID.containsKey(entry.getValue())){
         			addEntity(entry.getValue(),new MobsPropertiesForSpawing(ModConfig.rfNeededToSpawnDefault,new FluidStack(ModFluids.fluidLiquefiedAsgardite,ModConfig.fluidNeededToSpawnDefault),null), true, entry.getKey());
         		}else{

@@ -23,7 +23,7 @@ public class ItemLightningRod extends ItemSFA{
 	public ItemLightningRod() {
 		super("Lightning Rod");
 		this.setHasSubtypes(true);
-		this.setUnlocalizedName("lightningRod");
+		this.setUnlocalizedName("itemLightningRod");
 	}
 	
 	@Override

@@ -332,7 +332,7 @@ public class ThorManual extends BaseManual{
 						defColor = EnumChatFormatting.BLACK;
 						addText("Upgrades for Thor's hammer :",0,0);
 						addText("",0,0);
-						for(HammerStandRecipe hsr : HammerStandRecipe.values()){
+						/*for(HammerStandRecipe hsr : HammerStandRecipe.values()){
 							String str = hsr.sName+"  ( ";
 							for(int i = 0;i<hsr.recipe.recipe.size();i++){
 								str += hsr.recipe.recipe.get(i).stackSize+"  "+StatCollector.translateToLocal(hsr.recipe.recipe.get(i).getUnlocalizedName()+".name");
@@ -343,7 +343,7 @@ public class ThorManual extends BaseManual{
 							if(hsr.desc!="")
 								str+=" "+hsr.desc;
 							addText(str,0,0);
-						}
+						}*/
 					}}
 				);
 		}else if(cat.equals("hc")){

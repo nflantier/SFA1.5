@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import noelflantier.sfartifacts.common.handlers.ModItems;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 
-public class MagnetRecipe extends RecipeOnHammerStand {
+/*public class MagnetRecipe extends RecipeOnHammerStand {
 	
 	public MagnetRecipe(List<ItemStack> recipe){
 		super(recipe);
@@ -35,4 +35,4 @@ public class MagnetRecipe extends RecipeOnHammerStand {
 		//return !ItemNBTHelper.getBoolean(stack, "CanMagnet", false) && item.getEntityItem().getItem()==ModItems.itemEnergyModule && item.getEntityItem().stackSize >= quantity;
 	}
 	
-}
+}*/

@@ -1,24 +1,17 @@
 package noelflantier.sfartifacts.common.blocks;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
@@ -29,21 +22,17 @@ import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.SFArtifacts;
 import noelflantier.sfartifacts.common.blocks.tiles.TileHammerStand;
-import noelflantier.sfartifacts.common.hammerstandrecipe.ConfigByHandRecipe;
-import noelflantier.sfartifacts.common.hammerstandrecipe.EnchantmentRecipe;
-import noelflantier.sfartifacts.common.hammerstandrecipe.LightningRecipe;
-import noelflantier.sfartifacts.common.hammerstandrecipe.MagnetRecipe;
+import noelflantier.sfartifacts.common.hammerstandrecipe.RecipeOnHammerStand;
 import noelflantier.sfartifacts.common.handlers.ModGUIs;
 import noelflantier.sfartifacts.common.handlers.ModItems;
-import noelflantier.sfartifacts.common.helpers.HammerStandRecipe;
-import noelflantier.sfartifacts.common.helpers.InjectorRecipe;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.helpers.SoundHelper;
 import noelflantier.sfartifacts.common.network.PacketHandler;
-import noelflantier.sfartifacts.common.network.messages.PacketInjector;
 import noelflantier.sfartifacts.common.network.messages.PacketSound;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import noelflantier.sfartifacts.common.recipes.ISFARecipe;
+import noelflantier.sfartifacts.common.recipes.IUseSFARecipes;
+import noelflantier.sfartifacts.common.recipes.RecipeInput;
+import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
 
 public class BlockHammerStand extends BlockSFAContainer {
 
@@ -134,13 +123,14 @@ public class BlockHammerStand extends BlockSFAContainer {
 	    	if(side==1 && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem()==ModItems.itemBasicHammer && ItemNBTHelper.getInteger(player.getCurrentEquippedItem(), "Mode", 1)==0){
 	    		TileHammerStand ths= (TileHammerStand)tile;
 	    		if(ths.items[0]!=null){
-		    		if(!world.isRemote && ths.curentRecipe!=null){
-		    			if(ths.curentRecipe.recipe.itemStillHere()){
-		    				ths.curentRecipe.recipe.age++;
-		    				if(ths.curentRecipe.recipe.age%2==0)
+	    			
+	    			if(!world.isRemote && ths.curentRecipe!=null){
+	    				if(ths.curentRecipe.itemStillHere()){
+		    				ths.curentRecipe.age++;
+		    				if(ths.curentRecipe.age%2==0)
 		    					PacketHandler.sendToAllAround(new PacketSound(x, y, z,  SoundHelper.ANVIL.ordinal()),ths);
-			    			if(ths.curentRecipe.recipe.isDone()){
-			    				ths.curentRecipe.recipe.end(ths.items[0]);				
+			    			if(ths.curentRecipe.isDone()){
+			    				ths.curentRecipe.end(ths.items[0]);				
 			    				ths.curentRecipe = null;
 			    				world.markBlockForUpdate(x, y, z);		
 			    			}
@@ -149,23 +139,18 @@ public class BlockHammerStand extends BlockSFAContainer {
 		    				ths.curentRecipe = null;
 		    			}
 			    		return true;
-		    		}
-		    		
+	    			}
+	    			
 	    			List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x,y,z,x+1,y+2,z+1));
-    				if (!world.isRemote){
-    					if(items.isEmpty())
-    						return true;
-    					boolean flag = false;
-						for(HammerStandRecipe hsr : HammerStandRecipe.values()){
-							if(hsr.recipe.canCraft(items,  ths.items[0]) && !flag){
-								ths.curentRecipe = hsr;
-								flag = true;
-								break;
-							}
-						}
-						if(!flag)
-							ths.curentRecipe = null;
-    				}
+	    			if (!world.isRemote && items!=null && items.size()>0){
+	    				ISFARecipe re = RecipesRegistry.instance.getBestRecipe((IUseSFARecipes)ths,RecipesRegistry.instance.getInputFromEntityItem(items) );
+	    				if(re!=null){
+	    					ths.curentRecipe = new RecipeOnHammerStand(re, items, ths.items[0]);
+	    					if(!ths.curentRecipe.isValid)
+		    					ths.curentRecipe = null;
+	    				}else
+	    					ths.curentRecipe = null;
+	    			}
 	    		}
 	    		return true;
 	    	}

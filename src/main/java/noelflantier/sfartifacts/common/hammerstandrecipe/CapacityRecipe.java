@@ -6,7 +6,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 
-public class CapacityRecipe  extends RecipeOnHammerStand {
+/*public class CapacityRecipe  extends RecipeOnHammerStand {
 	
 	public CapacityRecipe(List<ItemStack> recipe){
 		super(recipe);
@@ -24,4 +24,4 @@ public class CapacityRecipe  extends RecipeOnHammerStand {
 		//return !ItemNBTHelper.getBoolean(stack, "CanBeConfigByHand", false) && item.getEntityItem().getItem()==Item.getItemFromBlock(ModBlocks.blockControlPanel) && item.getEntityItem().stackSize >= quantity;
 	}
 
-}
+}*/

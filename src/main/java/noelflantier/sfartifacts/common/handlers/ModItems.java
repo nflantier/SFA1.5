@@ -82,9 +82,6 @@ public class ModItems {
     	itemEnergyModule = new ItemEnergyModule();
     	RegisterHelper.registerItem(itemEnergyModule);
     	
-    	//itemTeleportModule = new ItemTeleportModule();
-    	//RegisterHelper.registerItem(itemTeleportModule);
-    	
     	itemManual = new ItemManual();
     	RegisterHelper.registerItem(itemManual);
     	

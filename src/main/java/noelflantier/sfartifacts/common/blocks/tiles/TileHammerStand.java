@@ -9,14 +9,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileMasterPillar;
+import noelflantier.sfartifacts.common.hammerstandrecipe.RecipeOnHammerStand;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.helpers.Coord4;
 import noelflantier.sfartifacts.common.helpers.HammerStandRecipe;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.items.baseclasses.ItemHammerBase;
 import noelflantier.sfartifacts.common.items.baseclasses.RFHammerBase;
+import noelflantier.sfartifacts.common.recipes.IUseSFARecipes;
+import noelflantier.sfartifacts.common.recipes.RecipeBase;
+import noelflantier.sfartifacts.common.recipes.RecipeHammerUpgrades;
+import noelflantier.sfartifacts.common.recipes.handler.HammerUpgradesRecipesHandler;
 
-public class TileHammerStand extends TileSFA implements IInventory, ITileCanHavePillar{
+public class TileHammerStand extends TileSFA implements IInventory, ITileCanHavePillar, IUseSFARecipes{
 
 	public Coord4 master;
 	
@@ -28,7 +33,8 @@ public class TileHammerStand extends TileSFA implements IInventory, ITileCanHave
 	public int previousTmpRf;
 	
 	//UPGRADES
-	public HammerStandRecipe curentRecipe;
+	//public HammerStandRecipe curentRecipe;
+	public RecipeOnHammerStand curentRecipe;
 	public int soundTick = 50;
 	
 	//SLOTS
@@ -54,7 +60,7 @@ public class TileHammerStand extends TileSFA implements IInventory, ITileCanHave
         TileMasterPillar t = this.getMasterTile();
 		if(t!=null){
 			if(this.curentRecipe!=null){
-				if(!this.curentRecipe.recipe.itemStillHere())
+				if(!this.curentRecipe.itemStillHere())
 					this.curentRecipe=null;
 			}
 			
@@ -224,5 +230,25 @@ public class TileHammerStand extends TileSFA implements IInventory, ITileCanHave
 			list.add("Pillar at : "+this.master.x+", "+this.master.y+", "+this.master.z);
 		else
 			list.add("Not connected to a pillar");
+	}
+
+	@Override
+	public String getUsageName() {
+		return HammerUpgradesRecipesHandler.USAGE_HAMMER_UPGRADES;
+	}
+
+	@Override
+	public int getEnergy() {
+		return 0;
+	}
+
+	@Override
+	public int getFluid() {
+		return 0;
+	}
+
+	@Override
+	public Class<? extends RecipeBase> getClassOfRecipe() {
+		return RecipeHammerUpgrades.class;
 	}
 }

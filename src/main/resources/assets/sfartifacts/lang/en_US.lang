@@ -2,10 +2,10 @@ itemGroup.SFArtifacts=SFArtifacts
 
 item.itemThorHammer.name=Mjollnir (Thor Hammer)
 item.itemBasicHammer.name=Basic Asgardian Hammer
-item.lightningRod.basic.name=Basic Lightning Rod
-item.lightningRod.advanced.name=Advanced Lightning Rod
-item.lightningRod.reinforced.name=Reinforced Lightning Rod
-item.lightningRod.ultimate.name=Ultimate Lightning Rod
+item.itemLightningRod.basic.name=Basic Lightning Rod
+item.itemLightningRod.advanced.name=Advanced Lightning Rod
+item.itemLightningRod.reinforced.name=Reinforced Lightning Rod
+item.itemLightningRod.ultimate.name=Ultimate Lightning Rod
 item.itemAsgardite.name=Asgardite
 item.itemAsgardianSteelIngot.name=Asgardian Steel Ingot
 item.itemAsgardianBronzeIngot.name=Asgardian Bronze Ingot

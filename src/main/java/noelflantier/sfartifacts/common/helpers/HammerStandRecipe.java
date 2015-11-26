@@ -1,25 +1,7 @@
 package noelflantier.sfartifacts.common.helpers;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import noelflantier.sfartifacts.common.hammerstandrecipe.CapacityRecipe;
-import noelflantier.sfartifacts.common.hammerstandrecipe.ConfigByHandRecipe;
-import noelflantier.sfartifacts.common.hammerstandrecipe.EnchantmentRecipe;
-import noelflantier.sfartifacts.common.hammerstandrecipe.LightningRecipe;
-import noelflantier.sfartifacts.common.hammerstandrecipe.MagnetRecipe;
-import noelflantier.sfartifacts.common.hammerstandrecipe.RecipeOnHammerStand;
-import noelflantier.sfartifacts.common.hammerstandrecipe.TeleportRecipe;
-import noelflantier.sfartifacts.common.hammerstandrecipe.ThrowToMoveRecipe;
-import noelflantier.sfartifacts.common.handlers.ModBlocks;
-import noelflantier.sfartifacts.common.handlers.ModItems;
-
 public enum HammerStandRecipe {
-	TELEPORT(
+	/*TELEPORT(
 		new TeleportRecipe(
 			new ArrayList(){{
 				add(new ItemStack(ModItems.itemAsgardiumPearl,8,0));
@@ -76,9 +58,9 @@ public enum HammerStandRecipe {
 			}}
 		),
 		"Moving"			
-	);
+	);*/
 	
-	public RecipeOnHammerStand recipe;
+	/*public RecipeOnHammerStand recipe;
 	public String sName;
 	public String desc = "";
 	
@@ -91,5 +73,5 @@ public enum HammerStandRecipe {
 		this.recipe = rohs;
 		this.sName = sname;
 		this.desc = desc;
-	}
+	}*/
 }

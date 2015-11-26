@@ -16,7 +16,7 @@ import noelflantier.sfartifacts.common.handlers.ModBlocks;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.items.baseclasses.ToolHammerBase;
 
-public class EnchantmentRecipe extends RecipeOnHammerStand {
+/*public class EnchantmentRecipe extends RecipeOnHammerStand {
 	
 
 	public EnchantmentRecipe(List<ItemStack> recipe){
@@ -38,7 +38,7 @@ public class EnchantmentRecipe extends RecipeOnHammerStand {
         nbttaglist.appendTag(nbttagcompound);
 		this.item.getEntityItem().stackSize = this.item.getEntityItem().stackSize-quantity;*/
 
-		for (ItemStack st : recipe){
+		/*for (ItemStack st : recipe){
 			for(EntityItem ei:itemOnSpot){
 				if(st.getItem()==ei.getEntityItem().getItem()){
 					NBTTagList list = ei.getEntityItem().getTagCompound().getTagList("StoredEnchantments", 10);
@@ -57,13 +57,13 @@ public class EnchantmentRecipe extends RecipeOnHammerStand {
 				}
 			}
 		}
-		this.age = 0;
+		this.age = 0;*/
 		//super.end(hammer);
-	}
+	//}
 
-	@Override
+	/*@Override
 	public boolean canCraft(List<EntityItem> items, ItemStack stack){
-		for (ItemStack st : recipe){
+		/*for (ItemStack st : recipe){
 			for(EntityItem it:items){
 				if(st.getItem()==it.getEntityItem().getItem() && st.stackSize<=it.getEntityItem().stackSize && it.getEntityItem().hasTagCompound()){
 					NBTTagList list = it.getEntityItem().getTagCompound().getTagList("StoredEnchantments", 10);
@@ -89,7 +89,7 @@ public class EnchantmentRecipe extends RecipeOnHammerStand {
 		boolean eq = itemOnSpot.size()==recipe.size();
 		if(!eq)
 			itemOnSpot.clear();
-		return eq;
+		return eq;*/
 		/*if(item.getEntityItem().stackSize < quantity || item.getEntityItem().getItem()!=Items.enchanted_book  || !item.getEntityItem().hasTagCompound())return false;
 		NBTTagList list = item.getEntityItem().getTagCompound().getTagList("StoredEnchantments", 10);
 		if (list.tagCount() != 1) return false;
@@ -109,5 +109,5 @@ public class EnchantmentRecipe extends RecipeOnHammerStand {
 		if(linkedhashmap.containsKey(list.getCompoundTagAt(0).getInteger("id")))return false;
 		
 		return true;*/
-	}
-}
+	//}
+//}

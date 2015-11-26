@@ -82,7 +82,7 @@ public class ItemMold extends ItemSFA{
 		list.add(it1);
 		
 		for(Molds m : Molds.values()){
-			ItemStack it0 = new ItemStack(item, 1, 1);
+			ItemStack it0 = new ItemStack(item, 1, m.ID);
 			it0.setItemDamage(m.ID);
 			it0 = ItemNBTHelper.setInteger(it0, "idmold", m.ID);
 			it0 = ItemNBTHelper.setIntegerArray(it0, "moldstructure", m.recipe);

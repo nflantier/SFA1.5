@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import noelflantier.sfartifacts.common.handlers.ModItems;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 
-public class LightningRecipe  extends RecipeOnHammerStand {
+/*public class LightningRecipe  extends RecipeOnHammerStand {
 	
 	public LightningRecipe(List<ItemStack> recipe){
 		super(recipe);
@@ -28,4 +28,4 @@ public class LightningRecipe  extends RecipeOnHammerStand {
 		return super.canCraft(items, stack) && !ItemNBTHelper.getBoolean(stack, "CanThrowLightning", false);
 		//return !ItemNBTHelper.getBoolean(stack, "CanThrowLightning", false) && item.getEntityItem().getItem() == ModItems.itemLightningRod && item.getEntityItem().getItemDamage()==3 && item.getEntityItem().stackSize >= quantity;
 	}
-}
+}*/
