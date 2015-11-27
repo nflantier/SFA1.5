@@ -24,8 +24,14 @@ import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
 import noelflantier.sfartifacts.common.network.messages.PacketFluid;
 import noelflantier.sfartifacts.common.network.messages.PacketLiquefier;
+import noelflantier.sfartifacts.common.recipes.ISFARecipe;
+import noelflantier.sfartifacts.common.recipes.IUseSFARecipes;
+import noelflantier.sfartifacts.common.recipes.RecipeBase;
+import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
+import noelflantier.sfartifacts.common.recipes.handler.InjectorRecipesHandler;
+import noelflantier.sfartifacts.common.recipes.handler.LiquefierRecipesHandler;
 
-public class TileLiquefier extends TileMachine implements ITileUsingMaterials,ITileGlobalNBT{
+public class TileLiquefier extends TileMachine implements ITileUsingMaterials, ITileGlobalNBT, IUseSFARecipes{
 	
 	//PROCESSING
 	public boolean isRunning;
@@ -147,9 +153,24 @@ public class TileLiquefier extends TileMachine implements ITileUsingMaterials,IT
 		}
 		return true;
 	}
+
+	public List<ItemStack> getInputStacks(){
+		return new ArrayList<ItemStack>(){{
+			add(items[0]);
+		}};
+	}
+
+	public List<FluidTank> getInputFluidTanks(){
+		return new ArrayList<FluidTank>(){{
+			add(tankMelt);
+		}};
+	}
+	
 	public boolean processLiquefying(){
 		if(!this.isRunning){
-			this.currentTickToMelt = this.tickToMelt;
+			List<ISFARecipe> recipes = RecipesRegistry.instance.getRecipesWithItemStacksAndTanks(this, getInputStacks(), getInputFluidTanks());
+			System.out.println(recipes);
+			/*this.currentTickToMelt = this.tickToMelt;
 			if(this.items[0]!=null && this.getEnergyStored(ForgeDirection.UNKNOWN)-this.energyNeededPerOneItem>=0 && this.tankMelt.getFluidAmount()>=this.fluidNeededPerOneItem.amount && this.tank.getFluidAmount()+this.fluidGivenPerOneItem.amount<=this.tank.getCapacity()){
 				this.isRunning = true;
 				if(this.items[0].stackSize==1)
@@ -157,9 +178,9 @@ public class TileLiquefier extends TileMachine implements ITileUsingMaterials,IT
 				else
 					this.items[0].stackSize--;
 			}else
-				return false;
+				return false;*/
 		}else{
-			if(this.getEnergyStored(ForgeDirection.UNKNOWN)>=this.energyNeededPerOneItem/this.tickToMelt && this.tankMelt.getFluidAmount()>=this.fluidNeededPerOneItem.amount/this.tickToMelt){
+			/*if(this.getEnergyStored(ForgeDirection.UNKNOWN)>=this.energyNeededPerOneItem/this.tickToMelt && this.tankMelt.getFluidAmount()>=this.fluidNeededPerOneItem.amount/this.tickToMelt){
 				this.currentTickToMelt -= 1;
 				FluidStack fs = this.fluidGivenPerOneItem.copy();
 				fs.amount = fs.amount/this.tickToMelt;
@@ -172,7 +193,7 @@ public class TileLiquefier extends TileMachine implements ITileUsingMaterials,IT
 					this.isRunning = false;
 					return true;
 				}
-			}
+			}*/
 		}
 		return true;
 	}
@@ -322,5 +343,25 @@ public class TileLiquefier extends TileMachine implements ITileUsingMaterials,IT
 	@Override
 	public void setLastEnergyStored(int lastEnergyStored) {
 		this.lastEnergyStoredAmount = lastEnergyStored;
+	}
+
+	@Override
+	public String getUsageName() {
+		return LiquefierRecipesHandler.USAGE_LIQUEFIER;
+	}
+
+	@Override
+	public int getEnergy() {
+		return this.getEnergyStored(ForgeDirection.UNKNOWN);
+	}
+
+	@Override
+	public int getFluid() {
+		return this.getFluidTanks().get(0).getFluidAmount();
+	}
+
+	@Override
+	public Class<? extends RecipeBase> getClassOfRecipe() {
+		return RecipeBase.class;
 	}
 }

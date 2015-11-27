@@ -11,6 +11,8 @@ import java.util.function.Predicate;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 
 public class RecipesRegistry {
 	public static final RecipesRegistry instance = new RecipesRegistry();
@@ -51,15 +53,36 @@ public class RecipesRegistry {
 			}
 		}
 		return ri;
+	}
+	public RecipeInput getInputFromItemStack(ItemStack it){
+		RecipeInput ri = new RecipeInput();
+		if(it == null)
+			return ri;
+		ri.setItemStack(it);
+		return ri;
 	}	
-	public List<RecipeInput> getInputFromItemStack(List<ItemStack> list){
+	public List<RecipeInput> getInputFromItemStacks(List<ItemStack> list){
 		List<RecipeInput> ri = null;
-		if(list.isEmpty())
+		if(list==null || list.isEmpty())
 			return ri;
 		
 		ri = new ArrayList<RecipeInput>();
 		for(ItemStack ei: list){
-			ri.add(new RecipeInput(ei));
+			if(ei!=null)
+				ri.add(new RecipeInput(ei));
+		}
+		return ri;
+	}	
+	public List<RecipeInput> getInputFromTanks(List<FluidTank> list){
+		List<RecipeInput> ri = null;
+		if(list==null || list.isEmpty())
+			return ri;
+		
+		ri = new ArrayList<RecipeInput>();
+		for(FluidTank tank: list){
+			if(tank!=null && tank.getFluid()!=null){
+				ri.add(new RecipeInput(tank.getFluid().copy()));
+			}
 		}
 		return ri;
 	}
@@ -76,6 +99,14 @@ public class RecipesRegistry {
 	}
 	public List<ISFARecipe> getOrderedRecipes(IUseSFARecipes iuse, List<RecipeInput> inputs){
 		return getOrderedRecipes(iuse.getUsageName(), inputs, iuse.getEnergy(), iuse.getFluid());
+	}
+	public List<ISFARecipe> getOrderedRecipesWithItemStacks(IUseSFARecipes iuse, List<ItemStack> inputs) {
+		return getOrderedRecipes(iuse, getInputFromItemStacks(inputs));
+	}
+	public List<ISFARecipe> getRecipesWithItemStacksAndTanks(IUseSFARecipes iuse, List<ItemStack> inputs, List<FluidTank> tanks) {
+		List<RecipeInput> in = getInputFromItemStacks(inputs);
+		in.addAll(getInputFromTanks(tanks));
+		return getRecipes(iuse.getUsageName(), in, iuse.getEnergy(), iuse.getFluid());
 	}
 	
 	public List<ISFARecipe> getOrderedRecipes(String usageName, List<RecipeInput> inputs, int energy, int fluid){
@@ -95,6 +126,8 @@ public class RecipesRegistry {
 			return null;
 		Predicate<ISFARecipe> predicate = (r) -> r.getEnergyCost() > energy || r.getFluidCost() > fluid;
 		list.removeIf(predicate);
+		if(list.isEmpty())
+			list = null;
 		return list;
 	}
 	
@@ -117,7 +150,7 @@ public class RecipesRegistry {
 	public static List<ISFARecipe> getRecipesForUsageAndInputs(String usageName, List<RecipeInput> inputs){
 		ArrayList<ISFARecipe> flag = new ArrayList<ISFARecipe>();
 		for (Map.Entry<String, ISFARecipe> entry : instance.getRecipesForUsage(usageName).entrySet()){
-			if(entry.getValue().isInputs(inputs)){
+			if(entry.getValue().isStacksInputs(inputs)){
 				flag.add(entry.getValue());
 			}
 		}
@@ -127,36 +160,6 @@ public class RecipesRegistry {
 	public boolean canRecipeStack(ISFARecipe recipe, List<ItemStack> outputStacks) {
 		recipe.getOutputs().forEach((o)->o.canStackWithItemStack(outputStacks));
 		return outputStacks!=null && !outputStacks.isEmpty() && recipe.getOutputs().size()<=outputStacks.size();
-	}
-
-	public ItemStack processRecipeOnInput(ISFARecipe recipe, ItemStack i) {
-		for(RecipeInput ri : recipe.getInputs()){
-			if( i!=null	){
-				if(i.getItem()==ri.getInputItem().getItem()
-					&& i.getItemDamage()==ri.getInputItem().getItemDamage()){
-					i.stackSize -= ri.getInputItem().stackSize;
-					if(i.stackSize<=0){
-						i=null;
-					}
-				}
-			}
-		}
-		return i;
-	}
-
-	public ItemStack processRecipeOnOutput(ISFARecipe recipe, ItemStack i) {
-		int size = recipe.getOutputs().size();
-		for(RecipeOutput ro : recipe.getOutputs()){
-			if(ro.canStackWithItemStack(i)){
-				if(i==null){
-					return ro.getOutputItem();
-				}else{
-					i.stackSize+=ro.getOutputItem().stackSize;
-					return i;
-				}
-			}
-		}
-		return null;
 	}
 	
 	/*public class RecipePredicate implements Predicate<ISFARecipe>{

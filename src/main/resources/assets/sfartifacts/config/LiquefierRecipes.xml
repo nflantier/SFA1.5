@@ -5,7 +5,7 @@
 			<fluidStack itemName="water" amount="200" />
 		</input>
 		<output>
-			<fluidStack itemName="liquefiedAsgardite" amount="1000" />
+			<fluidStack modID="sfartifacts"  itemName="liquefiedasgardite" amount="1000" />
 		</output>
     </recipe>
 </recipes>

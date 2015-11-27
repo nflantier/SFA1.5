@@ -5,8 +5,8 @@ import noelflantier.sfartifacts.common.recipes.RecipeBase;
 
 public class LiquefierRecipesHandler extends AUsageRecipes{
 
-	private static final String FILE_NAME_LIQUEFIER = "LiquefierRecipes.xml";
-	private static final String USAGE_LIQUEFIER = "Liquefier";
+	public static final String FILE_NAME_LIQUEFIER = "LiquefierRecipes.xml";
+	public static final String USAGE_LIQUEFIER = "Liquefier";
 	
 	public LiquefierRecipesHandler() {
 		super(FILE_NAME_LIQUEFIER, USAGE_LIQUEFIER);

@@ -2,6 +2,7 @@ package noelflantier.sfartifacts.client.gui.manual;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
@@ -23,6 +24,11 @@ import noelflantier.sfartifacts.common.helpers.HammerStandRecipe;
 import noelflantier.sfartifacts.common.helpers.InjectorRecipe;
 import noelflantier.sfartifacts.common.helpers.PillarMaterials;
 import noelflantier.sfartifacts.common.helpers.PillarStructures;
+import noelflantier.sfartifacts.common.recipes.ISFARecipe;
+import noelflantier.sfartifacts.common.recipes.RecipeInput;
+import noelflantier.sfartifacts.common.recipes.RecipeOutput;
+import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
+import noelflantier.sfartifacts.common.recipes.handler.InjectorRecipesHandler;
 
 public class ThorManual extends BaseManual{
 	
@@ -218,16 +224,20 @@ public class ThorManual extends BaseManual{
 						defColor = EnumChatFormatting.BLACK;
 						globalScale = 0.6F;
 						addText("",0,0);
-						for(InjectorRecipe ir : InjectorRecipe.values()){
-							String str = StatCollector.translateToLocal(ir.result.getUnlocalizedName()+".name")+" ( ";
-							for(int i = 0 ;i<ir.recipe.size();i++){
-								str += ir.recipe.get(i).stackSize+"  "+StatCollector.translateToLocal(ir.recipe.get(i).getUnlocalizedName()+".name");
-								if(i+1!=ir.recipe.size())
-									str+=", ";
+						for(Map.Entry<String, ISFARecipe> entry : RecipesRegistry.instance.getRecipesForUsage(InjectorRecipesHandler.USAGE_INJECTOR).entrySet()){
+							String str = "";
+							for(RecipeOutput o : entry.getValue().getOutputs()){
+								str+=StatCollector.translateToLocal(o.getName()+".name");
 							}
-							str+=" | "+ir.energyAmount+" RF | "+ir.fluidAmount+" MB )";
-							addText(str,0,0);
-							//addText(str,0,0);
+							str+=" ( ";
+							int k = 0;
+							for(RecipeInput i : entry.getValue().getInputs()){
+								str+=i.getStackSize()+"  "+StatCollector.translateToLocal(i.getName()+".name");
+								if(k+1!= entry.getValue().getInputs().size())
+									str+=", ";
+								k+=1;
+							}
+							addText(str+" | "+entry.getValue().getEnergyCost()+" RF | "+entry.getValue().getFluidCost()+" MB )",0,0);
 						}
 					}}
 				);

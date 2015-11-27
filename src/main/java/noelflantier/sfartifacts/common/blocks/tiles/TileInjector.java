@@ -24,6 +24,7 @@ import noelflantier.sfartifacts.common.network.messages.PacketInjector;
 import noelflantier.sfartifacts.common.recipes.ISFARecipe;
 import noelflantier.sfartifacts.common.recipes.IUseSFARecipes;
 import noelflantier.sfartifacts.common.recipes.RecipeBase;
+import noelflantier.sfartifacts.common.recipes.RecipeInput;
 import noelflantier.sfartifacts.common.recipes.RecipeOutput;
 import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
 import noelflantier.sfartifacts.common.recipes.handler.InjectorRecipesHandler;
@@ -119,6 +120,8 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials, IT
 	}
 	
 	public void isRunningProcess(int idline){
+		//this.isRunning[idline] = false;
+		//this.currentRecipeName[idline] = "none";
 		if(this.currentRecipeName[idline]!=null && !this.currentRecipeName[idline].equals("none")){
 			ISFARecipe recipe = RecipesRegistry.instance.getRecipeForUsage(getUsageName(),this.currentRecipeName[idline]);
 			if(recipe!=null && this.getEnergyStored(ForgeDirection.UNKNOWN)>=recipe.getEnergyCost()/this.tickToInject 
@@ -135,16 +138,16 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials, IT
 							if(ro.canStackWithItemStack(items[idline*2+6+1]) && size>0){
 								size-=1;
 								if(items[idline*2+6+1]==null){
-									items[idline*2+6+1] = ro.getOutputItem().copy();
+									items[idline*2+6+1] = ro.getItemStack().copy();
 								}else{
-									items[idline*2+6+1].stackSize+=ro.getOutputItem().stackSize;
+									items[idline*2+6+1].stackSize+=ro.getItemStack().stackSize;
 								}
 							}else if(ro.canStackWithItemStack(items[idline*2+6+1+1]) && size>0){
 								size-=1;
 								if(items[idline*2+6+1+1]==null){
-									items[idline*2+6+1+1] = ro.getOutputItem().copy();
+									items[idline*2+6+1+1] = ro.getItemStack().copy();
 								}else{
-									items[idline*2+6+1+1].stackSize+=ro.getOutputItem().stackSize;
+									items[idline*2+6+1+1].stackSize+=ro.getItemStack().stackSize;
 								}
 							}
 							if(size<=0){
@@ -156,60 +159,35 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials, IT
 					this.currentRecipeName[idline] = "none";
 				}
 			}else{
-				this.currentRecipeName[idline] = "";
+				this.currentRecipeName[idline] = "none";
 			}
 		}
-		/*if(this.currentRecipeId[idline]!=-1){
-			InjectorRecipe cr = InjectorRecipe.values()[this.currentRecipeId[idline]];
-			if(this.getEnergyStored(ForgeDirection.UNKNOWN)>=cr.energyAmount/this.tickToInject 
-					&& this.tank.getFluidAmount()>=cr.fluidAmount/this.tickToInject){
-				this.currentTickToInject[idline]-=1;
-				
-				if(this.getRandom(this.getBlockMetadata(),this.randomMachine)){
-					this.extractEnergy(ForgeDirection.UNKNOWN, cr.energyAmount/this.tickToInject, false);
-					this.tank.drain(cr.fluidAmount/this.tickToInject, true);
-				}
-				
-				if(this.currentTickToInject[idline]<=0){
-					//this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-					for(int idcaseres =0;idcaseres<2;idcaseres++){
-						if(this.items[idline*2+idcaseres+6+1]==null){
-							this.items[idline*2+idcaseres+6+1] = new ItemStack(cr.result);
-							this.isRunning[idline] = false;
-							this.currentRecipeId[idline]=-1;
-							return;
-						}else if(this.items[idline*2+idcaseres+6+1].getItem()==cr.result){
-							if(this.items[idline*2+idcaseres+6+1].stackSize+1<=this.items[idline*2+idcaseres+6+1].getMaxStackSize()){
-								this.items[idline*2+idcaseres+6+1].stackSize++;
-								this.isRunning[idline] = false;
-								this.currentRecipeId[idline]=-1;
-								return;
-							}
-						}
-					}
-				}
-			}
-		}*/
 	}
 	
 	public void isNotRunningProcess(int idline){
 		this.currentTickToInject[idline] = this.tickToInject;
 		this.currentRecipeName[idline]= "none";
 
-		List<ISFARecipe> recipes = RecipesRegistry.instance.getOrderedRecipes(this, RecipesRegistry.instance.getInputFromItemStack(getInputStacks(idline)));
+		List<ISFARecipe> recipes = RecipesRegistry.instance.getOrderedRecipesWithItemStacks(this, getInputStacks(idline));
 		if(recipes!=null && !recipes.isEmpty()){
 			for(ISFARecipe recipe : recipes){
 				if(recipe!=null && recipe.getOutputs()!=null){
 					if(RecipesRegistry.instance.canRecipeStack(recipe, getOutputStacks(idline))){
 						this.currentRecipeName[idline]=recipe.getUid();
 						this.isRunning[idline] = true;
-						if(recipe.getInputs().size()<=1){
-							if(items[idline*2+1] == null || !recipe.getInputs().get(0).isItemStackSame(items[idline*2+1]))
-								items[idline*2+1+1] = RecipesRegistry.instance.processRecipeOnInput(recipe, items[idline*2+1+1]);
-							items[idline*2+1] = RecipesRegistry.instance.processRecipeOnInput(recipe, items[idline*2+1]);
-						}else{
-							items[idline*2+1+1] = RecipesRegistry.instance.processRecipeOnInput(recipe, items[idline*2+1+1]);
-							items[idline*2+1] = RecipesRegistry.instance.processRecipeOnInput(recipe, items[idline*2+1]);	
+						int size = recipe.getInputs().size();
+						for(int i = 0 ; i < 2 ; i++){
+							for(RecipeInput ri : recipe.getInputs()){
+								if(RecipesRegistry.instance.getInputFromItemStack(items[idline*2+1+i]).isRecipeElementSame(ri)){
+									items[idline*2+1+i].stackSize -= ri.getItemStack().stackSize;
+									if(items[idline*2+1+i].stackSize<=0){
+										items[idline*2+1+i]=null;
+									}
+									size-=1;
+								}
+							}
+							if(size<=0)
+								break;
 						}
 						break;
 					}
@@ -291,8 +269,8 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials, IT
         for(int i =0;i<this.currentRecipeId.length;i++)
         	nbt.setInteger("currentRecipeId"+i, this.currentRecipeId[i]);
         
-        //for(int i =0;i<this.currentRecipeName.length;i++)
-        //	nbt.setString("currentRecipeName"+i, this.currentRecipeName[i]);
+        for(int i =0;i<this.currentRecipeName.length;i++)
+        	nbt.setString("currentRecipeName"+i, this.currentRecipeName[i]);
     }
 
     @Override
@@ -308,8 +286,8 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials, IT
         for(int i =0;i<this.currentRecipeId.length;i++)
     		this.currentRecipeId[i] = nbt.getInteger("currentRecipeId"+i);
         
-        //for(int i =0;i<this.currentRecipeName.length;i++)
-    		//this.currentRecipeName[i] = nbt.getString("currentRecipeName"+i);
+        for(int i =0;i<this.currentRecipeName.length;i++)
+    		this.currentRecipeName[i] = nbt.getString("currentRecipeName"+i);
     }
     
 	@Override

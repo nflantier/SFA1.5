@@ -2,6 +2,7 @@ package noelflantier.sfartifacts.common.recipes;
 
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -326,13 +327,14 @@ public class RecipeParser extends DefaultHandler {
 	
 	public FluidStack getFluidStack(Attributes attributes){
 		int amount = getIntValue(AT_AMOUNT, attributes, FluidContainerRegistry.BUCKET_VOLUME);
-	    String name = getStringValue(AT_NAME, attributes, null);
+	    String name = getStringValue(AT_ITEM_NAME, attributes, null);
+	    String modid = getStringValue(AT_MOD_ID, attributes, null);
 	    if(name == null) {
 	    	return null;
 	    }
 	    Fluid fluid = FluidRegistry.getFluid(name);
 	    if(fluid == null) {
-	    	System.out.println("When parsing recipes could not find fluid with name: " + name);
+	    	System.out.println("When parsing recipes could not find fluid with name: "+ name);
 	    	return null;
 	    }
 		return new FluidStack(fluid, amount);

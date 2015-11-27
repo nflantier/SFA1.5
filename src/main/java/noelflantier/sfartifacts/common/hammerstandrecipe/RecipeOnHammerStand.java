@@ -60,7 +60,7 @@ public class RecipeOnHammerStand {
 		if(this.isEnchantBook){
 			for (RecipeInput ri : recipe.getInputs()){
 				for(EntityItem ei:itemOnSpot){
-					if(ri.getInputItem().getItem()==ei.getEntityItem().getItem()){
+					if(ri.getItemStack().getItem()==ei.getEntityItem().getItem()){
 						NBTTagList list = ei.getEntityItem().getTagCompound().getTagList("StoredEnchantments", 10);
 						hammer.addEnchantment(Enchantment.enchantmentsList[list.getCompoundTagAt(0).getInteger("id")], list.getCompoundTagAt(0).getInteger("lvl"));
 						
@@ -72,7 +72,7 @@ public class RecipeOnHammerStand {
 				        nbttagcompound.setShort("lvl", (short)((byte)list.getCompoundTagAt(0).getInteger("lvl")));
 				        nbttagcompound.setBoolean("enable", true);
 				        nbttaglist.appendTag(nbttagcompound);
-						ei.getEntityItem().stackSize-=ri.getInputItem().stackSize;
+						ei.getEntityItem().stackSize-=ri.getItemStack().stackSize;
 						break;
 					}
 				}
@@ -86,9 +86,9 @@ public class RecipeOnHammerStand {
 		for (RecipeInput ri : recipe.getInputs()){
 			this.itemOnSpot.stream()
 				.filter((i)->i.getEntityItem()!=null 
-				&& i.getEntityItem().getItem()==ri.getInputItem().getItem() 
-				&& i.getEntityItem().getItemDamage()==ri.getInputItem().getItemDamage())
-				.forEach((s)->s.getEntityItem().stackSize -= ri.getInputItem().stackSize);
+				&& i.getEntityItem().getItem()==ri.getItemStack().getItem() 
+				&& i.getEntityItem().getItemDamage()==ri.getItemStack().getItemDamage())
+				.forEach((s)->s.getEntityItem().stackSize -= ri.getItemStack().stackSize);
 		}
 		itemOnSpot.clear();
 		this.age = 0;
@@ -146,9 +146,9 @@ public class RecipeOnHammerStand {
 		for (RecipeInput ri : listr){
 			items.stream()
 				.filter((i)->i.getEntityItem()!=null 
-					&& i.getEntityItem().getItem()==ri.getInputItem().getItem() 
-					&& i.getEntityItem().getItemDamage()==ri.getInputItem().getItemDamage()
-					&& i.getEntityItem().stackSize>=ri.getInputItem().stackSize)
+					&& i.getEntityItem().getItem()==ri.getItemStack().getItem() 
+					&& i.getEntityItem().getItemDamage()==ri.getItemStack().getItemDamage()
+					&& i.getEntityItem().stackSize>=ri.getItemStack().stackSize)
 				.forEach(itemOnSpot::add);			
 		}
 		if(itemOnSpot.size()<=0)

@@ -3,6 +3,7 @@ package noelflantier.sfartifacts.common.recipes;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -12,22 +13,24 @@ public interface ISFARecipe {
 	int getFluidCost();
 	List<RecipeInput> getInputs();
 	List<RecipeOutput> getOutputs();
-	default boolean isInputs(List<RecipeInput> lri){
+	default boolean isStacksInputs(List<RecipeInput> lri){
 		boolean flag = false;
+		if(lri==null || lri.isEmpty())
+			return flag;
 		int size = getInputs().size();
-		List<RecipeInput> riDone = new ArrayList<RecipeInput>();
+		List<RecipeInput> recipetmp = new ArrayList<RecipeInput>(getInputs());
 		for (RecipeInput potentialinput :lri) {
-			if(riDone.contains(potentialinput))
-				continue;
-			for (RecipeInput input : getInputs()) {
-				if(potentialinput.isInputSame(input)){
-					riDone.add(potentialinput);
+			for (RecipeInput input : recipetmp) {
+				if(potentialinput.isRecipeElementSame(input)){
 					flag = true;
 					size-=1;
+					if(size<=0)
+						break;
 				}
 				if(size<=0 && flag)
 					return true;
 			}
+			recipetmp.removeIf((r)->potentialinput.isRecipeElementSame(r));
 		}
 		return size<=0 && flag;
 	}

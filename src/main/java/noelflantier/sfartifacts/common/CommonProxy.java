@@ -81,7 +81,7 @@ public class CommonProxy {
     	//InjectorRecipesHandler.getInstance().getRecipes().forEach((s)->s.debug());
     	HammerUpgradesRecipesHandler.getInstance().loadRecipes();
     	//HammerUpgradesRecipesHandler.getInstance().getRecipes().forEach((s)->s.debug());
-    	//LiquefierRecipesHandler.getInstance().loadRecipes();
+    	LiquefierRecipesHandler.getInstance().loadRecipes();
     	//MightyFoundryRecipesHandler.getInstance().loadRecipes();
 	}
 	
