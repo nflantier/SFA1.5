@@ -10,8 +10,8 @@ import noelflantier.sfartifacts.common.recipes.RecipeMightyFoundry;
 import noelflantier.sfartifacts.common.recipes.RecipeParser;
 
 public class MightyFoundryRecipesHandler extends AUsageRecipes{
-	private static final String FILE_NAME_MIGHTY_FOUNDRY = "MightyFoundryRecipes.xml";
-	private static final String USAGE_MIGHTY_FOUNDRY= "MightyFoundry";
+	public static final String FILE_NAME_MIGHTY_FOUNDRY = "MightyFoundryRecipes.xml";
+	public static final String USAGE_MIGHTY_FOUNDRY= "MightyFoundry";
 		
 	public MightyFoundryRecipesHandler() {
 		super(FILE_NAME_MIGHTY_FOUNDRY, USAGE_MIGHTY_FOUNDRY);
@@ -40,26 +40,29 @@ public class MightyFoundryRecipesHandler extends AUsageRecipes{
 	private class MightyFoundryCustomHandler implements CustomHandler {
 
 	    private boolean inTag = false;
+		public static final String AT_TICKPERITEM = "tickPerItem";
 	    
 		@Override
 		public boolean endElement(String uri, String localName, String qName, RecipeParser parser) throws SAXException {
-			if(RecipeParser.ELEMENT_RECIPE.equals(localName)) {
-		        inTag = false;
-		    }
-			return inTag;
+			return false;
 		}
 
 		@Override
 		public boolean startElement(String uri, String localName, String qName, Attributes attributes, RecipeParser parser)throws SAXException {
-		    if(RecipeParser.ELEMENT_RECIPE.equals(localName)){
+		    if(RecipeParser.ELEMENT_ITEM_STACK.equals(localName)){
 		        if(parser.currentRecipe!=null){
 		        	if(parser.classRecipe == getClassOfRecipe()){
-		        		RecipeMightyFoundry.class.cast(parser.currentRecipe).setTickPerItem(RecipeParser.getIntValue("tickPerItem", attributes, 1));
-			        	inTag = true;
+		        		RecipeMightyFoundry.class.cast(parser.currentRecipe).setTickPerItem(RecipeParser.getIntValue(AT_TICKPERITEM, attributes, 100));
+		        		String l = RecipeParser.getStringValue(RecipeParser.AT_LABEL, attributes, null);
+		        		String n = RecipeParser.getStringValue(RecipeParser.AT_ITEM_NAME, attributes, null);
+			        	if((l!=null && l.equals("mold")) || (n!=null && n.equals("itemMold"))){
+			        		RecipeMightyFoundry.class.cast(parser.currentRecipe).setMold(parser.getItemStack(attributes));
+			        		return true;
+			        	}
 		        	}
 		        }
 		    }
-			return inTag;
+			return false;
 		}
 
 		@Override

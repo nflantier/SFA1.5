@@ -132,7 +132,7 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials, IT
 					this.tank.drain(recipe.getFluidCost()/this.tickToInject, true);
 				}
 				if(this.currentTickToInject[idline]<=0){
-					if(RecipesRegistry.instance.canRecipeStack(recipe, getOutputStacks(idline))){
+					if(RecipesRegistry.instance.canRecipeStackItem(recipe, getOutputStacks(idline))){
 						int size = recipe.getOutputs().size();
 						for(RecipeOutput ro : recipe.getOutputs()){
 							if(ro.canStackWithItemStack(items[idline*2+6+1]) && size>0){
@@ -172,7 +172,7 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials, IT
 		if(recipes!=null && !recipes.isEmpty()){
 			for(ISFARecipe recipe : recipes){
 				if(recipe!=null && recipe.getOutputs()!=null){
-					if(RecipesRegistry.instance.canRecipeStack(recipe, getOutputStacks(idline))){
+					if(RecipesRegistry.instance.canRecipeStackItem(recipe, getOutputStacks(idline))){
 						this.currentRecipeName[idline]=recipe.getUid();
 						this.isRunning[idline] = true;
 						int size = recipe.getInputs().size();

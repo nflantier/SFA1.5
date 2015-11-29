@@ -257,7 +257,6 @@ public class RecipeParser extends DefaultHandler {
 
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
-		//System.out.println("...................................................... END"+localName);
 		if(ELEMENT_ROOT_RECIPES.equals(localName)){
 			result = currentRoot;
 			currentRoot = null;

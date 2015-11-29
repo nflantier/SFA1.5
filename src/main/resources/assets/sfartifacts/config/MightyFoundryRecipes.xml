@@ -4,10 +4,10 @@ tickPerItem is the amount of tick between two item being consumed
 -->
 
 <recipes>
-    <recipe name="Vibranium Shield" energyCost="32000" fluidCost="3200" tickPerItem="1000">
+    <recipe name="Vibranium Shield" energyCost="32000" fluidCost="3200">
 		<input>
-			<itemStack modID="sfartifacts" itemName="itemVibraniumAlloySheet" itemQuantity="32"/>
-			<itemStack modID="sfartifacts" itemName="itemMold" itemDamage="1"/>
+			<itemStack modID="sfartifacts" itemName="itemMold" itemDamage="1" label="mold"/>
+			<itemStack modID="sfartifacts" itemName="itemVibraniumAlloySheet" tickPerItem="1000" itemQuantity="32"/>
 		</input>
 		<output>
 			<itemStackWithNbt modID="sfartifacts" itemName="itemVibraniumShield">

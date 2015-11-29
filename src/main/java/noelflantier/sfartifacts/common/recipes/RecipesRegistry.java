@@ -13,6 +13,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import noelflantier.sfartifacts.common.items.ItemMold;
+import noelflantier.sfartifacts.common.recipes.handler.MightyFoundryRecipesHandler;
 
 public class RecipesRegistry {
 	public static final RecipesRegistry instance = new RecipesRegistry();
@@ -73,15 +75,15 @@ public class RecipesRegistry {
 		}
 		return ri;
 	}	
-	public List<RecipeInput> getInputFromTanks(List<FluidTank> list){
+	public List<RecipeInput> getInputFromFluidStacks(List<FluidStack> list){
 		List<RecipeInput> ri = null;
 		if(list==null || list.isEmpty())
 			return ri;
 		
 		ri = new ArrayList<RecipeInput>();
-		for(FluidTank tank: list){
-			if(tank!=null && tank.getFluid()!=null){
-				ri.add(new RecipeInput(tank.getFluid().copy()));
+		for(FluidStack fl: list){
+			if(fl!=null){
+				ri.add(new RecipeInput(fl.copy()));
 			}
 		}
 		return ri;
@@ -90,6 +92,9 @@ public class RecipesRegistry {
 	public List<RecipeOutput> getOutputs(IUseSFARecipes iuse, List<RecipeInput> inputs){
 		ISFARecipe r = getBestRecipe(iuse, inputs);
 		return r!=null?r.getOutputs():null;
+	}
+	public ISFARecipe getBestRecipeWithItemStacks(IUseSFARecipes iuse, List<ItemStack> inputs){
+		return getBestRecipe(iuse, getInputFromItemStacks(inputs));
 	}
 	public ISFARecipe getBestRecipe(IUseSFARecipes iuse, List<RecipeInput> inputs){
 		return getBestRecipe(iuse.getUsageName(), inputs, iuse.getEnergy(), iuse.getFluid());
@@ -103,10 +108,14 @@ public class RecipesRegistry {
 	public List<ISFARecipe> getOrderedRecipesWithItemStacks(IUseSFARecipes iuse, List<ItemStack> inputs) {
 		return getOrderedRecipes(iuse, getInputFromItemStacks(inputs));
 	}
-	public List<ISFARecipe> getRecipesWithItemStacksAndTanks(IUseSFARecipes iuse, List<ItemStack> inputs, List<FluidTank> tanks) {
+	public List<ISFARecipe> getRecipesWithItemStacksAndFluidStacks(IUseSFARecipes iuse, List<ItemStack> inputs, List<FluidStack> fluids) {
 		List<RecipeInput> in = getInputFromItemStacks(inputs);
-		in.addAll(getInputFromTanks(tanks));
+		in.addAll(getInputFromFluidStacks(fluids));
 		return getRecipes(iuse.getUsageName(), in, iuse.getEnergy(), iuse.getFluid());
+	}
+	public ISFARecipe getBestRecipesWithItemStacksAndFluidStacks(IUseSFARecipes iuse, List<ItemStack> inputs, List<FluidStack> fluids) {
+		List<ISFARecipe> r = getRecipesWithItemStacksAndFluidStacks(iuse, inputs, fluids);
+		return r!=null?!r.isEmpty()?r.get(0):null:null;
 	}
 	
 	public List<ISFARecipe> getOrderedRecipes(String usageName, List<RecipeInput> inputs, int energy, int fluid){
@@ -157,11 +166,54 @@ public class RecipesRegistry {
 		return flag.size()>0?flag:null;
 	}
 
-	public boolean canRecipeStack(ISFARecipe recipe, List<ItemStack> outputStacks) {
-		recipe.getOutputs().forEach((o)->o.canStackWithItemStack(outputStacks));
-		return outputStacks!=null && !outputStacks.isEmpty() && recipe.getOutputs().size()<=outputStacks.size();
+	public boolean canRecipeStackItem(ISFARecipe recipe, List<ItemStack> outputStacks) {
+		int sizeitem = 0;
+		for(RecipeOutput ro : recipe.getOutputs()){
+			if(ro.isItem()){
+				sizeitem+=1;
+				ro.canStackWithElement(outputStacks);
+			}
+		}
+		return outputStacks!=null && !outputStacks.isEmpty() && sizeitem<=outputStacks.size();
+	}
+
+	public FluidStack canRecipeStackTank(ISFARecipe recipe, FluidTank tank) {
+		for(RecipeOutput ro : recipe.getOutputs()){
+			if(ro.isFluid() && ro.getFluidStack().getFluid()!=null && ro.getFluidStack().isFluidEqual(tank.getFluid()) && ro.getFluidStack().amount+tank.getFluidAmount()<=tank.getCapacity()){
+				return ro.getFluidStack();
+			}
+		}
+		return null;
 	}
 	
+	//MIGHTYFOUNDRY
+	public ISFARecipe getRecipeWithMoldMeta(int meta){
+		for (Map.Entry<String, ISFARecipe> entry : RecipesRegistry.instance.getRecipesForUsage(MightyFoundryRecipesHandler.USAGE_MIGHTY_FOUNDRY).entrySet()){
+			if(entry.getValue() instanceof RecipeMightyFoundry){
+				if(RecipeMightyFoundry.class.cast(entry.getValue()).getMold()!=null)
+					if(RecipeMightyFoundry.class.cast(entry.getValue()).getMold().getItemDamage()==meta)
+						return entry.getValue();
+			}
+		}
+		return null;
+	}
+	public ItemStack getIngredientsForRecipe(ISFARecipe recipe){
+		if(recipe!=null){
+			for(RecipeInput ri : recipe.getInputs()){
+				if(ri.isItem() && ri.getItemStack().getItem() instanceof ItemMold == false)
+					return ri.getItemStack();
+			}
+		}
+		return null;
+	}
+	public ItemStack getResultForRecipe(ISFARecipe recipe){
+		if(recipe!=null){
+			for(RecipeOutput ri : recipe.getOutputs()){
+				return ri.getItemStack();
+			}
+		}
+		return null;
+	}
 	/*public class RecipePredicate implements Predicate<ISFARecipe>{
 		Integer energy;
 		Integer fluid;

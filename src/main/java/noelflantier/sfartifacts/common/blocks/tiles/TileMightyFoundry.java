@@ -3,6 +3,7 @@ package noelflantier.sfartifacts.common.blocks.tiles;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import cofh.api.energy.EnergyStorage;
 import net.minecraft.item.ItemStack;
@@ -19,15 +20,23 @@ import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
 import noelflantier.sfartifacts.common.network.messages.PacketFluid;
 import noelflantier.sfartifacts.common.network.messages.PacketMightyFoundry;
+import noelflantier.sfartifacts.common.recipes.ISFARecipe;
+import noelflantier.sfartifacts.common.recipes.IUseSFARecipes;
+import noelflantier.sfartifacts.common.recipes.RecipeBase;
+import noelflantier.sfartifacts.common.recipes.RecipeMightyFoundry;
+import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
+import noelflantier.sfartifacts.common.recipes.handler.MightyFoundryRecipesHandler;
 
-public class TileMightyFoundry extends TileMachine implements ITileGlobalNBT{
+public class TileMightyFoundry extends TileMachine implements ITileGlobalNBT, IUseSFARecipes{
 
 	//PROCESSING
 	public boolean isLocked = false;
 	public boolean isRunning = false;
 	public ItemStack currentCasting = null;
+	public String currentRecipeName = "none";
 	public double progression = 0.0D;
 	public int currentID = -1;
+	public int itemCasted = 0;
 	public final int initialTickToMelt = 1000;
 	public int tickToMelt = 1000;
 	public int currentTickToMelt = 0;
@@ -77,15 +86,45 @@ public class TileMightyFoundry extends TileMachine implements ITileGlobalNBT{
         if(this.isLocked && this.getStackInSlot(1)!=null)
         	this.processFoundry();
         if(this.isRunning && this.getStackInSlot(1)==null){
-			this.isRunning = false;
-			this.progression = 0.0D;
-        	this.currentID = -1;
-			this.currentCasting = null;
+        	resetFoundry();
         } 
+	}
+	
+	public void resetFoundry(){
+		this.isRunning = false;
+		this.progression = 0.0D;
+    	this.currentID = -1;
+		this.currentCasting = null;
+		this.currentRecipeName = "none";
+		this.itemCasted = 0;
 	}
 	
 	public boolean processFoundry(){
 		ItemStack mold = this.getStackInSlot(1);
+		if(this.currentRecipeName==null || this.currentRecipeName.equals("none")){
+			ISFARecipe recipe = RecipesRegistry.instance.getRecipeWithMoldMeta(mold.getItemDamage());
+			if(recipe!=null){
+				this.currentRecipeName = recipe.getUid();
+			}
+		}
+		ISFARecipe recipe = RecipesRegistry.instance.getRecipeForUsage(getUsageName(),this.currentRecipeName);
+		if(recipe!=null){
+			ItemStack ingredients = RecipesRegistry.instance.getIngredientsForRecipe(recipe);
+			this.progression = (double)this.itemCasted/(double)ingredients.stackSize;
+			if(this.isRunning){
+				if(this.itemCasted>=ingredients.stackSize){
+					this.setInventorySlotContents(6, RecipesRegistry.instance.getResultForRecipe(recipe));
+					this.setInventorySlotContents(1, null);
+					this.isLocked = false;
+					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+					resetFoundry();
+				}
+			}else{
+				this.isRunning = true;
+				this.itemCasted = 0;
+			}
+		}
+		
 		int mid = ItemNBTHelper.getInteger(mold, "idmold", 0);
 		ItemStack ing = Molds.getMold(mid).ingredients;
 		if(this.currentCasting!=null){
@@ -279,5 +318,25 @@ public class TileMightyFoundry extends TileMachine implements ITileGlobalNBT{
 		}else{
 			list.add(""+(this.getStackInSlot(1)==null?"No mold":!this.isLocked?"Mold not locked":"Mold locked"));
 		}
+	}
+
+	@Override
+	public String getUsageName() {
+		return MightyFoundryRecipesHandler.USAGE_MIGHTY_FOUNDRY;
+	}
+
+	@Override
+	public int getEnergy() {
+		return this.getEnergyStored(ForgeDirection.UNKNOWN);
+	}
+
+	@Override
+	public int getFluid() {
+		return 0;
+	}
+
+	@Override
+	public Class<? extends RecipeBase> getClassOfRecipe() {
+		return RecipeMightyFoundry.class;
 	}
 }

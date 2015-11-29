@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 
 public abstract class RecipeElement {
 
@@ -66,7 +67,7 @@ public abstract class RecipeElement {
 				&& getItemStack().getItemDamage()==stack.getItemDamage() && getItemStack().stackSize>=stack.stackSize;
 	}
 	public boolean isFluidStackSame(FluidStack stack){
-		return stack.getFluid()==getFluidStack().getFluid() && getFluidStack().amount>=stack.amount;
+		return stack.getFluid()==getFluidStack().getFluid();
 	}
 
 
@@ -83,19 +84,19 @@ public abstract class RecipeElement {
 		return flag;
     }
 	
-    public List<ItemStack> canStackWithItemStack(List<ItemStack> it){
-
-		Predicate<ItemStack> predicate = (i)->i==null || (i!=null && i.stackSize<i.getMaxStackSize() 
-				&& i.stackSize+getItemStack().stackSize<=i.getMaxStackSize() 
-				&& i.getItem()==getItemStack().getItem()
-				&& i.getItemDamage()==getItemStack().getItemDamage());
-		
+    public List<ItemStack> canStackWithElement(List<ItemStack> it){
 		if(getItemStack()!=null && it!=null && !it.isEmpty()){
-			it.removeIf(predicate.negate());
+			Predicate<ItemStack> predicateItem = (i)->i==null || (i!=null && i.stackSize<i.getMaxStackSize() 
+					&& i.stackSize+getItemStack().stackSize<=i.getMaxStackSize() 
+					&& i.getItem()==getItemStack().getItem()
+					&& i.getItemDamage()==getItemStack().getItemDamage());
+			it.removeIf(predicateItem.negate());
 			return it;
 		}
     	return it;
     }
+
+    
 	public boolean isRecipeElementSame(RecipeElement ri){//the object should always be the potential input or output / ri should awlays be the recipeelement of the choosen recipe
 		if(ri!=null && ri.getItemStack()!=null){
 			return getItemStack()!=null && isItemStackSame(ri.getItemStack());
