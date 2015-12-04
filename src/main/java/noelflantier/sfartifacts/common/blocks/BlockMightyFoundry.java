@@ -23,7 +23,7 @@ public class BlockMightyFoundry extends ABlockNBT{
 		this.setBlockTextureName(References.MODID+":machine");
 		this.setHarvestLevel("pickaxe",1);
 		this.setHardness(3.0F);
-		this.setResistance(2000.0F);
+		this.setResistance(10000.0F);
 	}
 
 	@Override

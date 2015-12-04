@@ -11,6 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -88,7 +89,7 @@ public class ItemVibraniumShield  extends ItemSFA{
 	
 	@Override
 	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
-		if(entity instanceof EntityLivingBase)
+		if(entity instanceof EntityItem==false)
 			entity.attackEntityFrom(DamageSource.causePlayerDamage(player), SHIELD_1.getDamageVsEntity());
 		return true;
 	}

@@ -1,27 +1,16 @@
 package noelflantier.sfartifacts.client.gui.manual;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Map;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import noelflantier.sfartifacts.References;
-import noelflantier.sfartifacts.SFArtifacts;
 import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
 import noelflantier.sfartifacts.client.gui.bases.GuiImage;
-import noelflantier.sfartifacts.client.gui.bases.GuiSFAScreen;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.handlers.ModGUIs;
-import noelflantier.sfartifacts.common.helpers.HammerStandRecipe;
-import noelflantier.sfartifacts.common.helpers.InjectorRecipe;
 import noelflantier.sfartifacts.common.helpers.PillarMaterials;
 import noelflantier.sfartifacts.common.helpers.PillarStructures;
 import noelflantier.sfartifacts.common.recipes.ISFARecipe;

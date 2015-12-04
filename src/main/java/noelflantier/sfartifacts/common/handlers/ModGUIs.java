@@ -34,7 +34,7 @@ import noelflantier.sfartifacts.common.container.ContainerLiquefier;
 import noelflantier.sfartifacts.common.container.ContainerMightyFoundry;
 import noelflantier.sfartifacts.common.container.ContainerMoldMaking;
 import noelflantier.sfartifacts.common.container.ContainerSoundEmitter;
-import noelflantier.sfartifacts.common.items.baseclasses.ItemInventory;
+import noelflantier.sfartifacts.common.items.baseclasses.ItemInventoryMold;
 
 public class ModGUIs implements IGuiHandler{
 	

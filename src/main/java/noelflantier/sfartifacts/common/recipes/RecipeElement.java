@@ -11,6 +11,9 @@ public abstract class RecipeElement {
 
 	protected ItemStack inputItem;
 	protected FluidStack inputFluid;
+	protected boolean isOreDict = false;
+
+	protected String oreName;
 	
 	public RecipeElement(){
     	this.inputFluid = null;
@@ -31,7 +34,20 @@ public abstract class RecipeElement {
     public boolean isItem(){
     	return this.getItemStack()!=null;
     }
-    
+
+	public boolean isOreDict() {
+		return isOreDict;
+	}
+	public void setIsOreDict(boolean isOreDict) {
+		this.isOreDict = isOreDict;
+	}
+	public String getOreName() {
+		return oreName;
+	}
+	public void setOreName(String oreName) {
+		this.setIsOreDict(true);
+		this.oreName = oreName;
+	}
     public ItemStack getItemStack() {
 		return inputItem;
 	}
@@ -83,7 +99,18 @@ public abstract class RecipeElement {
 		}
 		return flag;
     }
-	
+    
+    public boolean isSameItem(ItemStack i){
+    	boolean flag = false;
+		if(getItemStack()!=null){
+			if(i!=null && i.getItem()==getItemStack().getItem()
+					&& i.getItemDamage()==getItemStack().getItemDamage()){
+				flag = true;
+			}
+		}
+		return flag;
+    }
+    
     public List<ItemStack> canStackWithElement(List<ItemStack> it){
 		if(getItemStack()!=null && it!=null && !it.isEmpty()){
 			Predicate<ItemStack> predicateItem = (i)->i==null || (i!=null && i.stackSize<i.getMaxStackSize() 

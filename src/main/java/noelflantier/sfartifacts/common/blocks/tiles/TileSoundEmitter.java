@@ -20,14 +20,15 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import noelflantier.sfartifacts.common.entities.ai.EntityAITargetBlock;
+import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
-import noelflantier.sfartifacts.common.helpers.SoundEmitterHelper;
-import noelflantier.sfartifacts.common.helpers.SoundEmitterHelper.MobsPropertiesForSpawing;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
 import noelflantier.sfartifacts.common.network.messages.PacketFluid;
 import noelflantier.sfartifacts.common.network.messages.PacketInjector;
 import noelflantier.sfartifacts.common.network.messages.PacketSoundEmitter;
+import noelflantier.sfartifacts.common.recipes.MobsPropertiesForSpawning;
+import noelflantier.sfartifacts.common.recipes.handler.SoundEmitterConfig;
 
 public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 	
@@ -35,13 +36,8 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 	public boolean isEmitting = false;
 	public int frequencySelected = 0;
 	public int frequencyEmited = 0;
-	public int energyForSpawning;//energy allready consumed for the next spawn
-	public ArrayList<String> entitiesNameForSpawning;
-	public ArrayList<MobsPropertiesForSpawing> mpForSpawning;
-    Random random = new Random();
-    public String entityNameForSpawning;
-    public boolean canSpawn = false;
-	public Map<Integer, String[]> listScannedFrequency = new HashMap<Integer, String[]>();
+    public String entityNameToSpawn;
+	public Map<Integer, String> listScannedFrequency = new HashMap<Integer, String>();
 
 	//SPAWNER
 	public LivingEntitySpawnerBaseLogic spawnerBaseLogic = new LivingEntitySpawnerBaseLogic(){
@@ -64,18 +60,46 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 		public int getSpawnerZ()
 		{
 			return zCoord;
-		}
+		}	
+
 		@Override
-		public String getRandomEntityName() {
-			return entityNameForSpawning;
+		public String getEntityNameToSpawn() {
+			return entityNameToSpawn;
 		}
 		@Override
 		public boolean spawnConditions() {
-			if(getEnergyStored(ForgeDirection.UNKNOWN)<=0 || getFluidTanks().get(0).getFluidAmount()<=0)
+			if(getEnergyStored(ForgeDirection.UNKNOWN)<=0 && getFluidTanks().get(0).getFluidAmount()<=0)
 				return false;
-			int r = entitiesNameForSpawning==null?-1:entitiesNameForSpawning.size()==0?-1:entitiesNameForSpawning.size()==1?0:random.nextInt(entitiesNameForSpawning.size()-1);
-			entityNameForSpawning = r>=0?entitiesNameForSpawning.get(r):"";
-			if(mpForSpawning.get(r)!=null){
+			MobsPropertiesForSpawning mpfs = SoundEmitterConfig.getInstance().getMobsProperties(entityNameToSpawn, getEnergyStored(ForgeDirection.UNKNOWN), getFluidTanks().get(0).getFluidAmount());
+			if(mpfs!=null){
+				int nbmax = mpfs.nbMaxSpawning==-1?this.maxSpawnCount:mpfs.nbMaxSpawning;
+				int spx = 0;
+				for(int i = nbmax;i>=this.minSpawnCount;i--){
+					if(getFluidTanks().get(0).getFluidAmount()>=mpfs.fluidneeded.amount * nbmax
+							&& getEnergyStored(ForgeDirection.UNKNOWN)>=mpfs.energyneeded * nbmax){
+						spx = i;
+						break;
+					}
+				}
+				this.spawnCount = spx;
+				this.attractedToSpawner = mpfs.isAttractedToSpawner;
+				this.spawnEntityOnce = mpfs.isSpawningOnce;
+				this.customX = mpfs.customX;
+				this.customY = mpfs.customY;
+				this.customZ = mpfs.customZ;
+				if(spx<=0){
+					return false;
+				}else{
+					FluidStack st = mpfs.fluidneeded.copy();
+					st.amount = st.amount*spx;
+					extractEnergy(ForgeDirection.UNKNOWN, mpfs.energyneeded*spx, false);
+					drain(ForgeDirection.UNKNOWN, st, true);
+					this.minSpawnRange = 5;
+					this.spawnRange = 10;
+					return true;
+				}
+			}
+			/*if(mpForSpawning.get(r)!=null){
 				int nbmax = mpForSpawning.get(r).nbMaxSpawing==-1?this.maxSpawnCount:mpForSpawning.get(r).nbMaxSpawing;
 				int spx = 0;
 				for(int i = nbmax;i>=this.minSpawnCount;i--){
@@ -104,12 +128,12 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 					this.spawnRange = 10;
 					return true;
 				}
-			}
+			}*/
 			return false;
 		}
 		@Override
 		public void entityJustCreated(Entity entity) {
-            entity.getEntityData().setIntArray(SoundEmitterHelper.KEY_SPAWN, new int[]{getSpawnerX(),getSpawnerY(),getSpawnerZ()});
+            entity.getEntityData().setIntArray(SoundEmitterConfig.KEY_SPAWN, new int[]{getSpawnerX(),getSpawnerY(),getSpawnerZ()});
 		}
 		@Override
 		public void entityJustSpawned(Entity entity) {
@@ -133,11 +157,11 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 		super("Sound Emitter");
 		this.hasFL = true;
 		this.hasRF = true;
-    	this.energyCapacity = 500000;
+    	this.energyCapacity = ModConfig.capacitySoundEmiter;
     	this.storage.setCapacity(this.energyCapacity);
     	this.storage.setMaxReceive(this.energyCapacity/100);
     	this.storage.setMaxExtract(this.energyCapacity);
-		this.tankCapacity = 100000;
+		this.tankCapacity = ModConfig.capacityAsgarditeSoundEmitter;
 		this.tank.setCapacity(this.tankCapacity);
 	}
 	
@@ -163,10 +187,6 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 		this.lastEnergyStoredAmount = lastEnergyStored;
 	}
 	
-	public String getRandomEntityNameSpawn(int rd) {
-		return entitiesNameForSpawning==null?"":entitiesNameForSpawning.size()==0?"":entitiesNameForSpawning.size()==1?entitiesNameForSpawning.get(0):entitiesNameForSpawning.get(rd);
-	}
-	
 	@Override
 	public void processPackets() {
 	    PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this);
@@ -178,7 +198,12 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 	public void processMachine(){
     	this.processInventory();
 		if(this.isEmitting){
-			if(entitiesNameForSpawning==null){
+			if(this.entityNameToSpawn==null){
+				this.entityNameToSpawn = SoundEmitterConfig.getInstance().getNameForFrequency(this.frequencyEmited);
+			}else{
+				spawnerBaseLogic.updateSpawner();
+			}
+			/*if(entitiesNameForSpawning==null){
 				entityNameForSpawning = "";
 				entitiesNameForSpawning = new ArrayList<String>();
 				mpForSpawning = new ArrayList<MobsPropertiesForSpawing>();
@@ -189,7 +214,7 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 				}
 			}else{
 				spawnerBaseLogic.updateSpawner();
-			}
+			}*/
 		}
 	}
 
@@ -276,12 +301,9 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 		nbt.setInteger("sizefrequencyscanned", this.listScannedFrequency.size());
 		if(this.listScannedFrequency.size()>0){
 			int k = 0;
-			for (Map.Entry<Integer, String[]> entry : this.listScannedFrequency.entrySet()){
+			for (Map.Entry<Integer, String> entry : this.listScannedFrequency.entrySet()){
 				nbt.setInteger("frequency"+k, entry.getKey());
-				nbt.setInteger("sizefrequency"+entry.getKey(), entry.getValue().length);
-				for(int i = 0 ; i<entry.getValue().length ; i++){
-					nbt.setString("frequencystring"+entry.getKey()+"_"+i, entry.getValue()[i]);
-				}
+				nbt.setString("frequencystring"+k, entry.getValue());
 				k++;
 			}
 		}
@@ -299,13 +321,7 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 		int size = nbt.getInteger("sizefrequencyscanned");
 		if(size>0){
 			for(int i = 0 ; i<size ; i++){
-				int freq = nbt.getInteger("frequency"+i);
-				int sizestring = nbt.getInteger("sizefrequency"+freq);
-				String[] t = new String[sizestring];
-				for(int k = 0 ; k<sizestring ; k++){
-					t[k] = nbt.getString("frequencystring"+freq+"_"+k);
-				}
-				this.listScannedFrequency.put(freq, t);
+				this.listScannedFrequency.put(nbt.getInteger("frequency"+i), nbt.getString("frequencystring"+i));
 			}
 		}
     }
@@ -314,10 +330,10 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 	public void addToWaila(List<String> list) {
 		super.addToWaila(list);
 		String str = "";
-		if(this.getEnergyStored(ForgeDirection.UNKNOWN)<SoundEmitterHelper.getRFNeededForFrequency(this.frequencyEmited))
+		if(this.getEnergyStored(ForgeDirection.UNKNOWN)<SoundEmitterConfig.getInstance().getRfForFrequency(frequencyEmited))
 			str += "Not enough RF";
-		if(this.getFluidTanks().get(0).getFluidAmount()<SoundEmitterHelper.getFLNeededForFrequency(this.frequencyEmited))
+		if(this.getFluidTanks().get(0).getFluidAmount()<SoundEmitterConfig.getInstance().getFlForFrequency(frequencyEmited))
 			str += str == ""?"Not enough Fluid":" and Fluid";
-		list.add("Emiting : "+(this.isEmitting?str==""?this.frequencyEmited+" "+SoundEmitterHelper.spawningRulesIDForRules.get(SoundEmitterHelper.getIdsForFrequency(this.frequencyEmited).get(0)).nameEntity:""+str:"No"));
+		list.add("Emiting : "+(this.isEmitting?str==""?this.frequencyEmited+" "+SoundEmitterConfig.getInstance().getRealEntityName(frequencyEmited):""+str:"No"));
 	}
 }

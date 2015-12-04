@@ -18,6 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
 import noelflantier.sfartifacts.common.items.ItemAsgardite;
 import noelflantier.sfartifacts.common.network.PacketHandler;
@@ -39,7 +40,7 @@ public class TileLiquefier extends TileMachine implements ITileUsingMaterials, I
 	public String currentRecipeName = "none";
 	public int tickToMelt = 10;
 	public int currentTickToMelt;
-	public FluidTank tankMelt = new FluidTank(10000);
+	public FluidTank tankMelt = new FluidTank(ModConfig.capacityWaterLiquefier);
 	public static int[][] offsetWater = new int[][]{{0,-1,0},{1,-1,0},{-1,-1,0},{0,-1,1},{1,-1,1},{-1,-1,1},{0,-1,-1},{1,-1,-1},{-1,-1,-1}};
 	
 	//INVENTORY
@@ -49,11 +50,11 @@ public class TileLiquefier extends TileMachine implements ITileUsingMaterials, I
 		super("Liquefier");
 		this.hasFL = true;
 		this.hasRF = true;
-    	this.energyCapacity = 100000;
+    	this.energyCapacity = ModConfig.capacityLiquefier;
     	this.storage.setCapacity(this.energyCapacity);
     	this.storage.setMaxReceive(this.energyCapacity/100);
     	this.storage.setMaxExtract(this.energyCapacity);
-		this.tankCapacity = 100000;
+		this.tankCapacity = ModConfig.capacityAsgarditeLiquefier;
 		this.tank.setCapacity(this.tankCapacity);
 	}
 
@@ -120,6 +121,8 @@ public class TileLiquefier extends TileMachine implements ITileUsingMaterials, I
 		    		}
 				}
         	}
+			/*this.isRunning = false;
+			this.currentRecipeName="none";*/
 	    	this.processInventory();
 	    	this.processLiquefying();
         }
@@ -160,6 +163,7 @@ public class TileLiquefier extends TileMachine implements ITileUsingMaterials, I
 	}
 	public boolean processLiquefying(){
 		if(!this.isRunning){
+			this.currentTickToMelt = this.tickToMelt;
 			ISFARecipe recipe = RecipesRegistry.instance.getBestRecipeWithItemStacks(this, getInputStacks());
 			if(recipe!=null){
 				FluidStack fs = RecipesRegistry.instance.canRecipeStackTank(recipe, this.tank);
@@ -177,20 +181,11 @@ public class TileLiquefier extends TileMachine implements ITileUsingMaterials, I
 				}else
 					return false;
 			}
-			/*this.currentTickToMelt = this.tickToMelt;
-			if(this.items[0]!=null && this.getEnergyStored(ForgeDirection.UNKNOWN)-this.energyNeededPerOneItem>=0 && this.tankMelt.getFluidAmount()>=this.fluidNeededPerOneItem.amount && this.tank.getFluidAmount()+this.fluidGivenPerOneItem.amount<=this.tank.getCapacity()){
-				this.isRunning = true;
-				if(this.items[0].stackSize==1)
-					this.items[0]=null;
-				else
-					this.items[0].stackSize--;
-			}else
-				return false;*/
 		}else{
 			if(this.currentRecipeName!=null && !this.currentRecipeName.equals("none")){
 				ISFARecipe recipe = RecipesRegistry.instance.getRecipeForUsage(getUsageName(),this.currentRecipeName);
 				if(recipe!=null && this.getEnergyStored(ForgeDirection.UNKNOWN)>=recipe.getEnergyCost()/this.tickToMelt 
-						&& this.getFluidTanks().get(0).getFluidAmount()>recipe.getFluidCost()/this.tickToMelt){
+						&& this.tankMelt.getFluidAmount()>recipe.getFluidCost()/this.tickToMelt){
 					this.currentTickToMelt -= 1;
 					if(this.getRandom(this.getBlockMetadata(),this.randomMachine)){
 						this.tankMelt.drain(recipe.getFluidCost()/this.tickToMelt, true);
@@ -203,21 +198,10 @@ public class TileLiquefier extends TileMachine implements ITileUsingMaterials, I
 						return true;
 					}
 				}
+			}else{
+				this.isRunning = false;
+				this.currentRecipeName="none";
 			}
-			/*if(this.getEnergyStored(ForgeDirection.UNKNOWN)>=this.energyNeededPerOneItem/this.tickToMelt && this.tankMelt.getFluidAmount()>=this.fluidNeededPerOneItem.amount/this.tickToMelt){
-				this.currentTickToMelt -= 1;
-				FluidStack fs = this.fluidGivenPerOneItem.copy();
-				fs.amount = fs.amount/this.tickToMelt;
-				this.tank.fill(fs, true);
-				if(this.getRandom(this.getBlockMetadata(),this.randomMachine)){
-					this.tankMelt.drain(this.fluidNeededPerOneItem.amount/this.tickToMelt, true);
-					this.extractEnergy(ForgeDirection.UNKNOWN, this.energyNeededPerOneItem/this.tickToMelt, false);
-				}
-				if(this.currentTickToMelt<=0){
-					this.isRunning = false;
-					return true;
-				}
-			}*/
 		}
 		return true;
 	}

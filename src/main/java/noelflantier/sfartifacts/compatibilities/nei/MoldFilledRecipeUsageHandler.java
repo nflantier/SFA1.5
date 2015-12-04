@@ -2,6 +2,7 @@ package noelflantier.sfartifacts.compatibilities.nei;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
@@ -14,6 +15,11 @@ import net.minecraft.item.ItemStack;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.helpers.Molds;
+import noelflantier.sfartifacts.common.items.ItemMold;
+import noelflantier.sfartifacts.common.recipes.ISFARecipe;
+import noelflantier.sfartifacts.common.recipes.RecipeMold;
+import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
+import noelflantier.sfartifacts.common.recipes.handler.MoldRecipesHandler;
 import noelflantier.sfartifacts.compatibilities.nei.InjectorRecipeUsageHandler.InjectorRecipeNei;
 import noelflantier.sfartifacts.compatibilities.nei.MightyFoundryRecipeUsageHandler.MightyFoundryRecipeNei;
 
@@ -32,19 +38,19 @@ public class MoldFilledRecipeUsageHandler  extends TemplateRecipeHandler {
 	@Override
 	public void drawBackground(int recipeIndex) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		//GL11.glScalef(0.5F, 0.5F, 0.5F);
 		GuiDraw.changeTexture(getGuiTexture());
 		GuiDraw.drawTexturedModalRect(0, 0, 0, 0, 167, 169);
 	}
 
 	@Override
 	public void drawForeground(int recipeIndex) {
-		//GL11.glScalef(0.5F, 0.5F, 0.5F);
+		GL11.glScalef(0.5F, 0.5F, 0.5F);
+		GuiDraw.drawString(((MoldFilledRecipeNei)arecipes.get(recipeIndex)).moldName, 190, -16, 0x808080, false);
+		GL11.glScalef(1F, 1F, 1F);
 	}
 	
 	@Override
 	public void drawExtras(int recipeIndex) {
-		//GL11.glScalef(0.5F, 0.5F, 0.5F);
 	}
 
 	@Override
@@ -52,8 +58,8 @@ public class MoldFilledRecipeUsageHandler  extends TemplateRecipeHandler {
 		if(ingredient == null || ingredient.getItem()!=Item.getItemFromBlock(Blocks.sand)) {
 			return;
 		}
-		for(Molds m : Molds.values()){
-			arecipes.add(new MoldFilledRecipeNei(m));
+		for(Map.Entry<String, ISFARecipe> entry : RecipesRegistry.instance.getRecipesForUsage(MoldRecipesHandler.USAGE_MOLD).entrySet()){
+			arecipes.add(new MoldFilledRecipeNei(RecipeMold.class.cast(entry.getValue())));
 		}
 	}
 	
@@ -62,10 +68,9 @@ public class MoldFilledRecipeUsageHandler  extends TemplateRecipeHandler {
 		if(result == null) {
 			return;
 		}
-		for(Molds m : Molds.values()){
-			if(result.getItem()==m.mold.getItem() && result.getItemDamage()==m.mold.getItemDamage()){
-				arecipes.add(new MoldFilledRecipeNei(m));
-			}
+		for(Map.Entry<String, ISFARecipe> entry : RecipesRegistry.instance.getRecipesForUsage(MoldRecipesHandler.USAGE_MOLD).entrySet()){
+			if(result.getItem() instanceof ItemMold && RecipeMold.class.cast(entry.getValue()).getMoldMeta()==result.getItemDamage())
+				arecipes.add(new MoldFilledRecipeNei(RecipeMold.class.cast(entry.getValue())));
 		}
 	}
 	
@@ -73,10 +78,12 @@ public class MoldFilledRecipeUsageHandler  extends TemplateRecipeHandler {
 
 	    private ArrayList<PositionedStack> input;
 	    private PositionedStack output;
-	    
-		public MoldFilledRecipeNei(Molds m){
+	    public String moldName = "";
+
+		public MoldFilledRecipeNei(RecipeMold rm){
+			this.moldName = rm.getUid();
 		    this.input = new ArrayList<PositionedStack>();
-			int[] inv = m.recipe;
+			int[] inv = rm.getTabShape();
 			for(int i=0;i<inv.length;i++){
 				String bin = Integer.toBinaryString(inv[i]);
 				int l = 9-bin.length();

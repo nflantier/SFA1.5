@@ -6,16 +6,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.client.gui.bases.GuiButtonSFA;
@@ -27,12 +23,9 @@ import noelflantier.sfartifacts.client.gui.bases.GuiToolTips;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSoundEmitter;
 import noelflantier.sfartifacts.common.container.ContainerSoundEmitter;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
-import noelflantier.sfartifacts.common.helpers.SoundEmitterHelper;
-import noelflantier.sfartifacts.common.helpers.SoundEmitterHelper.MobsPropertiesForSpawing;
 import noelflantier.sfartifacts.common.network.PacketHandler;
-import noelflantier.sfartifacts.common.network.messages.PacketEnchantHammer;
-import noelflantier.sfartifacts.common.network.messages.PacketMightyFoundryGui;
 import noelflantier.sfartifacts.common.network.messages.PacketSoundEmitterGui;
+import noelflantier.sfartifacts.common.recipes.handler.SoundEmitterConfig;
 
 public class GuiSoundEmitter extends GuiMachine{
 
@@ -44,13 +37,12 @@ public class GuiSoundEmitter extends GuiMachine{
 	private int currentTickButton = -1;
 	private boolean isScanning = false;
 	private boolean isEmitting = false;
-	private int currentTickScanning = 0;
-	private int currentRes = 0;
-	public ArrayList<Integer> lastScanningResult;
+	private String lastScannedName;
 	public int lastFrequency;
+	private int currentTickScanning = 0;
+	
 	public GuiScrollable listFrequency = new GuiScrollable(10);
-	public boolean listFrequencyOpen = false;
-	Map<Integer, String[]> allFrequency;
+	Map<Integer, String> allFrequency;
 	
 	public GuiSoundEmitter(InventoryPlayer inventory, TileSoundEmitter tile) {
 		super(new ContainerSoundEmitter(inventory, tile));
@@ -90,8 +82,8 @@ public class GuiSoundEmitter extends GuiMachine{
 				if(this.currentTickButton<0){
 					this.currentTickButton = this.tickButton;
 					long i = Long.parseLong(this.componentList.get("tffreq").textFieldList.get(0).getText());
-					i=i>SoundEmitterHelper.highestFrequency?SoundEmitterHelper.highestFrequency:i;
-					this.componentList.get("tffreq").textFieldList.get(0).setText((i-1<SoundEmitterHelper.lowestFrequency?SoundEmitterHelper.lowestFrequency:i-1)+"");
+					i=i>SoundEmitterConfig.highestFrequency?SoundEmitterConfig.highestFrequency:i;
+					this.componentList.get("tffreq").textFieldList.get(0).setText((i-1<SoundEmitterConfig.lowestFrequency?SoundEmitterConfig.lowestFrequency:i-1)+"");
 				}else
 					this.currentTickButton-=1;
 			}
@@ -101,8 +93,8 @@ public class GuiSoundEmitter extends GuiMachine{
 				if(this.currentTickButton<0){
 					this.currentTickButton = this.tickButton;
 					long i = Integer.parseInt(this.componentList.get("tffreq").textFieldList.get(0).getText());
-					i=i<SoundEmitterHelper.lowestFrequency?SoundEmitterHelper.lowestFrequency:i;
-					this.componentList.get("tffreq").textFieldList.get(0).setText((i+1>SoundEmitterHelper.highestFrequency?SoundEmitterHelper.highestFrequency:i+1)+"");
+					i=i<SoundEmitterConfig.lowestFrequency?SoundEmitterConfig.lowestFrequency:i;
+					this.componentList.get("tffreq").textFieldList.get(0).setText((i+1>SoundEmitterConfig.highestFrequency?SoundEmitterConfig.highestFrequency:i+1)+"");
 				}else
 					this.currentTickButton-=1;
 			}
@@ -124,9 +116,7 @@ public class GuiSoundEmitter extends GuiMachine{
 				
 				this.tile.isEmitting = false;
 				this.tile.frequencyEmited = 0;
-				this.tile.entitiesNameForSpawning = null;
-				this.tile.mpForSpawning = null;
-				this.tile.entityNameForSpawning = "";
+				this.tile.entityNameToSpawn = null;
 				this.getButtonById(3).displayString = "EMIT";
 			}
 		}
@@ -145,43 +135,54 @@ public class GuiSoundEmitter extends GuiMachine{
 		if(this.currentTickScanning==65)
 			this.componentList.get("txta").replaceString(2, "_________");
 		if(this.currentTickScanning==70){
-			String str = this.lastScanningResult.size()+"  echo found.";
+			String str = "1 echo found.";
+			if(this.lastScannedName==null)
+				str = "0 echo found";
 			this.componentList.get("txta").addText(""+str, 0, 0);
 		}
-		if(this.currentTickScanning==75+this.currentRes*5 && this.currentRes<this.lastScanningResult.size()){
-			this.componentList.get("txta").addText(SoundEmitterHelper.spawningRulesIDForRules.get(this.lastScanningResult.get(this.currentRes)).nameEntity, 0, 0);
+		if(this.currentTickScanning==75 && this.lastScannedName!=null){
+			this.componentList.get("txta").addText(SoundEmitterConfig.getInstance().getRealEntityName(this.lastScannedName), 0, 0);
 			showCond("txta");
-			this.currentRes++;
 		}
-		if(this.currentTickScanning==80+this.lastScanningResult.size()*5)
+		if(this.currentTickScanning==80)
 			this.componentList.get("txta").addText("_________", 0, 0);
-		if(this.currentTickScanning==80+this.lastScanningResult.size()*5)
+		if(this.currentTickScanning==80)
 			this.componentList.get("txta").addText("end", 0, 0);
 		
-		if(this.currentTickScanning>=100+this.lastScanningResult.size()*5){
+		if(this.currentTickScanning>=100){
 			this.isScanning = false;
-			this.currentRes = 0;
 			this.currentTickScanning=0;
-			loadListFrequency();
 			if(this.isEmitting){
+				loadListFrequency();
 				this.componentList.get("txta").addText("start_emit:", 0, 0);
-				if(this.lastScanningResult.size()>0){
+				if(this.lastScannedName!=null){
 					this.componentList.get("txta").addText("emitting____"+this.lastFrequency, 0, 0);
 					showCond("txta");
 					this.getButtonById(3).displayString = "STOP";
 				}else
 					this.componentList.get("txta").addText("cant_emit_", 0, 0);
+				/*if(this.lastScanningResult.size()>0){
+					this.componentList.get("txta").addText("emitting____"+this.lastFrequency, 0, 0);
+					showCond("txta");
+					this.getButtonById(3).displayString = "STOP";
+				}else
+					this.componentList.get("txta").addText("cant_emit_", 0, 0);*/
 			}
 		}
 	}
 	
 	public void showCond(String key){
 		this.componentList.get(key).addText("c:_"+this.getStrConditionsFrequency(this.lastFrequency), 0, 0);
-		if(this.tile.getEnergyStored(ForgeDirection.UNKNOWN)<SoundEmitterHelper.getRFNeededForFrequency(this.lastFrequency))
+		if(this.tile.getEnergyStored(ForgeDirection.UNKNOWN)<SoundEmitterConfig.getInstance().getRfForName(lastScannedName))
 			this.componentList.get(key).addText("!!not_enough_rf", 0, 0);
-		if(this.tile.getFluidTanks().get(0).getFluidAmount()<SoundEmitterHelper.getFLNeededForFrequency(this.lastFrequency))
-			this.componentList.get(key).addText("!!not_enough_fluid", 0, 0);
-				
+		if(this.tile.getFluidTanks().get(0).getFluidAmount()<SoundEmitterConfig.getInstance().getFlForName(lastScannedName))
+			this.componentList.get(key).addText("!!not_enough_fluid", 0, 0);	
+	}
+		
+	public String getStrConditionsFrequency(int freq){
+		String s = "";
+		s = SoundEmitterConfig.getInstance().getRfForFrequency(freq)+"RF_"+SoundEmitterConfig.getInstance().getFlForFrequency(freq)+"MB";
+		return s;
 	}
 	
 	public void startScanning(boolean emit){
@@ -195,29 +196,33 @@ public class GuiSoundEmitter extends GuiMachine{
 			PacketHandler.INSTANCE.sendToServer(new PacketSoundEmitterGui(this.tile.xCoord,this.tile.yCoord,this.tile.zCoord,this.lastFrequency,1));
 			this.tile.frequencySelected = this.lastFrequency;
 			
-			this.lastScanningResult = SoundEmitterHelper.getIdsForFrequency(this.lastFrequency);
+			this.lastScannedName = SoundEmitterConfig.getInstance().getNameForFrequency(this.lastFrequency);
 			this.isScanning = true;
+			
 			this.componentList.get("txta").addText("start_scan:", 0, 0);
 			this.componentList.get("txta").addText("f_"+this.lastFrequency, 0, 0);
 			this.componentList.get("txta").addText("..", 0, 0);
-			if(this.lastScanningResult.size()>0){
+			
+			if(this.lastScannedName!=null){
 				if(!ModConfig.areFrequenciesShown){
+					//ADD FREQUENCY AND STRING TO LIST
 					PacketHandler.INSTANCE.sendToServer(new PacketSoundEmitterGui(this.tile.xCoord,this.tile.yCoord,this.tile.zCoord,this.lastFrequency,4));
-					String[] s = SoundEmitterHelper.getNameAndFrequency(this.lastFrequency);
 					if(this.tile.listScannedFrequency.containsKey(this.lastFrequency))
 						this.tile.listScannedFrequency.remove(this.lastFrequency);
-					this.tile.listScannedFrequency.put(this.lastFrequency, s);
-					
+					this.tile.listScannedFrequency.put(this.lastFrequency, this.lastScannedName);
 				}
 			}
+			
 			if(emit){
-				this.isEmitting = true;
-				if(this.lastScanningResult.size()>0){
+				if(this.lastScannedName!=null && SoundEmitterConfig.getInstance().getMobsProperties(lastScannedName, this.tile.getEnergyStored(ForgeDirection.UNKNOWN), this.tile.getFluidTanks().get(0).getFluidAmount())!=null){
+
+					this.isEmitting = true;
 					//SET THE EMITE FREQ AND SET ISEMITING TO TRUE
 					PacketHandler.INSTANCE.sendToServer(new PacketSoundEmitterGui(this.tile.xCoord,this.tile.yCoord,this.tile.zCoord,this.lastFrequency,0));
 					this.tile.frequencyEmited = this.lastFrequency;
 					PacketHandler.INSTANCE.sendToServer(new PacketSoundEmitterGui(this.tile.xCoord,this.tile.yCoord,this.tile.zCoord,this.lastFrequency,3));
 					this.tile.isEmitting = true;
+					
 				}
 			}
 		}
@@ -225,8 +230,8 @@ public class GuiSoundEmitter extends GuiMachine{
 	
 	public void checkFrequency(){
 		long f = Long.parseLong(this.componentList.get("tffreq").textFieldList.get(0).getText());
-		f=f>SoundEmitterHelper.highestFrequency?SoundEmitterHelper.highestFrequency:f;
-		f=f<SoundEmitterHelper.lowestFrequency?SoundEmitterHelper.lowestFrequency:f;
+		f=f>SoundEmitterConfig.highestFrequency?SoundEmitterConfig.highestFrequency:f;
+		f=f<SoundEmitterConfig.lowestFrequency?SoundEmitterConfig.lowestFrequency:f;
 		this.componentList.get("tffreq").textFieldList.get(0).setText(f+"");
 	}
 	
@@ -268,13 +273,13 @@ public class GuiSoundEmitter extends GuiMachine{
 			    int key = enumKeyE.nextElement();
 		    	if(this.listFrequency.componentList.get(key).isMouseHover(x, y)){
 	    		 	int i = 0;        
-	    			Iterator <Map.Entry<Integer, String[]>>iterator;
+	    			Iterator <Map.Entry<Integer, String>>iterator;
 	    			if(ModConfig.areFrequenciesShown)
 	    				iterator =  allFrequency.entrySet().iterator();
 	    			else
 	    				iterator = this.tile.listScannedFrequency.entrySet().iterator();
 	    	        while (iterator.hasNext()){
-	    	        	Map.Entry<Integer, String[]> entry = iterator.next();
+	    	        	Map.Entry<Integer, String> entry = iterator.next();
 	    	        	if(i==key){
 	    	        		if(sidedBtOpen[sidedButton.get(machineButtonO1)])
 	    	        			sidedBtOpen[sidedButton.get(machineButtonO1)] = false;
@@ -360,53 +365,24 @@ public class GuiSoundEmitter extends GuiMachine{
 		loadListFrequency();
 	}
 	
-	public String getStrNameId(int id){
-		return SoundEmitterHelper.spawningRulesIDForRules.get(id).nameEntity;
-	}
-
-	public String getStrConditionsId(int id){
-		String s = "";
-		if(SoundEmitterHelper.spawningRulesIDForRules.get(id)!=null){
-			s = SoundEmitterHelper.spawningRulesIDForRules.get(id).rfneeded
-				+"RF "+SoundEmitterHelper.spawningRulesIDForRules.get(id).fluidneeded.amount+"MB";
-		}
-		return s;
-	}
-	
-	public String getStrConditionsFrequency(int freq){
-		String s = "";
-		s = SoundEmitterHelper.getRFNeededForFrequency(freq)+"RF_"+SoundEmitterHelper.getFLNeededForFrequency(freq)+"MB";
-		return s;
-	}
-	
 	public void loadListFrequency(){
 		this.listFrequency = new GuiScrollable(10);
         int y = 10;
         int i = 0;
 
-		Iterator <Map.Entry<Integer, String[]>>iterator;
+		Iterator <Map.Entry<Integer, String>>iterator;
 		
 		if(ModConfig.areFrequenciesShown){
-			allFrequency = new HashMap<Integer, String[]>();
-			Iterator <Map.Entry<Integer,Integer>>it = SoundEmitterHelper.frequencyForID.entrySet().iterator();
-	        while (it.hasNext()){
-	        	Map.Entry<Integer,Integer> entry = it.next();
-	        	int freq = entry.getKey();
-	        	int id = entry.getValue();
-	        	if(!allFrequency.containsKey(freq))
-	        		allFrequency.put(freq, new String[]{getStrNameId(id)});
-	        	else
-	        		allFrequency.get(freq)[allFrequency.get(id).length] = getStrNameId(id);
-	        }
+			allFrequency = new HashMap<Integer, String>();
+			allFrequency.putAll(SoundEmitterConfig.getInstance().getFrequencyToName());
 			iterator = allFrequency.entrySet().iterator();
 		}else 
 			iterator = this.tile.listScannedFrequency.entrySet().iterator();
 		
         while (iterator.hasNext()){
-        	Map.Entry<Integer, String[]> entry = iterator.next();
-
+        	Map.Entry<Integer, String> entry = iterator.next();
 	    	GuiComponent gce = new GuiComponent(guiLeft+15, guiTop+y, 130,10);
-			gce.addText(entry.getKey()+" : "+arrayToString(entry.getValue()), 0,0);
+			gce.addText(entry.getKey()+" : "+StatCollector.translateToLocal("entity."+entry.getValue()+".name"), 0,0);
 	    	gce.isLink=true;
 	    	gce.defColor=EnumChatFormatting.DARK_GRAY;
 			this.listFrequency.addComponent(i, gce);
@@ -415,13 +391,6 @@ public class GuiSoundEmitter extends GuiMachine{
         }
         this.listFrequency.showArrows = true;
         this.listFrequency.setArrowsPositionAndAlpha(this.guiLeft+142,this.guiTop-1,93,0.3F);
-	}
-	
-	public String arrayToString(String[] p){
-		String r = "";
-		for(int i =0;i<p.length;i++)
-			r = r+p[i]+",";
-		return r.substring(0, r.length()-1);
 	}
 	
 	@Override

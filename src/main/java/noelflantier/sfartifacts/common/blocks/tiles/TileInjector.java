@@ -5,7 +5,6 @@ import java.util.Hashtable;
 import java.util.List;
 
 import cofh.api.energy.EnergyStorage;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -15,8 +14,8 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileBlockPillar;
+import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
-import noelflantier.sfartifacts.common.helpers.InjectorRecipe;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
 import noelflantier.sfartifacts.common.network.messages.PacketFluid;
@@ -45,11 +44,11 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials, IT
 		super("Injector");
 		this.hasFL = true;
 		this.hasRF = true;
-    	this.energyCapacity = 100000;
+    	this.energyCapacity = ModConfig.capacityInjector;
     	this.storage.setCapacity(this.energyCapacity);
     	this.storage.setMaxReceive(this.energyCapacity/100);
     	this.storage.setMaxExtract(this.energyCapacity);
-		this.tankCapacity = 100000;
+		this.tankCapacity = ModConfig.capacityAsgarditeInjector;
 		this.tank.setCapacity(this.tankCapacity);
 	}	
 	
@@ -210,7 +209,7 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials, IT
 		}};
 	}
 	
-	public int getStackSize(InjectorRecipe ir, ItemStack stack){
+	/*public int getStackSize(InjectorRecipe ir, ItemStack stack){
 		for(ItemStack sta : ir.recipe){
 			if(sta.getItem()==stack.getItem() && sta.getItemDamage()==stack.getItemDamage()){
 				return sta.stackSize;
@@ -225,7 +224,7 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials, IT
 				return true;
 		}
 		return false;
-	}
+	}*/
 	
 	public boolean processInjecting(){
 		for(int i=0;i<this.isRunning.length;i++){

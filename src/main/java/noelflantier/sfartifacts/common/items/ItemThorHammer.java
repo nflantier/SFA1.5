@@ -14,6 +14,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -61,8 +62,7 @@ public class ItemThorHammer extends MiningHammerBase implements IItemHasModes{
 	}
 
 	@Override
-    public boolean hitEntity(ItemStack stack, EntityLivingBase el, EntityLivingBase el2)
-    {
+    public boolean hitEntity(ItemStack stack, EntityLivingBase el, EntityLivingBase el2){
         this.extractEnergy(stack, energyEntityHit, false);
         return true;
     }
@@ -126,7 +126,7 @@ public class ItemThorHammer extends MiningHammerBase implements IItemHasModes{
 
 	@Override
 	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
-		if(entity instanceof EntityLivingBase)
+		if(entity instanceof EntityItem==false)
 			entity.attackEntityFrom(DamageSource.causePlayerDamage(player), this.getDamageVsEntity());
 		return true;
 	}

@@ -1,5 +1,14 @@
 package noelflantier.sfartifacts.common;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.VillagerRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.MinecraftForge;
@@ -17,27 +26,16 @@ import noelflantier.sfartifacts.common.handlers.ModNetworkMessages;
 import noelflantier.sfartifacts.common.handlers.ModOreDictionary;
 import noelflantier.sfartifacts.common.handlers.ModRecipes;
 import noelflantier.sfartifacts.common.handlers.ModTileEntities;
-import noelflantier.sfartifacts.common.helpers.SoundEmitterHelper;
 import noelflantier.sfartifacts.common.recipes.handler.HammerUpgradesRecipesHandler;
 import noelflantier.sfartifacts.common.recipes.handler.InjectorRecipesHandler;
 import noelflantier.sfartifacts.common.recipes.handler.LiquefierRecipesHandler;
 import noelflantier.sfartifacts.common.recipes.handler.MightyFoundryRecipesHandler;
+import noelflantier.sfartifacts.common.recipes.handler.MoldRecipesHandler;
+import noelflantier.sfartifacts.common.recipes.handler.SoundEmitterConfig;
 import noelflantier.sfartifacts.common.world.ModWorldGenOre;
 import noelflantier.sfartifacts.common.world.village.ComponentPillar;
 import noelflantier.sfartifacts.common.world.village.VillagePillarHandler;
 import noelflantier.sfartifacts.compatibilities.InterMods;
-
-import java.io.File;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLInterModComms;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.VillagerRegistry;
 
 public class CommonProxy {
 
@@ -71,18 +69,17 @@ public class CommonProxy {
 
 	public void postinit(FMLPostInitializationEvent event) {
     	InterMods.loadConfig();
-    	SoundEmitterHelper.loadSpawningRules();
 		ModAchievements.registerAchievementPane();
     	ModOreDictionary.checkOreDictionary();
     	ModOreDictionary.loadOres();
     	ModRecipes.loadRecipes();
     	
     	InjectorRecipesHandler.getInstance().loadRecipes();
-    	//InjectorRecipesHandler.getInstance().getRecipes().forEach((s)->s.debug());
     	HammerUpgradesRecipesHandler.getInstance().loadRecipes();
-    	//HammerUpgradesRecipesHandler.getInstance().getRecipes().forEach((s)->s.debug());
     	LiquefierRecipesHandler.getInstance().loadRecipes();
-    	//MightyFoundryRecipesHandler.getInstance().loadRecipes();
+    	MoldRecipesHandler.getInstance().loadRecipes();
+    	MightyFoundryRecipesHandler.getInstance().loadRecipes();
+    	SoundEmitterConfig.getInstance();
 	}
 	
 	public EntityPlayer getPlayerEntity(MessageContext ctx) {

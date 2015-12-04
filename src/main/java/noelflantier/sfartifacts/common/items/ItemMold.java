@@ -3,6 +3,7 @@ package noelflantier.sfartifacts.common.items;
 import io.netty.channel.embedded.EmbeddedChannel;
 
 import java.util.List;
+import java.util.Map;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.FMLOutboundHandler;
@@ -30,7 +31,11 @@ import noelflantier.sfartifacts.common.container.ContainerMoldMaking;
 import noelflantier.sfartifacts.common.handlers.ModGUIs;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.helpers.Molds;
-import noelflantier.sfartifacts.common.items.baseclasses.ItemInventory;
+import noelflantier.sfartifacts.common.items.baseclasses.ItemInventoryMold;
+import noelflantier.sfartifacts.common.recipes.ISFARecipe;
+import noelflantier.sfartifacts.common.recipes.RecipeMold;
+import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
+import noelflantier.sfartifacts.common.recipes.handler.MoldRecipesHandler;
 
 public class ItemMold extends ItemSFA{
 
@@ -80,12 +85,12 @@ public class ItemMold extends ItemSFA{
 		it1 = ItemNBTHelper.setInteger(it1, "idmold", 0);//0 nothing   -1 invalid    other>0 valid
 		it1 = ItemNBTHelper.setIntegerArray(it1, "moldstructure", new int[]{0,0,0,0,0,0,0,0,0});
 		list.add(it1);
-		
-		for(Molds m : Molds.values()){
-			ItemStack it0 = new ItemStack(item, 1, m.ID);
-			it0.setItemDamage(m.ID);
-			it0 = ItemNBTHelper.setInteger(it0, "idmold", m.ID);
-			it0 = ItemNBTHelper.setIntegerArray(it0, "moldstructure", m.recipe);
+		for(Map.Entry<String, ISFARecipe> entry : RecipesRegistry.instance.getRecipesForUsage(MoldRecipesHandler.USAGE_MOLD).entrySet()){
+			int m = RecipeMold.class.cast(entry.getValue()).getMoldMeta();
+			ItemStack it0 = new ItemStack(item, 1, m);
+			it0.setItemDamage(m);
+			it0 = ItemNBTHelper.setInteger(it0, "idmold", m);
+			it0 = ItemNBTHelper.setIntegerArray(it0, "moldstructure", RecipeMold.class.cast(entry.getValue()).getTabShape().clone());
 			list.add(it0);
 		}
 	}
@@ -109,7 +114,7 @@ public class ItemMold extends ItemSFA{
 		else if(tid==0)
 			list.add(String.format("Mold : Empty"));
 		else if(tid>0)
-			list.add(String.format("Mold : "+Molds.getMold(tid).name));
+			list.add(String.format("Mold : "+RecipesRegistry.instance.getNameWithMeta(tid)));
 	}
 
 }

@@ -1,4 +1,4 @@
-package noelflantier.sfartifacts.common.hammerstandrecipe;
+package noelflantier.sfartifacts.common.recipes;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -17,10 +17,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.items.baseclasses.ToolHammerBase;
-import noelflantier.sfartifacts.common.recipes.ISFARecipe;
-import noelflantier.sfartifacts.common.recipes.RecipeHammerUpgrades;
 import noelflantier.sfartifacts.common.recipes.RecipeHammerUpgrades.NbtTagToAdd;
-import noelflantier.sfartifacts.common.recipes.RecipeInput;
 
 public class RecipeOnHammerStand {
 

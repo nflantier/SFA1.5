@@ -3,6 +3,7 @@ package noelflantier.sfartifacts.common.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.References;
@@ -19,6 +20,11 @@ public class BlockAsgardianGlass extends BlockSFA{
 		this.setResistance(2000.0F);
 		this.setStepSound(soundTypeGlass);
 	}
+
+	@Override
+    public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity){
+        return false;
+    }
 	
 	@Override
 	public boolean isOpaqueCube(){

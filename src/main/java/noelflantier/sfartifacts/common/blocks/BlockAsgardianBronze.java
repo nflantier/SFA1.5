@@ -15,7 +15,7 @@ public class BlockAsgardianBronze extends BlockMaterialsTE implements IBlockMate
 		this.setBlockTextureName(References.MODID+":asgardian_bronze");
 		this.setHarvestLevel("pickaxe",2);
 		this.setHardness(3.0F);
-		this.setResistance(2000.0F);
+		this.setResistance(10000.0F);
 	}
 	
     @Override

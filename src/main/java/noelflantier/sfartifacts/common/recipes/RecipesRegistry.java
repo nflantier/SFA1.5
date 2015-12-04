@@ -15,6 +15,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import noelflantier.sfartifacts.common.items.ItemMold;
 import noelflantier.sfartifacts.common.recipes.handler.MightyFoundryRecipesHandler;
+import noelflantier.sfartifacts.common.recipes.handler.MoldRecipesHandler;
+import scala.actors.threadpool.Arrays;
 
 public class RecipesRegistry {
 	public static final RecipesRegistry instance = new RecipesRegistry();
@@ -127,13 +129,21 @@ public class RecipesRegistry {
 		return r;
 	}
 
+	public boolean isRecipeCanBeDone(ISFARecipe recipe, List<ItemStack> inputs, IUseSFARecipes iuse){
+		return isRecipeCanBeDone(recipe,  getInputFromItemStacks(inputs), iuse.getEnergy(),iuse.getFluid());
+	}
+	public boolean isRecipeCanBeDone(ISFARecipe recipe, List<RecipeInput> inputs, int energy, int fluid){
+
+		return recipe.isStacksInputs(inputs) && recipe.getEnergyCost()<=energy && recipe.getFluidCost()<=fluid;
+	}
+	
 	public List<ISFARecipe> getRecipes(String usageName, List<RecipeInput> inputs, int energy, int fluid){
 		if(inputs==null || inputs.isEmpty())
 			return null;
 		List<ISFARecipe> list = getRecipesForUsageAndInputs(usageName, inputs);
 		if(list == null || list.size()<=0)
 			return null;
-		Predicate<ISFARecipe> predicate = (r) -> r.getEnergyCost() > energy || r.getFluidCost() > fluid;
+		Predicate<ISFARecipe> predicate = (r) -> r.getEnergyCost() >= energy || r.getFluidCost() >= fluid;
 		list.removeIf(predicate);
 		if(list.isEmpty())
 			list = null;
@@ -143,7 +153,7 @@ public class RecipesRegistry {
 	public ISFARecipe getBestRecipe(String usageName, List<RecipeInput> inputs, int energy, int fluid){
 		ISFARecipe daRecipe =null;
 		List<ISFARecipe> list = getRecipes(usageName, inputs, energy, fluid);
-		if(list.size()<=0)
+		if(list==null || list.size()<=0)
 			return daRecipe;
 		int size = 0;
 		for(int i = 0;i < list.size();i++){
@@ -179,16 +189,32 @@ public class RecipesRegistry {
 
 	public FluidStack canRecipeStackTank(ISFARecipe recipe, FluidTank tank) {
 		for(RecipeOutput ro : recipe.getOutputs()){
-			if(ro.isFluid() && ro.getFluidStack().getFluid()!=null && ro.getFluidStack().isFluidEqual(tank.getFluid()) && ro.getFluidStack().amount+tank.getFluidAmount()<=tank.getCapacity()){
+			if(ro.isFluid() && ro.getFluidStack().getFluid()!=null && (tank.getFluid()==null || (ro.getFluidStack().isFluidEqual(tank.getFluid()) && ro.getFluidStack().amount+tank.getFluidAmount()<=tank.getCapacity()))){
 				return ro.getFluidStack();
 			}
 		}
 		return null;
 	}
 	
+	//MOLD
+	public RecipeMold getMoldWithShap(int[] shape){
+		for (Map.Entry<String, ISFARecipe> entry : instance.getRecipesForUsage(MoldRecipesHandler.USAGE_MOLD).entrySet()){
+			if(RecipeMold.class.cast(entry.getValue()).isShapeEquals(shape))
+				return RecipeMold.class.cast(entry.getValue());
+		}
+		return null;
+	}
+	public String getNameWithMeta(int meta){
+		for (Map.Entry<String, ISFARecipe> entry : instance.getRecipesForUsage(MoldRecipesHandler.USAGE_MOLD).entrySet()){
+			if(RecipeMold.class.cast(entry.getValue()).getMoldMeta()==meta)
+				return entry.getValue().getUid();
+		}
+		return "";
+	}
+	
 	//MIGHTYFOUNDRY
 	public ISFARecipe getRecipeWithMoldMeta(int meta){
-		for (Map.Entry<String, ISFARecipe> entry : RecipesRegistry.instance.getRecipesForUsage(MightyFoundryRecipesHandler.USAGE_MIGHTY_FOUNDRY).entrySet()){
+		for (Map.Entry<String, ISFARecipe> entry : instance.getRecipesForUsage(MightyFoundryRecipesHandler.USAGE_MIGHTY_FOUNDRY).entrySet()){
 			if(entry.getValue() instanceof RecipeMightyFoundry){
 				if(RecipeMightyFoundry.class.cast(entry.getValue()).getMold()!=null)
 					if(RecipeMightyFoundry.class.cast(entry.getValue()).getMold().getItemDamage()==meta)
@@ -214,14 +240,4 @@ public class RecipesRegistry {
 		}
 		return null;
 	}
-	/*public class RecipePredicate implements Predicate<ISFARecipe>{
-		Integer energy;
-		Integer fluid;
-		public boolean test(ISFARecipe recipe){
-			if(recipe.getEnergyCost()>energy || recipe.getFluidCost()>fluid){
-				return true;
-			}
-			return false;
-		}
-	}*/
 }

@@ -1,13 +1,20 @@
 package noelflantier.sfartifacts.common.helpers;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.io.IOUtils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.fluids.IFluidBlock;
+import noelflantier.sfartifacts.common.handlers.ModConfig;
 
 public class Utils {
 	
@@ -23,6 +30,16 @@ public class Utils {
         }
         return classes;
     }
+	
+	public static String getFileFromConfig(String fileName, boolean replaceIfExists) throws IOException {    
+		if(replaceIfExists || !getConfigFile(fileName).exists()) {
+			IOUtils.copy(Utils.class.getResourceAsStream("/assets/sfartifacts/config/" + fileName), new FileOutputStream(getConfigFile(fileName)));
+		}            
+		return IOUtils.toString(new FileReader(getConfigFile(fileName)));    
+	}
+	public static File getConfigFile(String name) {
+		return new File(ModConfig.configDirectory, name);
+	}
 	
 	public static float isPlayerInFluid(EntityPlayer player, float speed){
 		float f = 1;

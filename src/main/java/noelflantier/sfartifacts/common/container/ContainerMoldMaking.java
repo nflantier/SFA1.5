@@ -9,7 +9,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import noelflantier.sfartifacts.common.blocks.tiles.TileMightyFoundry;
-import noelflantier.sfartifacts.common.items.baseclasses.ItemInventory;
+import noelflantier.sfartifacts.common.items.baseclasses.ItemInventoryMold;
 
 public class ContainerMoldMaking extends Container{
 
@@ -19,7 +19,7 @@ public class ContainerMoldMaking extends Container{
 	
 	public ContainerMoldMaking(EntityPlayer player){
 		this.currentSlot = player.inventory.currentItem;
-		this.itemInv = new ItemInventory(player);
+		this.itemInv = new ItemInventoryMold(player);
 		for(int x = 0 ; x < 9 ; x++){
 			if(x!=currentSlot)
 				this.addSlotToContainer(new Slot(player.inventory,x,8+18*x,176));

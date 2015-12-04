@@ -1,14 +1,9 @@
 package noelflantier.sfartifacts.common.blocks.tiles;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIPanic;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -16,25 +11,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import noelflantier.sfartifacts.common.entities.ai.EntityAIMoveToBlock;
-import noelflantier.sfartifacts.common.helpers.SoundEmitterHelper;
 
 public abstract class LivingEntitySpawnerBaseLogic {
 
 	public int spawnDelay = 20;
-	public String entityName = "";
-    private List potentialEntitySpawns;
 	private int minSpawnDelay = 200;
 	private int maxSpawnDelay = 400;
 	public int spawnCount = 1;
-	public int maxSpawnCount = 15;
+	public int maxSpawnCount = 5;
 	public int minSpawnCount = 1;
 	public boolean requiresPlayer = false;
 	public boolean followVanillaSpawnRules = false;
 	public int spawnRange = 4;
 	public int minSpawnRange = 0;
     private int activatingRangeFromPlayer = 25;
-	private int maxNearbyEntities = 50;
+	private int maxNearbyEntities = 100;
 	public boolean spawnEntityOnce = false;
 	public int skeletonType = 0;
 	public boolean attractedToSpawner = false;
@@ -42,13 +33,7 @@ public abstract class LivingEntitySpawnerBaseLogic {
 	public int customY = 0;
 	public int customZ = 0;
 	
-	public String getEntityNameToSpawn() {
-		return this.getRandomEntityName();
-	}
-
-	public void setEntityName(String name) {
-		this.entityName = name;
-	}
+	public abstract String getEntityNameToSpawn();
 	
 	public boolean isActivated() {
 		if (!requiresPlayer)
@@ -168,7 +153,6 @@ public abstract class LivingEntitySpawnerBaseLogic {
     public abstract void finishSpawning();
 
     public abstract boolean spawnConditions();
-    public abstract String getRandomEntityName();
     
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
 		this.spawnDelay = par1NBTTagCompound.getShort("Delay");

@@ -2,20 +2,21 @@ package noelflantier.sfartifacts.compatibilities.nei;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import noelflantier.sfartifacts.References;
-import noelflantier.sfartifacts.common.helpers.InjectorRecipe;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import net.minecraft.item.ItemStack;
+import noelflantier.sfartifacts.References;
+import noelflantier.sfartifacts.common.recipes.ISFARecipe;
+import noelflantier.sfartifacts.common.recipes.RecipeInput;
+import noelflantier.sfartifacts.common.recipes.RecipeOutput;
+import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
+import noelflantier.sfartifacts.common.recipes.handler.InjectorRecipesHandler;
 
 public class InjectorRecipeUsageHandler extends TemplateRecipeHandler {
 
@@ -39,11 +40,12 @@ public class InjectorRecipeUsageHandler extends TemplateRecipeHandler {
 		if(ingredient == null) {
 			return;
 		}
-		for(InjectorRecipe ir : InjectorRecipe.values()){
-			for(ItemStack it : ir.recipe){
-				if(it.getItem()==ingredient.getItem() && it.getItemDamage()==ingredient.getItemDamage()){
-					InjectorRecipeNei res = new InjectorRecipeNei(ir, ir.result);
-					arecipes.add(res);
+
+		for (Map.Entry<String, ISFARecipe> entry : RecipesRegistry.instance.getRecipesForUsage(InjectorRecipesHandler.USAGE_INJECTOR).entrySet()){
+			for(RecipeInput ri : entry.getValue().getInputs()){
+				if(ri.isSameItem(ingredient)){
+					arecipes.add(new InjectorRecipeNei(entry.getValue()));
+					break;
 				}
 			}
 		}
@@ -54,11 +56,12 @@ public class InjectorRecipeUsageHandler extends TemplateRecipeHandler {
 		if(result == null) {
 			return;
 		}
-		for(InjectorRecipe ir : InjectorRecipe.values()){
-			ItemStack output = new ItemStack(ir.result);
-			if(result.getItem() == ir.result && result.getItemDamage()==output.getItemDamage()){
-				InjectorRecipeNei res = new InjectorRecipeNei(ir, ir.result);
-				arecipes.add(res);
+		for (Map.Entry<String, ISFARecipe> entry : RecipesRegistry.instance.getRecipesForUsage(InjectorRecipesHandler.USAGE_INJECTOR).entrySet()){
+			for(RecipeOutput ro : entry.getValue().getOutputs()){
+				if(ro.isSameItem(result)){
+					arecipes.add(new InjectorRecipeNei(entry.getValue()));
+					break;
+				}
 			}
 		}
 	}
@@ -87,22 +90,27 @@ public class InjectorRecipeUsageHandler extends TemplateRecipeHandler {
 	public class InjectorRecipeNei extends TemplateRecipeHandler.CachedRecipe {
 
 	    private ArrayList<PositionedStack> input;
-	    private PositionedStack output;
+	    private ArrayList<PositionedStack> output;
 	    private int energy;
 	    private int fluid;
 	    
-		public InjectorRecipeNei(InjectorRecipe ir, Item result){
+		public InjectorRecipeNei(ISFARecipe ir){
 		    this.input = new ArrayList<PositionedStack>();
-		    Iterator<ItemStack> it = ir.recipe.iterator();
-		    this.energy = ir.energyAmount;
-		    this.fluid = ir.fluidAmount;
+		    this.output = new ArrayList<PositionedStack>();
 		    int i = 0;
-		    while (it.hasNext()) {
-		    	ItemStack entry = it.next();
-		        this.input.add(new PositionedStack(entry, 49+i*18, 17));
+		    for(RecipeInput ri :ir.getInputs()){
+		    	if(ri.isItem())
+		    		this.input.add(new PositionedStack(ri.getItemStack(), 49+i*18, 17));
 		        i+=1;
 		    }
-	        this.output = new PositionedStack(new ItemStack(result), 119, 17);
+		    int k = 0;
+		    for(RecipeOutput ro :ir.getOutputs()){
+		    	if(ro.isItem())
+		    		this.output.add(new PositionedStack(ro.getItemStack(), 119+k*18, 17));
+			    k+=1;
+		    }
+		    this.energy = ir.getEnergyCost();
+		    this.fluid = ir.getFluidCost();
 		}
 
 		public int getEnergy(){
@@ -117,10 +125,10 @@ public class InjectorRecipeUsageHandler extends TemplateRecipeHandler {
 	    public List<PositionedStack> getIngredients() {
 	      return getCycledIngredients(cycleticks / 20, input);
 	    }
-
+	    
 	    @Override
 	    public PositionedStack getResult() {
-	      return output;
+	    	return output.get(0);
 	    }
 		
 	}

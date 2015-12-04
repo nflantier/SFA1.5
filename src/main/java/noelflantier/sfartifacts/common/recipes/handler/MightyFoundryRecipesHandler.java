@@ -39,11 +39,16 @@ public class MightyFoundryRecipesHandler extends AUsageRecipes{
 
 	private class MightyFoundryCustomHandler implements CustomHandler {
 
-	    private boolean inTag = false;
+	    private boolean init = false;
 		public static final String AT_TICKPERITEM = "tickPerItem";
+		public static final String AT_GLOBALQUANTITY = "globalQuantity";
 	    
 		@Override
 		public boolean endElement(String uri, String localName, String qName, RecipeParser parser) throws SAXException {
+
+		    if(RecipeParser.ELEMENT_RECIPE.equals(localName)){
+		    	init = false;
+		    }
 			return false;
 		}
 
@@ -52,12 +57,17 @@ public class MightyFoundryRecipesHandler extends AUsageRecipes{
 		    if(RecipeParser.ELEMENT_ITEM_STACK.equals(localName)){
 		        if(parser.currentRecipe!=null){
 		        	if(parser.classRecipe == getClassOfRecipe()){
-		        		RecipeMightyFoundry.class.cast(parser.currentRecipe).setTickPerItem(RecipeParser.getIntValue(AT_TICKPERITEM, attributes, 100));
 		        		String l = RecipeParser.getStringValue(RecipeParser.AT_LABEL, attributes, null);
 		        		String n = RecipeParser.getStringValue(RecipeParser.AT_ITEM_NAME, attributes, null);
 			        	if((l!=null && l.equals("mold")) || (n!=null && n.equals("itemMold"))){
 			        		RecipeMightyFoundry.class.cast(parser.currentRecipe).setMold(parser.getItemStack(attributes));
 			        		return true;
+			        	}else{
+			        		if(!this.init){
+			        			RecipeMightyFoundry.class.cast(parser.currentRecipe).setTickPerItem(RecipeParser.getIntValue(AT_TICKPERITEM, attributes, 100));
+			        			RecipeMightyFoundry.class.cast(parser.currentRecipe).setItemQuantity(RecipeParser.getIntValue(AT_GLOBALQUANTITY, attributes, 1));
+			        			this.init=true;
+			        		}
 			        	}
 		        	}
 		        }

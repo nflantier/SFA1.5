@@ -28,7 +28,7 @@ public class BlockLightningRodStand extends ABlockNBT  implements IBlockUsingMat
 		this.setBlockName("blockLightningRodStand");
 		this.setHarvestLevel("pickaxe",1);
 		this.setHardness(3.0F);
-		this.setResistance(2000.0F);
+		this.setResistance(10000.0F);
 		this.setBlockTextureName(References.MODID+":machine");
 	}
 

@@ -8,9 +8,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class ModOreDictionary {
 
 	public static String copperIngotName = "ingotCopper";
-	public static String bronzeIngotName = "ingotBronze";
 	public static boolean hasCopperIngot = false;
-	public static boolean hasBronzeIngot = false;
 	
 	public static boolean isRegistered(String name) {
 		if(!OreDictionary.getOres(name).isEmpty()) {
@@ -20,12 +18,10 @@ public class ModOreDictionary {
 	}
 
 	public static void loadOres(){
-		 OreDictionary.registerOre("asgarditeOre", ModBlocks.blockOreAsgardite);
-		 OreDictionary.registerOre("vibraniumOre", ModBlocks.blockOreVibranium);
+		 OreDictionary.registerOre("gemQuartz", ModItems.itemAsgardite);
 	}
 	
 	public static void checkOreDictionary(){
 		hasCopperIngot =  isRegistered(copperIngotName);
-		hasBronzeIngot =  isRegistered(bronzeIngotName);
 	}
 }

@@ -22,6 +22,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.handlers.RecipeHandler;
@@ -308,8 +309,13 @@ public class RecipeParser extends DefaultHandler {
 		String type = getStringValue(AT_NBT_TYPE, attributes, null);
 	    String name = getStringValue(AT_NBT_NAME, attributes, null);
 	    String value = getStringValue(AT_NBT_VALUE, attributes, null);
-	    if(type==null || name==null || value==null)
+	    String orename = getStringValue(AT_ORE_DICT, attributes, null);
+	    if(orename == null && (type==null || name==null || value==null) )
 	    	return stack;
+	    
+	    if(orename!=null && OreDictionary.doesOreNameExist(orename)){
+	    	
+	    }
 	    
 		if(type.equals("boolean")){
 			stack = ItemNBTHelper.setBoolean(stack, name, value.equals("true"));

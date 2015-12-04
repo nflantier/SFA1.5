@@ -1,7 +1,6 @@
 package noelflantier.sfartifacts.compatibilities.nei;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
@@ -9,12 +8,9 @@ import org.lwjgl.opengl.GL11;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import noelflantier.sfartifacts.References;
-import noelflantier.sfartifacts.common.helpers.InjectorRecipe;
 import noelflantier.sfartifacts.common.helpers.Molds;
-import noelflantier.sfartifacts.compatibilities.nei.InjectorRecipeUsageHandler.InjectorRecipeNei;
 
 public class MightyFoundryRecipeUsageHandler extends TemplateRecipeHandler {
 

@@ -61,7 +61,11 @@ public class RecipeBase implements ISFARecipe{
 	public String getUid() {
 		return UID;
 	}
-	
+
+	public void addInputStackOreDict(String ore) {
+		RecipeInput r = new RecipeInput();
+		r.setOreName(ore);
+	}
 	public void addInputStack(ItemStack stack) {
 		this.inputs.add(new RecipeInput(stack));
 	}

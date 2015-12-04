@@ -61,8 +61,7 @@ public class BlockSFAContainer extends BlockContainer {
 	public boolean isInventoryDroppedOnBreaking(){
 		return false;
 	}
-
-
+	
 	@Override
     public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity){
         return false;

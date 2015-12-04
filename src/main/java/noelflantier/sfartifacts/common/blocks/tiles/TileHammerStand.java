@@ -9,16 +9,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileMasterPillar;
-import noelflantier.sfartifacts.common.hammerstandrecipe.RecipeOnHammerStand;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.helpers.Coord4;
-import noelflantier.sfartifacts.common.helpers.HammerStandRecipe;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.items.baseclasses.ItemHammerBase;
 import noelflantier.sfartifacts.common.items.baseclasses.RFHammerBase;
 import noelflantier.sfartifacts.common.recipes.IUseSFARecipes;
 import noelflantier.sfartifacts.common.recipes.RecipeBase;
 import noelflantier.sfartifacts.common.recipes.RecipeHammerUpgrades;
+import noelflantier.sfartifacts.common.recipes.RecipeOnHammerStand;
 import noelflantier.sfartifacts.common.recipes.handler.HammerUpgradesRecipesHandler;
 
 public class TileHammerStand extends TileSFA implements IInventory, ITileCanHavePillar, IUseSFARecipes{

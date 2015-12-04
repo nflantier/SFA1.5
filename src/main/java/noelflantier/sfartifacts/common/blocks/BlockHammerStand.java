@@ -22,7 +22,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.SFArtifacts;
 import noelflantier.sfartifacts.common.blocks.tiles.TileHammerStand;
-import noelflantier.sfartifacts.common.hammerstandrecipe.RecipeOnHammerStand;
 import noelflantier.sfartifacts.common.handlers.ModGUIs;
 import noelflantier.sfartifacts.common.handlers.ModItems;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
@@ -32,6 +31,7 @@ import noelflantier.sfartifacts.common.network.messages.PacketSound;
 import noelflantier.sfartifacts.common.recipes.ISFARecipe;
 import noelflantier.sfartifacts.common.recipes.IUseSFARecipes;
 import noelflantier.sfartifacts.common.recipes.RecipeInput;
+import noelflantier.sfartifacts.common.recipes.RecipeOnHammerStand;
 import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
 
 public class BlockHammerStand extends BlockSFAContainer {
@@ -49,7 +49,7 @@ public class BlockHammerStand extends BlockSFAContainer {
 		this.setBlockTextureName(References.MODID+":hammer_stand");
 		this.setHarvestLevel("pickaxe",1);
 		this.setHardness(3.0F);
-		this.setResistance(2000.0F);
+		this.setResistance(10000.0F);
 	}
 	
 	

@@ -33,7 +33,7 @@ public class BlockInjector extends ABlockNBT implements IBlockUsingMaterials{
 		this.setHarvestLevel("pickaxe",1);
 		this.setBlockTextureName(References.MODID+":machine");
 		this.setHardness(3.0F);
-		this.setResistance(2000.0F);
+		this.setResistance(10000.0F);
     	
 	}
 

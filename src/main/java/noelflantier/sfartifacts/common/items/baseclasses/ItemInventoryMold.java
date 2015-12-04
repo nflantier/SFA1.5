@@ -7,18 +7,20 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.helpers.Molds;
+import noelflantier.sfartifacts.common.recipes.RecipeMold;
+import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
 
-public class ItemInventory implements IInventory{
+public class ItemInventoryMold implements IInventory{
 	
 	public ItemStack[] items = new ItemStack[81];
 	public EntityPlayer player;
 	
-	public ItemInventory(EntityPlayer player){
+	public ItemInventoryMold(EntityPlayer player){
 		this.player = player;
 		this.setInv();
 	}
 
-	public ItemInventory(EntityPlayer player, int id){
+	public ItemInventoryMold(EntityPlayer player, int id){
 		this(player);
 	}
 	public void setInv(){
@@ -111,11 +113,11 @@ public class ItemInventory implements IInventory{
 			}
 			tab[i]=Integer.parseInt(bin, 2);
 		}
-		Molds m = Molds.isRecipe(tab);
-		if(m!=null){
-			this.player.getCurrentEquippedItem().setItemDamage(1);
-			ItemNBTHelper.setInteger(this.player.getCurrentEquippedItem(), "idmold", m.ID);
-			ItemNBTHelper.setIntegerArray(this.player.getCurrentEquippedItem(), "moldstructure", m.recipe);
+		RecipeMold rm = RecipesRegistry.instance.getMoldWithShap(tab);
+		if(rm!=null){
+			this.player.getCurrentEquippedItem().setItemDamage(rm.getMoldMeta());
+			ItemNBTHelper.setInteger(this.player.getCurrentEquippedItem(), "idmold", rm.getMoldMeta());
+			ItemNBTHelper.setIntegerArray(this.player.getCurrentEquippedItem(), "moldstructure", rm.getTabShape());
 		}else{
 			this.player.getCurrentEquippedItem().setItemDamage(0);
 			ItemNBTHelper.setInteger(this.player.getCurrentEquippedItem(), "idmold", -1);
