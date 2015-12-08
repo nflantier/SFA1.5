@@ -31,6 +31,7 @@ import noelflantier.sfartifacts.common.recipes.handler.InjectorRecipesHandler;
 import noelflantier.sfartifacts.common.recipes.handler.LiquefierRecipesHandler;
 import noelflantier.sfartifacts.common.recipes.handler.MightyFoundryRecipesHandler;
 import noelflantier.sfartifacts.common.recipes.handler.MoldRecipesHandler;
+import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig;
 import noelflantier.sfartifacts.common.recipes.handler.SoundEmitterConfig;
 import noelflantier.sfartifacts.common.world.ModWorldGenOre;
 import noelflantier.sfartifacts.common.world.village.ComponentPillar;
@@ -80,6 +81,7 @@ public class CommonProxy {
     	MoldRecipesHandler.getInstance().loadRecipes();
     	MightyFoundryRecipesHandler.getInstance().loadRecipes();
     	SoundEmitterConfig.getInstance();
+    	PillarsConfig.getInstance();
 	}
 	
 	public EntityPlayer getPlayerEntity(MessageContext ctx) {

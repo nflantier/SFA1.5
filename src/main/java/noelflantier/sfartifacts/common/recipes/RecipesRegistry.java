@@ -90,16 +90,15 @@ public class RecipesRegistry {
 		}
 		return ri;
 	}
-	
-	public List<RecipeOutput> getOutputs(IUseSFARecipes iuse, List<RecipeInput> inputs){
-		ISFARecipe r = getBestRecipe(iuse, inputs);
-		return r!=null?r.getOutputs():null;
-	}
+		
 	public ISFARecipe getBestRecipeWithItemStacks(IUseSFARecipes iuse, List<ItemStack> inputs){
 		return getBestRecipe(iuse, getInputFromItemStacks(inputs));
 	}
 	public ISFARecipe getBestRecipe(IUseSFARecipes iuse, List<RecipeInput> inputs){
 		return getBestRecipe(iuse.getUsageName(), inputs, iuse.getEnergy(), iuse.getFluid());
+	}
+	public List<ISFARecipe> getRecipesWithItemStacks(IUseSFARecipes iuse, List<ItemStack> inputs){
+		return getRecipes(iuse, getInputFromItemStacks(inputs));
 	}
 	public List<ISFARecipe> getRecipes(IUseSFARecipes iuse, List<RecipeInput> inputs){
 		return getRecipes(iuse.getUsageName(), inputs, iuse.getEnergy(), iuse.getFluid());
@@ -133,7 +132,6 @@ public class RecipesRegistry {
 		return isRecipeCanBeDone(recipe,  getInputFromItemStacks(inputs), iuse.getEnergy(),iuse.getFluid());
 	}
 	public boolean isRecipeCanBeDone(ISFARecipe recipe, List<RecipeInput> inputs, int energy, int fluid){
-
 		return recipe.isStacksInputs(inputs) && recipe.getEnergyCost()<=energy && recipe.getFluidCost()<=fluid;
 	}
 	

@@ -13,15 +13,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import noelflantier.sfartifacts.References;
-import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
-import noelflantier.sfartifacts.common.helpers.Molds;
 import noelflantier.sfartifacts.common.items.ItemMold;
 import noelflantier.sfartifacts.common.recipes.ISFARecipe;
 import noelflantier.sfartifacts.common.recipes.RecipeMold;
 import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
 import noelflantier.sfartifacts.common.recipes.handler.MoldRecipesHandler;
-import noelflantier.sfartifacts.compatibilities.nei.InjectorRecipeUsageHandler.InjectorRecipeNei;
-import noelflantier.sfartifacts.compatibilities.nei.MightyFoundryRecipeUsageHandler.MightyFoundryRecipeNei;
 
 public class MoldFilledRecipeUsageHandler  extends TemplateRecipeHandler {
 

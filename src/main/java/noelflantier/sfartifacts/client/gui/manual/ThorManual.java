@@ -12,7 +12,6 @@ import noelflantier.sfartifacts.client.gui.bases.GuiImage;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.handlers.ModGUIs;
 import noelflantier.sfartifacts.common.helpers.PillarMaterials;
-import noelflantier.sfartifacts.common.helpers.PillarStructures;
 import noelflantier.sfartifacts.common.recipes.ISFARecipe;
 import noelflantier.sfartifacts.common.recipes.RecipeInput;
 import noelflantier.sfartifacts.common.recipes.RecipeOutput;
@@ -359,7 +358,7 @@ public class ThorManual extends BaseManual{
 					addText("disable or enable enchants you allready have installed.",0,0);
 				}}
 			);
-		}else if(cat.equals("ps")){
+		}/*else if(cat.equals("ps")){
 			this.componentList.put("p1", 
 					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 						defColor = EnumChatFormatting.BLACK;
@@ -416,7 +415,7 @@ public class ThorManual extends BaseManual{
 				isLink = true;
 			}});
 			this.links.put("ps2", -1);
-		}else if(cat.equals("pe")){
+		}*/else if(cat.equals("pe")){
 			this.componentList.put("p1", 
 				new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 					defColor = EnumChatFormatting.BLACK;
@@ -550,12 +549,12 @@ public class ThorManual extends BaseManual{
 			}});
 			this.links.put("tips", -1);
 			
-			this.componentList.put("ps", new GuiComponent(this.guiLeft+150, this.guiTop+30, 100, 10){{
+			/*this.componentList.put("ps", new GuiComponent(this.guiLeft+150, this.guiTop+30, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Pillar structures", 0, 0);
 				isLink = true;
 			}});
-			this.links.put("ps", -1);
+			this.links.put("ps", -1);*/
 			
 			this.componentList.put("pe", new GuiComponent(this.guiLeft+150, this.guiTop+40, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;

@@ -18,12 +18,10 @@ import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.common.blocks.tiles.ITileCanBeMaster;
 import noelflantier.sfartifacts.common.blocks.tiles.ITileCanHavePillar;
 import noelflantier.sfartifacts.common.blocks.tiles.ITileMustHaveMaster;
-import noelflantier.sfartifacts.common.blocks.tiles.TileRenderPillarModel;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSFA;
 import noelflantier.sfartifacts.common.helpers.Coord4;
 import noelflantier.sfartifacts.common.helpers.HammerHelper;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
-import noelflantier.sfartifacts.common.helpers.PillarStructures;
 import noelflantier.sfartifacts.common.items.baseclasses.IItemHasModes;
 import noelflantier.sfartifacts.common.items.baseclasses.ItemMode;
 

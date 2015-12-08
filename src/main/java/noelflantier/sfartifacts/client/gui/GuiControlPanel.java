@@ -1,8 +1,6 @@
 package noelflantier.sfartifacts.client.gui;
 
 import java.text.NumberFormat;
-import java.util.Enumeration;
-import java.util.Locale;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,7 +20,6 @@ import noelflantier.sfartifacts.common.blocks.tiles.TileControlPannel;
 import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileMasterPillar;
 import noelflantier.sfartifacts.common.container.ContainerControlPanel;
 import noelflantier.sfartifacts.common.helpers.PillarMaterials;
-import noelflantier.sfartifacts.common.helpers.PillarStructures;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketPillarConfig;
 
@@ -142,7 +139,7 @@ public class GuiControlPanel extends GuiSFA{
 		}});		
 		
 		this.componentList.put("title", new GuiComponent(85, 6){{
-			addText(String.format(""+PillarStructures.getStructureFromId(pillar.structureId).name())+" "+String.format(""+PillarMaterials.getMaterialFromId(pillar.materialId).name()),  0, 0);
+			addText(String.format(""+pillar.namePillar)+" "+String.format(""+PillarMaterials.getMaterialFromId(pillar.materialId).name()),  0, 0);
 		}});
 		
 		this.componentList.put("en", new GuiComponent(42, 25){{

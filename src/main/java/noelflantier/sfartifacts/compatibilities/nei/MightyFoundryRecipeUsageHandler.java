@@ -2,6 +2,7 @@ package noelflantier.sfartifacts.compatibilities.nei;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
@@ -10,7 +11,12 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.item.ItemStack;
 import noelflantier.sfartifacts.References;
-import noelflantier.sfartifacts.common.helpers.Molds;
+import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
+import noelflantier.sfartifacts.common.recipes.ISFARecipe;
+import noelflantier.sfartifacts.common.recipes.RecipeMightyFoundry;
+import noelflantier.sfartifacts.common.recipes.RecipeOutput;
+import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
+import noelflantier.sfartifacts.common.recipes.handler.MightyFoundryRecipesHandler;
 
 public class MightyFoundryRecipeUsageHandler extends TemplateRecipeHandler {
 
@@ -29,9 +35,14 @@ public class MightyFoundryRecipeUsageHandler extends TemplateRecipeHandler {
 		if(ingredient == null) {
 			return;
 		}
-		for(Molds m : Molds.values()){
-			if(ingredient.getItem()==m.ingredients.getItem()){
-				arecipes.add(new MightyFoundryRecipeNei(m));
+		List<ItemStack> st = new ArrayList<ItemStack>();
+		ItemStack it = ingredient.copy();
+		it.stackSize = it.getMaxStackSize();
+		st.add(it);
+		List<ISFARecipe> recipes = RecipesRegistry.instance.getRecipesForUsageAndInputs(MightyFoundryRecipesHandler.USAGE_MIGHTY_FOUNDRY, RecipesRegistry.instance.getInputFromItemStacks(st));
+		if(recipes!=null){
+			for(ISFARecipe recipe : recipes){
+				arecipes.add(new MightyFoundryRecipeNei(RecipeMightyFoundry.class.cast(recipe)));
 			}
 		}
 	}
@@ -41,9 +52,11 @@ public class MightyFoundryRecipeUsageHandler extends TemplateRecipeHandler {
 		if(result == null) {
 			return;
 		}
-		for(Molds m : Molds.values()){
-			if(result.getItem()==m.result.getItem()){
-				arecipes.add(new MightyFoundryRecipeNei(m));
+		for (Map.Entry<String, ISFARecipe> entry : RecipesRegistry.instance.getRecipesForUsage(MightyFoundryRecipesHandler.USAGE_MIGHTY_FOUNDRY).entrySet()){
+			for(RecipeOutput ro : entry.getValue().getOutputs()){
+				if(ro.getItemStack()!=null && ro.getItemStack().getItem()==result.getItem() && ro.getItemStack().getItemDamage()==result.getItemDamage()){
+					arecipes.add(new MightyFoundryRecipeNei(RecipeMightyFoundry.class.cast(entry.getValue())));
+				}
 			}
 		}
 	}
@@ -61,22 +74,34 @@ public class MightyFoundryRecipeUsageHandler extends TemplateRecipeHandler {
 		GuiDraw.changeTexture(getGuiTexture());
 		//drawProgressBar(90, 17, 170, 0, 22, 16, 25, 0);
 		GuiDraw.drawTexturedModalRect(2, 3, 180, 0, 14, 47);
-		GuiDraw.drawTexturedModalRect(19, 3, 166, 0, 14, 47);
+		GuiDraw.drawTexturedModalRect(19, 3, 166, 0, 14, 47);	
+		GuiDraw.drawString(((MightyFoundryRecipeNei)arecipes.get(recipeIndex)).getEnergyString(), 40, 60, 0x808080, false);
+		
 	}
 	
 	public class MightyFoundryRecipeNei extends TemplateRecipeHandler.CachedRecipe {
 
 	    private ArrayList<PositionedStack> input;
 	    private PositionedStack output;
+	    private String energyneeded;
 	    
-		public MightyFoundryRecipeNei(Molds m){
+		public MightyFoundryRecipeNei(RecipeMightyFoundry rmf){
 		    this.input = new ArrayList<PositionedStack>();
-		    this.input.add(new PositionedStack(m.ingredients, 92, 3));
-		    this.input.add(new PositionedStack(m.mold, 38, 3));
-	        this.output = new PositionedStack(m.result, 138+4, 51+4);
+		    this.input.add(new PositionedStack(ItemNBTHelper.setInteger(rmf.getMold(), "idmold", rmf.getMold().getItemDamage()), 38, 3));
+		    this.energyneeded = rmf.getEnergyCost()+" RF * "+rmf.getItemQuantity();
+		    ItemStack st = rmf.getInputs().get(0).getItemStack().copy();
+	    	st.stackSize = rmf.getItemQuantity();
+		    this.input.add(new PositionedStack(st, 92, 3));
+		    
+	        this.output = new PositionedStack(rmf.getOutputs().get(0).getItemStack(), 138+4, 51+4);
+			
 		}
 		
-	    @Override
+	    public String getEnergyString() {
+			return energyneeded;
+		}
+
+		@Override
 	    public List<PositionedStack> getIngredients() {
 	      return getCycledIngredients(cycleticks / 20, input);
 	    }

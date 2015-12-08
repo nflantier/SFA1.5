@@ -4,14 +4,12 @@ import java.text.NumberFormat;
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.common.blocks.tiles.ITileMustHaveMaster;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSFA;
 import noelflantier.sfartifacts.common.helpers.Coord4;
 import noelflantier.sfartifacts.common.helpers.PillarMaterials;
-import noelflantier.sfartifacts.common.helpers.PillarStructures;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketRenderUpdate;
 
@@ -81,7 +79,7 @@ public class TileBlockPillar  extends TileSFA implements ITileMustHaveMaster{
 		if(this.hasMaster()){
 			list.add("Master at : "+this.master.x+", "+this.master.y+", "+this.master.z);
 			TileMasterPillar m = this.getMasterTile();
-			list.add("Pillar : "+PillarStructures.getStructureFromId(m.structureId));
+			list.add("Pillar : "+m.namePillar);
 			list.add("Material : "+PillarMaterials.getMaterialFromId(m.materialId));
 			list.add("Energy : "+NumberFormat.getNumberInstance().format(m.getEnergyStored(ForgeDirection.UNKNOWN))+" RF / "+NumberFormat.getNumberInstance().format(m.getMaxEnergyStored(ForgeDirection.UNKNOWN))+" RF");
 			if(m.getFluidTanks().get(0)!=null)

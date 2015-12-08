@@ -13,21 +13,21 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
 import noelflantier.sfartifacts.common.blocks.tiles.ITileCanBeMaster;
 import noelflantier.sfartifacts.common.blocks.tiles.ITileWirelessEnergy;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
 import noelflantier.sfartifacts.common.helpers.PillarMaterials;
-import noelflantier.sfartifacts.common.helpers.PillarStructures;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
 import noelflantier.sfartifacts.common.network.messages.PacketFluid;
 import noelflantier.sfartifacts.common.network.messages.PacketParticleMoving;
 import noelflantier.sfartifacts.common.network.messages.PacketPillar;
+import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig;
 
 public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeMaster,ITileWirelessEnergy{
 
 	//STRUCTURE
+    public String namePillar;
     public int structureId;
     public int materialId;
 
@@ -114,7 +114,7 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
     	}else
     		this.currentIndexChild=-1;
     	
-    	float rP =  (this.structureId>0)?PillarStructures.getStructureFromId(this.structureId).naturalRatio : 1;
+    	float rP =  (this.structureId>0)?PillarsConfig.getInstance().getPillarFromName(namePillar).naturalRatio : 1;
     	float ratioHeight = (this.yCoord<this.maxHeightEfficiency)?(float)this.yCoord/(float)this.maxHeightEfficiency:1;
     	ratioHeight += 0.1;
     	float ratioRaining = (this.worldObj.isRaining())?this.rainEfficiency:0;
@@ -172,7 +172,8 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-        nbt.setInteger("structureId", this.structureId);
+        //nbt.setInteger("structureId", this.structureId);
+        nbt.setString("namePillar", this.namePillar);
         nbt.setInteger("materialId", this.materialId);
         nbt.setInteger("amountToExtract", this.amountToExtract);
 
@@ -197,10 +198,11 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-        this.structureId = nbt.getInteger("structureId");
+        //this.structureId = nbt.getInteger("structureId");
+        this.namePillar = nbt.getString("namePillar");
         this.materialId = nbt.getInteger("materialId");
-		this.energyCapacity = PillarStructures.getStructureFromId(this.structureId).energyCapacity;
-		this.tankCapacity = PillarStructures.getStructureFromId(this.structureId).tankCapacity;
+		this.energyCapacity = PillarsConfig.getInstance().getPillarFromName(namePillar).energyCapacity;
+		this.tankCapacity = PillarsConfig.getInstance().getPillarFromName(namePillar).fluidCapacity;
 
 		this.storage.setCapacity(this.energyCapacity);
 		this.storage.readFromNBT(nbt);

@@ -1,5 +1,7 @@
 package noelflantier.sfartifacts.common.helpers;
 
+import java.util.Map.Entry;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -10,77 +12,51 @@ import noelflantier.sfartifacts.common.blocks.tiles.TileRenderPillarModel;
 import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileBlockPillar;
 import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileInterfacePillar;
 import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileMasterPillar;
+import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig;
+import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig.Pillar;
 
 public class PillarHelper {
 	
 	public static boolean checkStructure(World w, EntityPlayer player, int x, int y, int z, boolean repass){
-		Block originalb = w.getBlock(x, y, z);
-		boolean flag = true;
-		int structureid = -1;
-		int yd = 0;
-		
-		for(PillarStructures ps : PillarStructures.values()){
-			flag = true;
-			structureid = ps.ID;
-			yd = y+ps.decY;
-			String str ="0_0_0";
-			do{
-		    	String[] strParts = str.split("_");
-		    	int xT = Integer.parseInt(strParts[0]) + x;
-		    	int yT = Integer.parseInt(strParts[1]) + yd;
-		    	int zT = Integer.parseInt(strParts[2]) + z;
-				Block b = w.getBlock(xT, yT, zT);
-				TileEntity t = w.getTileEntity(xT, yT, zT);
-
-				if(b==null || b.getClass()!=originalb.getClass()){
-					flag = false;
-					break;
-				}
-				if(t!=null){
-					if( ( t instanceof TileMasterPillar && ((TileMasterPillar)t).hasMaster() ) ){
-						flag = false;
-						break;
-					}
-					if( t instanceof TileMasterPillar ==false && t instanceof TileRenderPillarModel==false){
-						flag = false;
-						break;
+		Block originalb = w.getBlock(x, y, z);		
+		for(String name : PillarsConfig.getInstance().nameOrderedBySize){
+			if(PillarsConfig.getInstance().nameToPillar.containsKey(name)){
+				Pillar p = PillarsConfig.getInstance().nameToPillar.get(name);
+				if(p!=null){
+					int xe = x-p.blockToActivate.x;
+					int ye = y-p.blockToActivate.y;
+					int ze = z-p.blockToActivate.z;
+					if(p.checkStructure(w,xe,ye,ze,originalb)){
+						return setupStructure(w,player,xe,ye,ze,PillarMaterials.getMaterialFromClass(originalb.getClass()).ID  ,name);
 					}
 				}
-				
-				str = (String)PillarStructures.getStructureFromId(ps.ID).structure.get(str);
-			}while(!str.equals("end"));
-
-			if(flag)
-				break;
+			}
 		}
 
-		if(flag && !repass)
-			return setupStructure(w,player,x,yd,z,PillarMaterials.getMaterialFromClass(originalb.getClass()).ID ,structureid);
-		
-		return flag;
+		return false;
 	}
-	
-	public static boolean setupStructure(World w, EntityPlayer player, int x, int y, int z, int materialID, int structureID){
+
+	public static boolean setupStructure(World w, EntityPlayer player, int x, int y, int z, int materialID, String namePillar){
 		TileEntity t = w.getTileEntity(x, y, z);
-    	TileMasterPillar tmp;
-    	if(t!=null && t instanceof TileMasterPillar){
-    		tmp = (TileMasterPillar)t;
-    	}else if(t!=null && t instanceof TileRenderPillarModel){
+		TileMasterPillar tmp;
+		if(t!=null && t instanceof TileMasterPillar){
+			tmp = (TileMasterPillar)t;
+		}else if(t!=null && t instanceof TileRenderPillarModel){
 			w.removeTileEntity(x, y, z);
 			w.setBlockMetadataWithNotify(x, y, z, 3, 4);
 			w.markBlockForUpdate(x, y, z);
-    		tmp = (TileMasterPillar)w.getTileEntity(x, y, z);
-    	}else{
+			tmp = (TileMasterPillar)w.getTileEntity(x, y, z);
+		}else{
 			w.setBlockMetadataWithNotify(x, y, z, 3, 4);
-    		tmp = (TileMasterPillar)w.getTileEntity(x, y, z);
+			tmp = (TileMasterPillar)w.getTileEntity(x, y, z);
 		}
     	tmp.isRenderingPillarModel = -1;
-		tmp.structureId = structureID;
+		tmp.namePillar = namePillar;
 		tmp.materialId = materialID;
-    	tmp.energyCapacity = PillarStructures.getStructureFromId(structureID).energyCapacity;
+    	tmp.energyCapacity = PillarsConfig.getInstance().getPillarFromName(namePillar).energyCapacity;
 		tmp.storage.setCapacity(tmp.energyCapacity);
 		tmp.storage.setMaxTransfer(tmp.energyCapacity/tmp.ratioTransfer);
-		tmp.tankCapacity = PillarStructures.getStructureFromId(structureID).tankCapacity;
+		tmp.tankCapacity = PillarsConfig.getInstance().getPillarFromName(namePillar).fluidCapacity;
 		tmp.tank.setCapacity(tmp.tankCapacity);
     	PillarMaterials pm = PillarMaterials.getMaterialFromId(tmp.materialId);
     	tmp.setMaterialRatio(pm.naturalEnergy, pm.maxHeightEfficiency, pm.rainEfficiency);
@@ -92,100 +68,23 @@ public class PillarHelper {
     	tmp.updateRenderTick = 2;
         w.markBlockForUpdate(x, y, z);
     	w.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
-        
-		boolean flag = true;
-		
-		String str =(String)PillarStructures.getStructureFromId(structureID).structure.get("0_0_0");
-		do{
-	    	String[] strParts = str.split("_");
-	    	int xT = Integer.parseInt(strParts[0]) + x;
-	    	int yT = Integer.parseInt(strParts[1]) + y;
-	    	int zT = Integer.parseInt(strParts[2]) + z;
-	    	
-	    	TileEntity tb = w.getTileEntity(xT, yT, zT);
-	    	if(tb!=null && tb instanceof TileRenderPillarModel){
-				w.removeTileEntity(xT, yT, zT);
-				w.setBlockMetadataWithNotify(xT, yT, zT, 0, 4);
-				w.markBlockForUpdate(xT, yT, zT);
-	    	}
-	    	
-	    	if(PillarStructures.getStructureFromId(structureID).extract.get(str) != null 
-	    			|| PillarStructures.getStructureFromId(structureID).recieve.get(str) != null){
-	    		
-	    		w.setBlockMetadataWithNotify(xT, yT, zT, 2, 4);
-	    		TileEntity te = (TileEntity)w.getTileEntity(xT, yT, zT);
-	    		TileInterfacePillar tip;
-	        	if(te!=null && te instanceof TileInterfacePillar){
-	        		tip = (TileInterfacePillar)te;
-	        		tip.master = new Coord4(x,y,z);
-
-		    		if(PillarStructures.getStructureFromId(structureID).extract.get(str) != null){
-		    			Integer[] tab = PillarStructures.getStructureFromId(structureID).extract.get(str);
-			            for(int k = 0 ; k<tab.length ; k++){
-			            	tip.extractSides.add(ForgeDirection.getOrientation(tab[k]));
-			            }
-		    		}
-		            if(PillarStructures.getStructureFromId(structureID).recieve.get(str) != null){
-		            	Integer[] tab = PillarStructures.getStructureFromId(structureID).recieve.get(str);
-		 	        	for(int k = 0 ; k<tab.length ; k++){
-		 	        		tip.recieveSides.add(ForgeDirection.getOrientation(tab[k]));
-		 	        	}
-		            }
-		            
-	        		tip.updateRenderTick = 2;
-		            tip.init();
-		            tip.isRenderingPillarModel = -1;
-	    		}
-	    		
-	    	}else{
-	    		w.setBlockMetadataWithNotify(xT, yT, zT, 1, 4);
-	    		TileEntity te = (TileEntity)w.getTileEntity(xT, yT, zT);
-	    	   	TileBlockPillar tbp;
-	        	if(te!=null && te instanceof TileBlockPillar){
-	        		tbp = (TileBlockPillar)te;
-		    		tbp.master = new Coord4(x,y,z);
-		    		tbp.updateRenderTick = 2;
-		    		tbp.isRenderingPillarModel = -1;
-	    		}
-	    	}
-	    	//w.markBlockRangeForRenderUpdate(xT, yT, zT, xT, yT, zT);
-            w.markBlockForUpdate(xT, yT, zT);
-			str = (String)PillarStructures.getStructureFromId(structureID).structure.get(str);
-		}while(!str.equals("end"));
-		
+    	
+    	PillarsConfig.getInstance().getPillarFromName(namePillar).setupStructure(w,player,x,y,z);
     	if(player!=null)
-    		player.addChatComponentMessage(new ChatComponentText("Pillar structure created"));
+    		player.addChatComponentMessage(new ChatComponentText(namePillar+" pillar structure created"));
 		
-    	return true;
+		return true;
 	}
-	
-	public static boolean recheckStructure(World w, int x, int y, int z, int structureid){
+
+	public static boolean recheckStructure(World w, int x, int y, int z, String name){
 		Block originalb = w.getBlock(x, y, z);
-		boolean flag = true;
-		String str ="0_0_0";
-		do{
-	    	String[] strParts = str.split("_");
-	    	int xT = Integer.parseInt(strParts[0]) + x;
-	    	int yT = Integer.parseInt(strParts[1]) + y;
-	    	int zT = Integer.parseInt(strParts[2]) + z;
-			Block b = w.getBlock(xT, yT, zT);
-			TileEntity t = w.getTileEntity(xT, yT, zT);
-			
-			if(b==null || b.getClass()!=originalb.getClass()){
-				flag = false;
-				break;
+		if(PillarsConfig.getInstance().nameToPillar.containsKey(name)){
+			Pillar p = PillarsConfig.getInstance().nameToPillar.get(name);
+			if(p!=null){
+				return p.reCheckStructure(w,x,y,z,originalb);
 			}
-			if(t!=null){
-				if( t instanceof TileMasterPillar ==false && t instanceof TileRenderPillarModel==false && t instanceof TileBlockPillar==false){
-					flag = false;
-					break;
-				}
-			}
-			
-			str = (String)PillarStructures.getStructureFromId(structureid).structure.get(str);
-		}while(!str.equals("end"));
-		
-		return flag;
+		}
+		return false;
 	}
 	
 	public static boolean unsetupStructureNoMaster(World w, int x, int y, int z){

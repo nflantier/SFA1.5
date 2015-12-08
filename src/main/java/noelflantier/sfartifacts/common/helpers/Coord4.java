@@ -13,6 +13,11 @@ public class Coord4 {
 		this.z = z;
 		this.dimension = dimension;
 	}
+	public Coord4 (int[] c){
+		this.x = c[0];
+		this.y = c[1];
+		this.z = c[2];
+	}
 	public Coord4 (int x, int y, int z){
 		this.x = x;
 		this.y = y;

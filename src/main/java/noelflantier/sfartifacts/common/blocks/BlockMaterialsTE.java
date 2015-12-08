@@ -22,8 +22,8 @@ import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileMasterPillar;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.helpers.PillarHelper;
-import noelflantier.sfartifacts.common.helpers.PillarStructures;
 import noelflantier.sfartifacts.common.items.ItemBasicHammer;
+import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig;
 
 public class BlockMaterialsTE extends BlockSFAContainer{
 
@@ -125,9 +125,12 @@ public class BlockMaterialsTE extends BlockSFAContainer{
 			TileBlockPillar tbp = (TileBlockPillar)tile;
 			if(tbp.hasMaster()){
 				if(tbp.isMasterHere()){
-					if(!PillarHelper.recheckStructure(world, tbp.getMasterX(),tbp.getMasterY(), tbp.getMasterZ(), tbp.getMasterTile().structureId)){
+					if(!PillarHelper.recheckStructure(world, tbp.getMasterX(),tbp.getMasterY(), tbp.getMasterZ(), tbp.getMasterTile().namePillar)){
 						PillarHelper.unsetupStructureNoMaster(world, x, y, z);
 					}
+					/*if(!PillarHelper.recheckStructure(world, tbp.getMasterX(),tbp.getMasterY(), tbp.getMasterZ(), tbp.getMasterTile().structureId)){
+						PillarHelper.unsetupStructureNoMaster(world, x, y, z);
+					}*/
 				}else{
 					PillarHelper.unsetupStructureNoMaster(world, x, y, z);
 				}
@@ -170,8 +173,8 @@ public class BlockMaterialsTE extends BlockSFAContainer{
 	    		t = world.getTileEntity(x, y, z);
 				if(t!=null && t instanceof TileRenderPillarModel){
 					TileRenderPillarModel teap = (TileRenderPillarModel)t;
-					int id = teap.isRenderingPillarModel==-1?0:teap.isRenderingPillarModel<PillarStructures.values().length?teap.isRenderingPillarModel:-1;
-					teap.isRenderingPillarModel = id==-1?id:PillarStructures.values()[id].ID;
+					int id = teap.isRenderingPillarModel==-1?0:teap.isRenderingPillarModel+1<PillarsConfig.getInstance().nameOrderedBySize.size()?teap.isRenderingPillarModel+1:-1;
+					teap.isRenderingPillarModel = id;
 					world.markBlockRangeForRenderUpdate(teap.xCoord, teap.yCoord, teap.zCoord, teap.xCoord, teap.yCoord, teap.zCoord);
 					world.markBlockForUpdate(x, y, z);
 					return true;

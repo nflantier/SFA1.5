@@ -1,17 +1,18 @@
 package noelflantier.sfartifacts.common.world.village;
 
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 import net.minecraft.world.gen.structure.StructureVillagePieces.Start;
-import noelflantier.sfartifacts.common.handlers.ModBlocks;
+import noelflantier.sfartifacts.common.helpers.Coord4;
 import noelflantier.sfartifacts.common.helpers.PillarMaterials;
-import noelflantier.sfartifacts.common.helpers.PillarStructures;
+import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig;
+import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig.Pillar;
 
 public class ComponentPillar  extends StructureVillagePieces.House1{
 
@@ -50,8 +51,17 @@ public class ComponentPillar  extends StructureVillagePieces.House1{
         
         Random rd = new Random();
         int material = rd.nextInt(PillarMaterials.values().length);
-        int pillar = rd.nextInt(PillarStructures.values().length)+1;
-        PillarStructures ps = PillarStructures.getStructureFromId(pillar);
+        int pillar = rd.nextInt(PillarsConfig.getInstance().nameOrderedBySize.size());
+        //int pillar = rd.nextInt(PillarStructures.values().length)+1;
+        String name = PillarsConfig.getInstance().nameOrderedBySize.get(pillar);
+		if(name!=null && PillarsConfig.getInstance().nameToPillar.containsKey(name)){
+			Pillar p = PillarsConfig.getInstance().nameToPillar.get(name);
+			for(Entry<String, Coord4> entry : p.mapStructure.entrySet()){
+	        	if(random.nextFloat()<0.80)
+	        		this.placeBlockAtCurrentPosition(world, PillarMaterials.values()[material].block, 0, entry.getValue().x, entry.getValue().y, entry.getValue().z, sbb);
+			}
+		}
+        /*PillarStructures ps = PillarStructures.getStructureFromId(pillar);
         String str ="0_0_0";
         while(!str.equals("end")){
         	String[] strParts = str.split("_");
@@ -62,7 +72,7 @@ public class ComponentPillar  extends StructureVillagePieces.House1{
             
         	if(random.nextFloat()<0.80)
         		this.placeBlockAtCurrentPosition(world, PillarMaterials.values()[material].block, 0, xT, yT, zT, sbb);
-        }
+        }*/
     	return true;
     }
 }

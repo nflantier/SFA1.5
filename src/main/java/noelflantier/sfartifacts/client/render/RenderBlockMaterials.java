@@ -1,5 +1,7 @@
 package noelflantier.sfartifacts.client.render;
 
+import java.util.Map.Entry;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -12,8 +14,10 @@ import noelflantier.sfartifacts.common.blocks.BlockMaterialsTE;
 import noelflantier.sfartifacts.common.blocks.tiles.TileRenderPillarModel;
 import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileBlockPillar;
 import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileInterfacePillar;
-import noelflantier.sfartifacts.common.helpers.PillarStructures;
+import noelflantier.sfartifacts.common.helpers.Coord4;
 import noelflantier.sfartifacts.common.helpers.RenderBlocksHelper;
+import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig;
+import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig.Pillar;
 
 public class RenderBlockMaterials  extends TileEntitySpecialRenderer  implements ISimpleBlockRenderingHandler {
 		
@@ -69,7 +73,16 @@ public class RenderBlockMaterials  extends TileEntitySpecialRenderer  implements
 
 	    if(tp.isRenderingPillarModel>-1){
 	    	int idpillar = tp.isRenderingPillarModel;
-	    	String str = "0_0_0";
+	    	String name = PillarsConfig.getInstance().nameOrderedBySize.get(idpillar);
+			if(name!=null && PillarsConfig.getInstance().nameToPillar.containsKey(name)){
+				Pillar p = PillarsConfig.getInstance().nameToPillar.get(name);
+				for(Entry<String, Coord4> entry : p.mapStructure.entrySet()){
+					RenderBlocksHelper.renderSimpleFace(x+entry.getValue().x, y+entry.getValue().y, z+entry.getValue().z, "x", ((BlockMaterialsTE)tile.blockType).fullIcon, 0.55F ,0.1F, 0.1F);
+					RenderBlocksHelper.renderSimpleFace(x+entry.getValue().x, y+entry.getValue().y, z+entry.getValue().z, "y", ((BlockMaterialsTE)tile.blockType).fullIcon, 0.55F ,0.1F, 0.1F);
+					RenderBlocksHelper.renderSimpleFace(x+entry.getValue().x, y+entry.getValue().y, z+entry.getValue().z, "z", ((BlockMaterialsTE)tile.blockType).fullIcon, 0.55F ,0.1F, 0.1F);
+				}
+			}
+	    	/*String str = "0_0_0";
 	    	do{
 	    		if(str.equals("0_0_0")){
 		    		str = (String)PillarStructures.getStructureFromId(idpillar).structure.get(str);
@@ -83,7 +96,7 @@ public class RenderBlockMaterials  extends TileEntitySpecialRenderer  implements
 				RenderBlocksHelper.renderSimpleFace(x+xT, y+yT, z+zT, "y", ((BlockMaterialsTE)tile.blockType).fullIcon, 0.55F ,0.1F, 0.1F);
 				RenderBlocksHelper.renderSimpleFace(x+xT, y+yT, z+zT, "z", ((BlockMaterialsTE)tile.blockType).fullIcon, 0.55F ,0.1F, 0.1F);
 	    		str = (String)PillarStructures.getStructureFromId(idpillar).structure.get(str);
-	    	}while(!str.equals("end"));
+	    	}while(!str.equals("end"));*/
 	    }
 	}
 }

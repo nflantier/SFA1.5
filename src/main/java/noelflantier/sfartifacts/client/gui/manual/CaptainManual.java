@@ -1,11 +1,18 @@
 package noelflantier.sfartifacts.client.gui.manual;
 
+import java.util.Map;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
 import noelflantier.sfartifacts.common.handlers.ModGUIs;
-import noelflantier.sfartifacts.common.helpers.Molds;
+import noelflantier.sfartifacts.common.recipes.ISFARecipe;
+import noelflantier.sfartifacts.common.recipes.RecipeMightyFoundry;
+import noelflantier.sfartifacts.common.recipes.RecipeMold;
+import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
+import noelflantier.sfartifacts.common.recipes.handler.MightyFoundryRecipesHandler;
+import noelflantier.sfartifacts.common.recipes.handler.MoldRecipesHandler;
 
 public class CaptainManual  extends BaseManual{
 
@@ -87,11 +94,10 @@ public class CaptainManual  extends BaseManual{
 						defColor = EnumChatFormatting.BLACK;
 						addText("Recipe you can do in the foundry :",0,0);
 						addText("",0,0);
-						for(Molds m: Molds.values()){
-							String str = StatCollector.translateToLocal(m.result.getUnlocalizedName()+".name");
-							str+= " : "+m.ingredients.stackSize+" "+StatCollector.translateToLocal(m.ingredients.getUnlocalizedName()+".name");
+						for (Map.Entry<String, ISFARecipe> entry : RecipesRegistry.instance.getRecipesForUsage(MightyFoundryRecipesHandler.USAGE_MIGHTY_FOUNDRY).entrySet()){
+							String str = StatCollector.translateToLocal(entry.getValue().getOutputs().get(0).getName()+".name");
+							str+= " : "+RecipeMightyFoundry.class.cast(entry.getValue()).getItemQuantity()+" "+StatCollector.translateToLocal(entry.getValue().getInputs().get(0).getItemStack().getUnlocalizedName()+".name");
 							addText(str,10,0);
-							
 						}
 					}}
 				);
@@ -100,10 +106,10 @@ public class CaptainManual  extends BaseManual{
 				new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 					defColor = EnumChatFormatting.BLACK;
 					addText("1 = piece of sand | 0 = nothing",0,0);
-					for(Molds m: Molds.values()){
-						addText(""+m.name+" :",0,0);
-						for(int i =0;i<m.recipe.length;i++){
-							String bin = Integer.toBinaryString(m.recipe[i]);
+					for(Map.Entry<String, ISFARecipe> entry : RecipesRegistry.instance.getRecipesForUsage(MoldRecipesHandler.USAGE_MOLD).entrySet()){
+						addText(""+entry.getValue().getUid()+" :",0,0);
+						for(int i =0;i<RecipeMold.class.cast(entry.getValue()).getTabShape().length;i++){
+							String bin = Integer.toBinaryString(RecipeMold.class.cast(entry.getValue()).getTabShape()[i]);
 							int l = 9-bin.length();
 							for(int j=0;j<l;j++)
 								bin = "0"+bin;

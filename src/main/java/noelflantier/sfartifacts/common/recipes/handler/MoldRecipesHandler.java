@@ -62,7 +62,7 @@ public class MoldRecipesHandler extends AUsageRecipes{
 				}
 			}
 			if(ELEMENT_MOLDLINE.equals(localName)){
-				if(parser.currentRecipe!=null && parser.classRecipe == getClassOfRecipe()){
+				if(parser.currentRecipe!=null && parser.classRecipe == getClassOfRecipe() && index<9){
 					RecipeMold.class.cast(parser.currentRecipe).addLineShape(index, Integer.parseInt(RecipeParser.getStringValue(AT_SHAPE, attributes, "000000000"), 2));
 					index+=1;
 				}

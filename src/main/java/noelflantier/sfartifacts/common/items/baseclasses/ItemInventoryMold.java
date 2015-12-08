@@ -6,7 +6,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
-import noelflantier.sfartifacts.common.helpers.Molds;
 import noelflantier.sfartifacts.common.recipes.RecipeMold;
 import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
 

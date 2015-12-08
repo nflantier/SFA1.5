@@ -1,14 +1,10 @@
 package noelflantier.sfartifacts.client.gui;
 
 import java.text.DecimalFormat;
-import java.util.Enumeration;
-import java.util.Locale;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -16,16 +12,14 @@ import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
 import noelflantier.sfartifacts.client.gui.bases.GuiImage;
 import noelflantier.sfartifacts.client.gui.bases.GuiRender;
-import noelflantier.sfartifacts.client.gui.bases.GuiSFA;
 import noelflantier.sfartifacts.client.gui.bases.GuiToolTips;
-import noelflantier.sfartifacts.common.blocks.tiles.TileLiquefier;
 import noelflantier.sfartifacts.common.blocks.tiles.TileMightyFoundry;
 import noelflantier.sfartifacts.common.container.ContainerMightyFoundry;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
-import noelflantier.sfartifacts.common.helpers.Molds;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketMightyFoundryGui;
-import noelflantier.sfartifacts.common.network.messages.PacketUpgradeHammer;
+import noelflantier.sfartifacts.common.recipes.ISFARecipe;
+import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
 
 public class GuiMightyFoundry extends GuiMachine{
 	
@@ -62,8 +56,9 @@ public class GuiMightyFoundry extends GuiMachine{
 		if(this.hasMold){
 			this.getButtonById(0).enabled = true;
 			int mid = ItemNBTHelper.getInteger(this.inventorySlots.getSlot(this.stId+1).getStack(), "idmold", 0);
-			Molds m = Molds.getMold(mid);
-			this.componentList.get("wca").replaceString(0, ""+m.name);
+			ISFARecipe r = RecipesRegistry.instance.getRecipeWithMoldMeta(mid);
+			if(r!=null)
+				this.componentList.get("wca").replaceString(0, ""+r.getUid());
 			
 			DecimalFormat f = new DecimalFormat();
 			f.setMaximumFractionDigits(2);
