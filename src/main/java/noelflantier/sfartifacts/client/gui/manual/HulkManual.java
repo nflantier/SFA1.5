@@ -64,7 +64,6 @@ public class HulkManual extends BaseManual{
 					addText("Hulk can be lure with the sound emitter,",0,0);
 					addText("you can't kill him but if you hurt him",0,0);
 					addText("really bad he will run away.",0,0);
-					addText("Hulk frequency's echo: -361",0,0);
 					addText("Just before running away he will drop some flesh,",0,10);
 					addText("try to use a weapon with loot to have multiple",0,0);
 					addText("flesh dropped, you can eat them or try to make",0,0);

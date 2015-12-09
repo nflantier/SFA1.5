@@ -1,5 +1,7 @@
 package noelflantier.sfartifacts.client.gui.manual;
 
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +18,10 @@ import noelflantier.sfartifacts.common.recipes.ISFARecipe;
 import noelflantier.sfartifacts.common.recipes.RecipeInput;
 import noelflantier.sfartifacts.common.recipes.RecipeOutput;
 import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
+import noelflantier.sfartifacts.common.recipes.handler.HammerUpgradesRecipesHandler;
 import noelflantier.sfartifacts.common.recipes.handler.InjectorRecipesHandler;
+import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig;
+import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig.Pillar;
 
 public class ThorManual extends BaseManual{
 	
@@ -250,9 +255,9 @@ public class ThorManual extends BaseManual{
 			this.componentList.put("p1", 
 				new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 					defColor = EnumChatFormatting.BLACK;
-					addText("Thor's Hammer has 3 modes (right click), you can",0,0);
+					addText("Thor's Hammer has 4 modes (right click), you can",0,0);
 					addText("change them by shift right clicking it :",0,0);
-					addText("- Mining (default) : you can throw your hammer",5,10);
+					addText("- Mining (default) : you can throw your hammer",5,0);
 					addText("it will mine everything on its way.",5,0);
 					addText("- Lightning : you can strike block or entity, from",5,0);
 					addText("a distance, with lightning it will cause damage and fire.",5,0);
@@ -311,37 +316,26 @@ public class ThorManual extends BaseManual{
 					addText("hammer stand, drop the items needed for the upgrade ",0,0);
 					addText("on top of the stand and right click the top of the",0,0);
 					addText("stand with a basic hammer until it disappear.",0,0);
-					/*addText("-Lightning upgrade : give the ability to use the lightning",0,10);
-					addText("mode. Item : Ultimate lightning rod.",0,0);
-					addText("-Magnet upgrade : when you throw your hammer to mine,",0,10);
-					addText("mined stuff will teleport directly to you. Item : Energy",0,0);
-					addText("module.",0,0);*/
 				}}
 			);
-			/*this.componentList.put("hu2", new GuiComponent(this.guiLeft+10, this.guiTop+145, 35, 10){{
-				defColor = EnumChatFormatting.BLACK;
-				addText("Next->", 0, 0);
-				isLink = true;
-			}});
-			this.manuals.put("hu2", -1);*/
 		}else if(cat.equals("hurecipe")){
 			this.componentList.put("p1", 
 					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 						defColor = EnumChatFormatting.BLACK;
 						addText("Upgrades for Thor's hammer :",0,0);
 						addText("",0,0);
-						/*for(HammerStandRecipe hsr : HammerStandRecipe.values()){
-							String str = hsr.sName+"  ( ";
-							for(int i = 0;i<hsr.recipe.recipe.size();i++){
-								str += hsr.recipe.recipe.get(i).stackSize+"  "+StatCollector.translateToLocal(hsr.recipe.recipe.get(i).getUnlocalizedName()+".name");
-								if(i+1!=hsr.recipe.recipe.size())
+						for(Map.Entry<String, ISFARecipe> entry : 
+							RecipesRegistry.instance.getRecipesForUsage(HammerUpgradesRecipesHandler.USAGE_HAMMER_UPGRADES).entrySet()){
+							String str = ""+entry.getKey()+" : ( ";
+							int k = 0;
+							for(RecipeInput i : entry.getValue().getInputs()){
+								str+=i.getStackSize()+"  "+StatCollector.translateToLocal(i.getName()+".name");
+								if(k+1!= entry.getValue().getInputs().size())
 									str+=", ";
+								k+=1;
 							}
-							str +=" )";
-							if(hsr.desc!="")
-								str+=" "+hsr.desc;
-							addText(str,0,0);
-						}*/
+							addText(str+" )",0,0);
+						}
 					}}
 				);
 		}else if(cat.equals("hc")){
@@ -358,64 +352,30 @@ public class ThorManual extends BaseManual{
 					addText("disable or enable enchants you allready have installed.",0,0);
 				}}
 			);
-		}/*else if(cat.equals("ps")){
+		}else if(cat.equals("ps")){
+
+			Locale.setDefault(Locale.US);
 			this.componentList.put("p1", 
 					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 						defColor = EnumChatFormatting.BLACK;
-						addText("Basic - 14 blocks (capacity : "+PillarStructures.values()[0].energyCapacity+" RF)",0,0);
+						addText("To see all the pillars structures you can do",0,0);
+						addText("right click a block of asgardian material with",0,0);
+						addText("a basic hammer set in construction mode :",0,0);
 					}}
 				);
-			this.componentList.put("im", 
-					new GuiImage(this.guiLeft+10, this.guiTop+40, 275, 100, 
-							new ResourceLocation(References.MODID+":textures/manual/basicplan.png"))
-				);
-			this.componentList.put("ps2", new GuiComponent(this.guiLeft+10, this.guiTop+145, 35, 10){{
-				defColor = EnumChatFormatting.BLACK;
-				addText("Next->", 0, 0);
-				isLink = true;
-			}});
-			this.links.put("ps2", -1);
-		}else if(cat.equals("ps2")){
-			this.componentList.put("p1", 
-					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
+			this.componentList.put("p2", 
+					new GuiComponent(this.guiLeft-12, this.guiTop+40, 100, 10){{
 						defColor = EnumChatFormatting.BLACK;
-						addText("Medium - 68 blocks (capacity : "+PillarStructures.values()[1].energyCapacity+" RF)",0,0);
+						globalScale = 0.8F;
+						for(Map.Entry<String, Pillar> entry :PillarsConfig.getInstance().nameToPillar.entrySet()){
+							addText(entry.getKey()+" : "+entry.getValue().mapStructure.size()+" blocks; "+
+									NumberFormat.getNumberInstance().format(entry.getValue().energyCapacity)+" RF; "+
+									NumberFormat.getNumberInstance().format(entry.getValue().fluidCapacity)+" FL; ratio : "+
+									entry.getValue().naturalRatio+".",0,0);
+						}
 					}}
 				);
-			this.componentList.put("im", 
-					new GuiImage(this.guiLeft+10, this.guiTop+40, 275, 100, 
-							new ResourceLocation(References.MODID+":textures/manual/mediumplan.png"))
-				);
-			this.componentList.put("ps3", new GuiComponent(this.guiLeft+50, this.guiTop+145, 35, 10){{
-				defColor = EnumChatFormatting.BLACK;
-				addText("Next->", 0, 0);
-				isLink = true;
-			}});
-			this.links.put("ps3", -1);
-			this.componentList.put("ps", new GuiComponent(this.guiLeft+10, this.guiTop+145, 35, 10){{
-				defColor = EnumChatFormatting.BLACK;
-				addText("<-Prev", 0, 0);
-				isLink = true;
-			}});
-			this.links.put("ps", -1);
-		}else if(cat.equals("ps3")){
-			this.componentList.put("p1", 
-					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
-						defColor = EnumChatFormatting.BLACK;
-						addText("Advanced - 183 blocks (capacity : "+PillarStructures.values()[2].energyCapacity+" RF)",0,0);
-					}}
-				);
-			this.componentList.put("im", 
-					new GuiImage(this.guiLeft+10, this.guiTop+40, 275, 100, 
-							new ResourceLocation(References.MODID+":textures/manual/advancedplan.png"))
-				);
-			this.componentList.put("ps2", new GuiComponent(this.guiLeft+10, this.guiTop+145, 35, 10){{
-				defColor = EnumChatFormatting.BLACK;
-				addText("<-Prev", 0, 0);
-				isLink = true;
-			}});
-			this.links.put("ps2", -1);
-		}*/else if(cat.equals("pe")){
+		}else if(cat.equals("pe")){
 			this.componentList.put("p1", 
 				new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 					defColor = EnumChatFormatting.BLACK;
@@ -549,12 +509,12 @@ public class ThorManual extends BaseManual{
 			}});
 			this.links.put("tips", -1);
 			
-			/*this.componentList.put("ps", new GuiComponent(this.guiLeft+150, this.guiTop+30, 100, 10){{
+			this.componentList.put("ps", new GuiComponent(this.guiLeft+150, this.guiTop+30, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Pillar structures", 0, 0);
 				isLink = true;
 			}});
-			this.links.put("ps", -1);*/
+			this.links.put("ps", -1);
 			
 			this.componentList.put("pe", new GuiComponent(this.guiLeft+150, this.guiTop+40, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;

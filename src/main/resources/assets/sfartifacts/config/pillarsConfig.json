@@ -1,5 +1,5 @@
 {
-	"howto":"0_0_0  X_Y_Z , build your pillar relative to the origine you have defined,  master for the master block, block for a regular block, blockactivate for a block that will check the pillar structure,  interface for a block that will be able to interface energy and fluid on certain direction: 0=-y  1=y+  2=z-  3=z+  4=x-  5=x+",
+	"howto":"0_0_0  X_Y_Z , build your pillar relative to the origine you have defined,  master for the master block, block for a regular block, blockactivate for a block that will check the pillar structure,  interface for a block that will be able to interface energy and fluid on certain direction: 0=-y(down)  1=y+(up)  2=z-(north)  3=z+(south)  4=x-(west)  5=x+(east), natural ratio is used in the calculation of the energy generated each tick",
 	"pillars":{
 		"Basic":{
 			"energycapacity":"100000",

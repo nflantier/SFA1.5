@@ -2,6 +2,7 @@ package noelflantier.sfartifacts.common.recipes;
 
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.SAXParser;
@@ -50,7 +51,7 @@ public class RecipeParser extends DefaultHandler {
 	public static final String AT_ENERGY_COST = "energyCost";
 	public static final String AT_FLUID_COST = "fluidCost";
 	public static final String AT_ORE_DICT = "oreDictionary";
-	public static final String AT_ITEM_DAMAGE = "itemDamage";
+	public static final String AT_ITEM_DAMAGE = "itemMeta";
 	public static final String AT_QUANTITY = "itemQuantity";
 	public static final String AT_ITEM_NAME = "itemName";
 	public static final String AT_MOD_ID = "modID";
@@ -313,10 +314,6 @@ public class RecipeParser extends DefaultHandler {
 	    if(orename == null && (type==null || name==null || value==null) )
 	    	return stack;
 	    
-	    if(orename!=null && OreDictionary.doesOreNameExist(orename)){
-	    	
-	    }
-	    
 		if(type.equals("boolean")){
 			stack = ItemNBTHelper.setBoolean(stack, name, value.equals("true"));
 		}else if(type.equals("int")){
@@ -325,8 +322,9 @@ public class RecipeParser extends DefaultHandler {
 			stack = ItemNBTHelper.setDouble(stack, name, Double.parseDouble(value));
 		}else if(type.equals("long")){
 			stack = ItemNBTHelper.setLong(stack, name, Long.parseLong(value));
+		}else if(type.equals("string")){
+			stack = ItemNBTHelper.setString(stack, name, value);
 		}
-		
 		return stack;
 	}
 	
@@ -349,11 +347,23 @@ public class RecipeParser extends DefaultHandler {
 	    ItemStack stack = null;
 	    int stackSize = getIntValue(AT_QUANTITY, attributes, 1);
 	    int itemMeta = getIntValue(AT_ITEM_DAMAGE, attributes, 0);
-	    
 	    String modId = getStringValue(AT_MOD_ID, attributes, null);
 	    String name = getStringValue(AT_ITEM_NAME, attributes, null);
 	    if(ModConfig.useOldRegistration && modId.equals(References.MODID))
 	    	name = References.MODID+"_"+name;
+
+	    String orename = getStringValue(AT_ORE_DICT, attributes, null);
+	    if(orename!=null && OreDictionary.doesOreNameExist(orename)){
+	    	List<ItemStack> ores = OreDictionary.getOres(orename);
+	        if(!ores.isEmpty() && ores.get(0) != null) {
+	        	stack = ores.get(0).copy();
+	        	if(stack!=null){
+	        		stack.stackSize = stackSize;
+	        		stack.setItemDamage(itemMeta);
+	        	}
+	        }
+	    }
+	    
 	    if(modId != null && name != null) {
 	    	Item i = GameRegistry.findItem(modId, name);
 	    	if(i != null) {

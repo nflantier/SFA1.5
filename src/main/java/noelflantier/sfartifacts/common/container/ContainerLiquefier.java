@@ -196,7 +196,7 @@ public class ContainerLiquefier extends ContainerMachine{
 		@Override
 	    public boolean isItemValid(ItemStack stack)
 	    {
-	        return stack.getItem() instanceof ItemAsgardite;
+	        return true;
 	    }    
 
 		@Override

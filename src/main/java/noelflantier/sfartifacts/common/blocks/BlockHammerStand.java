@@ -33,6 +33,7 @@ import noelflantier.sfartifacts.common.recipes.IUseSFARecipes;
 import noelflantier.sfartifacts.common.recipes.RecipeInput;
 import noelflantier.sfartifacts.common.recipes.RecipeOnHammerStand;
 import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
+import noelflantier.sfartifacts.common.recipes.handler.HammerUpgradesRecipesHandler;
 
 public class BlockHammerStand extends BlockSFAContainer {
 
@@ -123,7 +124,6 @@ public class BlockHammerStand extends BlockSFAContainer {
 	    	if(side==1 && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem()==ModItems.itemBasicHammer && ItemNBTHelper.getInteger(player.getCurrentEquippedItem(), "Mode", 1)==0){
 	    		TileHammerStand ths= (TileHammerStand)tile;
 	    		if(ths.items[0]!=null){
-	    			
 	    			if(!world.isRemote && ths.curentRecipe!=null){
 	    				if(ths.curentRecipe.itemStillHere()){
 		    				ths.curentRecipe.age++;
@@ -140,16 +140,17 @@ public class BlockHammerStand extends BlockSFAContainer {
 		    			}
 			    		return true;
 	    			}
-	    			
-	    			List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x,y,z,x+1,y+2,z+1));
-	    			if (!world.isRemote && items!=null && items.size()>0){
-	    				ISFARecipe re = RecipesRegistry.instance.getBestRecipe((IUseSFARecipes)ths,RecipesRegistry.instance.getInputFromEntityItem(items) );
-	    				if(re!=null){
-	    					ths.curentRecipe = new RecipeOnHammerStand(re, items, ths.items[0]);
-	    					if(!ths.curentRecipe.isValid)
+	    			if (!world.isRemote){
+	    				List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x,y,z,x+1,y+2,z+1));
+	    				if(items!=null && items.size()>0){
+			    			ISFARecipe re = RecipesRegistry.instance.getBestRecipe((IUseSFARecipes)ths,RecipesRegistry.instance.getInputFromEntityItem(items) );
+		    				if(re!=null){
+		    	    			ths.curentRecipe = new RecipeOnHammerStand(re, items, ths.items[0]);
+		    					if(!ths.curentRecipe.isValid)
+			    					ths.curentRecipe = null;
+		    				}else
 		    					ths.curentRecipe = null;
-	    				}else
-	    					ths.curentRecipe = null;
+	    				}
 	    			}
 	    		}
 	    		return true;

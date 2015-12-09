@@ -149,6 +149,7 @@ public class SoundEmitterConfig {
 	
 	private String generateFileWithCustomMobs(String name)  throws IOException {
 		JsonObject rootObj = new JsonObject();
+		rootObj.addProperty("howto", "Here are the mobs added by others mods, check "+CORE_FILE_NAME+" to see any properties you want to add.");
 		JsonObject mobsObj = new JsonObject();
 		Iterator <Map.Entry<String,Class>>iterator = EntityList.stringToClassMapping.entrySet().iterator();
         while (iterator.hasNext()){

@@ -1,7 +1,9 @@
 <!--
-If you want to add mold dont forget to increment the itemDamage(meta) value
-You can only use 0 and 1 to make moldline always make a shape of 9 characters and always make 9 moldline
-To use your molds just put the itemDamage value on the itemMold of your input in the mighty foundry recipe you want
+Always put your new recipe between the <recipes>, recipe must have a unique name.
+If you want to add mold dont forget to increment the itemMeta value.
+You can only use 0 and 1 to make moldline always make a shape of 9 characters and always make 9 moldline.
+0 = nothing, 1 = sand.
+To use your molds just set the itemMeta of your mold input in the mighty foundy equal to the itemMeta of your mold.
 -->
 <recipes>
     <recipe name="Vibranium Shield">

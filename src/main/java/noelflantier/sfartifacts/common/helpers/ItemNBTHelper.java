@@ -51,6 +51,14 @@ public class ItemNBTHelper {
 		stack.setTagCompound(compound);
 		return stack;
 	}
+	
+	public static ItemStack setString(ItemStack stack, String tag, String str)
+	{
+		NBTTagCompound compound = getCompound(stack);
+		compound.setString(tag, str);
+		stack.setTagCompound(compound);
+		return stack;
+	}
 
 	
 	public static ItemStack setTagList(ItemStack stack, String ts, NBTTagList tag)
@@ -87,6 +95,10 @@ public class ItemNBTHelper {
 	
 	public static boolean getBoolean(ItemStack stack, String tag, boolean defaultExpected) {
 		return verifyExistance(stack, tag) ? stack.getTagCompound().getBoolean(tag) : defaultExpected;
+	}
+	
+	public static String getString(ItemStack stack, String tag, String defaultExpected) {
+		return verifyExistance(stack, tag) ? stack.getTagCompound().getString(tag) : defaultExpected;
 	}
 	
 	public static NBTTagList getTagList(ItemStack stack, String tag, int lvl) {

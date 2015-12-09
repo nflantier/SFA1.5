@@ -1,3 +1,14 @@
+<!--
+Always put your new recipe between the <recipes>, recipe must have a unique name.
+ItemStack should always be inside <input>.
+ItemStack can be declared :
+-using directly the modid and the name of the item : <itemStack modID="sfartifacts" itemName="itemAsgardite" itemQuantity="4"/>
+-using the oreDictionary name if the item is registered in the oreDictionary : <itemStack oreDictionary="gemQuartz" number="4"/> 
+Here the ouput will be nbttag on the hammer.
+Nbt you can add to the hammer :
+nbtType : int, double, long, boolean, string;
+nbtProcess : default (or nothing), adding(instead of writing the tag directly on the hammer it will add the value of the tag to the existant same name tag on the hammer)
+-->
 <recipes>
     <recipe name="Capacity" energyCost="0" fluidCost="0" hasOutputs="false" label="Unlimited forging">
 		<input>
@@ -19,7 +30,7 @@
 	
 	<recipe name="Lightning" energyCost="0" fluidCost="0" hasOutputs="false">
 		<input>
-			<itemStack modID="sfartifacts" itemName="itemLightningRod" itemDamage="3"/>
+			<itemStack modID="sfartifacts" itemName="itemLightningRod" itemMeta="3"/>
 		</input>
 		<hammer>
 			<nbt nbtType="boolean" nbtValue="true" nbtName="CanThrowLightning"/>
@@ -60,6 +71,7 @@
 			<itemStack modID="minecraft" itemName="enchanted_book" />
 		</input>
 		<hammer>
+			<!-- The processing of enchanted book is coded as an expetion in the mod -->
 		</hammer>
     </recipe>
 	

@@ -39,10 +39,6 @@ public class ModConfig {
 	public static int tickToCookVibraniumOres;
 	public static boolean isShieldBlockOnlyWhenShift;
 	
-	public static int rfNeededToSpawnHulk;
-	public static int rfNeededToSpawnDefault;
-	public static int fluidNeededToSpawnHulk;
-	public static int fluidNeededToSpawnDefault;
 	public static boolean areFrequenciesShown;
 
 	public final static String CAT_UTILS = "Utils";
@@ -83,11 +79,7 @@ public class ModConfig {
 			shieldProtection = config.get(CAT_VIBRANIUM_SHIELD, "angle", 90, "The Angle in degrees your shield deflect damages around you ex:90 = 45 to your left 45 to your right").getInt();
 			isShieldBlockOnlyWhenShift = config.get(CAT_VIBRANIUM_SHIELD, "shift", true, "Is the shield block damages only when you shift with it").getBoolean();
 			
-			rfNeededToSpawnDefault = config.get(CAT_SOUND_EMITTER, "rf/spawnD", 10, "The amount of RF energy needed to spawn a living entity by default").getInt();
-			fluidNeededToSpawnDefault = config.get(CAT_SOUND_EMITTER, "fluid/spawnD", 10, "The amount of Milibucket needed to spawn a living entity by default").getInt();
-			rfNeededToSpawnHulk = config.get(CAT_SOUND_EMITTER, "rf/spawnH", 495000, "The amount of RF energy needed to spawn HULK").getInt();
-			fluidNeededToSpawnHulk = config.get(CAT_SOUND_EMITTER, "fluid/spawnH", 95000, "The amount of Milibucket needed to spawn HULK").getInt();
-			areFrequenciesShown = config.get(CAT_SOUND_EMITTER, "show frequencies", false, "If set to true you'll have all the frequencies for each mobs shown in your list").getBoolean();
+			areFrequenciesShown = config.get(CAT_SOUND_EMITTER, "show frequencies", true, "If set to true you'll have all the frequencies for each mobs shown in your list").getBoolean();
 			
 			isPillarEmitParticles = config.get(Configuration.CATEGORY_GENERAL, "pillars particles", true, "Is the pillars emit particles").getBoolean();
 			isOresEmitParticles = config.get(Configuration.CATEGORY_GENERAL, "ores particles", true, "Is asgardian ores emit particles").getBoolean();
@@ -108,7 +100,7 @@ public class ModConfig {
 			capacityLavaMightyFoundry = config.get(CAT_MACHINES, "MightyFoundry lava capacity", 20000, "The mightyfoundry lava capacity").getInt();
 			
 			capacitySoundEmiter = config.get(CAT_MACHINES, "SoundEmitter capacity", 500000, "The soundemitter energy capacity").getInt();
-			capacityAsgarditeSoundEmitter = config.get(CAT_MACHINES, "SoundEmitter liquefied asgardite capacity", 100000, "The soundemitter liquefied asgardite capacity").getInt();
+			capacityAsgarditeSoundEmitter = config.get(CAT_MACHINES, "SoundEmitter liquefied asgardite capacity", 200000, "The soundemitter liquefied asgardite capacity").getInt();
 
 			useOldRegistration = config.get(CAT_UTILS, "Use old registration", false, "In the newer version registered name have changed so if you have an id error set this to true").getBoolean();
 		}

@@ -1,4 +1,5 @@
 {
+	"howto":"You should not add anything in here, just edit it",
 	"default":{
 		"customXYZ":"0,0,0",
 		"isAttractedToSpawner":"true",
@@ -135,8 +136,8 @@
 			"nbMaxSpawning":"1"
 			},
 		"sfartifacts.hulk" : {
-			"energyCost":"100",
-			"fluidCost":"100",
+			"energyCost":"450000",
+			"fluidCost":"100000",
 			"customXYZ":"0,200,0",
 			"isAttractedToSpawner":"false",
 			"isSpawningOnce":"true",

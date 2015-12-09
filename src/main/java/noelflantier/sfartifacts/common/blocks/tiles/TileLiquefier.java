@@ -317,7 +317,7 @@ public class TileLiquefier extends TileMachine implements ITileUsingMaterials, I
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 	    FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(stack);
-		return ( slot==0 && stack.getItem() instanceof ItemAsgardite ) || ( slot==1 && fluid != null && fluid.getFluid()==FluidRegistry.WATER ) 
+		return slot==0 || ( slot==1 && fluid != null && fluid.getFluid()==FluidRegistry.WATER ) 
 				|| ( slot==2 && ( ( FluidContainerRegistry.isContainer(stack) || stack.getItem() == Items.bucket ) || ( fluid != null && fluid.getFluid()==ModFluids.fluidLiquefiedAsgardite ) )   );
 	}
 

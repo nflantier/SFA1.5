@@ -76,9 +76,9 @@ public class PillarsConfig {
 			for(Entry<String, Pillar> entry : nameToPillar.entrySet()){
 				orderMap(entry.getValue());
 			}
-			for(String s : nameOrderedBySize){
+			/*for(String s : nameOrderedBySize){
 				System.out.println("........................ "+s);
-			}
+			}*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

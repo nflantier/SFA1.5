@@ -141,7 +141,7 @@ public class RecipesRegistry {
 		List<ISFARecipe> list = getRecipesForUsageAndInputs(usageName, inputs);
 		if(list == null || list.size()<=0)
 			return null;
-		Predicate<ISFARecipe> predicate = (r) -> r.getEnergyCost() >= energy || r.getFluidCost() >= fluid;
+		Predicate<ISFARecipe> predicate = (r) -> r.getEnergyCost() > energy || r.getFluidCost() > fluid;
 		list.removeIf(predicate);
 		if(list.isEmpty())
 			list = null;
