@@ -17,10 +17,11 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
+import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.helpers.Coord4;
 
 public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,ISFAFluid,
-							ISFAEnergyHandler,ISidedInventory{
+							ISFAEnergyHandler,ISidedInventory, ITileCanTakeRFonlyFromPillars{
 	
 	//CONTROL
 	public boolean isManualyEnable = true;
@@ -213,7 +214,10 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 	
 	
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {		
+	public boolean canConnectEnergy(ForgeDirection from) {	
+		if(ModConfig.isAMachinesWorksOnlyWithPillar){
+			return false;
+		}	
 		for(ForgeDirection direction : recieveSides)
 		if(direction == from)
 			return true;
@@ -224,12 +228,27 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 	}
 
 	@Override
+	public int receiveOnlyFromPillars(int maxReceive, boolean simulate) {
+		return this.isRedStoneEnable/*||!this.isManualyEnable*/?0:this.storage.receiveEnergy(maxReceive, simulate);
+	}
+	@Override
+	public int extractOnlyFromPillars(int maxExtract, boolean simulate) {
+		return this.isRedStoneEnable/*||!this.isManualyEnable*/?0:this.storage.extractEnergy(maxExtract, simulate);
+	}
+	
+	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+		if(ModConfig.isAMachinesWorksOnlyWithPillar){
+			return 0;
+		}
 		return this.isRedStoneEnable/*||!this.isManualyEnable*/?0:this.storage.receiveEnergy(maxReceive, simulate);
 	}
 	
 	@Override
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+		if(ModConfig.isAMachinesWorksOnlyWithPillar){
+			return 0;
+		}
 		return this.isRedStoneEnable/*||!this.isManualyEnable*/?0:this.storage.extractEnergy(maxExtract, simulate);
 	}
 	

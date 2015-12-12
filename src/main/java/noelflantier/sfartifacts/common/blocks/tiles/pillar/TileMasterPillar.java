@@ -14,7 +14,10 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import noelflantier.sfartifacts.common.blocks.tiles.ITileCanBeMaster;
+import noelflantier.sfartifacts.common.blocks.tiles.ITileCanHavePillar;
+import noelflantier.sfartifacts.common.blocks.tiles.ITileCanTakeRFonlyFromPillars;
 import noelflantier.sfartifacts.common.blocks.tiles.ITileWirelessEnergy;
+import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
 import noelflantier.sfartifacts.common.helpers.PillarMaterials;
 import noelflantier.sfartifacts.common.network.PacketHandler;
@@ -90,13 +93,24 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
 		                	int maxAvailable = this.extractEnergy(ForgeDirection.UNKNOWN, maxExtract, true);
 		                	int energyTransferred = 0;
 		    				if(majt instanceof IEnergyReceiver){
-		        				energyTransferred = ((IEnergyReceiver) majt).receiveEnergy(fd.getOpposite(), maxAvailable, true);
-	    						if(energyTransferred!=0){
-		        					energyTransferred = ((IEnergyReceiver) majt).receiveEnergy(fd.getOpposite(), maxAvailable, false);
-		            				this.extractEnergyWireless(energyTransferred, false, majt.xCoord, majt.yCoord, majt.zCoord);
-		            				if(energyTransferred>0)
-			            				break;
-		        				}
+		    					if(ModConfig.isAMachinesWorksOnlyWithPillar && majt instanceof ITileCanTakeRFonlyFromPillars){
+		    						ITileCanTakeRFonlyFromPillars iop = (ITileCanTakeRFonlyFromPillars)majt;
+			        				energyTransferred = iop.receiveOnlyFromPillars( maxAvailable, true);
+		    						if(energyTransferred!=0){
+			        					energyTransferred = iop.receiveOnlyFromPillars(maxAvailable, false);
+			            				this.extractEnergyWireless(energyTransferred, false, majt.xCoord, majt.yCoord, majt.zCoord);
+			            				if(energyTransferred>0)
+				            				break;
+			        				}
+		    					}else{
+			        				energyTransferred = ((IEnergyReceiver) majt).receiveEnergy(fd.getOpposite(), maxAvailable, true);
+		    						if(energyTransferred!=0){
+			        					energyTransferred = ((IEnergyReceiver) majt).receiveEnergy(fd.getOpposite(), maxAvailable, false);
+			            				this.extractEnergyWireless(energyTransferred, false, majt.xCoord, majt.yCoord, majt.zCoord);
+			            				if(energyTransferred>0)
+				            				break;
+			        				}
+		    					}
 	    					}
 	    				}
     				}else{

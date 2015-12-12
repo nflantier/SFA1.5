@@ -10,7 +10,8 @@ public class ModConfig {
 	
 
 	public static boolean useOldRegistration;
-	
+
+	public static boolean isAMachinesWorksOnlyWithPillar;
 	public static int capacityLiquefier;
 	public static int capacityWaterLiquefier;
 	public static int capacityAsgarditeLiquefier;
@@ -36,12 +37,26 @@ public class ModConfig {
 	public static boolean isOresEmitParticles;
 	public static boolean isItemsEmitParticles;
 	public static double chanceToSpawnMightyFeather;
-	public static int tickToCookVibraniumOres;
 	public static boolean isShieldBlockOnlyWhenShift;
+
+	public static boolean isAsgarditeOreRegistrationEnable;
+	public static boolean isVibraniumOreRegistrationEnable;
+	public static int tickToCookVibraniumOres;
+	public static int minYVibranium;
+	public static int maxYVibranium;
+	public static int minVainSizeVibranium;
+	public static int maxVainSizeVibranium;
+	public static int chanceVibranium;
+	public static int minYAsgardite;
+	public static int maxYAsgardite;
+	public static int minVainSizeAsgardite;
+	public static int maxVainSizeAsgardite;
+	public static int chanceAsgardite;
 	
 	public static boolean areFrequenciesShown;
 
 	public final static String CAT_UTILS = "Utils";
+	public final static String CAT_ORES = "Ores";
 	public final static String CAT_THOR_HAMMER = "Thor s Hammer";
 	public final static String CAT_SOUND_EMITTER = "Sound Emiter";
 	public final static String CAT_VIBRANIUM_SHIELD = "Vibranium Shield";
@@ -87,20 +102,35 @@ public class ModConfig {
 			
 			isManualSpawning = config.get(Configuration.CATEGORY_GENERAL, "manual spawn", true, "Is the manual spawn at player on new log in").getBoolean();
 			chanceToSpawnMightyFeather = config.get(Configuration.CATEGORY_GENERAL, "chance to drop mighty feather", 0.35, "Chance that chickens hit by lightning drop mighty feather [0-1]").getDouble();
-			tickToCookVibraniumOres = config.get(Configuration.CATEGORY_GENERAL, "ticks", 6000, "The number of ticks needed to vibranium ores to be cooked 20 tick = 1 s").getInt();
 			
-			capacityLiquefier = config.get(CAT_MACHINES, "Liquefier capacity", 20000, "The liquefier energy capacity").getInt();
-			capacityWaterLiquefier = config.get(CAT_MACHINES, "Liquefier water capacity", 20000, "The liquefier water capacity").getInt();
-			capacityAsgarditeLiquefier = config.get(CAT_MACHINES, "Liquefier liquefied asgardite capacity", 20000, "The liquefier liquefied asgardite capacity").getInt();
+			tickToCookVibraniumOres = config.get(CAT_ORES, "ticks", 6000, "The number of ticks needed to vibranium ores to be cooked 20 tick = 1 s").getInt();
+			isAsgarditeOreRegistrationEnable = config.get(CAT_ORES, "asgardite ore registration enable", true, "Is asgardite ore registration enable").getBoolean();
+			isVibraniumOreRegistrationEnable = config.get(CAT_ORES, "vibranium ore registration enable", true, "Is vibranium ore registration enable").getBoolean();
+			minYVibranium = config.get(CAT_ORES, "min Y level for vibranium", 3, "The min Y level").getInt();
+			maxYVibranium = config.get(CAT_ORES, "max Y level for vibranium", 18, "The max Y level").getInt();
+			minVainSizeVibranium = config.get(CAT_ORES, "min vain size for vibranium", 2, "The min vain size").getInt();
+			maxVainSizeVibranium = config.get(CAT_ORES, "max vain size for vibranium", 4, "The max vain size").getInt();
+			chanceVibranium = config.get(CAT_ORES, "chance to spawn vibranium", 6, "The chance to spawn").getInt();
+			minYAsgardite = config.get(CAT_ORES, "min Y level for asgardite", 40, "The min Y level").getInt();
+			maxYAsgardite = config.get(CAT_ORES, "max Y level for asgardite", 120, "The max Y level").getInt();
+			minVainSizeAsgardite = config.get(CAT_ORES, "min vain size for asgardite", 5, "The min vain size").getInt();
+			maxVainSizeAsgardite = config.get(CAT_ORES, "max vain size for asgardite", 12, "The max vain size").getInt();
+			chanceAsgardite = config.get(CAT_ORES, "chance to spawn asgardite", 10, "The chance to spawn").getInt();
 			
-			capacityInjector = config.get(CAT_MACHINES, "Injector capacity", 20000, "The injector energy capacity").getInt();
-			capacityAsgarditeInjector = config.get(CAT_MACHINES, "Injector liquefied asgardite capacity", 20000, "The injector liquefied asgardite capacity").getInt();
+			isAMachinesWorksOnlyWithPillar = config.get(CAT_MACHINES, "machines accept Rf only from pillars", false, "True or false if the machines should accept RF energy only from pillars").getBoolean();
 			
-			capacityMightyFoundry = config.get(CAT_MACHINES, "MightyFoundry capacity", 50000, "The mightyfoundry energy capacity").getInt();
-			capacityLavaMightyFoundry = config.get(CAT_MACHINES, "MightyFoundry lava capacity", 20000, "The mightyfoundry lava capacity").getInt();
+			capacityLiquefier = config.get(CAT_MACHINES, "liquefier capacity", 20000, "The liquefier energy capacity").getInt();
+			capacityWaterLiquefier = config.get(CAT_MACHINES, "liquefier water capacity", 20000, "The liquefier water capacity").getInt();
+			capacityAsgarditeLiquefier = config.get(CAT_MACHINES, "liquefier liquefied asgardite capacity", 20000, "The liquefier liquefied asgardite capacity").getInt();
 			
-			capacitySoundEmiter = config.get(CAT_MACHINES, "SoundEmitter capacity", 500000, "The soundemitter energy capacity").getInt();
-			capacityAsgarditeSoundEmitter = config.get(CAT_MACHINES, "SoundEmitter liquefied asgardite capacity", 200000, "The soundemitter liquefied asgardite capacity").getInt();
+			capacityInjector = config.get(CAT_MACHINES, "injector capacity", 20000, "The injector energy capacity").getInt();
+			capacityAsgarditeInjector = config.get(CAT_MACHINES, "injector liquefied asgardite capacity", 20000, "The injector liquefied asgardite capacity").getInt();
+			
+			capacityMightyFoundry = config.get(CAT_MACHINES, "mightyFoundry capacity", 50000, "The mightyfoundry energy capacity").getInt();
+			capacityLavaMightyFoundry = config.get(CAT_MACHINES, "mightyFoundry lava capacity", 20000, "The mightyfoundry lava capacity").getInt();
+			
+			capacitySoundEmiter = config.get(CAT_MACHINES, "soundEmitter capacity", 500000, "The soundemitter energy capacity").getInt();
+			capacityAsgarditeSoundEmitter = config.get(CAT_MACHINES, "soundEmitter liquefied asgardite capacity", 200000, "The soundemitter liquefied asgardite capacity").getInt();
 
 			useOldRegistration = config.get(CAT_UTILS, "Use old registration", false, "In the newer version registered name have changed so if you have an id error set this to true").getBoolean();
 		}

@@ -175,6 +175,7 @@ public class TileLiquefier extends TileMachine implements ITileUsingMaterials, I
 							items[0].stackSize -= ri.getItemStack().stackSize;
 							if(items[0].stackSize<=0){
 								items[0]=null;
+								this.worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
 							}
 						}
 					}

@@ -181,6 +181,7 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials, IT
 									items[idline*2+1+i].stackSize -= ri.getItemStack().stackSize;
 									if(items[idline*2+1+i].stackSize<=0){
 										items[idline*2+1+i]=null;
+										this.worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
 									}
 									size-=1;
 								}
