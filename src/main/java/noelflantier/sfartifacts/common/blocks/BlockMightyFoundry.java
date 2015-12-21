@@ -18,7 +18,7 @@ import noelflantier.sfartifacts.common.handlers.ModGUIs;
 public class BlockMightyFoundry extends ABlockNBT{
 
 	public BlockMightyFoundry(Material material) {
-		super(material, "MIghty Foundry");
+		super(material, "Mighty Foundry");
 		this.setBlockName("blockMightyFoundry");
 		this.setBlockTextureName(References.MODID+":machine");
 		this.setHarvestLevel("pickaxe",1);

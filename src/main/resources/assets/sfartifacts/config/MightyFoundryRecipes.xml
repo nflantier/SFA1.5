@@ -27,4 +27,13 @@ nbtProcess : default (or nothing), adding(instead of writing the tag directly on
 			</itemStackWithNbt>
 		</output>
     </recipe>
+    <recipe name="Fusion Casing" energyCost="1000" fluidCost="0">
+		<input>
+			<itemStack modID="sfartifacts" itemName="itemMold" itemMeta="2" label="mold"/>
+			<itemStack modID="minecraft" itemName="iron_ingot" tickPerItem="200" globalQuantity="128"/>
+		</input>
+		<output>
+			<itemStack modID="sfartifacts" itemName="itemFusionCasing" />
+		</output>
+    </recipe>
 </recipes>

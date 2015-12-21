@@ -30,7 +30,7 @@ import noelflantier.sfartifacts.common.network.messages.PacketSoundEmitter;
 import noelflantier.sfartifacts.common.recipes.MobsPropertiesForSpawning;
 import noelflantier.sfartifacts.common.recipes.handler.SoundEmitterConfig;
 
-public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
+public class TileSoundEmitter extends TileAsgardianMachine implements ITileGlobalNBT{
 	
 	//PROCESSING
 	public boolean isEmitting = false;
@@ -99,36 +99,6 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 					return true;
 				}
 			}
-			/*if(mpForSpawning.get(r)!=null){
-				int nbmax = mpForSpawning.get(r).nbMaxSpawing==-1?this.maxSpawnCount:mpForSpawning.get(r).nbMaxSpawing;
-				int spx = 0;
-				for(int i = nbmax;i>=this.minSpawnCount;i--){
-					if(getFluidTanks().get(0).getFluidAmount()>=mpForSpawning.get(r).fluidneeded.amount * nbmax
-							&& getEnergyStored(ForgeDirection.UNKNOWN)>=mpForSpawning.get(r).rfneeded * nbmax){
-						spx = i;
-						break;
-					}
-				}
-				
-				this.attractedToSpawner = mpForSpawning.get(r).isAttractedToSpawner;
-				this.spawnEntityOnce = mpForSpawning.get(r).isSpawningOnce;
-				this.customX = mpForSpawning.get(r).customX;
-				this.customY = mpForSpawning.get(r).customY;
-				this.customZ = mpForSpawning.get(r).customZ;
-				
-				this.spawnCount = spx;
-				if(spx<=0){
-					return false;
-				}else{
-					FluidStack st = mpForSpawning.get(r).fluidneeded.copy();
-					st.amount = st.amount*spx;
-					extractEnergy(ForgeDirection.UNKNOWN, mpForSpawning.get(r).rfneeded*spx, false);
-					drain(ForgeDirection.UNKNOWN, st, true);
-					this.minSpawnRange = 5;
-					this.spawnRange = 10;
-					return true;
-				}
-			}*/
 			return false;
 		}
 		@Override
@@ -189,7 +159,8 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 	
 	@Override
 	public void processPackets() {
-	    PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this);
+		//if(this.getEnergyStored(ForgeDirection.UNKNOWN)!=this.lastEnergyStoredAmount)
+			PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this);
         PacketHandler.sendToAllAround(new PacketFluid(this.xCoord, this.yCoord, this.zCoord, new int[]{this.tank.getFluidAmount()}, new int[]{this.tank.getCapacity()}, new int[]{ModFluids.fluidLiquefiedAsgardite.getID()}),this);
 		PacketHandler.sendToAllAround(new PacketSoundEmitter(this),this);
 	}
@@ -203,18 +174,6 @@ public class TileSoundEmitter extends TileMachine implements ITileGlobalNBT{
 			}else{
 				spawnerBaseLogic.updateSpawner();
 			}
-			/*if(entitiesNameForSpawning==null){
-				entityNameForSpawning = "";
-				entitiesNameForSpawning = new ArrayList<String>();
-				mpForSpawning = new ArrayList<MobsPropertiesForSpawing>();
-				ArrayList<Integer> t = SoundEmitterHelper.getIdsForFrequency(this.frequencyEmited);
-				for(int i = 0;i<t.size();i++){
-					entitiesNameForSpawning.add(SoundEmitterHelper.spawningRulesIDForRules.get(t.get(i)).nameEntity);
-					mpForSpawning.add(SoundEmitterHelper.spawningRulesIDForRules.get(t.get(i)));
-				}
-			}else{
-				spawnerBaseLogic.updateSpawner();
-			}*/
 		}
 	}
 

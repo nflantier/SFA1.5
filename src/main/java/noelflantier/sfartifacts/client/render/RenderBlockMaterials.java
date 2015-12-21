@@ -82,21 +82,6 @@ public class RenderBlockMaterials  extends TileEntitySpecialRenderer  implements
 					RenderBlocksHelper.renderSimpleFace(x+entry.getValue().x, y+entry.getValue().y, z+entry.getValue().z, "z", ((BlockMaterialsTE)tile.blockType).fullIcon, 0.55F ,0.1F, 0.1F);
 				}
 			}
-	    	/*String str = "0_0_0";
-	    	do{
-	    		if(str.equals("0_0_0")){
-		    		str = (String)PillarStructures.getStructureFromId(idpillar).structure.get(str);
-	    			continue;
-	    		}
-	    		String[] strParts = str.split("_");
-	    		double xT = Integer.parseInt(strParts[0]);
-	    		double yT = Integer.parseInt(strParts[1]);
-	    		double zT = Integer.parseInt(strParts[2]);
-				RenderBlocksHelper.renderSimpleFace(x+xT, y+yT, z+zT, "x", ((BlockMaterialsTE)tile.blockType).fullIcon, 0.55F ,0.1F, 0.1F);
-				RenderBlocksHelper.renderSimpleFace(x+xT, y+yT, z+zT, "y", ((BlockMaterialsTE)tile.blockType).fullIcon, 0.55F ,0.1F, 0.1F);
-				RenderBlocksHelper.renderSimpleFace(x+xT, y+yT, z+zT, "z", ((BlockMaterialsTE)tile.blockType).fullIcon, 0.55F ,0.1F, 0.1F);
-	    		str = (String)PillarStructures.getStructureFromId(idpillar).structure.get(str);
-	    	}while(!str.equals("end"));*/
 	    }
 	}
 }

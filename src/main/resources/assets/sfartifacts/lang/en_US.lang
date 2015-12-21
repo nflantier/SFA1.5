@@ -26,6 +26,11 @@ item.itemMagnet.name=Magnet
 item.itemHulkFlesh.name=Hulk Flesh
 item.itemAsgardianRing.name=Asgardian Ring
 item.itemMightyHulkRing.name=Mighty Hulk Ring
+item.itemFusionCasing.name=Fusion Casing
+item.itemCable.basic.name=Cable (Basic)
+item.itemCable.advanced.name=Cable (Advanced)
+item.itemCable.basicenergized.name=Cable (Basic Energized)
+item.itemCable.advancedenergized.name=Cable (Advanced Energized)
 
 entity.sfartifacts.thorhammerinvoking.name=Falling Hammer
 entity.sfartifacts.thorhammerthrow.name=Mining Hammer
@@ -61,6 +66,11 @@ tile.blockInjector.bronze.name=Injector
 tile.blockInjector.steel.name=Injector
 tile.blockSoundEmiter.name=Sound Emitter
 tile.blockAsgardianGlass.name=Asgardian Glass
+tile.blockMrFusion.name=Mr Fusion
+tile.blockInductor.basic.name=Inductor (Basic)
+tile.blockInductor.advanced.name=Inductor (Advanced)
+tile.blockInductor.basicenergized.name=Inductor (Basic Energized)
+tile.blockInductor.advancedenergized.name=Inductor (Advanced Energized)
 
 fluid.liquefiedAsgardite=Liquefied Asgardite
 

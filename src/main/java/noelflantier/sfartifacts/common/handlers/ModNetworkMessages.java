@@ -7,6 +7,7 @@ import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
 import noelflantier.sfartifacts.common.network.messages.PacketExtendedEntityProperties;
 import noelflantier.sfartifacts.common.network.messages.PacketFluid;
 import noelflantier.sfartifacts.common.network.messages.PacketHammerConfig;
+import noelflantier.sfartifacts.common.network.messages.PacketInductor;
 import noelflantier.sfartifacts.common.network.messages.PacketInjector;
 import noelflantier.sfartifacts.common.network.messages.PacketInvokStarting;
 import noelflantier.sfartifacts.common.network.messages.PacketLightningRodStand;
@@ -43,6 +44,7 @@ public class ModNetworkMessages {
 	    PacketHandler.INSTANCE.registerMessage(PacketParticleGlobal.class, PacketParticleGlobal.class, PacketHandler.nextId(), Side.CLIENT);
 	    PacketHandler.INSTANCE.registerMessage(PacketRenderPillarModel.class, PacketRenderPillarModel.class, PacketHandler.nextId(), Side.CLIENT);
 	    PacketHandler.INSTANCE.registerMessage(PacketExtendedEntityProperties.class, PacketExtendedEntityProperties.class, PacketHandler.nextId(), Side.CLIENT);
+	    PacketHandler.INSTANCE.registerMessage(PacketInductor.class, PacketInductor.class, PacketHandler.nextId(), Side.CLIENT);
 	    
 	    PacketHandler.INSTANCE.registerMessage(PacketSoundEmitterGui.class, PacketSoundEmitterGui.class, PacketHandler.nextId(), Side.SERVER);	    
 	    PacketHandler.INSTANCE.registerMessage(PacketMachine.class, PacketMachine.class, PacketHandler.nextId(), Side.SERVER);

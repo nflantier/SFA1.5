@@ -19,4 +19,17 @@ To use your molds just set the itemMeta of your mold input in the mighty foundy 
 			<moldline shape="000111000"/>
 		</mold>
     </recipe>
+    <recipe name="Fusion Casing">
+		<mold itemMeta="2">
+			<moldline shape="111111111"/>
+			<moldline shape="100010001"/>
+			<moldline shape="100111001"/>
+			<moldline shape="101111101"/>
+			<moldline shape="111101111"/>
+			<moldline shape="101111101"/>
+			<moldline shape="100111001"/>
+			<moldline shape="100010001"/>
+			<moldline shape="111111111"/>
+		</mold>
+    </recipe>
 </recipes>

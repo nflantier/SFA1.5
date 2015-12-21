@@ -44,7 +44,6 @@ public class PacketEnergy  implements IMessage, IMessageHandler<PacketEnergy, IM
 	public IMessage onMessage(PacketEnergy message, MessageContext ctx) {			
 		TileEntity te = Minecraft.getMinecraft().thePlayer.worldObj.getTileEntity(message.x,message.y, message.z);
 		if(te!=null && te instanceof ISFAEnergyHandler) {
-			//((ISFAEnergyHandler)te).getEnergyStorage().setCapacity(message.capacity);
 			((ISFAEnergyHandler)te).getEnergyStorage().setEnergyStored(message.energy);
 			((ISFAEnergyHandler)te).setLastEnergyStored(message.lastenergystored);
 		}

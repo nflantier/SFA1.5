@@ -6,5 +6,5 @@ import net.minecraft.tileentity.TileEntity;
 import noelflantier.sfartifacts.common.helpers.Coord4;
 
 public interface ITileCanBeMaster extends ITileMustHaveMaster{
-    List<TileEntity> getChildsList();
+    List<Coord4> getChildsList();
 }

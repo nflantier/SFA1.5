@@ -78,8 +78,7 @@ public class BlockControlPannel extends BlockSFAContainer{
 	}
 
     @Override
-	public boolean renderAsNormalBlock()
-	{
+	public boolean renderAsNormalBlock(){
 		return false;
 	}
     

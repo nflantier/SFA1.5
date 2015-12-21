@@ -37,6 +37,7 @@ public class ItemMold extends ItemSFA{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int metadata) {
+		metadata = metadata>1?1:metadata;
 		return this.icons[metadata];
 	}
 

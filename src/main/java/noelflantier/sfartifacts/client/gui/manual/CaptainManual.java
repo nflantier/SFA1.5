@@ -106,7 +106,13 @@ public class CaptainManual  extends BaseManual{
 				new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 					defColor = EnumChatFormatting.BLACK;
 					addText("1 = piece of sand | 0 = nothing",0,0);
-					for(Map.Entry<String, ISFARecipe> entry : RecipesRegistry.instance.getRecipesForUsage(MoldRecipesHandler.USAGE_MOLD).entrySet()){
+				}}
+			);
+			int k = 0;
+			for(Map.Entry<String, ISFARecipe> entry : RecipesRegistry.instance.getRecipesForUsage(MoldRecipesHandler.USAGE_MOLD).entrySet()){
+				this.componentList.put("pm"+k, 
+					new GuiComponent(this.guiLeft+10+k*100, this.guiTop+40, 100, 10){{
+						defColor = EnumChatFormatting.BLACK;
 						addText(""+entry.getValue().getUid()+" :",0,0);
 						for(int i =0;i<RecipeMold.class.cast(entry.getValue()).getTabShape().length;i++){
 							String bin = Integer.toBinaryString(RecipeMold.class.cast(entry.getValue()).getTabShape()[i]);
@@ -115,9 +121,10 @@ public class CaptainManual  extends BaseManual{
 								bin = "0"+bin;
 							addText(bin,10,0);
 						}
-					}
-				}}
-			);
+					}}
+				);
+				k+=1;
+			}
 		}else if(cat.equals("shield")){
 
 			this.componentList.put("p1", 

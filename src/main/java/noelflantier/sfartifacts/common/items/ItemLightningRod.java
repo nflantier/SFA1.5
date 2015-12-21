@@ -27,14 +27,11 @@ public class ItemLightningRod extends ItemSFA{
 	}
 	
 	@Override
-    public String getUnlocalizedName(ItemStack itemstack)
-    {
+    public String getUnlocalizedName(ItemStack itemstack){
     	int i = itemstack.getItemDamage();
-    	if (i < 0 || i >= this.typeLightningRod.length)
-        {
+    	if (i < 0 || i >= this.typeLightningRod.length){
         	i = 0;
         }
-
         return super.getUnlocalizedName()+"."+this.typeLightningRod[i];
     }
 

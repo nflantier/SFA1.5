@@ -33,7 +33,7 @@ import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
 import noelflantier.sfartifacts.common.recipes.handler.InjectorRecipesHandler;
 import noelflantier.sfartifacts.common.recipes.handler.LiquefierRecipesHandler;
 
-public class TileLiquefier extends TileMachine implements ITileUsingMaterials, ITileGlobalNBT, IUseSFARecipes{
+public class TileLiquefier extends TileAsgardianMachine implements ITileUsingMaterials, ITileGlobalNBT, IUseSFARecipes{
 	
 	//PROCESSING
 	public boolean isRunning;
@@ -75,7 +75,8 @@ public class TileLiquefier extends TileMachine implements ITileUsingMaterials, I
 
 	@Override
 	public void processPackets() {
-        PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this);
+		//if(this.getEnergyStored(ForgeDirection.UNKNOWN)!=this.lastEnergyStoredAmount)
+			PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this);
         PacketHandler.sendToAllAround(new PacketFluid(this.xCoord, this.yCoord, this.zCoord, new int[]{this.tank.getFluidAmount(), this.tankMelt.getFluidAmount()}, new int[]{this.tank.getCapacity(), this.tankMelt.getCapacity()}, new int[]{ModFluids.fluidLiquefiedAsgardite.getID(), FluidRegistry.WATER.getID()}),this);
         PacketHandler.sendToAllAround(new PacketLiquefier(this),this);
 	}

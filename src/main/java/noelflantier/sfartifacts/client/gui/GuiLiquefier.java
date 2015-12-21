@@ -36,11 +36,6 @@ public class GuiLiquefier extends GuiMachine{
 	}
 
 	@Override
-	public void updateScreen() {
-		super.updateScreen();
-	}
-
-	@Override
 	public void loadComponents(){
 		super.loadComponents();
 		GuiComponent gc = new GuiToolTips(guiLeft+8, guiTop+23, 14, 47, this.width);

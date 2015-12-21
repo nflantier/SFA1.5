@@ -60,6 +60,17 @@ public class ModRecipes {
 		//HULK
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockSoundEmiter,1,0),  "GGG", "BMB", "BEB", 'G', ModBlocks.blockAsgardianGlass,'M',ModItems.itemMagnet,'B',ModBlocks.blockAsgardianSteel, 'E',ModItems.itemEnergyModule));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemAsgardianRing,1,0),  " S ", "S S", " S ", 'S', ModItems.itemAsgardianSteelIngot));
+		
+		//BACKTOTHEFUTURE
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockMrFusion,1,0),  "III", "GCG", "OOO", 'I', Items.iron_ingot,'G',Blocks.glass_pane,'C',ModItems.itemFusionCasing, 'O',Blocks.obsidian));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCable,4,0),  "RRR", "III", "RRR", 'I', Items.iron_ingot,'R',Items.redstone));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCable,4,1),  "RRR", "III", "RRR", 'I', Items.gold_ingot,'R',Items.redstone));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCable,8,2),  "RRR", "III", "RRR", 'I', Items.iron_ingot,'R',ModItems.itemAsgardite));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCable,8,3),  "RRR", "III", "RRR", 'I', Items.gold_ingot,'R',ModItems.itemAsgardite));
+		
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModBlocks.blockInductor,2,0),new ItemStack(ModItems.itemCable,1,0),new ItemStack(ModItems.itemCable,1,0),new ItemStack(ModItems.itemCable,1,0),new ItemStack(ModItems.itemCable,1,0), new ItemStack(ModItems.itemMagnet,1,0)));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModBlocks.blockInductor,2,1),new ItemStack(ModItems.itemCable,1,1),new ItemStack(ModItems.itemCable,1,1),new ItemStack(ModItems.itemCable,1,1),new ItemStack(ModItems.itemCable,1,1), new ItemStack(ModItems.itemMagnet,1,0)));
+		
 	}
 	
 	public static void loadOreDictionnaryRecipe(){

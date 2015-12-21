@@ -92,22 +92,22 @@ public class RecipesRegistry {
 	}
 		
 	public ISFARecipe getBestRecipeWithItemStacks(IUseSFARecipes iuse, List<ItemStack> inputs){
-		return getBestRecipe(iuse, getInputFromItemStacks(inputs));
+		return inputs!=null && inputs.size()>0?getBestRecipe(iuse, getInputFromItemStacks(inputs)):null;
 	}
 	public ISFARecipe getBestRecipe(IUseSFARecipes iuse, List<RecipeInput> inputs){
-		return getBestRecipe(iuse.getUsageName(), inputs, iuse.getEnergy(), iuse.getFluid());
+		return inputs!=null && inputs.size()>0?getBestRecipe(iuse.getUsageName(), inputs, iuse.getEnergy(), iuse.getFluid()):null;
 	}
 	public List<ISFARecipe> getRecipesWithItemStacks(IUseSFARecipes iuse, List<ItemStack> inputs){
-		return getRecipes(iuse, getInputFromItemStacks(inputs));
+		return inputs!=null && inputs.size()>0?getRecipes(iuse, getInputFromItemStacks(inputs)):null;
 	}
 	public List<ISFARecipe> getRecipes(IUseSFARecipes iuse, List<RecipeInput> inputs){
-		return getRecipes(iuse.getUsageName(), inputs, iuse.getEnergy(), iuse.getFluid());
+		return inputs!=null && inputs.size()>0?getRecipes(iuse.getUsageName(), inputs, iuse.getEnergy(), iuse.getFluid()):null;
 	}
 	public List<ISFARecipe> getOrderedRecipes(IUseSFARecipes iuse, List<RecipeInput> inputs){
-		return getOrderedRecipes(iuse.getUsageName(), inputs, iuse.getEnergy(), iuse.getFluid());
+		return inputs!=null && inputs.size()>0?getOrderedRecipes(iuse.getUsageName(), inputs, iuse.getEnergy(), iuse.getFluid()):null;
 	}
 	public List<ISFARecipe> getOrderedRecipesWithItemStacks(IUseSFARecipes iuse, List<ItemStack> inputs) {
-		return getOrderedRecipes(iuse, getInputFromItemStacks(inputs));
+		return inputs!=null && inputs.size()>0?getOrderedRecipes(iuse, getInputFromItemStacks(inputs)):null;
 	}
 	public List<ISFARecipe> getRecipesWithItemStacksAndFluidStacks(IUseSFARecipes iuse, List<ItemStack> inputs, List<FluidStack> fluids) {
 		List<RecipeInput> in = getInputFromItemStacks(inputs);
@@ -120,6 +120,9 @@ public class RecipesRegistry {
 	}
 	
 	public List<ISFARecipe> getOrderedRecipes(String usageName, List<RecipeInput> inputs, int energy, int fluid){
+		if(inputs==null || inputs.isEmpty())
+			return null;
+		
 		List<ISFARecipe> r = getRecipes(usageName, inputs, energy, fluid);
 		if(r!=null && !r.isEmpty()){
 			Comparator<ISFARecipe> comparator = (i1,i2)-> i1.getInputs().size()-i2.getInputs().size();
@@ -149,6 +152,8 @@ public class RecipesRegistry {
 	}
 	
 	public ISFARecipe getBestRecipe(String usageName, List<RecipeInput> inputs, int energy, int fluid){
+		if(inputs==null || inputs.isEmpty())
+			return null;
 		ISFARecipe daRecipe =null;
 		List<ISFARecipe> list = getRecipes(usageName, inputs, energy, fluid);
 		if(list==null || list.size()<=0)

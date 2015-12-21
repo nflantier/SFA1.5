@@ -27,7 +27,7 @@ import noelflantier.sfartifacts.common.recipes.RecipeMightyFoundry;
 import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
 import noelflantier.sfartifacts.common.recipes.handler.MightyFoundryRecipesHandler;
 
-public class TileMightyFoundry extends TileMachine implements ITileGlobalNBT, IUseSFARecipes{
+public class TileMightyFoundry extends TileAsgardianMachine implements ITileGlobalNBT, IUseSFARecipes{
 
 	//PROCESSING
 	public boolean isLocked = false;
@@ -71,7 +71,8 @@ public class TileMightyFoundry extends TileMachine implements ITileGlobalNBT, IU
 	
 	@Override
 	public void processPackets() {
-		PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this);
+		//if(this.getEnergyStored(ForgeDirection.UNKNOWN)!=this.lastEnergyStoredAmount)
+			PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this);
 		PacketHandler.sendToAllAround(new PacketFluid(this.xCoord, this.yCoord, this.zCoord, new int[]{this.tank.getFluidAmount()}, new int[]{this.tank.getCapacity()}, new int[]{FluidRegistry.LAVA.getID()}),this);
 		PacketHandler.sendToAllAround(new PacketMightyFoundry(this),this);  
 	}

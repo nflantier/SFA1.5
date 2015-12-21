@@ -14,7 +14,7 @@ import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
 import noelflantier.sfartifacts.common.network.messages.PacketLightningRodStand;
 
-public class TileLightningRodStand extends TileMachine implements ITileUsingMaterials{
+public class TileLightningRodStand extends TileAsgardianMachine implements ITileUsingMaterials{
 
 	public static String[] typeLightningRod = new String[] {"basic", "advanced", "optimal", "ultimate"};
 	public static float[] efficiencyLightningRod = new float[]{1.5F,6.6F,11.2F,17.9F};
@@ -71,20 +71,17 @@ public class TileLightningRodStand extends TileMachine implements ITileUsingMate
 	}
 	
 	@Override
-	public void processPackets() {	
-		PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this); 
+	public void processPackets() {
+		//if(this.getEnergyStored(ForgeDirection.UNKNOWN)!=this.lastEnergyStoredAmount)
+			PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this); 
 		PacketHandler.sendToAllAround(new PacketLightningRodStand(this), this);
 	}
 
 	@Override
 	public void processMachine() {        
         if(this.items[0] != null && this.items[0].getItem() instanceof ItemLightningRod){
-        	//this.currentEnergyTick--;
-        	//if(this.currentEnergyTick<=0){
-        		this.lightningRodEnergy = (int) (efficiencyLightningRod[this.items[0].getItemDamage()] * naturalEnergy);
-        		//this.currentEnergyTick = this.energyTick;
-        		this.receiveEnergy(ForgeDirection.UNKNOWN,this.lightningRodEnergy/this.energyTick, false);
-        	//}
+        	this.lightningRodEnergy = (int) (efficiencyLightningRod[this.items[0].getItemDamage()] * naturalEnergy);
+        	this.receiveEnergy(ForgeDirection.UNKNOWN,this.lightningRodEnergy/this.energyTick, false);
         	
         	this.currentLightningTick--;
         	if(this.currentLightningTick<=0){

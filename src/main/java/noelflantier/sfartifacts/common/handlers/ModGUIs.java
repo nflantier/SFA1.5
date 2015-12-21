@@ -12,6 +12,7 @@ import noelflantier.sfartifacts.client.gui.GuiLightningRodStand;
 import noelflantier.sfartifacts.client.gui.GuiLiquefier;
 import noelflantier.sfartifacts.client.gui.GuiMightyFoundry;
 import noelflantier.sfartifacts.client.gui.GuiMoldMaking;
+import noelflantier.sfartifacts.client.gui.GuiMrFusion;
 import noelflantier.sfartifacts.client.gui.GuiSoundEmitter;
 import noelflantier.sfartifacts.client.gui.GuiTeleport;
 import noelflantier.sfartifacts.client.gui.manual.CaptainManual;
@@ -24,6 +25,7 @@ import noelflantier.sfartifacts.common.blocks.tiles.TileInjector;
 import noelflantier.sfartifacts.common.blocks.tiles.TileLightningRodStand;
 import noelflantier.sfartifacts.common.blocks.tiles.TileLiquefier;
 import noelflantier.sfartifacts.common.blocks.tiles.TileMightyFoundry;
+import noelflantier.sfartifacts.common.blocks.tiles.TileMrFusion;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSoundEmitter;
 import noelflantier.sfartifacts.common.container.ContainerControlPanel;
 import noelflantier.sfartifacts.common.container.ContainerHammerStandInvoked;
@@ -33,6 +35,7 @@ import noelflantier.sfartifacts.common.container.ContainerLightningRodStand;
 import noelflantier.sfartifacts.common.container.ContainerLiquefier;
 import noelflantier.sfartifacts.common.container.ContainerMightyFoundry;
 import noelflantier.sfartifacts.common.container.ContainerMoldMaking;
+import noelflantier.sfartifacts.common.container.ContainerMrFusion;
 import noelflantier.sfartifacts.common.container.ContainerSoundEmitter;
 import noelflantier.sfartifacts.common.items.baseclasses.ItemInventoryMold;
 
@@ -50,6 +53,7 @@ public class ModGUIs implements IGuiHandler{
 	public static final int guiIDMightyFoundry = 10;
 	public static final int guiIDMold= 11;
 	public static final int guiIDSoundEmiter= 12;
+	public static final int guiIDMrFusion= 13;
 	
 
 	public static final int guiIDThorManual= 60;
@@ -99,6 +103,11 @@ public class ModGUIs implements IGuiHandler{
 				case ModGUIs.guiIDSoundEmiter :
 					if(tile instanceof TileSoundEmitter){
 						return new ContainerSoundEmitter(player.inventory, (TileSoundEmitter)tile);
+					}
+					return null;
+				case ModGUIs.guiIDMrFusion :
+					if(tile instanceof TileMrFusion){
+						return new ContainerMrFusion(player.inventory, (TileMrFusion)tile);
 					}
 					return null;
 			}
@@ -151,6 +160,11 @@ public class ModGUIs implements IGuiHandler{
 				case ModGUIs.guiIDSoundEmiter :
 					if(tile instanceof TileSoundEmitter){
 						return new GuiSoundEmitter(player.inventory, (TileSoundEmitter)tile);
+					}
+					return null;
+				case ModGUIs.guiIDMrFusion :
+					if(tile instanceof TileMrFusion){
+						return new GuiMrFusion(player.inventory, (TileMrFusion)tile);
 					}
 					return null;
 			}

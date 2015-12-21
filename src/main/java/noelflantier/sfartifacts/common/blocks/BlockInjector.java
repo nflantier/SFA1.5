@@ -59,17 +59,17 @@ public class BlockInjector extends ABlockNBT implements IBlockUsingMaterials{
 
 	@Override
 	public boolean isBlockSolid(IBlockAccess p_149747_1_, int p_149747_2_, int p_149747_3_, int p_149747_4_, int p_149747_5_) {
-	  return true;
+		return true;
 	}
 
 	@Override
 	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-	  return true;
+		return true;
 	}
 
 	@Override
 	public boolean canPlaceTorchOnTop(World arg0, int arg1, int arg2, int arg3) {
-	  return true;
+		return true;
 	}
 
 	@Override

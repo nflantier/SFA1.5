@@ -18,6 +18,7 @@ import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.common.blocks.tiles.ITileCanBeMaster;
 import noelflantier.sfartifacts.common.blocks.tiles.ITileCanHavePillar;
 import noelflantier.sfartifacts.common.blocks.tiles.ITileMustHaveMaster;
+import noelflantier.sfartifacts.common.blocks.tiles.TileInductor;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSFA;
 import noelflantier.sfartifacts.common.helpers.Coord4;
 import noelflantier.sfartifacts.common.helpers.HammerHelper;
@@ -46,25 +47,43 @@ public class ItemBasicHammer extends ItemSFA implements IItemHasModes{
 
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float p_77648_8_, float p_77648_9_, float p_77648_10_){
+		if(world.isRemote)
+			return false;
 
 		TileEntity t = world.getTileEntity(x, y, z);
 		int mode = ItemNBTHelper.getInteger(stack, "Mode", 0);
-				
-		if(world.isRemote)
-			return false;
-		
 		if(mode!=0)
 			return false;
 		if(t!=null && t instanceof ITileMustHaveMaster){
-			ITileMustHaveMaster tcbm = (ITileMustHaveMaster)t;
-			if(tcbm.hasMaster()){
-				ItemNBTHelper.setInteger(stack, "mx", tcbm.getMasterX());
-				ItemNBTHelper.setInteger(stack, "my", tcbm.getMasterY());
-				ItemNBTHelper.setInteger(stack, "mz", tcbm.getMasterZ());
-
-				ItemNBTHelper.setBoolean(stack, "hasmaster", true);
-				player.addChatComponentMessage(new ChatComponentText("Master at "+ItemNBTHelper.getInteger(stack, "mx", -1)+" "+
-												ItemNBTHelper.getInteger(stack, "my", -1)+" "+ItemNBTHelper.getInteger(stack, "mz", -1)));
+			if(t instanceof TileInductor){
+				if(ItemNBTHelper.getBoolean(stack, "hasmaster", false) 
+				&& !(t.xCoord==ItemNBTHelper.getInteger(stack, "mx", -1) && t.yCoord==ItemNBTHelper.getInteger(stack, "my", -1)
+				&& t.zCoord==ItemNBTHelper.getInteger(stack, "mz", -1))){
+					ItemNBTHelper.setInteger(stack, "cx", t.xCoord);
+					ItemNBTHelper.setInteger(stack, "cy", t.yCoord);
+					ItemNBTHelper.setInteger(stack, "cz", t.zCoord);
+	
+					ItemNBTHelper.setBoolean(stack, "haschild", true);
+				}else{
+					ItemNBTHelper.setInteger(stack, "mx", t.xCoord);
+					ItemNBTHelper.setInteger(stack, "my", t.yCoord);
+					ItemNBTHelper.setInteger(stack, "mz", t.zCoord);
+	
+					ItemNBTHelper.setBoolean(stack, "hasmaster", true);
+					player.addChatComponentMessage(new ChatComponentText("Inductor at "+ItemNBTHelper.getInteger(stack, "mx", -1)+" "+
+													ItemNBTHelper.getInteger(stack, "my", -1)+" "+ItemNBTHelper.getInteger(stack, "mz", -1)));
+				}
+			}else{
+				ITileMustHaveMaster tcbm = (ITileMustHaveMaster)t;
+				if(tcbm.hasMaster()){
+					ItemNBTHelper.setInteger(stack, "mx", tcbm.getMasterX());
+					ItemNBTHelper.setInteger(stack, "my", tcbm.getMasterY());
+					ItemNBTHelper.setInteger(stack, "mz", tcbm.getMasterZ());
+	
+					ItemNBTHelper.setBoolean(stack, "hasmaster", true);
+					player.addChatComponentMessage(new ChatComponentText("Master at "+ItemNBTHelper.getInteger(stack, "mx", -1)+" "+
+													ItemNBTHelper.getInteger(stack, "my", -1)+" "+ItemNBTHelper.getInteger(stack, "mz", -1)));
+				}
 			}
 		}else if(t!=null && ( t instanceof ITileCanHavePillar || t instanceof IEnergyConnection )){
 			ItemNBTHelper.setInteger(stack, "cx", t.xCoord);
@@ -74,6 +93,9 @@ public class ItemBasicHammer extends ItemSFA implements IItemHasModes{
 			ItemNBTHelper.setBoolean(stack, "haschild", true);
 			player.addChatComponentMessage(new ChatComponentText("Machine at "+ItemNBTHelper.getInteger(stack, "cx", -1)+" "+
 											ItemNBTHelper.getInteger(stack, "cy", -1)+" "+ItemNBTHelper.getInteger(stack, "cz", -1)));
+		}else{
+			ItemNBTHelper.setBoolean(stack, "haschild", false);
+			ItemNBTHelper.setBoolean(stack, "hasmaster", false);
 		}
 		
 		if(ItemNBTHelper.getBoolean(stack, "haschild", false) && ItemNBTHelper.getBoolean(stack, "hasmaster", false)){
@@ -83,12 +105,25 @@ public class ItemBasicHammer extends ItemSFA implements IItemHasModes{
 			TileEntity tc = world.getTileEntity(ItemNBTHelper.getInteger(stack, "cx", -1), 
 					ItemNBTHelper.getInteger(stack, "cy", -1), ItemNBTHelper.getInteger(stack, "cz", -1));
 			ITileCanBeMaster tcbm = (ITileCanBeMaster)tm;
-			if(tm!=null && tcbm!=null && tcbm.getChildsList()!=null){
-				if(tcbm.getChildsList().contains(tc)){
-					tcbm.getChildsList().remove(tc);
+			if(tm instanceof TileInductor && tc instanceof TileInductor){
+				ITileCanBeMaster tcbm2 = (ITileCanBeMaster)tc;
+				if(tcbm.getChildsList().stream().anyMatch((c)->tc.xCoord==c.x && tc.yCoord==c.y && tc.zCoord==c.z)
+						|| tcbm2.getChildsList().stream().anyMatch((c)->tm.xCoord==c.x && tm.yCoord==c.y && tm.zCoord==c.z)){
+					tcbm.getChildsList().removeIf((c)->tc.xCoord==c.x && tc.yCoord==c.y && tc.zCoord==c.z);
+					tcbm2.getChildsList().removeIf((c)->tm.xCoord==c.x && tm.yCoord==c.y && tm.zCoord==c.z);
+				}else{
+					tcbm.getChildsList().add(new Coord4(tc.xCoord,tc.yCoord,tc.zCoord));
+					tcbm2.getChildsList().add(new Coord4(tm.xCoord,tm.yCoord,tm.zCoord));
+					player.addChatComponentMessage(new ChatComponentText("Inductor connected!"));
+				}
+				ItemNBTHelper.setBoolean(stack, "haschild", false);
+				ItemNBTHelper.setBoolean(stack, "hasmaster", false);
+			}else if(tm!=null && tcbm!=null && tcbm.getChildsList()!=null){
+				if(tcbm.getChildsList().stream().anyMatch((c)->tc.xCoord==c.x && tc.yCoord==c.y && tc.zCoord==c.z)){
+					tcbm.getChildsList().removeIf((c)->tc.xCoord==c.x && tc.yCoord==c.y && tc.zCoord==c.z);
 					player.addChatComponentMessage(new ChatComponentText("Machine allready connected to that pillar. It has been removed."));
 				}else{
-					tcbm.getChildsList().add(tc);
+					tcbm.getChildsList().add(new Coord4(tc.xCoord,tc.yCoord,tc.zCoord));
 					if(tc instanceof TileSFA){
 						Coord4 m = new Coord4(ItemNBTHelper.getInteger(stack, "mx", -1),ItemNBTHelper.getInteger(stack, "my", -1),ItemNBTHelper.getInteger(stack, "mz", -1));
 						((TileSFA)tc).setVariables(new Object[]{m});
@@ -99,7 +134,7 @@ public class ItemBasicHammer extends ItemSFA implements IItemHasModes{
 			}else if(tm==null){
 				ItemNBTHelper.setBoolean(stack, "hasmaster", false);
 			}
-			//ItemNBTHelper.setBoolean(stack, "hasmaster", false);
+			
 			if(ItemNBTHelper.getBoolean(stack, "haschild", false) && ItemNBTHelper.getBoolean(stack, "hasmaster", false)){
 				ItemNBTHelper.setBoolean(stack, "haschild", false);
 			}
@@ -154,5 +189,7 @@ public class ItemBasicHammer extends ItemSFA implements IItemHasModes{
 		int m = ItemNBTHelper.getInteger(stack, "Mode", 0);
 		list.add("Mode : "+getModes().get(m).name);
 		list.add(getModes().get(m).description);
+		list.add("Right click any vanilla block to reset your hammer");
+		list.add("Shift right click in the air to change modes");
 	}
 }

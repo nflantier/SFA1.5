@@ -21,6 +21,8 @@ public class ModConfig {
 	public static int capacityLavaMightyFoundry;
 	public static int capacitySoundEmiter;
 	public static int capacityAsgarditeSoundEmitter;
+	public static int capacityMrFusion;
+	public static int capacityLiquidMrFusion;
 	
 	public static int rfNeededThorHammer;
 	public static int rfMining;
@@ -119,19 +121,22 @@ public class ModConfig {
 			
 			isAMachinesWorksOnlyWithPillar = config.get(CAT_MACHINES, "machines accept Rf only from pillars", false, "True or false if the machines should accept RF energy only from pillars").getBoolean();
 			
-			capacityLiquefier = config.get(CAT_MACHINES, "liquefier capacity", 20000, "The liquefier energy capacity").getInt();
+			capacityLiquefier = config.get(CAT_MACHINES, "liquefier rf capacity", 20000, "The liquefier energy capacity").getInt();
 			capacityWaterLiquefier = config.get(CAT_MACHINES, "liquefier water capacity", 20000, "The liquefier water capacity").getInt();
 			capacityAsgarditeLiquefier = config.get(CAT_MACHINES, "liquefier liquefied asgardite capacity", 20000, "The liquefier liquefied asgardite capacity").getInt();
 			
-			capacityInjector = config.get(CAT_MACHINES, "injector capacity", 20000, "The injector energy capacity").getInt();
+			capacityInjector = config.get(CAT_MACHINES, "injector rf capacity", 20000, "The injector energy capacity").getInt();
 			capacityAsgarditeInjector = config.get(CAT_MACHINES, "injector liquefied asgardite capacity", 20000, "The injector liquefied asgardite capacity").getInt();
 			
-			capacityMightyFoundry = config.get(CAT_MACHINES, "mightyFoundry capacity", 50000, "The mightyfoundry energy capacity").getInt();
+			capacityMightyFoundry = config.get(CAT_MACHINES, "mighty foundry rf capacity", 50000, "The mightyfoundry energy capacity").getInt();
 			capacityLavaMightyFoundry = config.get(CAT_MACHINES, "mightyFoundry lava capacity", 20000, "The mightyfoundry lava capacity").getInt();
 			
-			capacitySoundEmiter = config.get(CAT_MACHINES, "soundEmitter capacity", 500000, "The soundemitter energy capacity").getInt();
+			capacitySoundEmiter = config.get(CAT_MACHINES, "soundEmitter rf capacity", 500000, "The soundemitter energy capacity").getInt();
 			capacityAsgarditeSoundEmitter = config.get(CAT_MACHINES, "soundEmitter liquefied asgardite capacity", 200000, "The soundemitter liquefied asgardite capacity").getInt();
 
+			capacityMrFusion = config.get(CAT_MACHINES, "mr fusion rf capacity", 1210000000, "Mr fudion energy capacity").getInt();
+			capacityLiquidMrFusion = config.get(CAT_MACHINES, "mr fusion liquid capacity", 1000000, "Mr fudion liquid capacity").getInt();
+			
 			useOldRegistration = config.get(CAT_UTILS, "Use old registration", false, "In the newer version registered name have changed so if you have an id error set this to true").getBoolean();
 		}
 		catch (Exception e) {

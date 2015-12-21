@@ -4,14 +4,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import noelflantier.sfartifacts.common.blocks.tiles.TileMachine;
+import noelflantier.sfartifacts.common.blocks.tiles.TileAsgardianMachine;
+import noelflantier.sfartifacts.common.blocks.tiles.TileSoundEmitter;
 import noelflantier.sfartifacts.common.container.slot.FluidsSlots;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
 
 public class ContainerSoundEmitter extends ContainerMachine{
 
 	private int slotId = -1;
-	public ContainerSoundEmitter(InventoryPlayer inventory, TileMachine tile) {
+	public ContainerSoundEmitter(InventoryPlayer inventory, TileSoundEmitter tile) {
 		super(inventory, tile);
 
 		for(int x = 0 ; x < 9 ; x++){

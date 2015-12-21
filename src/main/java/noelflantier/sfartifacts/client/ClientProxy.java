@@ -15,11 +15,13 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import noelflantier.sfartifacts.client.render.ModelHulk;
 import noelflantier.sfartifacts.client.render.RenderBlockControlPanel;
 import noelflantier.sfartifacts.client.render.RenderBlockHammerStand;
+import noelflantier.sfartifacts.client.render.RenderBlockInductor;
 import noelflantier.sfartifacts.client.render.RenderBlockInjector;
 import noelflantier.sfartifacts.client.render.RenderBlockLightningRodStand;
 import noelflantier.sfartifacts.client.render.RenderBlockLiquefier;
 import noelflantier.sfartifacts.client.render.RenderBlockMaterials;
 import noelflantier.sfartifacts.client.render.RenderBlockMightyFoundry;
+import noelflantier.sfartifacts.client.render.RenderBlockMrFusion;
 import noelflantier.sfartifacts.client.render.RenderBlockSoundEmitter;
 import noelflantier.sfartifacts.client.render.RenderEntityHammerInvoking;
 import noelflantier.sfartifacts.client.render.RenderEntityHammerMining;
@@ -40,10 +42,12 @@ import noelflantier.sfartifacts.common.blocks.BlockMaterialsTE;
 import noelflantier.sfartifacts.common.blocks.BlockSoundEmitter;
 import noelflantier.sfartifacts.common.blocks.tiles.TileControlPannel;
 import noelflantier.sfartifacts.common.blocks.tiles.TileHammerStand;
+import noelflantier.sfartifacts.common.blocks.tiles.TileInductor;
 import noelflantier.sfartifacts.common.blocks.tiles.TileInjector;
 import noelflantier.sfartifacts.common.blocks.tiles.TileLightningRodStand;
 import noelflantier.sfartifacts.common.blocks.tiles.TileLiquefier;
 import noelflantier.sfartifacts.common.blocks.tiles.TileMightyFoundry;
+import noelflantier.sfartifacts.common.blocks.tiles.TileMrFusion;
 import noelflantier.sfartifacts.common.blocks.tiles.TileRenderPillarModel;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSoundEmitter;
 import noelflantier.sfartifacts.common.entities.EntityHammerInvoking;
@@ -108,6 +112,14 @@ public class ClientProxy extends CommonProxy{
 		RenderBlockHammerStand rbhs = new RenderBlockHammerStand();
 		ClientRegistry.bindTileEntitySpecialRenderer(TileHammerStand.class, rbhs);
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockHammerStand), rbhs);
+		
+		RenderBlockMrFusion rbmrf = new RenderBlockMrFusion();
+		ClientRegistry.bindTileEntitySpecialRenderer(TileMrFusion.class, rbmrf);
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockMrFusion), rbmrf);
+		
+		RenderBlockInductor rbin = new RenderBlockInductor();
+		ClientRegistry.bindTileEntitySpecialRenderer(TileInductor.class, rbin);
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockInductor), rbin);
 
 		BlockSoundEmitter.renderId = RenderingRegistry.getNextAvailableRenderId();
 		RenderBlockSoundEmitter rbse = new RenderBlockSoundEmitter();

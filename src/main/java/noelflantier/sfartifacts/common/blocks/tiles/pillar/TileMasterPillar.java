@@ -17,8 +17,10 @@ import noelflantier.sfartifacts.common.blocks.tiles.ITileCanBeMaster;
 import noelflantier.sfartifacts.common.blocks.tiles.ITileCanHavePillar;
 import noelflantier.sfartifacts.common.blocks.tiles.ITileCanTakeRFonlyFromPillars;
 import noelflantier.sfartifacts.common.blocks.tiles.ITileWirelessEnergy;
+import noelflantier.sfartifacts.common.blocks.tiles.TileInductor;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
+import noelflantier.sfartifacts.common.helpers.Coord4;
 import noelflantier.sfartifacts.common.helpers.PillarMaterials;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
@@ -37,7 +39,6 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
 	//ENERGY
 	public boolean isTransferCaped = false;
     public int energyCapacity = 0;
-    //public int rf;
     public EnergyStorage storage = new EnergyStorage(0,0,0);
     public int ratioTransfer = 100;
 	public int lastEnergyStoredAmount = -1;
@@ -48,8 +49,7 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
 
 	//ENERGY CHILD
     public int[] energyChildInit;
-    public List<TileEntity> energyChild = new ArrayList<>();
-    public int currentIndexChild = -1;
+    public List<Coord4> energyChild = new ArrayList<>();
     
     //ENERGY STRUCTURE
 	public int naturalEnergy = 12;
@@ -77,68 +77,45 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
         if(!this.hasMaster())
         	return;
     	if(!this.energyChild.isEmpty()){
-    		List<TileEntity> ttoremove  = new ArrayList<>();
-    		for(TileEntity t : this.energyChild){
-        		//if(this.currentIndexChild==-1)
-        			//this.currentIndexChild = this.energyChild.indexOf(t);
-    			if(t != null && t instanceof IEnergyConnection){
-        			TileEntity majt = this.worldObj.getTileEntity(t.xCoord, t.yCoord, t.zCoord);
-        			if(majt != null && majt instanceof IEnergyConnection && t==majt){
-        				//if(this.energyChild.indexOf(t)!=this.currentIndexChild)
-        					//continue;
-	    				for(ForgeDirection fd : ForgeDirection.VALID_DIRECTIONS){
-		                	int maxExtract = this.getEnergyStored(ForgeDirection.UNKNOWN);
-		                	if(this.isTransferCaped)
-		                		maxExtract  = (int) ((float)maxExtract>=(float)this.energyCapacity/(float)100?(float)this.energyCapacity/(float)100:maxExtract);
-		                	int maxAvailable = this.extractEnergy(ForgeDirection.UNKNOWN, maxExtract, true);
-		                	int energyTransferred = 0;
-		    				if(majt instanceof IEnergyReceiver){
-		    					if(ModConfig.isAMachinesWorksOnlyWithPillar && majt instanceof ITileCanTakeRFonlyFromPillars){
-		    						ITileCanTakeRFonlyFromPillars iop = (ITileCanTakeRFonlyFromPillars)majt;
-			        				energyTransferred = iop.receiveOnlyFromPillars( maxAvailable, true);
-		    						if(energyTransferred!=0){
-			        					energyTransferred = iop.receiveOnlyFromPillars(maxAvailable, false);
-			            				this.extractEnergyWireless(energyTransferred, false, majt.xCoord, majt.yCoord, majt.zCoord);
-			            				if(energyTransferred>0)
-				            				break;
-			        				}
-		    					}else{
-			        				energyTransferred = ((IEnergyReceiver) majt).receiveEnergy(fd.getOpposite(), maxAvailable, true);
-		    						if(energyTransferred!=0){
-			        					energyTransferred = ((IEnergyReceiver) majt).receiveEnergy(fd.getOpposite(), maxAvailable, false);
-			            				this.extractEnergyWireless(energyTransferred, false, majt.xCoord, majt.yCoord, majt.zCoord);
-			            				if(energyTransferred>0)
-				            				break;
-			        				}
-		    					}
+    		this.energyChild.removeIf((d)->worldObj.getTileEntity(d.x, d.y, d.z)==null || worldObj.getTileEntity(d.x, d.y, d.z) instanceof IEnergyReceiver == false);
+        	if(!this.energyChild.isEmpty()){
+        		for(Coord4 c : this.energyChild){
+        			TileEntity te = worldObj.getTileEntity(c.x, c.y, c.z);
+        			if(te instanceof IEnergyReceiver && ((IEnergyReceiver)te).getEnergyStored(ForgeDirection.UNKNOWN)<((IEnergyReceiver)te).getMaxEnergyStored(ForgeDirection.UNKNOWN)){
+        				for(ForgeDirection fd : ForgeDirection.VALID_DIRECTIONS){
+	        				int maxAc = this.extractEnergy(ForgeDirection.UNKNOWN, this.getEnergyStored(ForgeDirection.UNKNOWN)/this.energyChild.size(), true);
+	        				int energyTc = 0;
+	        				if(ModConfig.isAMachinesWorksOnlyWithPillar && te instanceof ITileCanTakeRFonlyFromPillars){
+	    						ITileCanTakeRFonlyFromPillars iop = (ITileCanTakeRFonlyFromPillars)te;
+	    						energyTc = iop.receiveOnlyFromPillars( maxAc, true);
+	    						if(energyTc!=0){
+	    							energyTc = iop.receiveOnlyFromPillars(maxAc, false);
+		            				this.extractEnergyWireless(energyTc, false, te.xCoord, te.yCoord, te.zCoord);
+		        				}
+	    					}else{
+		        				energyTc = ((IEnergyReceiver) te).receiveEnergy(fd.getOpposite(), maxAc, true);
+			                	if(energyTc!=0){
+			                		energyTc = ((IEnergyReceiver) te).receiveEnergy(fd.getOpposite(), maxAc, false);
+		            				this.extractEnergyWireless(energyTc, false, te.xCoord, te.yCoord, te.zCoord);
+		        				}
 	    					}
+	        				if(energyTc>0)
+	            				break;
 	    				}
-    				}else{
-    					ttoremove.add(t);
-    				}
-        			//break;
-    			}
-    		}
-    		this.energyChild.removeAll(ttoremove);
-    		if(this.currentIndexChild!=-1)
-    			this.currentIndexChild = this.currentIndexChild>=this.energyChild.size()-1?0:this.currentIndexChild+1;
-    		/*for(TileEntity t : ttoremove){
-    			this.energyChild.remove(t);
-    		}*/
-    	}else
-    		this.currentIndexChild=-1;
+        			}
+        		}
+        	}
+    	}
     	
     	float rP =  (this.structureId>0)?PillarsConfig.getInstance().getPillarFromName(namePillar).naturalRatio : 1;
     	float ratioHeight = (this.yCoord<this.maxHeightEfficiency)?(float)this.yCoord/(float)this.maxHeightEfficiency:1;
-    	ratioHeight += 0.1;
     	float ratioRaining = (this.worldObj.isRaining())?this.rainEfficiency:0;
-    	this.passiveEnergy = (int) (this.naturalEnergy*rP+this.naturalEnergy*ratioHeight+this.naturalEnergy*ratioRaining)+1;
+    	this.passiveEnergy = (int) (this.naturalEnergy*rP+this.naturalEnergy*(ratioHeight+0.1)+this.naturalEnergy*ratioRaining)+1;
     	
     	if(this.getEnergyStored(ForgeDirection.UNKNOWN)<this.energyCapacity){
     		this.fluidEnergy = 0;
         	FluidStack ds = this.tank.drain(this.amountToExtract, false);
         	if(ds!=null && ds.amount>=this.amountToExtract && this.amountToExtract!=0){
-        		//double r =  ds.amount*this.naturalEnergy/1.8F*0.1;
         		double r =  ds.amount*2*this.naturalEnergy/2.5F;
         		r = r<ds.amount?ds.amount:r;
         		this.fluidEnergy = (int)(rP*this.naturalEnergy+r);
@@ -158,19 +135,6 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
 	@Override
 	public void init(){
 		super.init();
-		//this.storage.setCapacity(this.capacity);
-		//this.tank.setCapacity(this.tankCapacity);
-		//this.storage.setMaxTransfer(this.capacity/this.ratioTransfer);
-		//this.storage.setEnergyStored(this.rf);
-        int k = 0;
-        if(this.energyChildInit != null && this.energyChildInit.length>0){
-	        for(int i = 0 ; i < this.energyChildInit.length/3 ; i++){
-	        	TileEntity t = this.worldObj.getTileEntity(this.energyChildInit[k],this.energyChildInit[k+1], this.energyChildInit[k+2]);
-	        	k = k+3;
-	        	if(t!=null && t instanceof IEnergyConnection)
-	        		this.energyChild.add(t);
-	        }
-        }
 	}
 	
 	public boolean isMaster(){
@@ -186,7 +150,6 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-        //nbt.setInteger("structureId", this.structureId);
         nbt.setString("namePillar", this.namePillar);
         nbt.setInteger("materialId", this.materialId);
         nbt.setInteger("amountToExtract", this.amountToExtract);
@@ -197,12 +160,12 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
        	if(this.energyChild.size()>0){
 	        int[] tabch = new int[this.energyChild.size()*3];
 	        int k = 0;
-	        for(TileEntity ch : this.energyChild){
-	        	tabch[k] = ch.xCoord;
+	        for(Coord4 ch : this.energyChild){
+	        	tabch[k] = ch.x;
 	        	k+=1;
-	        	tabch[k] = ch.yCoord;
+	        	tabch[k] = ch.y;
 	        	k+=1;
-	        	tabch[k] = ch.zCoord;
+	        	tabch[k] = ch.z;
 	        	k+=1;
 	        }
 	    	nbt.setIntArray("tabch", tabch);
@@ -212,7 +175,6 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-        //this.structureId = nbt.getInteger("structureId");
         this.namePillar = nbt.getString("namePillar");
         this.materialId = nbt.getInteger("materialId");
 		this.energyCapacity = PillarsConfig.getInstance().getPillarFromName(namePillar).energyCapacity;
@@ -222,7 +184,6 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
 		this.storage.readFromNBT(nbt);
 		this.storage.setMaxTransfer(this.energyCapacity/this.ratioTransfer);
 		this.lastEnergyStoredAmount = nbt.getInteger("lastEnergyStoredAmount");
-		//this.storage.setEnergyStored(this.rf);
 		this.tank.setCapacity(this.tankCapacity);
 		this.tank.readFromNBT(nbt);
 		
@@ -233,12 +194,18 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
         this.amountToExtract = nbt.getInteger("amountToExtract");
 
         int[] tabch = nbt.getIntArray("tabch");
-        this.energyChildInit = tabch.clone();
+        if(tabch != null && tabch.length>0){
+	        int k = 0;
+	        for(int i = 0 ; i < tabch.length/3 ; i++){
+	        	this.energyChild.add(new Coord4(tabch[k],tabch[k+1],tabch[k+2]));
+	        	k = k+3;
+	        }
+	    }
     }
 
 	@Override
-	public List<TileEntity> getChildsList() {
-		return this.energyChild;
+	public List<Coord4> getChildsList() {
+		return energyChild;
 	}
 	
 	@Override

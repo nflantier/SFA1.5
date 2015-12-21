@@ -28,7 +28,7 @@ import noelflantier.sfartifacts.common.recipes.RecipeOutput;
 import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
 import noelflantier.sfartifacts.common.recipes.handler.InjectorRecipesHandler;
 
-public class TileInjector extends TileMachine implements ITileUsingMaterials, ITileGlobalNBT, IUseSFARecipes{
+public class TileInjector extends TileAsgardianMachine implements ITileUsingMaterials, ITileGlobalNBT, IUseSFARecipes{
 
 	//PROCESSING
 	public int tickToInject = 10;
@@ -55,7 +55,6 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials, IT
 	@Override
 	public void init(){
 		super.init();
-		//this.naturalEnergy = this.getNaturalEnergy(this.getBlockMetadata());
 		for(ForgeDirection f:ForgeDirection.values()){
 			this.recieveSides.add(f);
 			this.extractSides.add(f);
@@ -68,8 +67,9 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials, IT
 	}
 
 	@Override
-	public void processPackets() {	
-		PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this);
+	public void processPackets() {
+		//if(this.getEnergyStored(ForgeDirection.UNKNOWN)!=this.lastEnergyStoredAmount)
+			PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this);
 		PacketHandler.sendToAllAround(new PacketFluid(this.xCoord, this.yCoord, this.zCoord, new int[]{this.tank.getFluidAmount()}, new int[]{this.tank.getCapacity()}, new int[]{ModFluids.fluidLiquefiedAsgardite.getID()}),this);
 		PacketHandler.sendToAllAround(new PacketInjector(this),this);
 	}
@@ -209,23 +209,6 @@ public class TileInjector extends TileMachine implements ITileUsingMaterials, IT
 			add(items[idline*2+1+1+6]);
 		}};
 	}
-	
-	/*public int getStackSize(InjectorRecipe ir, ItemStack stack){
-		for(ItemStack sta : ir.recipe){
-			if(sta.getItem()==stack.getItem() && sta.getItemDamage()==stack.getItemDamage()){
-				return sta.stackSize;
-			}
-		}
-		return 0;
-	}
-	
-	public boolean checkContainsItem(InjectorRecipe ir, ItemStack stack){
-		for(ItemStack sta : ir.recipe){
-			if(stack!=null && sta.getItem()==stack.getItem() && sta.getItemDamage()==stack.getItemDamage() && sta.stackSize<=stack.stackSize)
-				return true;
-		}
-		return false;
-	}*/
 	
 	public boolean processInjecting(){
 		for(int i=0;i<this.isRunning.length;i++){

@@ -10,8 +10,10 @@ import noelflantier.sfartifacts.common.items.ItemAsgardianSteelIngot;
 import noelflantier.sfartifacts.common.items.ItemAsgardite;
 import noelflantier.sfartifacts.common.items.ItemAsgardiumPearl;
 import noelflantier.sfartifacts.common.items.ItemBasicHammer;
+import noelflantier.sfartifacts.common.items.ItemCable;
 import noelflantier.sfartifacts.common.items.ItemEnergyModule;
 import noelflantier.sfartifacts.common.items.ItemFluidModule;
+import noelflantier.sfartifacts.common.items.ItemFusionCasing;
 import noelflantier.sfartifacts.common.items.ItemHulkFlesh;
 import noelflantier.sfartifacts.common.items.ItemLightningRod;
 import noelflantier.sfartifacts.common.items.ItemMagnet;
@@ -37,7 +39,6 @@ public class ModItems {
 	public static Item itemFilledBucket;
 	public static Item itemFluidModule;
 	public static Item itemEnergyModule;
-	//public static Item itemTeleportModule;
 	public static Item itemManual;
 	public static Item itemAsgardiumPearl;
 	public static Item itemMightyFeather;
@@ -51,6 +52,8 @@ public class ModItems {
 	public static Item itemHulkFlesh;
 	public static Item itemAsgardianRing;
 	public static Item itemMightyHulkRing;
+	public static Item itemFusionCasing;
+	public static Item itemCable;
 
 	public static void loadItems() {
 
@@ -120,6 +123,12 @@ public class ModItems {
     	
     	itemMightyHulkRing = new ItemMightyHulkRing();
     	RegisterHelper.registerItem(itemMightyHulkRing);
+    	
+    	itemFusionCasing = new ItemFusionCasing();
+    	RegisterHelper.registerItem(itemFusionCasing);
+    	
+    	itemCable = new ItemCable();
+    	RegisterHelper.registerItem(itemCable);
     	
 	}
 	

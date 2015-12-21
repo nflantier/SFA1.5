@@ -83,16 +83,6 @@ public class RenderBlockLiquefier  extends TileEntitySpecialRenderer implements 
 				this.modelLiquefier.renderAll();
 	        GL11.glPopMatrix();
 	        
-	        /*GL11.glPushMatrix();
-				GL11.glTranslatef((float)0.4F, (float)-0.15F, (float)0F);
-				EntityItem itemEntity2 = new EntityItem(Minecraft.getMinecraft().theWorld, 0, 0, 0, new ItemStack(ModItems.itemFluidModule));
-				itemEntity2.hoverStart = 0.0F;
-				GL11.glScalef(0.9F, 0.9F, 0.9F);
-				RenderItem.renderInFrame = true;
-				RenderManager.instance.renderEntityWithPosYaw(itemEntity2, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
-				RenderItem.renderInFrame = false;
-	        GL11.glPopMatrix();*/
-	        
         GL11.glPopMatrix();
 	}
 

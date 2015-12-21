@@ -66,4 +66,21 @@ nbtProcess : default (or nothing), adding(instead of writing the tag directly on
 		</output>
     </recipe>
 	
+	<recipe name="Basic Energyzed Inductor" energyCost="500" fluidCost="200">
+		<input>
+			<itemStack modID="sfartifacts" itemName="itemCable" itemMeta="2"/>
+		</input>
+		<output>
+			<itemStack modID="sfartifacts" itemName="blockInductor" itemMeta="2" />
+		</output>
+    </recipe>
+	<recipe name="Advanced Energyzed Inductor" energyCost="1000" fluidCost="400">
+		<input>
+			<itemStack modID="sfartifacts" itemName="itemCable" itemMeta="3"/>
+		</input>
+		<output>
+			<itemStack modID="sfartifacts" itemName="blockInductor" itemMeta="3" />
+		</output>
+    </recipe>
+	
 </recipes>  

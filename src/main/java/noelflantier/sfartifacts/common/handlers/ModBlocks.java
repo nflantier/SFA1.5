@@ -8,10 +8,12 @@ import noelflantier.sfartifacts.common.blocks.BlockAsgardianSteel;
 import noelflantier.sfartifacts.common.blocks.BlockAsgardite;
 import noelflantier.sfartifacts.common.blocks.BlockControlPannel;
 import noelflantier.sfartifacts.common.blocks.BlockHammerStand;
+import noelflantier.sfartifacts.common.blocks.BlockInductor;
 import noelflantier.sfartifacts.common.blocks.BlockInjector;
 import noelflantier.sfartifacts.common.blocks.BlockLightningRodStand;
 import noelflantier.sfartifacts.common.blocks.BlockLiquefier;
 import noelflantier.sfartifacts.common.blocks.BlockMightyFoundry;
+import noelflantier.sfartifacts.common.blocks.BlockMrFusion;
 import noelflantier.sfartifacts.common.blocks.BlockOreAsgardite;
 import noelflantier.sfartifacts.common.blocks.BlockOreVibranium;
 import noelflantier.sfartifacts.common.blocks.BlockSoundEmitter;
@@ -19,6 +21,8 @@ import noelflantier.sfartifacts.common.blocks.FilledBucket;
 import noelflantier.sfartifacts.common.helpers.RegisterHelper;
 import noelflantier.sfartifacts.common.items.ItemBlockMachine;
 import noelflantier.sfartifacts.common.items.ItemHammerStand;
+import noelflantier.sfartifacts.common.items.ItemInductor;
+import noelflantier.sfartifacts.common.items.ItemMrFusion;
 import noelflantier.sfartifacts.common.items.ItemOreVibranium;
 
 public class ModBlocks {
@@ -36,6 +40,8 @@ public class ModBlocks {
 	public static Block blockMightyFoundry;
 	public static Block blockSoundEmiter;
 	public static Block blockAsgardianGlass;
+	public static Block blockMrFusion;
+	public static Block blockInductor;
 	
 	public static void loadBlocks() {
 
@@ -77,6 +83,12 @@ public class ModBlocks {
     	
     	blockSoundEmiter = new BlockSoundEmitter(Material.rock);
     	RegisterHelper.registerBlock(blockSoundEmiter);
+    	
+    	blockMrFusion = new BlockMrFusion(Material.rock);
+    	RegisterHelper.registerBlock(blockMrFusion, ItemMrFusion.class);
+    	
+    	blockInductor = new BlockInductor(Material.rock);
+    	RegisterHelper.registerBlock(blockInductor, ItemInductor.class);
     	
 	}	
 

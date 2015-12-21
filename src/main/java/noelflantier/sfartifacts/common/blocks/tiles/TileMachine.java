@@ -20,26 +20,17 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.helpers.Coord4;
 
-public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,ISFAFluid,
-							ISFAEnergyHandler,ISidedInventory, ITileCanTakeRFonlyFromPillars{
-	
+public abstract class TileMachine extends TileSFA implements ISFAFluid,ISFAEnergyHandler,ISidedInventory{
 	//CONTROL
 	public boolean isManualyEnable = true;
 	public boolean hasRF = false;
 	public boolean hasFL = false;
 	
-	//STRUCTURE
-	public Coord4 master;
-	
 	//ENERGY
-	public boolean isTransferCaped = false;
     public int energyCapacity = 0;
-    
-    //public int rf;
     public EnergyStorage storage = new EnergyStorage(0,0,0);
     public List<ForgeDirection> recieveSides = new ArrayList<>();
     public List<ForgeDirection> extractSides = new ArrayList<>();
-    public int ratioTransfer = 100;
 	public int lastEnergyStoredAmount = -1;
 	
 	//FLUID
@@ -68,20 +59,13 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
         if(randomMachine.nextFloat()<getRandomTickChance())
         	processAtRandomTicks();
         processPackets();
-    }
-
-	@Override
-    public void setVariables(Object... params){
-    	if(params[0] instanceof Coord4){
-    		this.master = (Coord4)params[0];
-    	}
+		this.lastEnergyStoredAmount = this.getEnergyStored(ForgeDirection.UNKNOWN);
     }
 
     public float getRandomTickChance(){
     	return 0F;
     }
-    public void processAtRandomTicks(){
-    }
+    public void processAtRandomTicks(){}
 	public abstract void processPackets();
 	public abstract void processMachine();
 	
@@ -89,28 +73,10 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 	public void init(){
 		super.init();
 	}
-	
-	@Override
-	public Coord4 getMasterCoord() {
-		return this.master;
-	}
-
-	@Override
-	public World getWorld() {
-		return this.worldObj;
-	}
 
 	@Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-        //STRUCTURE
-        if(this.hasMaster()){
-	        nbt.setInteger("masterx", this.getMasterX());
-	        nbt.setInteger("mastery", this.getMasterY());
-	        nbt.setInteger("masterz", this.getMasterZ());
-        	nbt.setBoolean("hasmaster", true);
-        }else
-        	nbt.setBoolean("hasmaster", false);
         
         //FLUID
         this.tank.writeToNBT(nbt);
@@ -136,10 +102,7 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-        //STRUCTURE
-    	if(nbt.getBoolean("hasmaster"))
-    		this.master = new Coord4(nbt.getInteger("masterx"),nbt.getInteger("mastery"),nbt.getInteger("masterz"));
-
+        
     	//FLUID
         this.tank.readFromNBT(nbt);
 		//INVENTORY
@@ -152,7 +115,6 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
         
 		//ENERGY
 		this.storage.readFromNBT(nbt);
-		
 		this.lastEnergyStoredAmount = nbt.getInteger("lastEnergyStoredAmount");
 		        
         //Control
@@ -160,8 +122,7 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
     }
 	
     public abstract ItemStack[] getItems();
-    
-	
+    	
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 		if(this.canFill(from, resource.getFluid()) && !this.isRedStoneEnable)
@@ -183,7 +144,7 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		if(!this.init || this.isRedStoneEnable || /*!this.isManualyEnable ||*/ fluid==null || this.fluidAndSide==null || !this.fluidAndSide.containsKey(fluid) 
+		if(!this.init || this.isRedStoneEnable || fluid==null || this.fluidAndSide==null || !this.fluidAndSide.containsKey(fluid) 
 				|| !this.fluidAndSide.get(fluid).contains(from.ordinal()) ){
 			return false;
 		}
@@ -192,7 +153,7 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 
 	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-		if(!this.init || this.isRedStoneEnable || /*!this.isManualyEnable ||*/ fluid==null || this.fluidAndSide==null || !this.fluidAndSide.get(fluid).contains(from.ordinal()) ){
+		if(!this.init || this.isRedStoneEnable || fluid==null || this.fluidAndSide==null || !this.fluidAndSide.get(fluid).contains(from.ordinal()) ){
 			return false;
 		}
 		return true;
@@ -209,47 +170,26 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 		ft.add(this.tank);
 		return ft;
 	}
-
-	
-	
 	
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {	
-		if(ModConfig.isAMachinesWorksOnlyWithPillar){
-			return false;
-		}	
+	public boolean canConnectEnergy(ForgeDirection from) {
 		for(ForgeDirection direction : recieveSides)
-		if(direction == from)
-			return true;
+			if(direction == from)
+				return true;
 		for(ForgeDirection direction : extractSides)
 			if(direction == from)
 				return true;
 		return false;
 	}
-
-	@Override
-	public int receiveOnlyFromPillars(int maxReceive, boolean simulate) {
-		return this.isRedStoneEnable/*||!this.isManualyEnable*/?0:this.storage.receiveEnergy(maxReceive, simulate);
-	}
-	@Override
-	public int extractOnlyFromPillars(int maxExtract, boolean simulate) {
-		return this.isRedStoneEnable/*||!this.isManualyEnable*/?0:this.storage.extractEnergy(maxExtract, simulate);
-	}
 	
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-		if(ModConfig.isAMachinesWorksOnlyWithPillar){
-			return 0;
-		}
-		return this.isRedStoneEnable/*||!this.isManualyEnable*/?0:this.storage.receiveEnergy(maxReceive, simulate);
+		return this.isRedStoneEnable?0:this.storage.receiveEnergy(maxReceive, simulate);
 	}
 	
 	@Override
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-		if(ModConfig.isAMachinesWorksOnlyWithPillar){
-			return 0;
-		}
-		return this.isRedStoneEnable/*||!this.isManualyEnable*/?0:this.storage.extractEnergy(maxExtract, simulate);
+		return this.isRedStoneEnable?0:this.storage.extractEnergy(maxExtract, simulate);
 	}
 	
 	@Override
@@ -261,8 +201,6 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 	public int getMaxEnergyStored(ForgeDirection from) {
 		return this.storage.getMaxEnergyStored();
 	}
-	
-	
 	
 	@Override
 	public int getSizeInventory() {
@@ -322,11 +260,6 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		return super.isUseableByPlayer(player);
-	}
-
-	@Override
 	public void openInventory() {		
 	}
 
@@ -362,10 +295,6 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 	@Override
 	public void addToWaila(List<String> list) {
 		list.add("Status : "+(this.worldObj.getBlockPowerInput(xCoord, yCoord, zCoord)>0?"Processing and port disable":this.isManualyEnable?"Processing enable":"Processing disable")+"");
-		if(this.hasMaster())
-			list.add("Pillar at : "+this.master.x+", "+this.master.y+", "+this.master.z);
-		else
-			list.add("Not connected to a pillar");
 		list.add("Energy : "+NumberFormat.getNumberInstance().format(this.getEnergyStored(ForgeDirection.UNKNOWN))+" RF / "+NumberFormat.getNumberInstance().format(this.getMaxEnergyStored(ForgeDirection.UNKNOWN))+" RF");
 		if(this.getFluidTanks().size()>0 && hasFL){
 			for(int i = 0 ; i < this.getFluidTanks().size() ; i++){
@@ -376,5 +305,4 @@ public abstract class TileMachine extends TileSFA implements ITileCanHavePillar,
 		}
 		
 	}
-
 }
