@@ -19,7 +19,7 @@ nbtProcess : default (or nothing), adding(instead of writing the tag directly on
     <recipe name="Vibranium Shield" energyCost="2000" fluidCost="0">
 		<input>
 			<itemStack modID="sfartifacts" itemName="itemMold" itemMeta="1" label="mold"/>
-			<itemStack modID="sfartifacts" itemName="itemVibraniumAlloySheet" tickPerItem="200" globalQuantity="32"/>
+			<itemStack modID="sfartifacts" itemName="itemVibraniumAlloySheet" tickPerItem="200" globalQuantity="20"/>
 		</input>
 		<output>
 			<itemStackWithNbt modID="sfartifacts" itemName="itemVibraniumShield">

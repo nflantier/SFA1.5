@@ -23,6 +23,10 @@ public class ModConfig {
 	public static int capacityAsgarditeSoundEmitter;
 	public static int capacityMrFusion;
 	public static int capacityLiquidMrFusion;
+	public static int transfertCapacityCableBasic;
+	public static int transfertCapacityCableAdvanced;
+	public static int transfertCapacityCableBasicEnergized;
+	public static int transfertCapacityCableAdvancedEnergized;
 	
 	public static int rfNeededThorHammer;
 	public static int rfMining;
@@ -136,6 +140,12 @@ public class ModConfig {
 
 			capacityMrFusion = config.get(CAT_MACHINES, "mr fusion rf capacity", 1210000000, "Mr fudion energy capacity").getInt();
 			capacityLiquidMrFusion = config.get(CAT_MACHINES, "mr fusion liquid capacity", 1000000, "Mr fudion liquid capacity").getInt();
+			
+
+			transfertCapacityCableBasic = config.get(Configuration.CATEGORY_GENERAL, "basic cable transfert RF/T", 150, "Transfert rate RF/T").getInt();
+			transfertCapacityCableAdvanced = config.get(Configuration.CATEGORY_GENERAL, "advanced cable transfert RF/T", 500, "Transfert rate RF/T").getInt();
+			transfertCapacityCableBasicEnergized = config.get(Configuration.CATEGORY_GENERAL, "basic energized cable transfert RF/T", 1500, "Transfert rate RF/T").getInt();
+			transfertCapacityCableAdvancedEnergized = config.get(Configuration.CATEGORY_GENERAL, "advanced energized cable transfert RF/T", 5000, "Transfert rate RF/T").getInt();
 			
 			useOldRegistration = config.get(CAT_UTILS, "Use old registration", false, "In the newer version registered name have changed so if you have an id error set this to true").getBoolean();
 		}

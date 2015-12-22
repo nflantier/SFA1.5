@@ -3,6 +3,8 @@ package noelflantier.sfartifacts.common.items;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
 import cofh.api.energy.IEnergyConnection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -12,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import noelflantier.sfartifacts.References;
@@ -189,7 +192,11 @@ public class ItemBasicHammer extends ItemSFA implements IItemHasModes{
 		int m = ItemNBTHelper.getInteger(stack, "Mode", 0);
 		list.add("Mode : "+getModes().get(m).name);
 		list.add(getModes().get(m).description);
-		list.add("Right click any vanilla block to reset your hammer");
-		list.add("Shift right click in the air to change modes");
+		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)){
+			list.add("Right click any vanilla block to reset your hammer");
+			list.add("Shift right click in the air to change modes");
+		}else{
+			list.add(EnumChatFormatting.WHITE + "" + EnumChatFormatting.ITALIC +"<Hold Shift>");
+		}
 	}
 }

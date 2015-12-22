@@ -85,27 +85,27 @@ public class RenderBlockMrFusion  extends TileEntitySpecialRenderer implements I
 			if(tile instanceof TileSFA)side=((TileSFA)tile).side;
 			switch(side){
 				case 0:
+					GL11.glTranslatef(0F, +0.2F, 0F);
+					break;
+				case 1:
 					GL11.glRotatef(180, 1F, 0F, 0F);
 					GL11.glTranslatef(0F, -0.8F, 0F);
 					break;
-				case 1:
-					GL11.glTranslatef(0F, +0.2F, 0F);
-					break;
 				case 2:
-					GL11.glRotatef(-90, 1F, 0F, 0F);
-					GL11.glTranslatef(0F, -0.3F, +0.5F);
-					break;
-				case 3:
 					GL11.glRotatef(90, 1F, 0F, 0F);
 					GL11.glTranslatef(0F, -0.3F, -0.5F);
 					break;
-				case 4:
-					GL11.glRotatef(90, 0F, 0F, 1F);
-					GL11.glTranslatef(+0.5F, -0.3F, 0F);
+				case 3:
+					GL11.glRotatef(-90, 1F, 0F, 0F);
+					GL11.glTranslatef(0F, -0.3F, +0.5F);
 					break;
-				case 5:
+				case 4:
 					GL11.glRotatef(-90, 0F, 0F, 1F);
 					GL11.glTranslatef(-0.5F, -0.3F, 0F);
+					break;
+				case 5:
+					GL11.glRotatef(90, 0F, 0F, 1F);
+					GL11.glTranslatef(+0.5F, -0.3F, 0F);
 					break;
 				case -1:
 					break;
@@ -129,8 +129,15 @@ public class RenderBlockMrFusion  extends TileEntitySpecialRenderer implements I
 				this.modelGouj.renderAll();
 			GL11.glPopMatrix();
 	        GL11.glPushMatrix();
+				GL11.glEnable(GL11.GL_BLEND);
+				GL11.glDepthMask(false);
+				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+				GL11.glColor4f(1F, 1F, 1F, 0.5F);
 				Minecraft.getMinecraft().renderEngine.bindTexture(this.textureGourd);
 				this.modelGourd.renderAll();
+				GL11.glColor4f(1F, 1F, 1F, 1F);
+				GL11.glDepthMask(true);
+				GL11.glDisable(GL11.GL_BLEND);
 			GL11.glPopMatrix();
 		GL11.glPopMatrix(); 
 	}

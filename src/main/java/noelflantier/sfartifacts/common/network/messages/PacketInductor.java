@@ -16,6 +16,8 @@ public class PacketInductor implements IMessage, IMessageHandler<PacketInductor,
 	public int z;
 	public boolean canSend;
 	public boolean canRecieve;
+	public boolean canWSend;
+	public boolean canWRecieve;
 	
 	public PacketInductor(){
 	
@@ -25,6 +27,8 @@ public class PacketInductor implements IMessage, IMessageHandler<PacketInductor,
 		this.x = te.xCoord;
 		this.y = te.yCoord;
 		this.z = te.zCoord;
+		this.canWRecieve = te.canWirelesslyRecieve;
+		this.canWSend = te.canWirelesslySend;
 		this.canRecieve = te.canRecieve;
 		this.canSend = te.canSend;
 	}
@@ -33,6 +37,8 @@ public class PacketInductor implements IMessage, IMessageHandler<PacketInductor,
 	public IMessage onMessage(PacketInductor message, MessageContext ctx) {			
 		TileEntity te = Minecraft.getMinecraft().thePlayer.worldObj.getTileEntity(message.x,message.y, message.z);
 		if(te!=null && te instanceof TileInductor) {
+			((TileInductor)te).canWirelesslyRecieve = message.canWRecieve;
+			((TileInductor)te).canWirelesslySend = message.canWSend;
 			((TileInductor)te).canRecieve = message.canRecieve;
 			((TileInductor)te).canSend = message.canSend;
 		}
@@ -43,6 +49,8 @@ public class PacketInductor implements IMessage, IMessageHandler<PacketInductor,
 	    x = buf.readInt();
 	    y = buf.readInt();
 	    z = buf.readInt();
+	    canWRecieve = buf.readBoolean();
+	    canWSend = buf.readBoolean();
 	    canRecieve = buf.readBoolean();
 	    canSend = buf.readBoolean();
 		
@@ -52,6 +60,8 @@ public class PacketInductor implements IMessage, IMessageHandler<PacketInductor,
 	    buf.writeInt(x);
 	    buf.writeInt(y);
 	    buf.writeInt(z);
+	    buf.writeBoolean(canWRecieve);
+	    buf.writeBoolean(canWSend);
 	    buf.writeBoolean(canRecieve);
 	    buf.writeBoolean(canSend);
 		

@@ -133,7 +133,7 @@ public class TileMrFusion extends TileMachine{
 				continue;
 			rfg = 0;
 			if(Utils.getAllSuperclasses(this.items[i].getItem().getClass()).contains(ItemFood.class)){//FOOD
-				rfg+=this.ratioFood*(float)this.rf*(float)this.items[i].stackSize;
+				rfg+=this.ratioFood*(float)this.rf*(float)this.items[i].stackSize*m;
 			}else{
 				rfg+=this.ratioDefault*(float)this.rf*(float)this.items[i].stackSize;
 			}
@@ -146,7 +146,7 @@ public class TileMrFusion extends TileMachine{
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-		return (slot == 2 && FluidContainerRegistry.isContainer(stack)) || true;
+		return (slot == 12 && FluidContainerRegistry.isContainer(stack)) || slot<12;
 	}
 	
 	@Override
@@ -176,7 +176,7 @@ public class TileMrFusion extends TileMachine{
 	
 	@Override
 	public void addToWaila(List<String> list) {
-		list.add(this.side+" Status : "+(this.worldObj.getBlockPowerInput(xCoord, yCoord, zCoord)>0?"Processing and port disable":this.isManualyEnable?"Processing enable":"Processing disable")+"");
+		list.add("Status : "+(this.worldObj.getBlockPowerInput(xCoord, yCoord, zCoord)>0?"Processing and port disable":this.isManualyEnable?"Processing enable":"Processing disable")+"");
 		list.add("Energy : "+NumberFormat.getNumberInstance().format(this.getEnergyStored(ForgeDirection.UNKNOWN))+" RF / "+NumberFormat.getNumberInstance().format(this.getMaxEnergyStored(ForgeDirection.UNKNOWN))+" RF");
 		if(this.getFluidTanks().size()>0 && hasFL){
 			for(int i = 0 ; i < this.getFluidTanks().size() ; i++){

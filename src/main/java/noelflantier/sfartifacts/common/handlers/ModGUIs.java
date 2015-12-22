@@ -7,6 +7,7 @@ import net.minecraft.world.World;
 import noelflantier.sfartifacts.client.gui.GuiControlPanel;
 import noelflantier.sfartifacts.client.gui.GuiHammerConfig;
 import noelflantier.sfartifacts.client.gui.GuiHammerStandNonInvoked;
+import noelflantier.sfartifacts.client.gui.GuiInductor;
 import noelflantier.sfartifacts.client.gui.GuiInjector;
 import noelflantier.sfartifacts.client.gui.GuiLightningRodStand;
 import noelflantier.sfartifacts.client.gui.GuiLiquefier;
@@ -15,12 +16,14 @@ import noelflantier.sfartifacts.client.gui.GuiMoldMaking;
 import noelflantier.sfartifacts.client.gui.GuiMrFusion;
 import noelflantier.sfartifacts.client.gui.GuiSoundEmitter;
 import noelflantier.sfartifacts.client.gui.GuiTeleport;
+import noelflantier.sfartifacts.client.gui.manual.BTTFManual;
 import noelflantier.sfartifacts.client.gui.manual.CaptainManual;
 import noelflantier.sfartifacts.client.gui.manual.GuiManual;
 import noelflantier.sfartifacts.client.gui.manual.HulkManual;
 import noelflantier.sfartifacts.client.gui.manual.ThorManual;
 import noelflantier.sfartifacts.common.blocks.tiles.TileControlPannel;
 import noelflantier.sfartifacts.common.blocks.tiles.TileHammerStand;
+import noelflantier.sfartifacts.common.blocks.tiles.TileInductor;
 import noelflantier.sfartifacts.common.blocks.tiles.TileInjector;
 import noelflantier.sfartifacts.common.blocks.tiles.TileLightningRodStand;
 import noelflantier.sfartifacts.common.blocks.tiles.TileLiquefier;
@@ -30,6 +33,7 @@ import noelflantier.sfartifacts.common.blocks.tiles.TileSoundEmitter;
 import noelflantier.sfartifacts.common.container.ContainerControlPanel;
 import noelflantier.sfartifacts.common.container.ContainerHammerStandInvoked;
 import noelflantier.sfartifacts.common.container.ContainerHammerStandNonInvoked;
+import noelflantier.sfartifacts.common.container.ContainerInductor;
 import noelflantier.sfartifacts.common.container.ContainerInjector;
 import noelflantier.sfartifacts.common.container.ContainerLightningRodStand;
 import noelflantier.sfartifacts.common.container.ContainerLiquefier;
@@ -37,7 +41,6 @@ import noelflantier.sfartifacts.common.container.ContainerMightyFoundry;
 import noelflantier.sfartifacts.common.container.ContainerMoldMaking;
 import noelflantier.sfartifacts.common.container.ContainerMrFusion;
 import noelflantier.sfartifacts.common.container.ContainerSoundEmitter;
-import noelflantier.sfartifacts.common.items.baseclasses.ItemInventoryMold;
 
 public class ModGUIs implements IGuiHandler{
 	
@@ -54,11 +57,13 @@ public class ModGUIs implements IGuiHandler{
 	public static final int guiIDMold= 11;
 	public static final int guiIDSoundEmiter= 12;
 	public static final int guiIDMrFusion= 13;
+	public static final int guiIDInductor= 14;
 	
 
 	public static final int guiIDThorManual= 60;
 	public static final int guiIDCaptainManual= 61;
 	public static final int guiIDHulkManual= 62;
+	public static final int guiIDBackToTheFuture= 63;
 
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world,int x, int y, int z) {
@@ -108,6 +113,11 @@ public class ModGUIs implements IGuiHandler{
 				case ModGUIs.guiIDMrFusion :
 					if(tile instanceof TileMrFusion){
 						return new ContainerMrFusion(player.inventory, (TileMrFusion)tile);
+					}
+					return null;
+				case ModGUIs.guiIDInductor :
+					if(tile instanceof TileInductor){
+						return new ContainerInductor(player.inventory, (TileInductor)tile);
 					}
 					return null;
 			}
@@ -167,6 +177,11 @@ public class ModGUIs implements IGuiHandler{
 						return new GuiMrFusion(player.inventory, (TileMrFusion)tile);
 					}
 					return null;
+				case ModGUIs.guiIDInductor :
+					if(tile instanceof TileInductor){
+						return new GuiInductor(player.inventory, (TileInductor)tile);
+					}
+					return null;
 			}
 		}else if(ID == ModGUIs.guiIDHammerConfig){
 			return new GuiHammerConfig(player.inventory);
@@ -178,6 +193,8 @@ public class ModGUIs implements IGuiHandler{
 			return new CaptainManual(player);
 		}else if(ID == ModGUIs.guiIDHulkManual){
 			return new HulkManual(player);
+		}else if(ID == ModGUIs.guiIDBackToTheFuture){
+			return new BTTFManual(player);
 		}else if(ID == ModGUIs.guiIDTeleport){
 			return new GuiTeleport(player);
 		}else if(ID == ModGUIs.guiIDMold){

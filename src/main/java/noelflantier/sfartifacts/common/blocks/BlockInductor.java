@@ -54,35 +54,10 @@ public class BlockInductor extends BlockSFAContainer {
 	
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitx, float hity, float hitz){
-    	
     	if(player.isSneaking()) {
     		return false;
     	}
-    	if(world.isRemote)
-    		return false;
-    	if(player.getCurrentEquippedItem()!=null)
-    		return false;
-    	
-    	TileEntity t = world.getTileEntity(x, y, z);
-    	if(t!=null && t instanceof TileInductor){
-    		TileInductor ti = (TileInductor)t;
-    		if(ti.canRecieve && ti.canSend){
-    			ti.canRecieve = false;
-    			player.addChatComponentMessage(new ChatComponentText("Inductor can Send and cannot Recieve."));
-    		}else if(!ti.canRecieve && ti.canSend){
-    			ti.canRecieve = true;
-    			ti.canSend = false;
-    			player.addChatComponentMessage(new ChatComponentText("Inductor cannot Send and can Recieve."));
-    		}else if(ti.canRecieve && !ti.canSend){
-    			ti.canRecieve = false;
-    			player.addChatComponentMessage(new ChatComponentText("Inductor cannot Send and cannot Recieve."));
-    		}else if(!ti.canRecieve && !ti.canSend){
-    			ti.canRecieve = true;
-    			ti.canSend = true;
-    			player.addChatComponentMessage(new ChatComponentText("Inductor can Send and Recieve."));
-    		}
-    		PacketHandler.sendToAllAround(new PacketInductor(ti),t);
-    	}
+		player.openGui(SFArtifacts.instance, ModGUIs.guiIDInductor, world, x, y, z);
     	return true;
     }
     
@@ -116,22 +91,22 @@ public class BlockInductor extends BlockSFAContainer {
 	    	TileSFA t = (TileSFA)tile;
 	    	switch(t.side){
 				case 0:
-		            this.setBlockBounds(0.25F, 0.5F, 0.25F, 0.75F, 1F, 0.75F); 
-					break;
-				case 1:
 		            this.setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F); 
 					break;
-				case 2:
-		            this.setBlockBounds(0.25F, 0.25F, 0.5F, 0.75F, 0.75F, 1F); 
+				case 1:
+		            this.setBlockBounds(0.25F, 0.5F, 0.25F, 0.75F, 1F, 0.75F); 
 					break;
-				case 3:
+				case 2:
 		            this.setBlockBounds(0.25F, 0.25F, 0.0F, 0.75F, 0.75F, 0.5F); 
 					break;
+				case 3:
+		            this.setBlockBounds(0.25F, 0.25F, 0.5F, 0.75F, 0.75F, 1F); 
+					break;
 				case 4:
-		            this.setBlockBounds(0.5F, 0.25F, 0.25F, 1F, 0.75F, 0.75F); 
+		            this.setBlockBounds(0.0F, 0.25F, 0.25F, 0.5F, 0.75F, 0.75F); 
 					break;
 				case 5:
-		            this.setBlockBounds(0.0F, 0.25F, 0.25F, 0.5F, 0.75F, 0.75F); 
+		            this.setBlockBounds(0.5F, 0.25F, 0.25F, 1F, 0.75F, 0.75F); 
 					break;
 				case -1:
 					break;

@@ -14,7 +14,7 @@ import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
 import noelflantier.sfartifacts.common.recipes.handler.MightyFoundryRecipesHandler;
 import noelflantier.sfartifacts.common.recipes.handler.MoldRecipesHandler;
 
-public class CaptainManual  extends BaseManual{
+public class CaptainManual extends BaseManual{
 
 	public CaptainManual(EntityPlayer player){
 		super(player);

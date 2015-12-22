@@ -25,7 +25,7 @@ public class BlockMrFusion extends BlockSFAContainer {
 		super(material, "MrFusion");
 		this.setBlockName("blockMrFusion");
 		this.setHarvestLevel("pickaxe",1);
-		this.setBlockTextureName(References.MODID+":mr_fusion");
+		this.setBlockTextureName(References.MODID+":mrfusion");
 		this.setHardness(2.0F);
 		this.setResistance(10000.0F);
     	
@@ -72,22 +72,22 @@ public class BlockMrFusion extends BlockSFAContainer {
 	    	TileSFA t = (TileSFA)tile;
 	    	switch(t.side){
 				case 0:
-		            this.setBlockBounds(0.125F, 0.1F, 0.125F, 0.875F, 1F, 0.875F); 
-					break;
-				case 1:
 		            this.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.9F, 0.875F); 
 					break;
-				case 2:
-		            this.setBlockBounds(0.125F, 0.125F, 0.1F, 0.875F, 0.875F, 1F); 
+				case 1:
+		            this.setBlockBounds(0.125F, 0.1F, 0.125F, 0.875F, 1F, 0.875F); 
 					break;
-				case 3:
+				case 2:
 		            this.setBlockBounds(0.125F, 0.125F, 0.0F, 0.875F, 0.875F, 0.9F); 
 					break;
+				case 3:
+		            this.setBlockBounds(0.125F, 0.125F, 0.1F, 0.875F, 0.875F, 1F); 
+					break;
 				case 4:
-		            this.setBlockBounds(0.1F, 0.125F, 0.125F, 1F, 0.875F, 0.875F); 
+		            this.setBlockBounds(0.0F, 0.125F, 0.125F, 0.9F, 0.875F, 0.875F); 
 					break;
 				case 5:
-		            this.setBlockBounds(0.0F, 0.125F, 0.125F, 0.9F, 0.875F, 0.875F); 
+		            this.setBlockBounds(0.1F, 0.125F, 0.125F, 1F, 0.875F, 0.875F); 
 					break;
 				case -1:
 					break;

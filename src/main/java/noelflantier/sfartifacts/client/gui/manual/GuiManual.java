@@ -57,11 +57,13 @@ public class GuiManual extends GuiSFAScreen{
 			defColor = EnumChatFormatting.BLACK;
 		}});
 		this.manuals.put("hulk", ModGUIs.guiIDHulkManual);
-	}
-	
-	@Override
-	public void initGui() {
-		super.initGui();
+
+		this.componentList.put("bttf", new GuiComponent(this.guiLeft+10, this.guiTop+40, 60, 10){{
+			addText("Back to the future", 0, 0);
+			isLink = true;
+			defColor = EnumChatFormatting.BLACK;
+		}});
+		this.manuals.put("bttf", ModGUIs.guiIDBackToTheFuture);
 	}
 	
 	@Override
@@ -83,16 +85,6 @@ public class GuiManual extends GuiSFAScreen{
 		}
 	}
 	
-	@Override
-	public void updateScreen() {
-		super.updateScreen();
-	}
-
-	@Override
-	protected void actionPerformed(GuiButton button) {
-		super.actionPerformed(button);
-	}
-
 	@Override
     public void drawScreen(int x, int y, float f){
     	super.drawScreen(x, y, f);

@@ -62,7 +62,8 @@ public class ModRecipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemAsgardianRing,1,0),  " S ", "S S", " S ", 'S', ModItems.itemAsgardianSteelIngot));
 		
 		//BACKTOTHEFUTURE
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockMrFusion,1,0),  "III", "GCG", "OOO", 'I', Items.iron_ingot,'G',Blocks.glass_pane,'C',ModItems.itemFusionCasing, 'O',Blocks.obsidian));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockMrFusion,1,0),  "III", "ICI", "OOO", 'I', Items.iron_ingot,'C',ModItems.itemFusionCoreFrame, 'O',Blocks.obsidian, 'E', ModItems.itemEnergyModule));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemFusionCoreFrame,1,0),  "III", "CNC", "III", 'I', Items.iron_ingot,'C', ModItems.itemFusionCasing, 'N', Items.nether_star, 'I', ModItems.itemEnergyModule));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCable,4,0),  "RRR", "III", "RRR", 'I', Items.iron_ingot,'R',Items.redstone));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCable,4,1),  "RRR", "III", "RRR", 'I', Items.gold_ingot,'R',Items.redstone));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCable,8,2),  "RRR", "III", "RRR", 'I', Items.iron_ingot,'R',ModItems.itemAsgardite));
@@ -75,14 +76,6 @@ public class ModRecipes {
 	
 	public static void loadOreDictionnaryRecipe(){
 
-		/*if(ModConfig.useModsStuff){
-			if(ModOreDictionary.hasCopperIngot){
-				List<ItemStack> ores = OreDictionary.getOres("ingotDarkSteel");
-			    if(!ores.isEmpty() && ores.get(0) != null) {
-					GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockAsgardianBronze,1,0), "ddd", "d d", "ddd", 'd', ores.get(0).copy() ));
-			    }
-			}	
-		}*/
 	}
 
 }

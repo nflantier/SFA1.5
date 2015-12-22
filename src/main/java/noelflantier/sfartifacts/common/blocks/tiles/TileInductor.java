@@ -27,10 +27,17 @@ public class TileInductor extends TileSFA implements ITileCanBeMaster,ITileWirel
 	
 	public Coord4 master;
     public List<Coord4> energyChild = new ArrayList<>();
+    public boolean canWirelesslySend = true;
+    public boolean canWirelesslyRecieve = true;
     public boolean canSend = true;
     public boolean canRecieve = true;
     public int energyCapacity = 0;
-    public static List<Integer> energyCapacityConfig = new ArrayList(){{add(0,150);add(1,500);add(2,1500);add(3,5000);}};
+    public static List<Integer> energyCapacityConfig = new ArrayList(){{
+    	add(0,ModConfig.transfertCapacityCableBasic);
+    	add(1,ModConfig.transfertCapacityCableAdvanced);
+    	add(2,ModConfig.transfertCapacityCableBasicEnergized);
+    	add(3,ModConfig.transfertCapacityCableAdvancedEnergized);
+    }};
     public EnergyStorage storage = new EnergyStorage(0,0,0);
 	public int lastEnergyStoredAmount = -1;
 	public Random rdm = new Random();
@@ -58,9 +65,10 @@ public class TileInductor extends TileSFA implements ITileCanBeMaster,ITileWirel
 		if(this.worldObj.isRemote)
 			return;
 
-		ForgeDirection fd = ForgeDirection.getOrientation(side).getOpposite();
+		ForgeDirection fd = ForgeDirection.getOrientation(side);
 		TileEntity tile = worldObj.getTileEntity(xCoord+fd.offsetX, yCoord+fd.offsetY, zCoord+fd.offsetZ);
-		if(tile!=null && tile instanceof IEnergyHandler && tile instanceof TileBlockPillar ==false){
+
+		if(tile!=null && tile instanceof IEnergyHandler && this.canSend){
 			int maxAvailable = this.extractEnergy(fd, this.getEnergyStored(fd), true);
 			int energyTransferred = ((IEnergyHandler) tile).receiveEnergy(fd.getOpposite(), maxAvailable, true);
 			if(energyTransferred!=0){
@@ -69,12 +77,12 @@ public class TileInductor extends TileSFA implements ITileCanBeMaster,ITileWirel
 			}
 		}
 
-    	if(!this.energyChild.isEmpty() && this.canSend){
+    	if(!this.energyChild.isEmpty() && this.canWirelesslySend){
     		this.energyChild.removeIf((d)->worldObj.getTileEntity(d.x, d.y, d.z)==null || worldObj.getTileEntity(d.x, d.y, d.z) instanceof TileInductor == false);
         	if(!this.energyChild.isEmpty()){
         		for(Coord4 c : this.energyChild){
         			TileEntity te = worldObj.getTileEntity(c.x, c.y, c.z);
-        			if(te instanceof TileInductor && ((TileInductor)te).getEnergyStored(ForgeDirection.UNKNOWN)<((TileInductor)te).getMaxEnergyStored(ForgeDirection.UNKNOWN) && ((TileInductor)te).canRecieve){
+        			if(te instanceof TileInductor && ((TileInductor)te).getEnergyStored(ForgeDirection.UNKNOWN)<((TileInductor)te).getMaxEnergyStored(ForgeDirection.UNKNOWN) && ((TileInductor)te).canWirelesslyRecieve){
 	                	int maxAc = this.storage.extractEnergy(this.getEnergyStored(ForgeDirection.UNKNOWN)/this.energyChild.size(), true);
 	                	int energyTc = ((TileInductor) te).storage.receiveEnergy( maxAc, true);
 	                	if(energyTc!=0){
@@ -108,7 +116,7 @@ public class TileInductor extends TileSFA implements ITileCanBeMaster,ITileWirel
 	
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-		return this.isRedStoneEnable || !this.canConnectEnergy(from)?0:this.storage.receiveEnergy(maxReceive, simulate);
+		return this.isRedStoneEnable || !this.canConnectEnergy(from) || !this.canRecieve?0:this.storage.receiveEnergy(maxReceive, simulate);
 	}
 	
 	@Override
@@ -145,7 +153,7 @@ public class TileInductor extends TileSFA implements ITileCanBeMaster,ITileWirel
 	}
 	@Override
 	public boolean canConnectEnergy(ForgeDirection from) {
-		if(ForgeDirection.getOrientation(side).getOpposite()==from)
+		if(ForgeDirection.getOrientation(side)==from)
 			return true;
 		return false;
 	}
@@ -164,6 +172,8 @@ public class TileInductor extends TileSFA implements ITileCanBeMaster,ITileWirel
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         
+        nbt.setBoolean("canWirelesslySend", canWirelesslySend);
+        nbt.setBoolean("canWirelesslyRecieve", canWirelesslyRecieve);
         nbt.setBoolean("canSend", canSend);
         nbt.setBoolean("canRecieve", canRecieve);
         nbt.setInteger("energyCapacity", energyCapacity);
@@ -187,6 +197,8 @@ public class TileInductor extends TileSFA implements ITileCanBeMaster,ITileWirel
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         
+        this.canWirelesslySend = nbt.getBoolean("canWirelesslySend");
+        this.canWirelesslyRecieve = nbt.getBoolean("canWirelesslyRecieve");
         this.canSend = nbt.getBoolean("canSend");
         this.canRecieve = nbt.getBoolean("canRecieve");
         this.energyCapacity = nbt.getInteger("energyCapacity");

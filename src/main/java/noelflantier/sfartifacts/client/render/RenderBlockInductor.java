@@ -76,25 +76,25 @@ public class RenderBlockInductor extends TileEntitySpecialRenderer implements II
 			int side = -1;
 			if(tile instanceof TileSFA)side=((TileSFA)tile).side;
 			switch(side){
-				case 0:
+				case 1:
 					GL11.glRotatef(180, 1F, 0F, 0F);
 					GL11.glTranslatef(0F, -1F, 0F);
 					break;
 				case 2:
-					GL11.glRotatef(-90, 1F, 0F, 0F);
-					GL11.glTranslatef(0F, -0.5F, +0.5F);
-					break;
-				case 3:
 					GL11.glRotatef(90, 1F, 0F, 0F);
 					GL11.glTranslatef(0F, -0.5F, -0.5F);
 					break;
-				case 4:
-					GL11.glRotatef(90, 0F, 0F, 1F);
-					GL11.glTranslatef(+0.5F, -0.5F, 0F);
+				case 3:
+					GL11.glRotatef(-90, 1F, 0F, 0F);
+					GL11.glTranslatef(0F, -0.5F, +0.5F);
 					break;
-				case 5:
+				case 4:
 					GL11.glRotatef(-90, 0F, 0F, 1F);
 					GL11.glTranslatef(-0.5F, -0.5F, 0F);
+					break;
+				case 5:
+					GL11.glRotatef(90, 0F, 0F, 1F);
+					GL11.glTranslatef(+0.5F, -0.5F, 0F);
 					break;
 				case -1:
 					break;
@@ -107,8 +107,8 @@ public class RenderBlockInductor extends TileEntitySpecialRenderer implements II
 			float vr = meta==0||meta==1?2F:5F;
 			textureStaff= new ResourceLocation(References.MODID+":textures/blocks/models/inductor-staff"+meta+".png");
 			if(tile instanceof TileInductor){
-				send = ((TileInductor)tile).canSend;
-				recieve = ((TileInductor)tile).canRecieve;
+				send = ((TileInductor)tile).canWirelesslySend;
+				recieve = ((TileInductor)tile).canWirelesslyRecieve;
 			}
 
 	        GL11.glPushMatrix();	        	

@@ -21,7 +21,14 @@ public class ItemCable extends ItemSFA{
 		this.setHasSubtypes(true);
 		this.setUnlocalizedName("itemCable");
 	}
-	
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean isFull3D()
+    {
+        return true;
+    }
+    
 	@Override
     public String getUnlocalizedName(ItemStack itemstack){
     	int i = itemstack.getItemDamage();
