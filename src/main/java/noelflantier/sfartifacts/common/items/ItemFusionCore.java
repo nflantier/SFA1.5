@@ -5,11 +5,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
 import noelflantier.sfartifacts.References;
 
-public class ItemFusionCoreFrame extends ItemSFA{
-	public ItemFusionCoreFrame() {
-		super("Fusion Core Frame");
-		this.setUnlocalizedName("itemFusionCoreFrame");
-		this.setTextureName(References.MODID+":fusion_core_frame");
+public class ItemFusionCore extends ItemSFA{
+	public ItemFusionCore() {
+		super("Fusion Core");
+		this.setUnlocalizedName("itemFusionCore");
+		this.setTextureName(References.MODID+":fusion_core");
 	}
 
     @SideOnly(Side.CLIENT)

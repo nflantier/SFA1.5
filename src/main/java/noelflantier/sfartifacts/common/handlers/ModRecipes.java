@@ -62,8 +62,8 @@ public class ModRecipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemAsgardianRing,1,0),  " S ", "S S", " S ", 'S', ModItems.itemAsgardianSteelIngot));
 		
 		//BACKTOTHEFUTURE
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockMrFusion,1,0),  "III", "ICI", "OOO", 'I', Items.iron_ingot,'C',ModItems.itemFusionCoreFrame, 'O',Blocks.obsidian, 'E', ModItems.itemEnergyModule));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemFusionCoreFrame,1,0),  "III", "CNC", "III", 'I', Items.iron_ingot,'C', ModItems.itemFusionCasing, 'N', Items.nether_star, 'I', ModItems.itemEnergyModule));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockMrFusion,1,0),  "III", "ICI", "OOO", 'I', Items.iron_ingot,'C',ModItems.itemFusionCore, 'O',Blocks.obsidian, 'E', ModItems.itemEnergyModule));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemFusionCore,1,0),  "III", "CNC", "III", 'I', Items.iron_ingot,'C', ModItems.itemFusionCasing, 'N', Items.nether_star, 'I', ModItems.itemEnergyModule));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCable,4,0),  "RRR", "III", "RRR", 'I', Items.iron_ingot,'R',Items.redstone));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCable,4,1),  "RRR", "III", "RRR", 'I', Items.gold_ingot,'R',Items.redstone));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCable,8,2),  "RRR", "III", "RRR", 'I', Items.iron_ingot,'R',ModItems.itemAsgardite));

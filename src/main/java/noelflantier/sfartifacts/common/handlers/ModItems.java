@@ -14,7 +14,7 @@ import noelflantier.sfartifacts.common.items.ItemCable;
 import noelflantier.sfartifacts.common.items.ItemEnergyModule;
 import noelflantier.sfartifacts.common.items.ItemFluidModule;
 import noelflantier.sfartifacts.common.items.ItemFusionCasing;
-import noelflantier.sfartifacts.common.items.ItemFusionCoreFrame;
+import noelflantier.sfartifacts.common.items.ItemFusionCore;
 import noelflantier.sfartifacts.common.items.ItemHulkFlesh;
 import noelflantier.sfartifacts.common.items.ItemLightningRod;
 import noelflantier.sfartifacts.common.items.ItemMagnet;
@@ -55,7 +55,7 @@ public class ModItems {
 	public static Item itemMightyHulkRing;
 	public static Item itemFusionCasing;
 	public static Item itemCable;
-	public static Item itemFusionCoreFrame;
+	public static Item itemFusionCore;
 	
 	public static void loadItems() {
 
@@ -132,8 +132,8 @@ public class ModItems {
     	itemCable = new ItemCable();
     	RegisterHelper.registerItem(itemCable);
     	
-    	itemFusionCoreFrame = new ItemFusionCoreFrame();
-    	RegisterHelper.registerItem(itemFusionCoreFrame);
+    	itemFusionCore = new ItemFusionCore();
+    	RegisterHelper.registerItem(itemFusionCore);
     	
     	
 	}
