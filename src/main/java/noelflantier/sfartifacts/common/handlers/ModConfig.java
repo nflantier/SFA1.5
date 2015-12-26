@@ -23,10 +23,11 @@ public class ModConfig {
 	public static int capacityAsgarditeSoundEmitter;
 	public static int capacityMrFusion;
 	public static int capacityLiquidMrFusion;
-	public static int transfertCapacityCableBasic;
-	public static int transfertCapacityCableAdvanced;
-	public static int transfertCapacityCableBasicEnergized;
-	public static int transfertCapacityCableAdvancedEnergized;
+	public static int transfertCapacityInductorBasic;
+	public static int transfertCapacityInductorAdvanced;
+	public static int transfertCapacityInductorBasicEnergized;
+	public static int transfertCapacityInductorAdvancedEnergized;
+	public static int pureSiliconLifeSpan;
 	
 	public static int rfNeededThorHammer;
 	public static int rfMining;
@@ -110,8 +111,8 @@ public class ModConfig {
 			chanceToSpawnMightyFeather = config.get(Configuration.CATEGORY_GENERAL, "chance to drop mighty feather", 0.35, "Chance that chickens hit by lightning drop mighty feather [0-1]").getDouble();
 			
 			tickToCookVibraniumOres = config.get(CAT_ORES, "ticks", 6000, "The number of ticks needed to vibranium ores to be cooked 20 tick = 1 s").getInt();
-			isAsgarditeOreRegistrationEnable = config.get(CAT_ORES, "asgardite ore registration enable", true, "Is asgardite ore registration enable").getBoolean();
-			isVibraniumOreRegistrationEnable = config.get(CAT_ORES, "vibranium ore registration enable", true, "Is vibranium ore registration enable").getBoolean();
+			isAsgarditeOreRegistrationEnable = config.get(CAT_ORES, "asgardite ore spawn enable", true, "Is asgardite ore spawn enable").getBoolean();
+			isVibraniumOreRegistrationEnable = config.get(CAT_ORES, "vibranium ore spawn enable", true, "Is vibranium ore spawn enable").getBoolean();
 			minYVibranium = config.get(CAT_ORES, "min Y level for vibranium", 3, "The min Y level").getInt();
 			maxYVibranium = config.get(CAT_ORES, "max Y level for vibranium", 18, "The max Y level").getInt();
 			minVainSizeVibranium = config.get(CAT_ORES, "min vain size for vibranium", 2, "The min vain size").getInt();
@@ -142,10 +143,12 @@ public class ModConfig {
 			capacityLiquidMrFusion = config.get(CAT_MACHINES, "mr fusion liquid capacity", 1000000, "Mr fudion liquid capacity").getInt();
 			
 
-			transfertCapacityCableBasic = config.get(Configuration.CATEGORY_GENERAL, "basic cable transfert RF/T", 150, "Transfert rate RF/T").getInt();
-			transfertCapacityCableAdvanced = config.get(Configuration.CATEGORY_GENERAL, "advanced cable transfert RF/T", 500, "Transfert rate RF/T").getInt();
-			transfertCapacityCableBasicEnergized = config.get(Configuration.CATEGORY_GENERAL, "basic energized cable transfert RF/T", 1500, "Transfert rate RF/T").getInt();
-			transfertCapacityCableAdvancedEnergized = config.get(Configuration.CATEGORY_GENERAL, "advanced energized cable transfert RF/T", 5000, "Transfert rate RF/T").getInt();
+			transfertCapacityInductorBasic = config.get(Configuration.CATEGORY_GENERAL, "basic inductor transfert RF/T", 150, "Transfert rate RF/T").getInt();
+			transfertCapacityInductorAdvanced = config.get(Configuration.CATEGORY_GENERAL, "advanced inductor transfert RF/T", 500, "Transfert rate RF/T").getInt();
+			transfertCapacityInductorBasicEnergized = config.get(Configuration.CATEGORY_GENERAL, "basic energized inductor transfert RF/T", 1500, "Transfert rate RF/T").getInt();
+			transfertCapacityInductorAdvancedEnergized = config.get(Configuration.CATEGORY_GENERAL, "advanced energized inductor transfert RF/T", 5000, "Transfert rate RF/T").getInt();
+			
+			pureSiliconLifeSpan = config.get(Configuration.CATEGORY_GENERAL, "lifespan silicon", 150, "Lifespan of pure silicon before it decay in ticks 20 tick = 1 s").getInt();
 			
 			useOldRegistration = config.get(CAT_UTILS, "Use old registration", false, "In the newer version registered name have changed so if you have an id error set this to true").getBoolean();
 		}

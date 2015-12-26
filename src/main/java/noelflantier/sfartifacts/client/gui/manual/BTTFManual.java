@@ -62,6 +62,22 @@ public class BTTFManual  extends BaseManual{
 					}}
 				);
 
+		}else if(cat.equals("silicon")){
+			this.componentList.put("p1", 
+					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
+						defColor = EnumChatFormatting.BLACK;
+						addText("To makes chips you will need some pure silicon.",0,0);
+						addText("Pure silicon is made by smelting clear silicon",0,0);
+						addText("in a furnace, if you want to craft chips with",0,0);
+						addText("the pure silicon you'll have to hurry because",0,0);
+						addText("pure silicon will naturaly come back to clear",0,0);
+						addText("silicon after some times and you'll have to",0,0);
+						addText("recook it.",0,0);
+						addText("Clear silicon is made by smelting raw silicon",0,0);
+						addText("in a furnace.",0,0);
+					}}
+				);
+
 		}else if(cat.equals("index")){
 
 			this.componentList.put("mrfusion", new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
@@ -77,6 +93,13 @@ public class BTTFManual  extends BaseManual{
 				isLink = true;
 			}});
 			this.links.put("inductor", -1);
+
+			this.componentList.put("silicon", new GuiComponent(this.guiLeft+10, this.guiTop+50, 100, 10){{
+				defColor = EnumChatFormatting.BLACK;
+				addText("Silicon and Chips", 0, 0);
+				isLink = true;
+			}});
+			this.links.put("silicon", -1);
 			
 		}
 	}

@@ -11,17 +11,21 @@ import noelflantier.sfartifacts.common.items.ItemAsgardite;
 import noelflantier.sfartifacts.common.items.ItemAsgardiumPearl;
 import noelflantier.sfartifacts.common.items.ItemBasicHammer;
 import noelflantier.sfartifacts.common.items.ItemCable;
+import noelflantier.sfartifacts.common.items.ItemCircuitBoard;
 import noelflantier.sfartifacts.common.items.ItemEnergyModule;
 import noelflantier.sfartifacts.common.items.ItemFluidModule;
 import noelflantier.sfartifacts.common.items.ItemFusionCasing;
 import noelflantier.sfartifacts.common.items.ItemFusionCore;
+import noelflantier.sfartifacts.common.items.ItemGlassCutter;
 import noelflantier.sfartifacts.common.items.ItemHulkFlesh;
 import noelflantier.sfartifacts.common.items.ItemLightningRod;
 import noelflantier.sfartifacts.common.items.ItemMagnet;
 import noelflantier.sfartifacts.common.items.ItemManual;
+import noelflantier.sfartifacts.common.items.ItemMicroChip;
 import noelflantier.sfartifacts.common.items.ItemMightyFeather;
 import noelflantier.sfartifacts.common.items.ItemMightyHulkRing;
 import noelflantier.sfartifacts.common.items.ItemMold;
+import noelflantier.sfartifacts.common.items.ItemSilicon;
 import noelflantier.sfartifacts.common.items.ItemThorHammer;
 import noelflantier.sfartifacts.common.items.ItemUberMightyFeather;
 import noelflantier.sfartifacts.common.items.ItemVibraniumAlloy;
@@ -56,6 +60,10 @@ public class ModItems {
 	public static Item itemFusionCasing;
 	public static Item itemCable;
 	public static Item itemFusionCore;
+	public static Item itemSilicon;
+	public static Item itemGlassCutter;
+	public static Item itemMicroChip;
+	public static Item itemCircuitBoard;
 	
 	public static void loadItems() {
 
@@ -134,7 +142,18 @@ public class ModItems {
     	
     	itemFusionCore = new ItemFusionCore();
     	RegisterHelper.registerItem(itemFusionCore);
+
+    	itemSilicon = new ItemSilicon();
+    	RegisterHelper.registerItem(itemSilicon);
     	
+    	itemGlassCutter = new ItemGlassCutter();
+    	RegisterHelper.registerItem(itemGlassCutter);
+    	
+    	itemMicroChip = new ItemMicroChip();
+    	RegisterHelper.registerItem(itemMicroChip);
+    	
+    	itemCircuitBoard = new ItemCircuitBoard();
+    	RegisterHelper.registerItem(itemCircuitBoard);
     	
 	}
 	

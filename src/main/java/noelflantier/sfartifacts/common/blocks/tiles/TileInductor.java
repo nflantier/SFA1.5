@@ -33,10 +33,10 @@ public class TileInductor extends TileSFA implements ITileCanBeMaster,ITileWirel
     public boolean canRecieve = true;
     public int energyCapacity = 0;
     public static List<Integer> energyCapacityConfig = new ArrayList(){{
-    	add(0,ModConfig.transfertCapacityCableBasic);
-    	add(1,ModConfig.transfertCapacityCableAdvanced);
-    	add(2,ModConfig.transfertCapacityCableBasicEnergized);
-    	add(3,ModConfig.transfertCapacityCableAdvancedEnergized);
+    	add(0,ModConfig.transfertCapacityInductorBasic);
+    	add(1,ModConfig.transfertCapacityInductorAdvanced);
+    	add(2,ModConfig.transfertCapacityInductorBasicEnergized);
+    	add(3,ModConfig.transfertCapacityInductorAdvancedEnergized);
     }};
     public EnergyStorage storage = new EnergyStorage(0,0,0);
 	public int lastEnergyStoredAmount = -1;

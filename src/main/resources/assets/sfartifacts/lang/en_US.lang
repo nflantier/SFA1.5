@@ -32,6 +32,16 @@ item.itemCable.basic.name=Cable (Basic)
 item.itemCable.advanced.name=Cable (Advanced)
 item.itemCable.basicenergized.name=Cable (Basic Energized)
 item.itemCable.advancedenergized.name=Cable (Advanced Energized)
+item.itemSilicon.raw.name=Raw silicon
+item.itemSilicon.clear.name=Clear silicon
+item.itemSilicon.pure.name=Pure silicon
+item.itemGlassCutter.name=Glass cutter
+item.itemMicroChip.single.name=One core chip
+item.itemMicroChip.dual.name=Dual core chip
+item.itemMicroChip.quad.name=Quad core chip
+item.itemCircuitBoard.single.name=Single core circuit board
+item.itemCircuitBoard.dual.name=Dual core circuit board
+item.itemCircuitBoard.quad.name=Quad core circuit board
 
 entity.sfartifacts.thorhammerinvoking.name=Falling Hammer
 entity.sfartifacts.thorhammerthrow.name=Mining Hammer

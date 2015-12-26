@@ -75,11 +75,12 @@ public class HulkManual extends BaseManual{
 					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 						defColor = EnumChatFormatting.BLACK;
 						addText("The  Mighty Hulk Ring give you more health regen,",0,0);
-						addText("more speed, step assist, augmented jump, prevent",0,0);
+						addText("more speed, step assist, augmented jump, reduce",0,0);
 						addText("fall damages and your bares hand becomes stronger,",0,0);
 						addText("you can mine and fight pretty efficiently with",0,0);
 						addText("them. To equip the ring you have to use Baubles,",0,0);
-						addText("and put the ring in a ring slot.",0,0);
+						addText("and put the ring in a ring slot. However the ring",0,0);
+						addText("as side effect on your hunger you'll be hungry faster.",0,0);
 					}}
 				);
 

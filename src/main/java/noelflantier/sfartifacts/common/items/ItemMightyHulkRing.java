@@ -79,7 +79,9 @@ public class ItemMightyHulkRing  extends ItemBaubles implements IBauble{
 			
 			IInventory ip = BaublesApi.getBaubles(player);
 			if(ip!=null && BaublesHelper.hasItemClass(ItemMightyHulkRing.class	, ip)){
-				event.distance = 0;
+				event.distance = event.distance>14F?(event.distance-14F)/2.5F:0F;
+				if(event.distance>0)
+					player.getFoodStats().addExhaustion(0.05F);
 			}
 		}
 	}
@@ -88,13 +90,14 @@ public class ItemMightyHulkRing  extends ItemBaubles implements IBauble{
 	public void onPlayerJump(LivingJumpEvent event) {
 		if(event.entityLiving instanceof EntityPlayer) {
 	    	EntityPlayer player = (EntityPlayer)event.entityLiving;
-			if(player == null)
+			if(player == null || player.isSneaking())
 				return;
 			ModPlayerStats stats = ModPlayerStats.get(player);
 			if(stats !=null && stats.tickHasHulkFleshEffect>0)
 				return;
 			IInventory ip = BaublesApi.getBaubles(player);
 			if(ip!=null && BaublesHelper.hasItemClass(ItemMightyHulkRing.class	, ip)){
+				player.getFoodStats().addExhaustion(0.01F);
 				player.motionY += 0.5;
 				player.motionX *= 4.3;
 				player.motionZ *= 4.3;
@@ -113,6 +116,15 @@ public class ItemMightyHulkRing  extends ItemBaubles implements IBauble{
 				return;
 			IInventory ip = BaublesApi.getBaubles(player);
 			if(ip!=null && BaublesHelper.hasItemClass(ItemMightyHulkRing.class	, ip)){
+				player.addExhaustion(0.02F);
+
+				if (player.getHealth() < player.getMaxHealth()){//REGEN
+					if(player.getFoodStats().getFoodLevel()<=0)
+						player.heal(0.07F);
+					else
+						player.heal(0.17F);
+				}
+					
 		    	float f = Utils.isPlayerInFluid(player,1.22F);
 				player.motionX *= f;
 				player.motionZ *= f;
@@ -133,7 +145,7 @@ public class ItemMightyHulkRing  extends ItemBaubles implements IBauble{
             int knockback = 4;
             event.target.attackEntityFrom(DamageSource.causePlayerDamage(event.entityPlayer), damages);
             event.target.addVelocity((double)(-MathHelper.sin(event.entity.rotationYaw * (float)Math.PI / 180.0F) * (float)knockback * 0.5F), 0.3D, (double)(MathHelper.cos(event.entity.rotationYaw * (float)Math.PI / 180.0F) * (float)knockback * 0.5F));
-            event.entityPlayer.addExhaustion(0.3F);
+			player.getFoodStats().addExhaustion(0.3F);
 			event.setCanceled(true);
 		}
 	}
@@ -141,7 +153,6 @@ public class ItemMightyHulkRing  extends ItemBaubles implements IBauble{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
-		//list.add(String.format("Make your finger angry"));
 	}
 	
 	@Override
@@ -152,9 +163,6 @@ public class ItemMightyHulkRing  extends ItemBaubles implements IBauble{
 	@Override
 	public void onWornTick(ItemStack stack, EntityLivingBase player) {
 		super.onWornTick(stack, player);
-		if (player.getHealth() < player.getMaxHealth())//REGEN
-			player.heal(0.2F);
-         	 
 		if(player.stepHeight <1)//STEP
 			player.stepHeight = 1F;
 		
@@ -182,8 +190,8 @@ public class ItemMightyHulkRing  extends ItemBaubles implements IBauble{
 	}
 	   
 	void fillModifiers(Multimap<String, AttributeModifier> attributes, ItemStack stack) {
-		attributes.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), 
-				new AttributeModifier(getUUID(stack),"SFA modifier", 20, 0));
+		/*attributes.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), 
+				new AttributeModifier(getUUID(stack),"SFA modifier", 20, 0));*/
 		attributes.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), 
 				new AttributeModifier(getUUID(stack),"SFA modifier", 0.13, 0));
 		attributes.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), 
