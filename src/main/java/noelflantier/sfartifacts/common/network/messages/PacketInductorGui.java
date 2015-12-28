@@ -43,7 +43,7 @@ public class PacketInductorGui  implements IMessage, IMessageHandler<PacketInduc
 					((TileInductor)te).canSend = message.typevalue;
 					break;
 				case 3 :
-					((TileInductor)te).canSend = message.typevalue;
+					((TileInductor)te).canRecieve = message.typevalue;
 					break;
 				default:
 					break;

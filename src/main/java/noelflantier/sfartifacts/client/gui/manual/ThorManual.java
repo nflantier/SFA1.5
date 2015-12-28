@@ -106,17 +106,18 @@ public class ThorManual extends BaseManual{
 						addText("Pillars can be linked wirelessly,",0,0);
 						addText("with the basic hammer, to",0,0);
 						addText("any asgardian machine or any other",0,0);
-						addText("mod machine which accept RF.",0,0);
+						addText("mod machines which accept RF.",0,0);
 						addText("Once linked it will provide energy",0,0);
-						addText("to the connected machine.",0,0);
+						addText("in equal share to all the connected",0,0);
+						addText("machines.",0,0);
 						addText("Or pillars can directly recieve",0,10);
 						addText("/transmit fluid and energy by their",0,0);
 						addText("interface :",0,0);
 					}}
 				);
 			this.componentList.put("im2", 
-					new GuiImage(this.guiLeft+150, this.guiTop+120, 16, 16, 
-							new ResourceLocation(References.MODID+":textures/blocks/asgardite_interface_out.png"))
+					new GuiImage(this.guiLeft+150, this.guiTop+130, 16, 16, 
+							new ResourceLocation(References.MODID+":textures/blocks/asgardite_full_interface_out.png"))
 				);
 			this.componentList.put("pillars", new GuiComponent(this.guiLeft+10, this.guiTop+145, 35, 10){{
 				defColor = EnumChatFormatting.BLACK;

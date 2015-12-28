@@ -2,6 +2,7 @@ package noelflantier.sfartifacts.common.blocks.tiles;
 
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -53,8 +54,7 @@ public class TileControlPannel extends TileSFA implements ITileCanBeSidedToPilla
 	@Override
 	public World getWorld() {
 		return this.worldObj;
-	}	
-	
+	}
 	
 	@Override
     public void writeToNBT(NBTTagCompound nbt) {

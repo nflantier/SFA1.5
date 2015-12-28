@@ -293,6 +293,11 @@ public abstract class TileMachine extends TileSFA implements ISFAFluid,ISFAEnerg
 	}
 
 	@Override
+	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+		return worldObj.getTileEntity(xCoord, yCoord, zCoord) != this ? false : entityplayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64;
+	}
+	
+	@Override
 	public void addToWaila(List<String> list) {
 		list.add("Status : "+(this.worldObj.getBlockPowerInput(xCoord, yCoord, zCoord)>0?"Processing and port disable":this.isManualyEnable?"Processing enable":"Processing disable")+"");
 		list.add("Energy : "+NumberFormat.getNumberInstance().format(this.getEnergyStored(ForgeDirection.UNKNOWN))+" RF / "+NumberFormat.getNumberInstance().format(this.getMaxEnergyStored(ForgeDirection.UNKNOWN))+" RF");

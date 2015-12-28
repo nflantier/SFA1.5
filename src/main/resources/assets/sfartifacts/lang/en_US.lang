@@ -39,7 +39,7 @@ item.itemGlassCutter.name=Glass cutter
 item.itemMicroChip.single.name=One core chip
 item.itemMicroChip.dual.name=Dual core chip
 item.itemMicroChip.quad.name=Quad core chip
-item.itemCircuitBoard.single.name=Single core circuit board
+item.itemCircuitBoard.single.name=One core circuit board
 item.itemCircuitBoard.dual.name=Dual core circuit board
 item.itemCircuitBoard.quad.name=Quad core circuit board
 

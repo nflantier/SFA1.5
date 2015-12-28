@@ -1,8 +1,11 @@
 package noelflantier.sfartifacts.client.gui.manual;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
@@ -19,12 +22,17 @@ public abstract class BaseManual extends GuiSFAScreen{
 	public EntityPlayer player;
 	public Hashtable<String,Integer> links = new Hashtable<String,Integer>();
 	public boolean catOpen = false;
+	public int tickKeyBack = 10;
+	public int currentTickKeyBack = 0;
+	public List<String> history = new ArrayList<String>();
+	public int maxHistorySize = 10;
 	public String currentCat = "index";
 	
 	public BaseManual(){
 		super();
 		this.xSize = 300;
 		this.ySize = 194;
+		this.history.add("index");
 	}
 
 	public BaseManual(EntityPlayer player){
@@ -39,7 +47,6 @@ public abstract class BaseManual extends GuiSFAScreen{
 		drawCat(this.currentCat, 1,1,1);
 	}
 	
-
 	public abstract void drawCat(String cat, int x, int y, float f);
 
 	@Override
@@ -54,6 +61,12 @@ public abstract class BaseManual extends GuiSFAScreen{
         return false;
     }
 	
+	public void addHistory(String key){
+		if(this.history.size()>=this.maxHistorySize)
+			this.history.remove(0);
+		this.history.add(this.history.size(),key);
+	} 
+	
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
 		super.mouseClicked(x, y, button);
@@ -62,10 +75,12 @@ public abstract class BaseManual extends GuiSFAScreen{
 		    String key = enumKey.nextElement();
 		    if(this.componentList.get(key).clicked(x, y)){
 	    		if(this.links.get(key)>0){
+	    			this.history.clear();
 	    			this.mc.thePlayer.closeScreen();
 	    			player.openGui(SFArtifacts.instance, this.links.get(key), Minecraft.getMinecraft().theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
 	    		}else{
 	    			this.currentCat = key;
+	    			addHistory(key);
 	    			this.catOpen = true;
 	    			this.initGui();
 	    		}
@@ -77,6 +92,18 @@ public abstract class BaseManual extends GuiSFAScreen{
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
+		if(Keyboard.isKeyDown(Keyboard.KEY_BACK) && currentTickKeyBack<=0){
+			currentTickKeyBack = tickKeyBack;
+			if(this.history.size()>1){
+				int r = this.history.size()-1;
+				this.history.remove(r);
+				this.currentCat = this.history.get(r-1);
+				System.out.println("gg "+this.history.get(r-1));
+    			this.catOpen = true;
+    			this.initGui();
+			}
+		}else if(currentTickKeyBack>0)
+			currentTickKeyBack-=1;
 	}
 
 	@Override

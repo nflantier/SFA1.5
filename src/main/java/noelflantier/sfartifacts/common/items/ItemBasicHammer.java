@@ -99,6 +99,7 @@ public class ItemBasicHammer extends ItemSFA implements IItemHasModes{
 		}else{
 			ItemNBTHelper.setBoolean(stack, "haschild", false);
 			ItemNBTHelper.setBoolean(stack, "hasmaster", false);
+			player.addChatComponentMessage(new ChatComponentText("Hammer reset"));
 		}
 		
 		if(ItemNBTHelper.getBoolean(stack, "haschild", false) && ItemNBTHelper.getBoolean(stack, "hasmaster", false)){
@@ -110,14 +111,14 @@ public class ItemBasicHammer extends ItemSFA implements IItemHasModes{
 			ITileCanBeMaster tcbm = (ITileCanBeMaster)tm;
 			if(tm instanceof TileInductor && tc instanceof TileInductor){
 				ITileCanBeMaster tcbm2 = (ITileCanBeMaster)tc;
-				if(tcbm.getChildsList().stream().anyMatch((c)->tc.xCoord==c.x && tc.yCoord==c.y && tc.zCoord==c.z)
-						|| tcbm2.getChildsList().stream().anyMatch((c)->tm.xCoord==c.x && tm.yCoord==c.y && tm.zCoord==c.z)){
+				if(tcbm.getChildsList().stream().anyMatch((c)->tc.xCoord==c.x && tc.yCoord==c.y && tc.zCoord==c.z)){
 					tcbm.getChildsList().removeIf((c)->tc.xCoord==c.x && tc.yCoord==c.y && tc.zCoord==c.z);
-					tcbm2.getChildsList().removeIf((c)->tm.xCoord==c.x && tm.yCoord==c.y && tm.zCoord==c.z);
+					//tcbm2.getChildsList().removeIf((c)->tm.xCoord==c.x && tm.yCoord==c.y && tm.zCoord==c.z);
+					player.addChatComponentMessage(new ChatComponentText("Inductor removed"));
 				}else{
 					tcbm.getChildsList().add(new Coord4(tc.xCoord,tc.yCoord,tc.zCoord));
-					tcbm2.getChildsList().add(new Coord4(tm.xCoord,tm.yCoord,tm.zCoord));
-					player.addChatComponentMessage(new ChatComponentText("Inductor connected!"));
+					//tcbm2.getChildsList().add(new Coord4(tm.xCoord,tm.yCoord,tm.zCoord));
+					player.addChatComponentMessage(new ChatComponentText("Inductor connected"));
 				}
 				ItemNBTHelper.setBoolean(stack, "haschild", false);
 				ItemNBTHelper.setBoolean(stack, "hasmaster", false);
@@ -139,6 +140,7 @@ public class ItemBasicHammer extends ItemSFA implements IItemHasModes{
 			}
 			
 			if(ItemNBTHelper.getBoolean(stack, "haschild", false) && ItemNBTHelper.getBoolean(stack, "hasmaster", false)){
+				ItemNBTHelper.setBoolean(stack, "hasmaster", false);
 				ItemNBTHelper.setBoolean(stack, "haschild", false);
 			}
 			return true;

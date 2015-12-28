@@ -56,6 +56,8 @@ public class BTTFManual  extends BaseManual{
 						addText("Inductor can transmit power wirelessly.",0,0);
 						addText("To associate inductors you need to right click them with",0,0);
 						addText("the basic hammer set in basic mode.",0,0);
+						addText("The first inductor right clicked will provide energy",0,0);
+						addText("to the other one.",0,0);
 						addText("You can setup the inductor transmission in it gui.",0,0);
 						addText("The inductor will share all its power equally, to all the",0,0);
 						addText("other connected inductors.",0,0);

@@ -166,7 +166,9 @@ public class TileInjector extends TileAsgardianMachine implements ITileUsingMate
 	public void isNotRunningProcess(int idline){
 		this.currentTickToInject[idline] = this.tickToInject;
 		this.currentRecipeName[idline]= "none";
-
+		if(items[idline*2+1]==null && items[idline*2+1+1]==null)
+			return;
+		
 		List<ISFARecipe> recipes = RecipesRegistry.instance.getOrderedRecipesWithItemStacks(this, getInputStacks(idline));
 		if(recipes!=null && !recipes.isEmpty()){
 			for(ISFARecipe recipe : recipes){

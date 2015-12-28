@@ -26,7 +26,7 @@ public class ItemSilicon extends ItemSFA{
 
 	public IIcon[] metaIcons;
 	public static String[] typeSilicon = new String[] {"raw", "clear", "pure"};
-	public static int[] colorPrct = new int[]{16777215, 16250871, 15790320, 15263976, 14737632 };
+	public static int[] colorPrct = new int[]{16777215, 14606046, 12434877, 10921638, 9737364 };
 	
     public ItemSilicon(){
 		super("Silicon");
@@ -79,15 +79,19 @@ public class ItemSilicon extends ItemSFA{
 	@Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int p_82790_2_){
-		/*if(stack.getItemDamage()==2){
+		if(stack.getItemDamage()==2){
     		long age = ItemNBTHelper.getLong(stack, "agesilicon", -1);
     		if(age>-1){
     			float prct = (float)Math.round( ((1 - (float)((float)age-(float)ItemNBTHelper.getLong(stack, "worldtime", age)) / (float)ModConfig.pureSiliconLifeSpan) * 10)) / 10;
     			int c = Math.round(colorPrct.length*prct);
-    	        return c<colorPrct.length?colorPrct[c]:13688896;
+    			if(c%2==0)
+    				c=0;
+    			else
+    				c=1;
+    	        return c<colorPrct.length?colorPrct[c]:14737632;
     		}
-	        return 13688896;
-		}*/
+	        return 14737632;
+		}
         return 16777215;
     }
 
