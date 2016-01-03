@@ -56,12 +56,15 @@ public class RenderBlockMightyFoundry  extends TileEntitySpecialRenderer impleme
 	public void renderItems(TileEntity tile){
         if(tile!=null && tile instanceof TileMightyFoundry){
         	TileMightyFoundry t = (TileMightyFoundry)tile;
-
+        	
         	for(int i =0;i<4;i++){
             	if(t.items[i+2]!=null){
         	        GL11.glPushMatrix();
     				GL11.glTranslatef((float)0.2, (float)0.62, (float)0);
-    				float rot = (SFArtifacts.instance.myProxy.sfaEvents.getClientTick()%(360/7))*7F;
+    				long tic = SFArtifacts.instance.myProxy.sfaEvents.getClientTick();
+    	        	/*if(tic%2==0)
+    	        		tic+=1;*/
+    				float rot = (tic%(360/2))*2F;
     		        GL11.glRotatef(rot ,0F, 1F, 0F);
     				EntityItem itemEntity2 = new EntityItem(tile.getWorldObj(), 0, 0, 0, t.items[i+2]);
     				itemEntity2.hoverStart = 0.0F;

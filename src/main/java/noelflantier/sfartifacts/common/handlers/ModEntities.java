@@ -9,6 +9,7 @@ import noelflantier.sfartifacts.common.entities.EntityHulk;
 import noelflantier.sfartifacts.common.entities.EntityItemParticle;
 import noelflantier.sfartifacts.common.entities.EntityItemStronk;
 import noelflantier.sfartifacts.common.entities.EntityShieldThrow;
+import noelflantier.sfartifacts.common.entities.EntityShieldThrowCaptain;
 import cpw.mods.fml.common.registry.EntityRegistry;
 
 public class ModEntities {
@@ -20,6 +21,7 @@ public class ModEntities {
 		createEntity(EntityItemStronk.class,"itemstronk", 3, 32, 5, true);
 		createEntity(EntityShieldThrow.class,"vibraniumshieldthrow", 4, 100, 5, true);
 		createEntity(EntityHulk.class,"hulk", 5, 100, 1, true);//0x239925, 0x136B23
+		createEntity(EntityShieldThrowCaptain.class,"captainamericashieldthrow", 6, 100, 5, true);
 	}
 	
 	/*public static void createEgg(int id, int solidColor, int spotColor){

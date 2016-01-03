@@ -46,6 +46,7 @@ item.itemCircuitBoard.quad.name=Quad core circuit board
 entity.sfartifacts.thorhammerinvoking.name=Falling Hammer
 entity.sfartifacts.thorhammerthrow.name=Mining Hammer
 entity.sfartifacts.vibraniumshieldthrow.name=Moving Shield
+entity.sfartifacts.captainamericashieldthrow.name=Swaged Captain Moving Shield
 entity.sfartifacts.hulk.name=Angry Hulk
 
 tile.blockControlPanel.name=Control Panel

@@ -31,6 +31,8 @@ public class BlockOreVibranium extends BlockSFA {
 	public static String[] typeVibranium = new String[] {"0", "35", "65", "100"};
 	public static int[][] tabC = {{0,0,1},{0,0,-1},{1,0,0},{-1,0,0},{0,1,0},{0,-1,0}};
 	public static int tickBase = ModConfig.tickToCookVibraniumOres/16;
+
+	//public static int tickBase = ModConfig.tickToCookVibraniumOres>16?ModConfig.tickToCookVibraniumOres/16:1;
 	
 	public BlockOreVibranium(Material material) {
 		super(material, "Ore Vibranium");
@@ -147,9 +149,10 @@ public class BlockOreVibranium extends BlockSFA {
     	if(meta!=15){
     		if(tick<tickBase){
 	    		world.setBlockMetadataWithNotify(x, y, z, meta+1, 2);
-	    		world.scheduleBlockUpdate(x, y, z, this, tick);
-    		}else
-        		world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+	    		world.scheduleBlockUpdate(x, y, z, world.getBlock(x, y, z), tick<0?1:tick);
+    		}else{
+        		world.scheduleBlockUpdate(x, y, z, world.getBlock(x, y, z), tickRate(world));
+    		}
     	}
     	
     }

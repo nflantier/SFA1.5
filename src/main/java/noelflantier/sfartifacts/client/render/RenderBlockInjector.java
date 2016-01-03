@@ -264,6 +264,7 @@ public class RenderBlockInjector extends TileEntitySpecialRenderer  implements I
 	        GL11.glPushMatrix();
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glDepthMask(false);
+				GL11.glScalef(1.01F, 1.01F, 1.01F);
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				GL11.glColor4f(1F, 1F, 1F, 0.5F);
 				Minecraft.getMinecraft().renderEngine.bindTexture(this.textureGlass);

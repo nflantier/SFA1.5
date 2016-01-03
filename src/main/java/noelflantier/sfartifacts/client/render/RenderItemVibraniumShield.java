@@ -17,6 +17,7 @@ public class RenderItemVibraniumShield  implements IItemRenderer{
 	
 	private ResourceLocation objVS = new ResourceLocation(References.MODID+":textures/items/models/vibraniumshield.obj");
 	private ResourceLocation textVS = new ResourceLocation(References.MODID+":textures/items/models/vibraniumshield.png");
+	private ResourceLocation textVSCA = new ResourceLocation(References.MODID+":textures/items/models/captainamericashield.png");
 	private ResourceLocation objHS = new ResourceLocation(References.MODID+":textures/items/models/handleshield.obj");
 	private ResourceLocation textHS = new ResourceLocation(References.MODID+":textures/items/models/handleshield.png");
 	private IModelCustom modelVibraniumShield;
@@ -40,10 +41,14 @@ public class RenderItemVibraniumShield  implements IItemRenderer{
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack stack, Object... data) {
 		GL11.glPushMatrix();
+		ResourceLocation textVSt = textVS;
+		if(stack.getItemDamage()==1)
+			textVSt = textVSCA;
+		
 		switch(type){
 		case ENTITY:
 			GL11.glScalef(1.5F, 1.5F, 1.5F);
-			Minecraft.getMinecraft().renderEngine.bindTexture(textVS);
+			Minecraft.getMinecraft().renderEngine.bindTexture(textVSt);
 			this.modelVibraniumShield.renderAll();
 			Minecraft.getMinecraft().renderEngine.bindTexture(textHS);
 			this.modelHandleShield.renderAll();
@@ -56,7 +61,7 @@ public class RenderItemVibraniumShield  implements IItemRenderer{
 					GL11.glRotatef(-70,0F, 0F,1F);
 					GL11.glTranslatef(-0.4F, 0F, 0.8F);
 					GL11.glScalef(1.5F, 1.5F,1.5F);
-					Minecraft.getMinecraft().renderEngine.bindTexture(textVS);
+					Minecraft.getMinecraft().renderEngine.bindTexture(textVSt);
 					this.modelVibraniumShield.renderAll();
 					GL11.glRotatef(90,0F, 1F, 0F);
 					Minecraft.getMinecraft().renderEngine.bindTexture(textHS);
@@ -67,7 +72,7 @@ public class RenderItemVibraniumShield  implements IItemRenderer{
 					GL11.glRotatef(270,0F, 0F,1F);
 					GL11.glTranslatef(0F, 0F, 1.8F);
 					GL11.glScalef(1.5F, 1.5F,1.5F);
-					Minecraft.getMinecraft().renderEngine.bindTexture(textVS);
+					Minecraft.getMinecraft().renderEngine.bindTexture(textVSt);
 					this.modelVibraniumShield.renderAll();
 					GL11.glRotatef(90,0F, 1F, 0F);
 					Minecraft.getMinecraft().renderEngine.bindTexture(textHS);
@@ -79,7 +84,7 @@ public class RenderItemVibraniumShield  implements IItemRenderer{
 			GL11.glScalef(0.8F, 0.8F, 0.8F);
 			GL11.glTranslatef(0F, 0F, 0F);
 			GL11.glRotatef(30,1F, 0F,0F);
-			Minecraft.getMinecraft().renderEngine.bindTexture(textVS);
+			Minecraft.getMinecraft().renderEngine.bindTexture(textVSt);
 			this.modelVibraniumShield.renderAll();
 			break;
 		case EQUIPPED:
@@ -90,7 +95,7 @@ public class RenderItemVibraniumShield  implements IItemRenderer{
 					GL11.glTranslatef(0F, -1.1F,1F);
 					
 					GL11.glScalef(1.5F, 1.5F,1.5F);
-					Minecraft.getMinecraft().renderEngine.bindTexture(textVS);
+					Minecraft.getMinecraft().renderEngine.bindTexture(textVSt);
 					this.modelVibraniumShield.renderAll();
 					GL11.glRotatef(90,0F, 1F, 0F);
 					Minecraft.getMinecraft().renderEngine.bindTexture(textHS);
@@ -103,7 +108,7 @@ public class RenderItemVibraniumShield  implements IItemRenderer{
 					GL11.glRotatef(90,0F, 0F,1F);
 					GL11.glTranslatef(0.5F, 0.2F, -1.5F);
 					GL11.glScalef(1.5F, 1.5F,1.5F);
-					Minecraft.getMinecraft().renderEngine.bindTexture(textVS);
+					Minecraft.getMinecraft().renderEngine.bindTexture(textVSt);
 					this.modelVibraniumShield.renderAll();
 					GL11.glRotatef(90,0F, 1F, 0F);
 					Minecraft.getMinecraft().renderEngine.bindTexture(textHS);

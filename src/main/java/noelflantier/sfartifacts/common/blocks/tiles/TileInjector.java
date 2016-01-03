@@ -5,6 +5,8 @@ import java.util.Hashtable;
 import java.util.List;
 
 import cofh.api.energy.EnergyStorage;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -16,6 +18,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileBlockPillar;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
+import noelflantier.sfartifacts.common.helpers.ParticleHelper;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
 import noelflantier.sfartifacts.common.network.messages.PacketFluid;
@@ -210,6 +213,29 @@ public class TileInjector extends TileAsgardianMachine implements ITileUsingMate
 			add(items[idline*2+1+6]);
 			add(items[idline*2+1+1+6]);
 		}};
+	}
+
+	@Override
+    @SideOnly(Side.CLIENT)
+	public void processClientMachine(){	
+		boolean p = false;
+		for(int i=0;i<this.isRunning.length;i++){
+			if(this.isRunning[i]){
+				this.isRunningProcess(i);
+				p = true;
+			}else{
+				this.isNotRunningProcess(i);
+			}
+		}
+		if(p && this.randomMachine.nextFloat()<0.1F){
+			float nx = 0.5F+ForgeDirection.getOrientation(side).offsetX;
+			float ny = 0.5F+ForgeDirection.getOrientation(side).offsetY;
+			float nz = 0.5F+ForgeDirection.getOrientation(side).offsetZ;
+			nx = nx<0?nx+0.4F:nx>0.5F?nx-0.4F:nx;
+			ny = ny<0?ny+0.4F:ny>0.5F?ny-0.4F:ny;
+			nz = nz<0?nz+0.4F:nz>0.5F?nz-0.4F:nz;
+			ParticleHelper.spawnCustomParticle(ParticleHelper.Type.LIGHTNING, this.xCoord+nx, this.yCoord+ny+0.1F, this.zCoord+nz);
+		}
 	}
 	
 	public boolean processInjecting(){

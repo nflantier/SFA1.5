@@ -25,14 +25,14 @@ import noelflantier.sfartifacts.common.helpers.RenderBlocksHelper;
 
 public class RenderBlockSoundEmitter  extends TileEntitySpecialRenderer  implements IItemRenderer,ISimpleBlockRenderingHandler {
 
-	private ResourceLocation objTop= new ResourceLocation(References.MODID+":textures/blocks/models/topsound.obj");
-	private ResourceLocation textureTop= new ResourceLocation(References.MODID+":textures/blocks/models/topsound.png");
+	private ResourceLocation objTop= new ResourceLocation(References.MODID+":textures/blocks/models/soundemitter-top.obj");
+	private ResourceLocation textureTop= new ResourceLocation(References.MODID+":textures/blocks/models/soundemitter-top.png");
 	private IModelCustom modelTop;
-	private ResourceLocation objAmp= new ResourceLocation(References.MODID+":textures/blocks/models/amplifier.obj");
-	private ResourceLocation textureAmp= new ResourceLocation(References.MODID+":textures/blocks/models/amplifier.png");
+	private ResourceLocation objAmp= new ResourceLocation(References.MODID+":textures/blocks/models/soundemitter-amplifier.obj");
+	private ResourceLocation textureAmp= new ResourceLocation(References.MODID+":textures/blocks/models/soundemitter-amplifier.png");
 	private IModelCustom modelAmp;
-	private ResourceLocation objGlass= new ResourceLocation(References.MODID+":textures/blocks/models/glasssound.obj");
-	private ResourceLocation textureGlass= new ResourceLocation(References.MODID+":textures/blocks/models/glasssound.png");
+	private ResourceLocation objGlass= new ResourceLocation(References.MODID+":textures/blocks/models/soundemitter-glass.obj");
+	private ResourceLocation textureGlass= new ResourceLocation(References.MODID+":textures/blocks/models/soundemitter-glass.png");
 	private IModelCustom modelGlass;
 	
 	public RenderBlockSoundEmitter(){

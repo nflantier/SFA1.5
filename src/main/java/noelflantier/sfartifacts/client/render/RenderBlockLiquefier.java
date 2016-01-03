@@ -161,7 +161,7 @@ public class RenderBlockLiquefier  extends TileEntitySpecialRenderer implements 
         	if(t.items[0]!=null){
     	        GL11.glPushMatrix();
     				GL11.glTranslatef((float)0.F, (float)0.35, (float)0);
-    				float rot = (SFArtifacts.instance.myProxy.sfaEvents.getClientTick()%(360/7))*7F;
+    				float rot = (SFArtifacts.instance.myProxy.sfaEvents.getClientTick()%(360/2))*2F;
     		        GL11.glRotatef(rot ,0F, 1F, 0F);
     				EntityItem itemEntity2 = new EntityItem(tile.getWorldObj(), 0, 0, 0, t.items[0]);
     				itemEntity2.hoverStart = 0.0F;

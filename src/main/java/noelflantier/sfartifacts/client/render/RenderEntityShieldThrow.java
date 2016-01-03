@@ -14,12 +14,11 @@ import noelflantier.sfartifacts.common.handlers.ModItems;
 
 import org.lwjgl.opengl.GL11;
 
-public class RenderEntityShieldThrow  extends Render{
+public class RenderEntityShieldThrow extends Render{
 	
 
-    public RenderEntityShieldThrow()
-    { }
-
+    public RenderEntityShieldThrow(){
+    }
 	@Override
 	public void doRender(Entity entity, double x, double y, double z, float f1, float f2) {
 		GL11.glPushMatrix();
@@ -29,8 +28,7 @@ public class RenderEntityShieldThrow  extends Render{
 	}
 	
 	public void doRender(EntityShieldThrow entity, double x, double y, double z, float f2) {
-		
-		EntityItem itemEntity = new EntityItem(entity.worldObj, 0, 0, 0, new ItemStack(ModItems.itemVibraniumShield));
+		EntityItem itemEntity = new EntityItem(entity.worldObj, 0, 0, 0, new ItemStack(ModItems.itemVibraniumShield, 1,0 ));
 		itemEntity.hoverStart = 0.0F;
 		
         GL11.glPushMatrix();

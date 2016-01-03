@@ -30,23 +30,23 @@ public class RenderBlockHammerStand extends TileEntitySpecialRenderer  implement
 	private IModelCustom modeltop;
 	private IModelCustom modeltopbroken;
 
-	private ResourceLocation resBaseT = new ResourceLocation(References.MODID+":textures/blocks/models/basestand.png");
-	private ResourceLocation resBaseBrokenT = new ResourceLocation(References.MODID+":textures/blocks/models/basestandbroken.png");
-	private ResourceLocation resPiedT = new ResourceLocation(References.MODID+":textures/blocks/models/piedballante.png");
-	private ResourceLocation resBalT = new ResourceLocation(References.MODID+":textures/blocks/models/ballante.png");
-	private ResourceLocation resBalBrokenT = new ResourceLocation(References.MODID+":textures/blocks/models/theballantebroken.png");
-	private ResourceLocation resTopT = new ResourceLocation(References.MODID+":textures/blocks/models/topedge.png");
-	private ResourceLocation resTopBrokenT = new ResourceLocation(References.MODID+":textures/blocks/models/topedgebroken.png");
+	private ResourceLocation resBaseT = new ResourceLocation(References.MODID+":textures/blocks/models/hammerstand-base.png");
+	private ResourceLocation resBaseBrokenT = new ResourceLocation(References.MODID+":textures/blocks/models/hammerstand-basebroken.png");
+	private ResourceLocation resPiedT = new ResourceLocation(References.MODID+":textures/blocks/models/hammerstand-piedballante.png");
+	private ResourceLocation resBalT = new ResourceLocation(References.MODID+":textures/blocks/models/hammerstand-ballante.png");
+	private ResourceLocation resBalBrokenT = new ResourceLocation(References.MODID+":textures/blocks/models/hammerstand-theballantebroken.png");
+	private ResourceLocation resTopT = new ResourceLocation(References.MODID+":textures/blocks/models/hammerstand-topedge.png");
+	private ResourceLocation resTopBrokenT = new ResourceLocation(References.MODID+":textures/blocks/models/hammerstand-topedgebroken.png");
 		
 	public RenderBlockHammerStand(){
-		this.modelbase = AdvancedModelLoader.loadModel(new ResourceLocation(References.MODID+":textures/blocks/models/basestand.obj"));
-		this.modelbasebroken = AdvancedModelLoader.loadModel(new ResourceLocation(References.MODID+":textures/blocks/models/basestandbroken.obj"));
-		this.modelpied = AdvancedModelLoader.loadModel(new ResourceLocation(References.MODID+":textures/blocks/models/piedballante.obj"));
-		this.modelbal = AdvancedModelLoader.loadModel(new ResourceLocation(References.MODID+":textures/blocks/models/ballante.obj"));
-		this.modelbalnormal = AdvancedModelLoader.loadModel(new ResourceLocation(References.MODID+":textures/blocks/models/ballante.obj"));
-		this.modelbalbroken = AdvancedModelLoader.loadModel(new ResourceLocation(References.MODID+":textures/blocks/models/theballantebroken.obj"));
-		this.modeltop = AdvancedModelLoader.loadModel(new ResourceLocation(References.MODID+":textures/blocks/models/topedge.obj"));
-		this.modeltopbroken = AdvancedModelLoader.loadModel(new ResourceLocation(References.MODID+":textures/blocks/models/topedgebroken.obj"));
+		this.modelbase = AdvancedModelLoader.loadModel(new ResourceLocation(References.MODID+":textures/blocks/models/hammerstand-base.obj"));
+		this.modelbasebroken = AdvancedModelLoader.loadModel(new ResourceLocation(References.MODID+":textures/blocks/models/hammerstand-basebroken.obj"));
+		this.modelpied = AdvancedModelLoader.loadModel(new ResourceLocation(References.MODID+":textures/blocks/models/hammerstand-piedballante.obj"));
+		this.modelbal = AdvancedModelLoader.loadModel(new ResourceLocation(References.MODID+":textures/blocks/models/hammerstand-ballante.obj"));
+		this.modelbalnormal = AdvancedModelLoader.loadModel(new ResourceLocation(References.MODID+":textures/blocks/models/hammerstand-ballante.obj"));
+		this.modelbalbroken = AdvancedModelLoader.loadModel(new ResourceLocation(References.MODID+":textures/blocks/models/hammerstand-theballantebroken.obj"));
+		this.modeltop = AdvancedModelLoader.loadModel(new ResourceLocation(References.MODID+":textures/blocks/models/hammerstand-topedge.obj"));
+		this.modeltopbroken = AdvancedModelLoader.loadModel(new ResourceLocation(References.MODID+":textures/blocks/models/hammerstand-topedgebroken.obj"));
 	}
 	
 	

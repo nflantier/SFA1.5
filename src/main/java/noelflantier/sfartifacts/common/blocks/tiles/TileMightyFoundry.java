@@ -5,6 +5,8 @@ import java.util.Hashtable;
 import java.util.List;
 
 import cofh.api.energy.EnergyStorage;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -14,6 +16,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
+import noelflantier.sfartifacts.common.helpers.ParticleHelper;
 import noelflantier.sfartifacts.common.items.ItemMold;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
@@ -86,6 +89,20 @@ public class TileMightyFoundry extends TileAsgardianMachine implements ITileGlob
         if(this.isRunning && this.getStackInSlot(1)==null){
         	resetFoundry();
         } 
+	}
+
+	@Override
+    @SideOnly(Side.CLIENT)
+	public void processClientMachine(){
+		if(this.isRunning && this.randomMachine.nextFloat()<0.1F){
+			float nx = 0.5F+ForgeDirection.getOrientation(side).offsetX;
+			float ny = 0.5F+ForgeDirection.getOrientation(side).offsetY;
+			float nz = 0.5F+ForgeDirection.getOrientation(side).offsetZ;
+			nx = nx<0?nx+0.4F:nx>0.5F?nx-0.4F:nx;
+			ny = ny<0?ny+0.4F:ny>0.5F?ny-0.4F:ny;
+			nz = nz<0?nz+0.4F:nz>0.5F?nz-0.4F:nz;
+			this.worldObj.spawnParticle("smoke", this.xCoord+nx, this.yCoord+ny+0.1F, this.zCoord+nz, 0.0D, 0.0D, 0.0D);
+		}
 	}
 	
 	public void resetFoundry(){

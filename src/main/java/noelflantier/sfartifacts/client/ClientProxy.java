@@ -27,6 +27,7 @@ import noelflantier.sfartifacts.client.render.RenderEntityHammerInvoking;
 import noelflantier.sfartifacts.client.render.RenderEntityHammerMining;
 import noelflantier.sfartifacts.client.render.RenderEntityHulk;
 import noelflantier.sfartifacts.client.render.RenderEntityShieldThrow;
+import noelflantier.sfartifacts.client.render.RenderEntityShieldThrowCaptain;
 import noelflantier.sfartifacts.client.render.RenderItemEnergyModule;
 import noelflantier.sfartifacts.client.render.RenderItemFluidModule;
 import noelflantier.sfartifacts.client.render.RenderItemLightningRod;
@@ -54,6 +55,7 @@ import noelflantier.sfartifacts.common.entities.EntityHammerInvoking;
 import noelflantier.sfartifacts.common.entities.EntityHammerMinning;
 import noelflantier.sfartifacts.common.entities.EntityHulk;
 import noelflantier.sfartifacts.common.entities.EntityShieldThrow;
+import noelflantier.sfartifacts.common.entities.EntityShieldThrowCaptain;
 import noelflantier.sfartifacts.common.handlers.ModBlocks;
 import noelflantier.sfartifacts.common.handlers.ModItems;
 import noelflantier.sfartifacts.common.handlers.ModKeyBindings;
@@ -134,6 +136,7 @@ public class ClientProxy extends CommonProxy{
 
         RenderingRegistry.registerEntityRenderingHandler(EntityHammerMinning.class, new RenderEntityHammerMining());
         RenderingRegistry.registerEntityRenderingHandler(EntityHammerInvoking.class, new RenderEntityHammerInvoking());
+        RenderingRegistry.registerEntityRenderingHandler(EntityShieldThrowCaptain.class, new RenderEntityShieldThrowCaptain());
         RenderingRegistry.registerEntityRenderingHandler(EntityShieldThrow.class, new RenderEntityShieldThrow());
         RenderingRegistry.registerEntityRenderingHandler(EntityHulk.class, new RenderEntityHulk());
     			

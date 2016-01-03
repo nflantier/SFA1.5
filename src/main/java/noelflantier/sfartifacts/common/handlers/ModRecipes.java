@@ -36,6 +36,8 @@ public class ModRecipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemBasicHammer,1,0),  "BBB", "BBB", " S ", 'B', ModBlocks.blockAsgardite, 'S', Items.stick));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockHammerStand,1,0),  "III", "BSB", "SSS", 'B', ModBlocks.blockAsgardianBronze, 'S', ModBlocks.blockAsgardianSteel, 'I', ModItems.itemAsgardianSteelIngot));
 
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemVibraniumShield,1,1),  "RRR", "BTB", "RRR", 'B', new ItemStack(Items.dye,1,4), 'R', new ItemStack(Items.dye,1,1), 'T', new ItemStack(ModItems.itemVibraniumShield,1,0)));
+		
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemLightningRod,1,0),  "D", "S", "S", 'D', Blocks.diamond_block, 'S', ModBlocks.blockAsgardianSteel));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemLightningRod,1,1),  " D ", " S ", "SSS", 'D', Blocks.diamond_block, 'S', ModBlocks.blockAsgardianSteel));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemLightningRod,1,2),  " D ", "SSS", "SSS", 'D', Blocks.diamond_block, 'S', ModBlocks.blockAsgardianSteel));

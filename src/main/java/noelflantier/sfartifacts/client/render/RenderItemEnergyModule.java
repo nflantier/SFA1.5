@@ -19,12 +19,12 @@ import noelflantier.sfartifacts.common.helpers.PillarMaterials;
 
 public class RenderItemEnergyModule  implements IItemRenderer{
 
-	private ResourceLocation objFrame= new ResourceLocation(References.MODID+":textures/items/models/energymoduleframe.obj");
-	private ResourceLocation textureFrame= new ResourceLocation(References.MODID+":textures/items/models/energymoduleframe.png");
+	private ResourceLocation objFrame= new ResourceLocation(References.MODID+":textures/items/models/energymodule-frame.obj");
+	private ResourceLocation textureFrame= new ResourceLocation(References.MODID+":textures/items/models/energymodule-frame.png");
 	private IModelCustom modelFrame;
 
-	private ResourceLocation objCube= new ResourceLocation(References.MODID+":textures/items/models/energymodulecube.obj");
-	private ResourceLocation textureCube= new ResourceLocation(References.MODID+":textures/items/models/energymodulecube.png");
+	private ResourceLocation objCube= new ResourceLocation(References.MODID+":textures/items/models/energymodule-cube.obj");
+	private ResourceLocation textureCube= new ResourceLocation(References.MODID+":textures/items/models/energymodule-cube.png");
 	private IModelCustom modelCube;
 	
 	public RenderItemEnergyModule(){

@@ -41,10 +41,10 @@ public class ModWorldGenOre implements IWorldGenerator {
 	}
 
 	private void generateSurface(Random random, int x, int z, World world) {
-		if(ModConfig.isAsgarditeOreRegistrationEnable)
+		if(ModConfig.isAsgarditeOreSpawnEnable)
 			addOreSpawn(ModBlocks.blockOreAsgardite, Blocks.stone, world, random, x, z, ModConfig.minVainSizeAsgardite, ModConfig.maxVainSizeAsgardite, ModConfig.chanceAsgardite, ModConfig.minYAsgardite, ModConfig.maxYAsgardite);
 
-		if(ModConfig.isVibraniumOreRegistrationEnable){
+		if(ModConfig.isVibraniumOreSpawnEnable){
 			BiomeGenBase b = world.getBiomeGenForCoords(x, z);
 			if(b.biomeID==35 || b.biomeID==36 || b.biomeID==163 || b.biomeID==164)
 				addOreSpawn(ModBlocks.blockOreVibranium, Blocks.stone, world, random, x, z, ModConfig.minVainSizeVibranium, ModConfig.maxVainSizeVibranium, ModConfig.chanceVibranium, ModConfig.minYVibranium, ModConfig.maxYVibranium);

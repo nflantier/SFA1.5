@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.common.blocks.BlockMaterialsTE;
 import noelflantier.sfartifacts.common.blocks.tiles.TileRenderPillarModel;
@@ -71,7 +72,7 @@ public class RenderBlockMaterials  extends TileEntitySpecialRenderer  implements
 	    }else
 	    	return;
 
-	    if(tp.isRenderingPillarModel>-1){
+	    if(tp.isRenderingPillarModel>-1 && MinecraftForgeClient.getRenderPass() == 0){
 	    	int idpillar = tp.isRenderingPillarModel;
 	    	String name = PillarsConfig.getInstance().nameOrderedBySize.get(idpillar);
 			if(name!=null && PillarsConfig.getInstance().nameToPillar.containsKey(name)){

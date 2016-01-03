@@ -46,8 +46,8 @@ public class ModConfig {
 	public static double chanceToSpawnMightyFeather;
 	public static boolean isShieldBlockOnlyWhenShift;
 
-	public static boolean isAsgarditeOreRegistrationEnable;
-	public static boolean isVibraniumOreRegistrationEnable;
+	public static boolean isAsgarditeOreSpawnEnable;
+	public static boolean isVibraniumOreSpawnEnable;
 	public static int tickToCookVibraniumOres;
 	public static int minYVibranium;
 	public static int maxYVibranium;
@@ -111,8 +111,8 @@ public class ModConfig {
 			chanceToSpawnMightyFeather = config.get(Configuration.CATEGORY_GENERAL, "chance to drop mighty feather", 0.35, "Chance that chickens hit by lightning drop mighty feather [0-1]").getDouble();
 			
 			tickToCookVibraniumOres = config.get(CAT_ORES, "ticks", 6000, "The number of ticks needed to vibranium ores to be cooked 20 tick = 1 s").getInt();
-			isAsgarditeOreRegistrationEnable = config.get(CAT_ORES, "asgardite ore spawn enable", true, "Is asgardite ore spawn enable").getBoolean();
-			isVibraniumOreRegistrationEnable = config.get(CAT_ORES, "vibranium ore spawn enable", true, "Is vibranium ore spawn enable").getBoolean();
+			isAsgarditeOreSpawnEnable = config.get(CAT_ORES, "asgardite ore spawn enable", true, "Is asgardite ore spawn enable").getBoolean();
+			isVibraniumOreSpawnEnable = config.get(CAT_ORES, "vibranium ore spawn enable", true, "Is vibranium ore spawn enable").getBoolean();
 			minYVibranium = config.get(CAT_ORES, "min Y level for vibranium", 3, "The min Y level").getInt();
 			maxYVibranium = config.get(CAT_ORES, "max Y level for vibranium", 18, "The max Y level").getInt();
 			minVainSizeVibranium = config.get(CAT_ORES, "min vain size for vibranium", 2, "The min vain size").getInt();

@@ -33,7 +33,6 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
 
 	//STRUCTURE
     public String namePillar;
-    public int structureId;
     public int materialId;
 
 	//ENERGY
@@ -107,7 +106,7 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
         	}
     	}
     	
-    	float rP =  (this.structureId>0)?PillarsConfig.getInstance().getPillarFromName(namePillar).naturalRatio : 1;
+    	float rP =  (PillarsConfig.getInstance().getPillarFromName(namePillar)!=null)?PillarsConfig.getInstance().getPillarFromName(namePillar).naturalRatio : 1;
     	float ratioHeight = (this.yCoord<this.maxHeightEfficiency)?(float)this.yCoord/(float)this.maxHeightEfficiency:1;
     	float ratioRaining = (this.worldObj.isRaining())?this.rainEfficiency:0;
     	this.passiveEnergy = (int) (this.naturalEnergy*rP+this.naturalEnergy*(ratioHeight+0.1)+this.naturalEnergy*ratioRaining)+1;

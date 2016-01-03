@@ -17,12 +17,12 @@ import noelflantier.sfartifacts.common.items.ItemVibraniumShield;
 import noelflantier.sfartifacts.common.items.baseclasses.MiningHammerBase;
 import noelflantier.sfartifacts.common.items.baseclasses.ToolHammerBase;
 
-public class EntityShieldThrow  extends EntityThrowable{
+public class EntityShieldThrow extends EntityThrowable{
 
 	private int theSlot;
 	private double orX,orY,orZ,curhyp;
 	public int tickTravel = 20;
-	public int currentTicKTravel = 0;
+	public int currentTickTravel = 0;
 	public boolean isCommingBack = false;
 	public float angleYaw = 0;
 	public float anglePitch = 0;
@@ -43,14 +43,13 @@ public class EntityShieldThrow  extends EntityThrowable{
 		this.noClip = false;
 		if(w.isRemote)
 			this.setVelocity(this.motionX*1.5, this.motionY*1.5,this.motionZ*1.5);
-		//this.setV(this.motionX*1.5, this.motionY*1.5,this.motionZ*1.5);
 	}	
 	
 	public EntityShieldThrow(World w, EntityLivingBase p, int slot){
 		this(w,p);
 		this.theSlot = slot;
 	}
-
+	
 	public void setV(double vx, double vy, double vz){
         this.motionX = vx;
         this.motionY = vy;
@@ -82,8 +81,8 @@ public class EntityShieldThrow  extends EntityThrowable{
 		super.onUpdate();
 		//this.setDead();
 		
-		this.currentTicKTravel+=1;
-		if(this.currentTicKTravel>this.tickTravel)
+		this.currentTickTravel+=1;
+		if(this.currentTickTravel>this.tickTravel)
 			this.isCommingBack=true;
 		if(this.isCommingBack){
 			if(this.getThrower()!=null){	

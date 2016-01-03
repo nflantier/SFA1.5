@@ -5,6 +5,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import noelflantier.sfartifacts.common.entities.EntityShieldThrow;
+import noelflantier.sfartifacts.common.entities.EntityShieldThrowCaptain;
 
 public class DamageSourceHelper {
 		

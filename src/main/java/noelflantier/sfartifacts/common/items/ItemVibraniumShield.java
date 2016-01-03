@@ -47,7 +47,7 @@ public class ItemVibraniumShield  extends ItemSFA{
 			}			
 			if(!w.isRemote){
 				ItemNBTHelper.setBoolean(stack, "IsThrown", true);
-				ShieldHelper.startThrowing(w, player);
+				ShieldHelper.startThrowing(w, player, stack);
 			}
 		}
 		return stack;
@@ -71,6 +71,7 @@ public class ItemVibraniumShield  extends ItemSFA{
 		
 		//SHIELD
     }
+	
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
@@ -80,8 +81,19 @@ public class ItemVibraniumShield  extends ItemSFA{
 		else
 			it = ItemNBTHelper.setBoolean(it, "CanBlock", false);
 		it = ItemNBTHelper.setBoolean(it, "IsThrown", false);
+		
+
+		ItemStack itca = new ItemStack(item, 1, 1);
+		if(!ModConfig.isShieldBlockOnlyWhenShift)
+			itca = ItemNBTHelper.setBoolean(itca, "CanBlock", true);
+		else
+			itca = ItemNBTHelper.setBoolean(itca, "CanBlock", false);
+		itca = ItemNBTHelper.setBoolean(itca, "IsThrown", false);
+		
 		list.add(it);
+		list.add(itca);
 	}
+	
 	@Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase el, EntityLivingBase el2){
         return true;

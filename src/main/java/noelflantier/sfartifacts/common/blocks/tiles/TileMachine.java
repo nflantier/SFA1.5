@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Random;
 
 import cofh.api.energy.EnergyStorage;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -52,8 +54,11 @@ public abstract class TileMachine extends TileSFA implements ISFAFluid,ISFAEnerg
 	@Override
 	public void updateEntity(){
 		super.updateEntity();
-        if(this.worldObj.isRemote)
+        if(this.worldObj.isRemote){
+            if(this.isManualyEnable && !this.isRedStoneEnable)
+            	processClientMachine();
         	return;
+        }
         if(this.isManualyEnable && !this.isRedStoneEnable)
         	processMachine();
         if(randomMachine.nextFloat()<getRandomTickChance())
@@ -68,6 +73,11 @@ public abstract class TileMachine extends TileSFA implements ISFAFluid,ISFAEnerg
     public void processAtRandomTicks(){}
 	public abstract void processPackets();
 	public abstract void processMachine();
+
+    @SideOnly(Side.CLIENT)
+	public void processClientMachine(){
+		
+	}
 	
 	@Override
 	public void init(){
