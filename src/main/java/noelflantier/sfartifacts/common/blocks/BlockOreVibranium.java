@@ -146,12 +146,12 @@ public class BlockOreVibranium extends BlockSFA {
         		tick-=40;
         }
         int meta = world.getBlockMetadata(x, y, z);
-    	if(meta!=15){
+    	if(meta<15){
     		if(tick<tickBase){
 	    		world.setBlockMetadataWithNotify(x, y, z, meta+1, 2);
-	    		world.scheduleBlockUpdate(x, y, z, world.getBlock(x, y, z), tick<0?1:tick);
+	    		world.scheduleBlockUpdate(x, y, z, world.getBlock(x, y, z), tick<1?1:tick);
     		}else{
-        		world.scheduleBlockUpdate(x, y, z, world.getBlock(x, y, z), tickRate(world));
+        		world.scheduleBlockUpdate(x, y, z, world.getBlock(x, y, z), tickRate(world)>1?tickRate(world):1);
     		}
     	}
     	

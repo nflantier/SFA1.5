@@ -42,6 +42,7 @@ item.itemMicroChip.quad.name=Quad core chip
 item.itemCircuitBoard.single.name=One core circuit board
 item.itemCircuitBoard.dual.name=Dual core circuit board
 item.itemCircuitBoard.quad.name=Quad core circuit board
+item.itemHoverBoard.name=HoverBoard
 
 entity.sfartifacts.thorhammerinvoking.name=Falling Hammer
 entity.sfartifacts.thorhammerthrow.name=Mining Hammer

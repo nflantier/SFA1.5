@@ -17,6 +17,7 @@ import noelflantier.sfartifacts.common.items.ItemFluidModule;
 import noelflantier.sfartifacts.common.items.ItemFusionCasing;
 import noelflantier.sfartifacts.common.items.ItemFusionCore;
 import noelflantier.sfartifacts.common.items.ItemGlassCutter;
+import noelflantier.sfartifacts.common.items.ItemHoverBoard;
 import noelflantier.sfartifacts.common.items.ItemHulkFlesh;
 import noelflantier.sfartifacts.common.items.ItemLightningRod;
 import noelflantier.sfartifacts.common.items.ItemMagnet;
@@ -64,6 +65,7 @@ public class ModItems {
 	public static Item itemGlassCutter;
 	public static Item itemMicroChip;
 	public static Item itemCircuitBoard;
+	public static Item itemHoverboard;
 	
 	public static void loadItems() {
 
@@ -154,6 +156,9 @@ public class ModItems {
     	
     	itemCircuitBoard = new ItemCircuitBoard();
     	RegisterHelper.registerItem(itemCircuitBoard);
+    	
+    	itemHoverboard = new ItemHoverBoard();
+    	RegisterHelper.registerItem(itemHoverboard);
     	
 	}
 	

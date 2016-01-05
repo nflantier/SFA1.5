@@ -27,16 +27,6 @@ public class RFHammerBase extends ItemHammerBase implements IEnergyContainerItem
 	public RFHammerBase(){
         this.setHasSubtypes(true);
 	}
-
-	/*@Override
-	public boolean hasCustomEntity(ItemStack stack) {
-		return true;
-	}
-
-	@Override
-	public Entity createEntity(World world, Entity location, ItemStack itemstack) {
-		return new EntityItemThorHammer(world, location, itemstack);
-	}*/
 	
 	public void setCapacity(int capacity){ this.capacity = capacity;}
 
@@ -79,13 +69,13 @@ public class RFHammerBase extends ItemHammerBase implements IEnergyContainerItem
 	}
 
 	@Override
-	public int getEnergyStored(ItemStack container) {
-		return ItemNBTHelper.getInteger(container, "Energy", 0);
+	public int getEnergyStored(ItemStack stack) {
+		return ItemNBTHelper.getInteger(stack, "Energy", 0);
 	}
 
 	@Override
-	public int getMaxEnergyStored(ItemStack container) {
-		return getCapacity(container);
+	public int getMaxEnergyStored(ItemStack stack) {
+		return getCapacity(stack);
 	}
 
 	@Override

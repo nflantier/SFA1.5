@@ -25,6 +25,7 @@ import noelflantier.sfartifacts.client.render.RenderBlockMrFusion;
 import noelflantier.sfartifacts.client.render.RenderBlockSoundEmitter;
 import noelflantier.sfartifacts.client.render.RenderEntityHammerInvoking;
 import noelflantier.sfartifacts.client.render.RenderEntityHammerMining;
+import noelflantier.sfartifacts.client.render.RenderEntityHoverBoard;
 import noelflantier.sfartifacts.client.render.RenderEntityHulk;
 import noelflantier.sfartifacts.client.render.RenderEntityShieldThrow;
 import noelflantier.sfartifacts.client.render.RenderEntityShieldThrowCaptain;
@@ -53,6 +54,7 @@ import noelflantier.sfartifacts.common.blocks.tiles.TileRenderPillarModel;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSoundEmitter;
 import noelflantier.sfartifacts.common.entities.EntityHammerInvoking;
 import noelflantier.sfartifacts.common.entities.EntityHammerMinning;
+import noelflantier.sfartifacts.common.entities.EntityHoverBoard;
 import noelflantier.sfartifacts.common.entities.EntityHulk;
 import noelflantier.sfartifacts.common.entities.EntityShieldThrow;
 import noelflantier.sfartifacts.common.entities.EntityShieldThrowCaptain;
@@ -139,6 +141,7 @@ public class ClientProxy extends CommonProxy{
         RenderingRegistry.registerEntityRenderingHandler(EntityShieldThrowCaptain.class, new RenderEntityShieldThrowCaptain());
         RenderingRegistry.registerEntityRenderingHandler(EntityShieldThrow.class, new RenderEntityShieldThrow());
         RenderingRegistry.registerEntityRenderingHandler(EntityHulk.class, new RenderEntityHulk());
+		RenderingRegistry.registerEntityRenderingHandler(EntityHoverBoard.class, new RenderEntityHoverBoard());
     			
     	ModKeyBindings.loadBindings();
 		FMLCommonHandler.instance().bus().register(new ModKeyInput());

@@ -68,8 +68,6 @@ public class ItemVibraniumShield  extends ItemSFA{
 				if(ItemNBTHelper.getBoolean(stack, "CanBlock", false))
 					ItemNBTHelper.setBoolean(stack, "CanBlock", false);
         }
-		
-		//SHIELD
     }
 	
 	@SideOnly(Side.CLIENT)

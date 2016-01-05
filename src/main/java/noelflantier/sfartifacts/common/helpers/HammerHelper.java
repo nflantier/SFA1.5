@@ -49,7 +49,7 @@ public class HammerHelper {
 	}
 	
 	public static boolean breakOnMinning(ItemStack stack, int x, int y, int z, int breakRadius, int breakDepth, EntityPlayer player){
-		return ((MiningHammerBase)stack.getItem()).getEnergyStored(stack) >= ((MiningHammerBase)stack.getItem()).energyMining && (breakRadius > 0) ? breakaBlockWithMop(stack, x, y, z, breakRadius, breakDepth, player, rayTraceMining(player.worldObj, player, 4.5d), null, 1) : false;
+		return ((MiningHammerBase)stack.getItem()).getEnergyStored(stack) >= ((MiningHammerBase)stack.getItem()).energyMining ? breakaBlockWithMop(stack, x, y, z, breakRadius, breakDepth, player, rayTraceMining(player.worldObj, player, 4.5d), null, 1) : false;
 	}
 	/*
 	public static boolean breakaBlockWithoutMop(ItemStack stack, int x, int y, int z, int breakRadius, int breakDepth, EntityPlayer player){
@@ -152,53 +152,56 @@ public class HammerHelper {
 			updateGhostBlocks(player, player.worldObj);
 			return true;
 		}
-		
+
 		int sideHit = mop.sideHit;
 		int xRange = breakRadius;
 		int yRange = breakRadius;
 		int zRange = breakDepth;
 		int yOffset = 0;
 		
-		switch (sideHit) {
-			case 0:
-			case 1:
-				yRange = breakDepth;
-				zRange = breakRadius;
-				break;
-			case 2:
-			case 3:
-				xRange = breakRadius;
-				zRange = breakDepth;
-				yOffset = breakRadius - 1;
-				break;
-			case 4:
-			case 5:
-				xRange = breakDepth;
-				zRange = breakRadius;
-				yOffset = breakRadius - 1;
-				break;
-		}
-		
-		boolean soundOnRange = false;
-		
-		for (int xPos = x - xRange; xPos <= x + xRange; xPos++)
-		{
-			for (int yPos = y + yOffset - yRange; yPos <= y + yOffset + yRange; yPos++)
+		if(breakRadius == 0){
+			breakthablock(stack, player.worldObj, x, y, z, sideHit, player, refStrength, true);
+		}else{
+			switch (sideHit) {
+				case 0:
+				case 1:
+					yRange = breakDepth;
+					zRange = breakRadius;
+					break;
+				case 2:
+				case 3:
+					xRange = breakRadius;
+					zRange = breakDepth;
+					yOffset = breakRadius - 1;
+					break;
+				case 4:
+				case 5:
+					xRange = breakDepth;
+					zRange = breakRadius;
+					yOffset = breakRadius - 1;
+					break;
+			}
+			
+			boolean soundOnRange = false;
+			
+			for (int xPos = x - xRange; xPos <= x + xRange; xPos++)
 			{
-				for (int zPos = z - zRange; zPos <= z + zRange; zPos++)
+				for (int yPos = y + yOffset - yRange; yPos <= y + yOffset + yRange; yPos++)
 				{
-					if(rangeMining<=0)soundOnRange = true;
-					else soundOnRange = Math.abs(x - xPos) <= rangeMining && Math.abs(y - yPos) <= rangeMining && Math.abs(z - zPos) <= rangeMining;
-					
-					Block tblock = player.worldObj.getBlock(xPos, yPos, zPos);
-					if(entityHit!=null && tblock.canEntityDestroy(player.worldObj, xPos, yPos, zPos, entityHit))
-						breakthablock(stack, player.worldObj, xPos, yPos, zPos, sideHit, player, refStrength, soundOnRange);
-					else if (entityHit == null)
-						breakthablock(stack, player.worldObj, xPos, yPos, zPos, sideHit, player, refStrength, soundOnRange);
+					for (int zPos = z - zRange; zPos <= z + zRange; zPos++)
+					{
+						if(rangeMining<=0)soundOnRange = true;
+						else soundOnRange = Math.abs(x - xPos) <= rangeMining && Math.abs(y - yPos) <= rangeMining && Math.abs(z - zPos) <= rangeMining;
+						
+						Block tblock = player.worldObj.getBlock(xPos, yPos, zPos);
+						if(entityHit!=null && tblock.canEntityDestroy(player.worldObj, xPos, yPos, zPos, entityHit))
+							breakthablock(stack, player.worldObj, xPos, yPos, zPos, sideHit, player, refStrength, soundOnRange);
+						else if (entityHit == null)
+							breakthablock(stack, player.worldObj, xPos, yPos, zPos, sideHit, player, refStrength, soundOnRange);
+					}
 				}
 			}
 		}
-		
 		if(ItemNBTHelper.getBoolean(stack, "CanMagnet", false) && ItemNBTHelper.getBoolean(stack, "IsMagnetOn", false))
 		{
 			List<EntityItem> items = player.worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x - xRange, y + yOffset - yRange, z - zRange, x + xRange + 1, y + yOffset + yRange + 1, z + zRange + 1));

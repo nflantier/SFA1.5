@@ -1,5 +1,7 @@
 package noelflantier.sfartifacts.common.entities;
 
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -17,7 +19,7 @@ import noelflantier.sfartifacts.common.items.ItemVibraniumShield;
 import noelflantier.sfartifacts.common.items.baseclasses.MiningHammerBase;
 import noelflantier.sfartifacts.common.items.baseclasses.ToolHammerBase;
 
-public class EntityShieldThrow extends EntityThrowable{
+public class EntityShieldThrow extends EntityThrowable implements IEntityAdditionalSpawnData{
 
 	private int theSlot;
 	private double orX,orY,orZ,curhyp;
@@ -152,18 +154,11 @@ public class EntityShieldThrow extends EntityThrowable{
 			 default:
 				 break;
 		}
-		//System.out.println(side+"   "+this.rotationYaw+"   "+this.angleYaw);
-
-        //this.setLocationAndAngles(this.posX, this.posY , this.posZ, angleYaw, anglePitch);
-		/*this.rotationYaw = angleYaw;
-		this.rotationPitch = anglePitch;*/
-		
-        //this.setSize(0.25F, 0.25F);
 		this.prevRotationPitch = this.rotationPitch;
 		this.rotationPitch = this.anglePitch;
 		this.prevRotationYaw = this.rotationYaw;
 		this.rotationYaw = this.angleYaw;
-		//this.setAngles(this.angleYaw, this.anglePitch);
+		
         float f = 0.4F;
         this.motionX = (double)(-MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * f);
         this.motionZ = (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * f);
@@ -189,5 +184,20 @@ public class EntityShieldThrow extends EntityThrowable{
 	public void readEntityFromNBT(NBTTagCompound compound)
 	{
 		super.readEntityFromNBT(compound);
+	}
+	
+	@Override
+	public boolean writeToNBTOptional(NBTTagCompound p_70039_1_) {
+		return false;
+	}
+
+	@Override
+	public void writeSpawnData(ByteBuf data) {
+		data.writeInt(theSlot);
+	}
+
+	@Override
+	public void readSpawnData(ByteBuf data) {
+		theSlot = data.readInt();
 	}
 }

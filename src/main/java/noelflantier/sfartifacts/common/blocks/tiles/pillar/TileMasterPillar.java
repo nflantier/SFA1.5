@@ -108,20 +108,20 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
     	
     	float rP =  (PillarsConfig.getInstance().getPillarFromName(namePillar)!=null)?PillarsConfig.getInstance().getPillarFromName(namePillar).naturalRatio : 1;
     	float ratioHeight = (this.yCoord<this.maxHeightEfficiency)?(float)this.yCoord/(float)this.maxHeightEfficiency:1;
-    	float ratioRaining = (this.worldObj.isRaining())?this.rainEfficiency:0;
-    	this.passiveEnergy = (int) (this.naturalEnergy*rP+this.naturalEnergy*(ratioHeight+0.1)+this.naturalEnergy*ratioRaining)+1;
+    	float ratioRaining = (this.worldObj.isRaining() && this.worldObj.getBiomeGenForCoords(xCoord, yCoord).temperature<2)?this.rainEfficiency:0;
+    	//this.passiveEnergy = (int) (this.naturalEnergy*rP+this.naturalEnergy*(ratioHeight+0.1)+this.naturalEnergy*ratioRaining)+1;
+    	this.passiveEnergy = (int)Math.pow(rP+naturalEnergy+(ratioHeight*3+0.1)+ratioRaining,1.4);
     	
+    	this.fill(ForgeDirection.UNKNOWN, new FluidStack(ModFluids.fluidLiquefiedAsgardite,150000), true);
     	if(this.getEnergyStored(ForgeDirection.UNKNOWN)<this.energyCapacity){
     		this.fluidEnergy = 0;
         	FluidStack ds = this.tank.drain(this.amountToExtract, false);
         	if(ds!=null && ds.amount>=this.amountToExtract && this.amountToExtract!=0){
-        		double r =  ds.amount*2*this.naturalEnergy/2.5F;
-        		r = r<ds.amount?ds.amount:r;
-        		this.fluidEnergy = (int)(rP*this.naturalEnergy+r);
+            	//this.fluidEnergy = (int)(rP*this.naturalEnergy+r);
+            	this.fluidEnergy = (int)Math.pow(ds.amount/10+Math.pow(roundToDec(rP)+roundToDec(naturalEnergy), 1.1),2.15);
         		this.tank.drain(this.amountToExtract, true);
         	}
     	}
-    	
     	this.receiveEnergy(ForgeDirection.UNKNOWN,(int)this.passiveEnergy+(int)this.fluidEnergy, false);
     	
         PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN), this.lastEnergyStoredAmount),this);
@@ -129,6 +129,10 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
         PacketHandler.sendToAllAround(new PacketPillar(this), this);
     	this.lastEnergyStoredAmount = this.getEnergyStored(ForgeDirection.UNKNOWN);
     	
+    }
+    
+    public double roundToDec(double val){
+    	return val<=10?val:val/10<=10?val/10:roundToDec(val/10);
     }
     
 	@Override

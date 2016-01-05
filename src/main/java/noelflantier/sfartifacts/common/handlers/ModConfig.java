@@ -59,18 +59,22 @@ public class ModConfig {
 	public static int minVainSizeAsgardite;
 	public static int maxVainSizeAsgardite;
 	public static int chanceAsgardite;
+	public static int capacityHoverBoard;
+	public static int rfPerSecondHoverBoard;
 	
 	public static boolean areFrequenciesShown;
 
 	public final static String CAT_UTILS = "Utils";
 	public final static String CAT_ORES = "Ores";
 	public final static String CAT_THOR_HAMMER = "Thor s Hammer";
+	public final static String CAT_HOVERBOARD = "HoverBoard";
 	public final static String CAT_SOUND_EMITTER = "Sound Emiter";
 	public final static String CAT_VIBRANIUM_SHIELD = "Vibranium Shield";
 	public final static String CAT_MACHINES = "Machines";
 	
 	public static Configuration config;
 	public static File configDirectory;
+
 	
 	public static void init(FMLPreInitializationEvent event) {
 		if( configDirectory == null){
@@ -149,6 +153,9 @@ public class ModConfig {
 			transfertCapacityInductorAdvancedEnergized = config.get(Configuration.CATEGORY_GENERAL, "advanced energized inductor transfert RF/T", 5000, "Transfert rate RF/T").getInt();
 			
 			pureSiliconLifeSpan = config.get(Configuration.CATEGORY_GENERAL, "lifespan silicon", 150, "Lifespan of pure silicon before it decay in ticks 20 tick = 1 s").getInt();
+			
+			capacityHoverBoard = config.get(CAT_HOVERBOARD, "hoverboard rf capacity", 100000, "HoverBoard energy capacity").getInt();
+			rfPerSecondHoverBoard = config.get(CAT_HOVERBOARD, "rf/second hoverboard", 10, "The amount of rf used by the overboard each second you are using it").getInt();
 			
 			useOldRegistration = config.get(CAT_UTILS, "Use old registration", false, "In the newer version registered name have changed so if you have an id error set this to true").getBoolean();
 		}

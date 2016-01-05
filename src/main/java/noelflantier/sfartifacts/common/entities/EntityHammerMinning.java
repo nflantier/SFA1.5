@@ -22,10 +22,12 @@ import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.items.ItemVibraniumShield;
 import noelflantier.sfartifacts.common.items.baseclasses.MiningHammerBase;
 import noelflantier.sfartifacts.common.items.baseclasses.ToolHammerBase;
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import io.netty.buffer.ByteBuf;
 
-public class EntityHammerMinning extends EntityThrowable{
+public class EntityHammerMinning extends EntityThrowable implements IEntityAdditionalSpawnData{
 
 	private int theSlot;
 	private double orX,orY,orZ,curhyp;
@@ -155,16 +157,27 @@ public class EntityHammerMinning extends EntityThrowable{
 	public void writeEntityToNBT(NBTTagCompound compound)
 	{
 		super.writeEntityToNBT(compound);
-		compound.setInteger("isCB", this.isCB);
-		compound.setFloat("angleToThrower", this.angleToThrower);
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound compound)
 	{
 		super.readEntityFromNBT(compound);
-		this.isCB = compound.getInteger("isCB");
-		this.angleToThrower = compound.getFloat("angleToThrower");
+	}
+	
+	@Override
+	public boolean writeToNBTOptional(NBTTagCompound p_70039_1_) {
+		return false;
+	}
+	
+	@Override
+	public void writeSpawnData(ByteBuf data) {
+		data.writeInt(theSlot);
+	}
+
+	@Override
+	public void readSpawnData(ByteBuf data) {
+		theSlot = data.readInt();
 	}
 
 }

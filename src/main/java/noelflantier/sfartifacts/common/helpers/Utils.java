@@ -9,9 +9,12 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 
+import baubles.api.IBauble;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.fluids.IFluidBlock;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
@@ -40,6 +43,16 @@ public class Utils {
 	public static File getConfigFile(String name) {
 		return new File(ModConfig.configDirectory, name);
 	}
+	
+	public static boolean isInventoryHasItemClass(Class<? extends Item> cla, IInventory bi){
+		int size = bi.getSizeInventory();
+		for(int i = 0 ; i < size ; i++){
+			if(bi.getStackInSlot(i)!=null && bi.getStackInSlot(i).getItem()!=null && bi.getStackInSlot(i).getItem().getClass()==cla)
+				return true;
+		}
+		return false;
+	}
+	
 	
 	public static float isPlayerInFluid(EntityPlayer player, float speed){
 		float f = 1;
