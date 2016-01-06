@@ -1,9 +1,11 @@
 package noelflantier.sfartifacts.common.blocks;
 
 import java.util.List;
+import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -59,7 +61,15 @@ public class BlockControlPannel extends BlockSFAContainer{
 		
 		return false;    	
     }
-
+    
+    public void onNeighborBlockChange(World w, int x, int y, int z, Block b) {
+    	super.onNeighborBlockChange(w, x, y, z, b);
+    	TileEntity tile = w.getTileEntity(x, y, z);
+		if(tile != null && tile instanceof TileControlPannel){
+			((TileControlPannel)tile).checkMaster();
+		}
+    }
+    
 	@Override
 	public TileEntity createNewTileEntity(World w, int meta) {
 		return new TileControlPannel();

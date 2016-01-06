@@ -292,6 +292,7 @@ public class PillarsConfig {
 			    		tbp.isRenderingPillarModel = -1;
 		    		}
 		    	}
+		        w.notifyBlocksOfNeighborChange(xT, yT, zT, w.getBlock(xT, yT, zT));
 	            w.markBlockForUpdate(xT, yT, zT);
 			}
 		}

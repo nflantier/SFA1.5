@@ -15,6 +15,7 @@ import noelflantier.sfartifacts.common.blocks.BlockMaterialsTE;
 import noelflantier.sfartifacts.common.blocks.tiles.TileRenderPillarModel;
 import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileBlockPillar;
 import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileInterfacePillar;
+import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileMasterPillar;
 import noelflantier.sfartifacts.common.helpers.Coord4;
 import noelflantier.sfartifacts.common.helpers.RenderBlocksHelper;
 import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig;
@@ -46,8 +47,12 @@ public class RenderBlockMaterials  extends TileEntitySpecialRenderer  implements
     	    		RenderBlocksHelper.renderFace(blockAccess, renderer, block, x, y, z, fd.ordinal(), ((BlockMaterialsTE)block).interfaceIcon[0]);
     			else
     				RenderBlocksHelper.renderFace(blockAccess, renderer, block, x, y, z, fd.ordinal(), ((BlockMaterialsTE)block).fullIcon);
-    		}else
-    			RenderBlocksHelper.renderFace(blockAccess, renderer, block, x, y, z, fd.ordinal(), ((BlockMaterialsTE)block).blockCIcon);
+    		}else{
+    			if(tp!=null && tp instanceof TileMasterPillar)
+    				RenderBlocksHelper.renderFace(blockAccess, renderer, block, x, y, z, fd.ordinal(), ((BlockMaterialsTE)block).fullIcon);
+    			else
+    				RenderBlocksHelper.renderFace(blockAccess, renderer, block, x, y, z, fd.ordinal(), ((BlockMaterialsTE)block).blockCIcon);
+    		}
 	    }
 		return true;
 	}

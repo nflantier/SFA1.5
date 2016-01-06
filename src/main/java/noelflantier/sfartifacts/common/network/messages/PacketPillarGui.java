@@ -6,19 +6,20 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
 import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileMasterPillar;
+import noelflantier.sfartifacts.common.handlers.ModConfig;
 
-public class PacketPillarConfig  implements IMessage, IMessageHandler<PacketPillarConfig, IMessage> {
+public class PacketPillarGui  implements IMessage, IMessageHandler<PacketPillarGui, IMessage> {
 	
 	public int x;
 	public int y;
 	public int z;
 	public int amountToExtract;
 	
-	public PacketPillarConfig(){
+	public PacketPillarGui(){
 	
 	}
 
-	public PacketPillarConfig(int x, int y, int z, int amountToExtract){
+	public PacketPillarGui(int x, int y, int z, int amountToExtract){
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -26,10 +27,11 @@ public class PacketPillarConfig  implements IMessage, IMessageHandler<PacketPill
 	}
 	
 	@Override
-	public IMessage onMessage(PacketPillarConfig message, MessageContext ctx) {
+	public IMessage onMessage(PacketPillarGui message, MessageContext ctx) {
 		TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity( message.x, message.y, message.z);
 		if(te!=null && te instanceof TileMasterPillar) {
-			((TileMasterPillar)te).amountToExtract = ((TileMasterPillar)te).amountToExtract+message.amountToExtract>1000? 1000:((TileMasterPillar)te).amountToExtract+message.amountToExtract<0?0:((TileMasterPillar)te).amountToExtract+message.amountToExtract;
+			((TileMasterPillar)te).amountToExtract = ((TileMasterPillar)te).amountToExtract+message.amountToExtract>ModConfig.maxAmountPillarCanExtract? 
+					ModConfig.maxAmountPillarCanExtract:((TileMasterPillar)te).amountToExtract+message.amountToExtract<0?0:((TileMasterPillar)te).amountToExtract+message.amountToExtract;
 		}
 		return null;
 	}

@@ -1,5 +1,6 @@
 package noelflantier.sfartifacts.common.blocks.tiles.pillar;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -31,7 +32,7 @@ import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig;
 
 public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeMaster,ITileWirelessEnergy{
 
-	//STRUCTURE
+	//STRUCTURE & MATERIAL
     public String namePillar;
     public int materialId;
 
@@ -50,10 +51,10 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
     public int[] energyChildInit;
     public List<Coord4> energyChild = new ArrayList<>();
     
-    //ENERGY STRUCTURE
-	public int naturalEnergy = 12;
-	public int maxHeightEfficiency = 256;
-	public float rainEfficiency = 2.2F;
+    //ENERGY MATERIAL
+	public float materialEnergyRatio = 12;
+	public float materialHeightRatio = 256;
+	public float materialRainRatio = 2.2F;
 	
     //FLUID
    	public FluidTank tank = new FluidTank(0);
@@ -106,22 +107,23 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
         	}
     	}
     	
-    	float rP =  (PillarsConfig.getInstance().getPillarFromName(namePillar)!=null)?PillarsConfig.getInstance().getPillarFromName(namePillar).naturalRatio : 1;
-    	float ratioHeight = (this.yCoord<this.maxHeightEfficiency)?(float)this.yCoord/(float)this.maxHeightEfficiency:1;
-    	float ratioRaining = (this.worldObj.isRaining() && this.worldObj.getBiomeGenForCoords(xCoord, yCoord).temperature<2)?this.rainEfficiency:0;
+    	float structureratio =  (PillarsConfig.getInstance().getPillarFromName(namePillar)!=null)?PillarsConfig.getInstance().getPillarFromName(namePillar).naturalRatio : 1;
+    	float ratioHeight = (this.yCoord<this.materialHeightRatio)?(float)this.yCoord/(float)this.materialHeightRatio:1;
+    	float ratioRaining = (this.worldObj.isRaining() && this.worldObj.getBiomeGenForCoords(xCoord, yCoord).temperature<2)?this.materialRainRatio:0;
     	//this.passiveEnergy = (int) (this.naturalEnergy*rP+this.naturalEnergy*(ratioHeight+0.1)+this.naturalEnergy*ratioRaining)+1;
-    	this.passiveEnergy = (int)Math.pow(rP+naturalEnergy+(ratioHeight*3+0.1)+ratioRaining,1.4);
+    	this.passiveEnergy = (int)( Math.pow( structureratio ,2.2 ) * Math.pow( materialEnergyRatio + Math.pow( ratioHeight * 2 ,4 ) + ratioRaining ,1.5 ) );
     	
-    	this.fill(ForgeDirection.UNKNOWN, new FluidStack(ModFluids.fluidLiquefiedAsgardite,150000), true);
+    	//this.fill(ForgeDirection.UNKNOWN, new FluidStack(ModFluids.fluidLiquefiedAsgardite,150000), true);
     	if(this.getEnergyStored(ForgeDirection.UNKNOWN)<this.energyCapacity){
     		this.fluidEnergy = 0;
         	FluidStack ds = this.tank.drain(this.amountToExtract, false);
         	if(ds!=null && ds.amount>=this.amountToExtract && this.amountToExtract!=0){
             	//this.fluidEnergy = (int)(rP*this.naturalEnergy+r);
-            	this.fluidEnergy = (int)Math.pow(ds.amount/10+Math.pow(roundToDec(rP)+roundToDec(naturalEnergy), 1.1),2.15);
+            	this.fluidEnergy = (int) Math.pow( Math.pow(structureratio, 1.1) * Math.pow(ds.amount/20+1,1.5) *  Math.pow(materialEnergyRatio, 1.1) , 0.85 );
         		this.tank.drain(this.amountToExtract, true);
         	}
     	}
+    	//this.extractEnergy(ForgeDirection.UNKNOWN, 150000, false);
     	this.receiveEnergy(ForgeDirection.UNKNOWN,(int)this.passiveEnergy+(int)this.fluidEnergy, false);
     	
         PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN), this.lastEnergyStoredAmount),this);
@@ -129,10 +131,6 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
         PacketHandler.sendToAllAround(new PacketPillar(this), this);
     	this.lastEnergyStoredAmount = this.getEnergyStored(ForgeDirection.UNKNOWN);
     	
-    }
-    
-    public double roundToDec(double val){
-    	return val<=10?val:val/10<=10?val/10:roundToDec(val/10);
     }
     
 	@Override
@@ -144,10 +142,10 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
 		return this.xCoord==this.getMasterX() && this.yCoord==this.getMasterY() && this.zCoord==this.getMasterZ();
 	}
 	
-    public void setMaterialRatio(int ne, int mhe, float re){
-    	this.naturalEnergy = ne;
-    	this.maxHeightEfficiency = mhe;
-    	this.rainEfficiency = re;
+    public void setMaterialRatios(float ne, float mhe, float re){
+    	this.materialEnergyRatio = ne;
+    	this.materialHeightRatio = mhe;
+    	this.materialRainRatio = re;
     }
 	
     @Override
@@ -191,9 +189,9 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
 		this.tank.readFromNBT(nbt);
 		
 		PillarMaterials pm = PillarMaterials.getMaterialFromId(this.materialId);
-		this.naturalEnergy = pm.naturalEnergy;
-		this.maxHeightEfficiency = pm.maxHeightEfficiency;
-		this.rainEfficiency = pm.rainEfficiency;
+		this.materialEnergyRatio = pm.energyRatio;
+		this.materialHeightRatio = pm.heightRatio;
+		this.materialRainRatio = pm.rainRatio;
         this.amountToExtract = nbt.getInteger("amountToExtract");
 
         int[] tabch = nbt.getIntArray("tabch");
@@ -264,5 +262,17 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
 	@Override
 	public void setLastEnergyStored(int lastEnergyStored) {
 		this.lastEnergyStoredAmount = lastEnergyStored;
+	}
+	
+	@Override
+	public void addToWaila(List<String> list) {
+		if(this.hasMaster()){
+			super.addToWaila(list);
+		}else{
+			list.add("Master with no pillar");
+			list.add("Energy : "+NumberFormat.getNumberInstance().format(this.getEnergyStored(ForgeDirection.UNKNOWN))+" RF / "+NumberFormat.getNumberInstance().format(this.getMaxEnergyStored(ForgeDirection.UNKNOWN))+" RF");
+			if(this.getFluidTanks().get(0)!=null)
+				list.add("Liquefied Asgardite : "+NumberFormat.getNumberInstance().format(this.getFluidTanks().get(0).getFluidAmount())+" MB / "+NumberFormat.getNumberInstance().format(this.getFluidTanks().get(0).getCapacity())+" MB");
+		}
 	}
 }

@@ -12,6 +12,7 @@ public abstract class TileSFA extends TileEntity implements IHasWailaContent{
     public String name;
     public int side = -1;
     public boolean init = false;
+    public boolean preinit = false;
 	public boolean isRedStoneEnable = false;
     
     public TileSFA(){
@@ -24,11 +25,17 @@ public abstract class TileSFA extends TileEntity implements IHasWailaContent{
     @Override
     public void updateEntity() {
         super.updateEntity();
+        if(!this.preinit)
+        	this.preinit();
         if(this.worldObj.isRemote)
         	return;
         if(!this.init)
         	this.init();
         this.isRedStoneEnable = this.worldObj.getBlockPowerInput(xCoord, yCoord, zCoord)>0 ;
+    }
+
+    public void preinit(){
+    	this.preinit = true;
     }
     
     public void init(){

@@ -84,7 +84,7 @@ public class RenderBlockControlPanel extends TileEntitySpecialRenderer  implemen
 			Minecraft.getMinecraft().renderEngine.bindTexture(this.textureControlPanel);
 			this.modelControlPanel.renderAll();
 			
-			if(tile!=null && tile instanceof TileControlPannel &&  ((TileControlPannel)tile).hasMaster()){
+			if(tile!=null && tile instanceof TileControlPannel &&  ((TileControlPannel)tile).hasMaster() && ((TileControlPannel)tile).isMasterStillMaster()){
 				GL11.glTranslatef((float)-1.24F, (float)-0.5F, (float)-0.5F); 
 				
 	    	    if(ct-1>this.theTick){

@@ -15,17 +15,17 @@ public class ContainerMrFusion  extends ContainerMachine{
 	public ContainerMrFusion(InventoryPlayer inventory, TileMrFusion tile) {
 		super(inventory, tile);
 		for(int x = 0 ; x < 9 ; x++){
-			this.addSlotToContainer(new Slot(inventory,x,8+18*x,176));
+			this.addSlotToContainer(new Slot(inventory,x,36+18*x,216));
 		}
 		for(int x = 0 ; x < 9 ; x++)
 			for(int y = 0 ; y < 3 ; y++)
-				this.addSlotToContainer(new Slot(inventory,x+y*9+9,8+18*x,118+18*y));
+				this.addSlotToContainer(new Slot(inventory,x+y*9+9,36+18*x,158+18*y));
 
-		for(int x = 0 ; x < 3 ; x++)
-			for(int y = 0 ; y < 4 ; y++)
-				this.addSlotToContainer(new Slot(tile,nextId(),13+18*x,23+18*y));
+		for(int x = 0 ; x < 9 ; x++)
+			for(int y = 0 ; y < 7 ; y++)
+				this.addSlotToContainer(new Slot(tile,nextId(),9+18*x,16+18*y));
 		
-		this.addSlotToContainer(new FluidContainerSlot(tile,nextId(),85,77));
+		this.addSlotToContainer(new FluidContainerSlot(tile,nextId(),179,124));
 	}
 	
 	private int nextId(){

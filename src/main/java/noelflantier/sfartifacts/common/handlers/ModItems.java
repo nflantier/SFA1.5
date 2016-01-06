@@ -2,8 +2,8 @@ package noelflantier.sfartifacts.common.handlers;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import noelflantier.sfartifacts.common.blocks.FilledBucket;
 import noelflantier.sfartifacts.common.helpers.RegisterHelper;
+import noelflantier.sfartifacts.common.items.FilledBucket;
 import noelflantier.sfartifacts.common.items.ItemAsgardianBronzeIngot;
 import noelflantier.sfartifacts.common.items.ItemAsgardianRing;
 import noelflantier.sfartifacts.common.items.ItemAsgardianSteelIngot;

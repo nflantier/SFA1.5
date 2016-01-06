@@ -8,13 +8,13 @@ public interface ITileUsingMaterials {
 	default PillarMaterials getMaterial(int id){
 		return PillarMaterials.values()[id];
 	};
-	default int getNaturalEnergy(int id){
-		return getMaterial(id).naturalEnergy;
+	default float getEnergyRatio(int id){
+		return getMaterial(id).energyRatio;
 	};
-	default void setNaturalEnergy(int ne, int id){
-		ne = getNaturalEnergy(id);
+	default void setNaturalEnergy(float ne, int id){
+		ne = getEnergyRatio(id);
 	};
 	default boolean getRandom(int id, Random r){
-		return r.nextInt(100)>getNaturalEnergy(id);
+		return r.nextInt(100)>getEnergyRatio(id);
 	}
 }

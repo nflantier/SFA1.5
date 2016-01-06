@@ -24,6 +24,9 @@ public interface ITileMaster {
     default boolean isMasterHere(){
     	return getMasterTile()!=null;
     };
+    default boolean isMasterStillMaster(){
+    	return isMasterHere() && getMasterTile().hasMaster();
+    };
     
     default public TileMasterPillar getMasterTile(){
     	TileEntity t = getWorld().getTileEntity(this.getMasterX(), this.getMasterY(), this.getMasterZ());

@@ -33,7 +33,7 @@ public class TileMrFusion extends TileMachine{
 	public static int rf = 5;
 	
 	//INVENTORY
-	public ItemStack[] items = new ItemStack[13];
+	public ItemStack[] items = new ItemStack[64];
 	
 	public TileMrFusion(){
 		super("MrFusion");
@@ -127,8 +127,8 @@ public class TileMrFusion extends TileMachine{
 		this.storage.receiveEnergy((int)rfg, false);
 		if(this.getEnergyStored(ForgeDirection.UNKNOWN)>=this.energyCapacity)
 			return;
-		
-		for(int i = 0 ; i < 12 ; i++){
+
+		for(int i = 0 ; i < this.items.length-1 ; i++){
 			if(this.items[i]==null)
 				continue;
 			rfg = 0;
@@ -146,7 +146,7 @@ public class TileMrFusion extends TileMachine{
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-		return (slot == 12 && FluidContainerRegistry.isContainer(stack)) || slot<12;
+		return (slot == 63 && FluidContainerRegistry.isContainer(stack)) || slot<63;
 	}
 	
 	@Override

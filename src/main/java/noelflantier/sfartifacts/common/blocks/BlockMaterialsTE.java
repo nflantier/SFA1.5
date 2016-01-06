@@ -128,9 +128,6 @@ public class BlockMaterialsTE extends BlockSFAContainer{
 					if(!PillarHelper.recheckStructure(world, tbp.getMasterX(),tbp.getMasterY(), tbp.getMasterZ(), tbp.getMasterTile().namePillar)){
 						PillarHelper.unsetupStructureNoMaster(world, x, y, z);
 					}
-					/*if(!PillarHelper.recheckStructure(world, tbp.getMasterX(),tbp.getMasterY(), tbp.getMasterZ(), tbp.getMasterTile().structureId)){
-						PillarHelper.unsetupStructureNoMaster(world, x, y, z);
-					}*/
 				}else{
 					PillarHelper.unsetupStructureNoMaster(world, x, y, z);
 				}

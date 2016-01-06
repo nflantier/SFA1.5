@@ -22,8 +22,8 @@ public class GuiMrFusion extends GuiMachine{
 	
 	public GuiMrFusion(InventoryPlayer inventory, TileMrFusion tile) {
 		super(new ContainerMrFusion(inventory, tile));
-		this.xSize = 176;
-		this.ySize = 200;
+		this.xSize = 232;
+		this.ySize = 240;
 		this.tile = tile;
 	}
 
@@ -37,7 +37,7 @@ public class GuiMrFusion extends GuiMachine{
 		this.componentList.put("mf", new GuiComponent(6, 5, 100, 10){{
 			addText("Mr Fusion :", 0, 0);
 		}});
-		this.componentList.put("in", new GuiComponent(6, 108, 100, 10){{
+		this.componentList.put("in", new GuiComponent(6, 148, 100, 10){{
 			addText("Inventory :", 0, 0);
 		}});
 		this.componentManual.put("so", new GuiComponent(guiLeft+18, guiTop+12, 100, 10){{
@@ -65,9 +65,9 @@ public class GuiMrFusion extends GuiMachine{
 	protected void drawGuiContainerBackgroundLayer(float partialTickTime, int x, int y) {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(bground);
 		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
-		GuiRender.renderEnergy(tile.energyCapacity, tile.getEnergyStored(ForgeDirection.UNKNOWN), guiLeft+145, guiTop+23,this.zLevel, 14, 70, 176, 0);
+		GuiRender.renderEnergy(tile.energyCapacity, tile.getEnergyStored(ForgeDirection.UNKNOWN), guiLeft+210, guiTop+16,this.zLevel, 14, 124, 232, 0);
 		if(tile.tank.getFluid()!=null)
-			GuiRender.renderFluid(tile.tank, guiLeft+77, guiTop+23, this.zLevel, 34, 47);
+			GuiRender.renderFluid(tile.tank, guiLeft+178, guiTop+15, this.zLevel, 14, 95);
 		super.drawGuiContainerBackgroundLayer(partialTickTime, x, y);
 	}
 }

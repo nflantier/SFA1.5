@@ -1,17 +1,17 @@
 package noelflantier.sfartifacts.common.helpers;
 
-import java.util.Map.Entry;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import noelflantier.sfartifacts.common.blocks.tiles.ITileMaster;
 import noelflantier.sfartifacts.common.blocks.tiles.TileRenderPillarModel;
-import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileBlockPillar;
-import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileInterfacePillar;
 import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileMasterPillar;
+import noelflantier.sfartifacts.common.network.PacketHandler;
+import noelflantier.sfartifacts.common.network.messages.PacketPillar;
+import noelflantier.sfartifacts.common.network.messages.PacketUnsetPillar;
 import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig;
 import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig.Pillar;
 
@@ -59,7 +59,7 @@ public class PillarHelper {
 		tmp.tankCapacity = PillarsConfig.getInstance().getPillarFromName(namePillar).fluidCapacity;
 		tmp.tank.setCapacity(tmp.tankCapacity);
     	PillarMaterials pm = PillarMaterials.getMaterialFromId(tmp.materialId);
-    	tmp.setMaterialRatio(pm.naturalEnergy, pm.maxHeightEfficiency, pm.rainEfficiency);
+    	tmp.setMaterialRatios(pm.energyRatio, pm.heightRatio, pm.rainRatio);
     	tmp.master = new Coord4(x,y,z);
     	if(t!=null && t instanceof TileMasterPillar){
     		tmp.storage.setEnergyStored(tmp.getEnergyStored(ForgeDirection.UNKNOWN));
@@ -89,11 +89,15 @@ public class PillarHelper {
 	
 	public static boolean unsetupStructureNoMaster(World w, int x, int y, int z){
 		TileEntity t = w.getTileEntity(x, y, z);
+		if(t instanceof ITileMaster && ((ITileMaster)t).getMasterCoord() == null)
+			return false;
+		
 		if(t instanceof TileMasterPillar){
 			((TileMasterPillar)t).master = null;
 			int rf = ((TileMasterPillar)t).getEnergyStored(ForgeDirection.UNKNOWN);
 			w.notifyBlockChange(x, y, z, w.getBlock(x, y, z));
 			((TileMasterPillar)t).getEnergyStorage().setEnergyStored(rf);
+			PacketHandler.sendToAllAround(new PacketUnsetPillar((TileMasterPillar)t),t);
 		}else{
 			Block b = w.getBlock(x, y, z);
 			w.removeTileEntity(x, y, z);

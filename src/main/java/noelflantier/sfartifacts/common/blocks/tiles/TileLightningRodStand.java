@@ -30,7 +30,7 @@ public class TileLightningRodStand extends TileAsgardianMachine implements ITile
 	public Random rdL = new Random();
 	public int lightningTick = 20;
 	public int currentLightningTick = 0;
-	public int naturalEnergy = -1;
+	public float materialEnergyRatio = -1;
 	
     //RENDERING
     public float yrotupring = 0.0F;
@@ -67,7 +67,7 @@ public class TileLightningRodStand extends TileAsgardianMachine implements ITile
 	public void init(){
 		super.init();
     	this.extractSides.add(ForgeDirection.DOWN);
-		this.naturalEnergy = this.getNaturalEnergy(this.getBlockMetadata());
+		this.materialEnergyRatio = this.getEnergyRatio(this.getBlockMetadata());
 	}
 	
 	@Override
@@ -80,7 +80,7 @@ public class TileLightningRodStand extends TileAsgardianMachine implements ITile
 	@Override
 	public void processMachine() {        
         if(this.items[0] != null && this.items[0].getItem() instanceof ItemLightningRod){
-        	this.lightningRodEnergy = (int) (efficiencyLightningRod[this.items[0].getItemDamage()] * naturalEnergy);
+        	this.lightningRodEnergy = (int) (efficiencyLightningRod[this.items[0].getItemDamage()] * materialEnergyRatio);
         	this.receiveEnergy(ForgeDirection.UNKNOWN,this.lightningRodEnergy/this.energyTick, false);
         	
         	this.currentLightningTick--;

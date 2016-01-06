@@ -21,16 +21,13 @@ import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileMasterPillar;
 import noelflantier.sfartifacts.common.container.ContainerControlPanel;
 import noelflantier.sfartifacts.common.helpers.PillarMaterials;
 import noelflantier.sfartifacts.common.network.PacketHandler;
-import noelflantier.sfartifacts.common.network.messages.PacketPillarConfig;
+import noelflantier.sfartifacts.common.network.messages.PacketPillarGui;
 
 @SideOnly(Side.CLIENT)
 public class GuiControlPanel extends GuiSFA{
 
 	private TileControlPannel tile;
 	private TileMasterPillar pillar;
-	private int buttonPressed = -1;
-	private int tickButton = 2;
-	private int currentTickButton = -1;
 	private static final ResourceLocation bground = new ResourceLocation(References.MODID+":textures/gui/guiControlPanel.png");
 	
 	public GuiControlPanel(InventoryPlayer inventory, TileControlPannel tile) {
@@ -66,17 +63,9 @@ public class GuiControlPanel extends GuiSFA{
 		this.componentList.get("fenergy").replaceString(0, "Fluid gain : "+this.pillar.fluidEnergy+" RF/T");
 		this.componentList.get("tenergy").replaceString(0, "Total : "+(this.pillar.getEnergyStored(ForgeDirection.UNKNOWN)-this.pillar.lastEnergyStoredAmount)+" RF/T");
 		
-		int margebt = this.fontRendererObj.getStringWidth(this.componentList.get("fluiddraining").stringList.get(0));
+		/*int margebt = this.fontRendererObj.getStringWidth(this.componentList.get("fluiddraining").stringList.get(0));
 		this.componentList.get("fluiddraining").buttonList.get(0).xPosition = 20+this.guiLeft+margebt;
-		this.componentList.get("fluiddraining").buttonList.get(1).xPosition = 20+this.guiLeft+21+margebt;
-		
-		for(int i =0; i<this.buttonList.size();i++){
-			if(this.buttonList.get(i) instanceof GuiButtonSFA){
-				if(((GuiButtonSFA)this.buttonList.get(i)).pressed && ((GuiButton)this.buttonList.get(i)).id==this.buttonPressed){
-					this.actionPerformed(((GuiButtonSFA)this.buttonList.get(i)));
-				}
-			}
-		}
+		this.componentList.get("fluiddraining").buttonList.get(1).xPosition = 20+this.guiLeft+21+margebt;*/
 	}
 
 	@Override
@@ -85,30 +74,18 @@ public class GuiControlPanel extends GuiSFA{
 		if(this.pillar==null) return;
 		
 		if(button.id==0){
-			if(this.buttonPressed==0 || this.buttonPressed==-1){
-				if(this.currentTickButton<0){
-					this.currentTickButton = this.tickButton;
-					PacketHandler.INSTANCE.sendToServer(new PacketPillarConfig(this.pillar.xCoord,this.pillar.yCoord,this.pillar.zCoord, -10));
-				}else
-					this.currentTickButton-=1;
-			}
-			this.buttonPressed = 0;
+			PacketHandler.INSTANCE.sendToServer(new PacketPillarGui(this.pillar.xCoord,this.pillar.yCoord,this.pillar.zCoord, -10));
 		}else if(button.id==1){
-			if(this.buttonPressed==1 || this.buttonPressed==-1){
-				if(this.currentTickButton<0){
-					this.currentTickButton = this.tickButton;
-					PacketHandler.INSTANCE.sendToServer(new PacketPillarConfig(this.pillar.xCoord,this.pillar.yCoord,this.pillar.zCoord, 10));
-				}else
-					this.currentTickButton-=1;
-			}
-			this.buttonPressed = 1;
+			PacketHandler.INSTANCE.sendToServer(new PacketPillarGui(this.pillar.xCoord,this.pillar.yCoord,this.pillar.zCoord, 10));
+		}else if(button.id==2){
+			PacketHandler.INSTANCE.sendToServer(new PacketPillarGui(this.pillar.xCoord,this.pillar.yCoord,this.pillar.zCoord, -100));
+		}else if(button.id==3){
+			PacketHandler.INSTANCE.sendToServer(new PacketPillarGui(this.pillar.xCoord,this.pillar.yCoord,this.pillar.zCoord, +100));
+		}else if(button.id==4){
+			PacketHandler.INSTANCE.sendToServer(new PacketPillarGui(this.pillar.xCoord,this.pillar.yCoord,this.pillar.zCoord, -1000));
+		}else if(button.id==5){
+			PacketHandler.INSTANCE.sendToServer(new PacketPillarGui(this.pillar.xCoord,this.pillar.yCoord,this.pillar.zCoord, +1000));
 		}
-	}
-
-	@Override
-	protected void mouseMovedOrUp(int p_146286_1_, int p_146286_2_, int p_146286_3_){
-		super.mouseMovedOrUp(p_146286_1_, p_146286_2_, p_146286_3_);
-		if(p_146286_3_==0 || p_146286_3_==1)this.buttonPressed=-1;
 	}
 	
 	@Override
@@ -121,8 +98,12 @@ public class GuiControlPanel extends GuiSFA{
 		}});
 		
 		this.componentList.put("fluiddraining", new GuiComponent(18, 120){{
-			addSfaButton(0,guiLeft+113,guiTop-7,20,20,"-");
-			addSfaButton(1,guiLeft+134,guiTop-7,20,20,"+");
+			addSfaButton(0,guiLeft+52,guiTop+10,20,20,"-");
+			addSfaButton(1,guiLeft+73,guiTop+10,20,20,"+");
+			addSfaButton(2,guiLeft+31,guiTop+10,20,20,"--");
+			addSfaButton(3,guiLeft+94,guiTop+10,20,20,"++");
+			addSfaButton(4,guiLeft+10,guiTop+10,20,20,"---");
+			addSfaButton(5,guiLeft+115,guiTop+10,20,20,"+++");
 			addText("Fluid draining : "+pillar.amountToExtract+" MB/T", 0, 0);
 		}});
 
@@ -134,7 +115,7 @@ public class GuiControlPanel extends GuiSFA{
 			addText("Fluid gain : "+pillar.fluidEnergy+" RF/T",  -guiLeft, -guiTop);
 		}});
 				
-		this.componentList.put("tenergy", new GuiComponent(18, 135){{
+		this.componentList.put("tenergy", new GuiComponent(18, 155){{
 			addText("Total : "+(pillar.getEnergyStored(ForgeDirection.UNKNOWN)-pillar.lastEnergyStoredAmount)+" RF/T",  0, 0);
 		}});		
 		
@@ -172,15 +153,15 @@ public class GuiControlPanel extends GuiSFA{
 	public void updateToolTips(String key){
 		switch(key){
 			case "penergy" :
-				((GuiToolTips)this.componentList.get("penergy")).addContent(this.fontRendererObj,String.format("%s", "Material natural gain * "));
-				((GuiToolTips)this.componentList.get("penergy")).addContent(this.fontRendererObj,String.format("%s","( Type ratio"));
-				((GuiToolTips)this.componentList.get("penergy")).addContent(this.fontRendererObj,String.format("%s","+ Rain ratio"));
-				((GuiToolTips)this.componentList.get("penergy")).addContent(this.fontRendererObj,String.format("%s","+ Height ratio )"));
+				((GuiToolTips)this.componentList.get("penergy")).addContent(this.fontRendererObj,String.format("%s","pow( structure ratio, 2.2 )"));
+				((GuiToolTips)this.componentList.get("penergy")).addContent(this.fontRendererObj,String.format("%s","* pow( material ratio"));
+				((GuiToolTips)this.componentList.get("penergy")).addContent(this.fontRendererObj,String.format("%s","+ pow ( height ratio * 2, 4 )"));
+				((GuiToolTips)this.componentList.get("penergy")).addContent(this.fontRendererObj,String.format("%s","+ rain ratio, 1.5)"));
 				break;
 			case "fenergy" :
-				((GuiToolTips)this.componentList.get("fenergy")).addContent(this.fontRendererObj,String.format("%s","Material natural gain"));
-				((GuiToolTips)this.componentList.get("fenergy")).addContent(this.fontRendererObj,String.format("%s","* Type ratio"));
-				((GuiToolTips)this.componentList.get("fenergy")).addContent(this.fontRendererObj,String.format("%s","* Fluid draining amount"));
+				((GuiToolTips)this.componentList.get("fenergy")).addContent(this.fontRendererObj,String.format("%s","pow( pow( structure ratio, 1.1 )"));
+				((GuiToolTips)this.componentList.get("fenergy")).addContent(this.fontRendererObj,String.format("%s","* pow( fluid amount/20+1, 1.5 )"));
+				((GuiToolTips)this.componentList.get("fenergy")).addContent(this.fontRendererObj,String.format("%s","* pow( material ratio, 1.1 ), 0.85 )"));
 				break;
 			default:
 				break;

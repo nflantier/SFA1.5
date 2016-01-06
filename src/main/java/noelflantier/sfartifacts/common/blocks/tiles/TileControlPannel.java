@@ -17,24 +17,12 @@ public class TileControlPannel extends TileSFA implements ITileCanBeSidedToPilla
 	public TileControlPannel(){
 		super("Control Panel");
 	}
-
+	
 	@Override
-    public void updateEntity() {
-		super.updateEntity();
-        if(this.worldObj.isRemote)
-        	return;
-    	if(this.tickCheck<0){
-    		this.tickCheck = 20;
-    		checkMaster();
-    	}
-    	this.tickCheck -= 1;
-    }
-
-	@Override
-	public void init(){
-		super.init();
+    public void preinit(){
+		super.preinit();
 		checkMaster();
-	}
+    }
 	
 	public void checkMaster(){
 		ForgeDirection fd = ForgeDirection.getOrientation(this.side).getOpposite();
@@ -43,7 +31,7 @@ public class TileControlPannel extends TileSFA implements ITileCanBeSidedToPilla
 			this.master = new Coord4(t.xCoord,t.yCoord,t.zCoord);
 		else
 			this.master = null;
-		this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 	
 	@Override

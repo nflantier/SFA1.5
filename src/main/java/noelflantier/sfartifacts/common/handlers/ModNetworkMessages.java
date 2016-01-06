@@ -19,13 +19,14 @@ import noelflantier.sfartifacts.common.network.messages.PacketMightyFoundryGui;
 import noelflantier.sfartifacts.common.network.messages.PacketParticleGlobal;
 import noelflantier.sfartifacts.common.network.messages.PacketParticleMoving;
 import noelflantier.sfartifacts.common.network.messages.PacketPillar;
-import noelflantier.sfartifacts.common.network.messages.PacketPillarConfig;
+import noelflantier.sfartifacts.common.network.messages.PacketPillarGui;
 import noelflantier.sfartifacts.common.network.messages.PacketRenderPillarModel;
 import noelflantier.sfartifacts.common.network.messages.PacketRenderUpdate;
 import noelflantier.sfartifacts.common.network.messages.PacketSound;
 import noelflantier.sfartifacts.common.network.messages.PacketSoundEmitter;
 import noelflantier.sfartifacts.common.network.messages.PacketSoundEmitterGui;
 import noelflantier.sfartifacts.common.network.messages.PacketTeleport;
+import noelflantier.sfartifacts.common.network.messages.PacketUnsetPillar;
 import noelflantier.sfartifacts.common.network.messages.PacketUpgradeHammer;
 
 public class ModNetworkMessages {
@@ -39,6 +40,7 @@ public class ModNetworkMessages {
 	    PacketHandler.INSTANCE.registerMessage(PacketMightyFoundry.class, PacketMightyFoundry.class, PacketHandler.nextId(), Side.CLIENT);
 	    PacketHandler.INSTANCE.registerMessage(PacketSoundEmitter.class, PacketSoundEmitter.class, PacketHandler.nextId(), Side.CLIENT);
 	    PacketHandler.INSTANCE.registerMessage(PacketPillar.class, PacketPillar.class, PacketHandler.nextId(), Side.CLIENT);
+	    PacketHandler.INSTANCE.registerMessage(PacketUnsetPillar.class, PacketUnsetPillar.class, PacketHandler.nextId(), Side.CLIENT);
 	    PacketHandler.INSTANCE.registerMessage(PacketLightningRodStand.class, PacketLightningRodStand.class, PacketHandler.nextId(), Side.CLIENT);
 	    PacketHandler.INSTANCE.registerMessage(PacketSound.class, PacketSound.class, PacketHandler.nextId(), Side.CLIENT);
 	    PacketHandler.INSTANCE.registerMessage(PacketParticleMoving.class, PacketParticleMoving.class, PacketHandler.nextId(), Side.CLIENT);
@@ -56,7 +58,7 @@ public class ModNetworkMessages {
 	    PacketHandler.INSTANCE.registerMessage(PacketInvokStarting.class, PacketInvokStarting.class, PacketHandler.nextId(), Side.SERVER);
 	    PacketHandler.INSTANCE.registerMessage(PacketHammerConfig.class, PacketHammerConfig.class, PacketHandler.nextId(), Side.SERVER);
 	    PacketHandler.INSTANCE.registerMessage(PacketEnchantHammer.class, PacketEnchantHammer.class, PacketHandler.nextId(), Side.SERVER);
-	    PacketHandler.INSTANCE.registerMessage(PacketPillarConfig.class, PacketPillarConfig.class, PacketHandler.nextId(), Side.SERVER);
+	    PacketHandler.INSTANCE.registerMessage(PacketPillarGui.class, PacketPillarGui.class, PacketHandler.nextId(), Side.SERVER);
 	    
 		//PacketHandler.INSTANCE.registerMessage(MessageTESTHandler.class, MessageTEST.class, PacketHandler.nextId(), Side.CLIENT);
 	}

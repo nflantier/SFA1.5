@@ -63,6 +63,7 @@ public class ModConfig {
 	public static int rfPerSecondHoverBoard;
 	
 	public static boolean areFrequenciesShown;
+	public static int maxAmountPillarCanExtract;
 
 	public final static String CAT_UTILS = "Utils";
 	public final static String CAT_ORES = "Ores";
@@ -113,6 +114,8 @@ public class ModConfig {
 			
 			isManualSpawning = config.get(Configuration.CATEGORY_GENERAL, "manual spawn", true, "Is the manual spawn at player on new log in").getBoolean();
 			chanceToSpawnMightyFeather = config.get(Configuration.CATEGORY_GENERAL, "chance to drop mighty feather", 0.35, "Chance that chickens hit by lightning drop mighty feather [0-1]").getDouble();
+			
+			maxAmountPillarCanExtract = config.get(Configuration.CATEGORY_GENERAL, "max MB", 5000, "Maximun amount of MB pillar can consume to produce energy").getInt();
 			
 			tickToCookVibraniumOres = config.get(CAT_ORES, "ticks", 6000, "The number of ticks needed to vibranium ores to be cooked 20 tick = 1 s").getInt();
 			isAsgarditeOreSpawnEnable = config.get(CAT_ORES, "asgardite ore spawn enable", true, "Is asgardite ore spawn enable").getBoolean();

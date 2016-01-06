@@ -61,9 +61,9 @@ public class ThorManual extends BaseManual{
 			this.componentList.put("m1", 
 				new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 					addText("There is 3 types of materials :  ",0,0);
-					addText("Agardite : basic asgardian material (RF ratio :"+PillarMaterials.values()[2].naturalEnergy+")",10,5);
-					addText("Agardian Steel : iron in the injector (RF ratio :"+PillarMaterials.values()[1].naturalEnergy+")",10,0);
-					addText("Agardian Bronze : gold in the injector (RF ratio :"+PillarMaterials.values()[0].naturalEnergy+")",10,0);
+					addText("Agardite : basic asgardian material (RF ratio :"+PillarMaterials.values()[2].energyRatio+")",10,5);
+					addText("Agardian Steel : iron in the injector (RF ratio :"+PillarMaterials.values()[1].energyRatio+")",10,0);
+					addText("Agardian Bronze : gold in the injector (RF ratio :"+PillarMaterials.values()[0].energyRatio+")",10,0);
 					addText("They all handle energy and fluids with their proper",0,5);
 					addText("efficiency ratio. So it will affect the structure",0,0);
 					addText("or the block efficency that your willing to make",0,0);

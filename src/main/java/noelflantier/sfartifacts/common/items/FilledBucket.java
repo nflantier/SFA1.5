@@ -1,4 +1,4 @@
-package noelflantier.sfartifacts.common.blocks;
+package noelflantier.sfartifacts.common.items;
 
 import java.util.List;
 
@@ -21,6 +21,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidFinite;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.SFArtifacts;
+import noelflantier.sfartifacts.common.blocks.BlockMaterialsTE;
+import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileBlockPillar;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
 
 public class FilledBucket extends ItemBucket{
@@ -96,6 +98,12 @@ public class FilledBucket extends ItemBucket{
                 {
                     return stack;
                 }
+                
+                if(world.getBlock(position.blockX, position.blockY, position.blockZ) instanceof BlockMaterialsTE 
+                		&& world.getTileEntity(position.blockX, position.blockY, position.blockZ)!=null 
+                		&& world.getTileEntity(position.blockX, position.blockY, position.blockZ) instanceof TileBlockPillar){
+                	return stack;
+                }
 
                 if (this.tryPlaceContainedLiquid(world, clickX, clickY, clickZ, stack.getItemDamage()) && !player.capabilities.isCreativeMode)
                 {
@@ -108,23 +116,6 @@ public class FilledBucket extends ItemBucket{
     }
 
     public boolean tryPlaceContainedLiquid (World world, int clickX, int clickY, int clickZ, int meta){
-    	/*super.tryPlaceContainedLiquid(world, clickX, clickY, clickZ);
-    	if (world.isAirBlock(clickX, clickY, clickZ) && world.getBlock(clickX, clickY, clickZ).getMaterial().isSolid()){
-            return false;
-        }else{
-            try
-            {
-                if (ModFluids.fluidBlocks[type] == null)
-                    return false;
-                world.setBlock(clickX, clickY, clickZ, ModFluids.fluidBlocks[type], 0, 3); // TODO: Merge liquids
-            }
-            catch (ArrayIndexOutOfBoundsException ex)
-            {
-                return false;
-            }
-
-            return true;
-        }*/
         Material material = world.getBlock(clickX, clickY, clickZ).getMaterial();
         boolean flag = !material.isSolid();
 

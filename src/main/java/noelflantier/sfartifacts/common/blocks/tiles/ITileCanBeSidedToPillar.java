@@ -9,7 +9,7 @@ public interface ITileCanBeSidedToPillar extends ITileMaster{
     	TileEntity t = getWorld().getTileEntity(x, y, z);
     	if(t!=null && t instanceof ITileMustHaveMaster){
     		ITileMustHaveMaster itm = (ITileMustHaveMaster)t;
-    		return itm.getMasterTile();
+    		return itm.isMasterStillMaster()?itm.getMasterTile():null;
     	}
     	return null;
     }
