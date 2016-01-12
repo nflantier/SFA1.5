@@ -1,27 +1,17 @@
 package noelflantier.sfartifacts.client.gui;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Locale;
-
-import org.lwjgl.input.Mouse;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
 import noelflantier.sfartifacts.client.gui.bases.GuiRender;
-import noelflantier.sfartifacts.client.gui.bases.GuiSFA;
 import noelflantier.sfartifacts.client.gui.bases.GuiToolTips;
 import noelflantier.sfartifacts.common.blocks.tiles.TileLiquefier;
 import noelflantier.sfartifacts.common.container.ContainerLiquefier;
-import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 
 public class GuiLiquefier extends GuiMachine{
 
@@ -91,7 +81,7 @@ public class GuiLiquefier extends GuiMachine{
 		Minecraft.getMinecraft().getTextureManager().bindTexture(bground);
 		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
 		
-		GuiRender.renderEnergy(tile.energyCapacity, tile.getEnergyStored(ForgeDirection.UNKNOWN), guiLeft+25, guiTop+23,this.zLevel, 14, 47, 176, 0);
+		GuiRender.renderEnergy(tile.storage.getMaxEnergyStored(), tile.getEnergyStored(ForgeDirection.UNKNOWN), guiLeft+25, guiTop+23,this.zLevel, 14, 47, 176, 0);
 		if(tile.isRunning)
 			GuiRender.renderTask(tile.tickToMelt, tile.currentTickToMelt, guiLeft+92, guiTop+37, this.zLevel, 22, 16, 176, 47);
 		GuiRender.renderFluid(tile.tank, guiLeft+135, guiTop+23, this.zLevel, 27, 47);

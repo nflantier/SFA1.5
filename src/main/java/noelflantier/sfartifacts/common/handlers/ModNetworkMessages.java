@@ -20,6 +20,8 @@ import noelflantier.sfartifacts.common.network.messages.PacketParticleGlobal;
 import noelflantier.sfartifacts.common.network.messages.PacketParticleMoving;
 import noelflantier.sfartifacts.common.network.messages.PacketPillar;
 import noelflantier.sfartifacts.common.network.messages.PacketPillarGui;
+import noelflantier.sfartifacts.common.network.messages.PacketRecharger;
+import noelflantier.sfartifacts.common.network.messages.PacketRechargerGui;
 import noelflantier.sfartifacts.common.network.messages.PacketRenderPillarModel;
 import noelflantier.sfartifacts.common.network.messages.PacketRenderUpdate;
 import noelflantier.sfartifacts.common.network.messages.PacketSound;
@@ -48,7 +50,9 @@ public class ModNetworkMessages {
 	    PacketHandler.INSTANCE.registerMessage(PacketRenderPillarModel.class, PacketRenderPillarModel.class, PacketHandler.nextId(), Side.CLIENT);
 	    PacketHandler.INSTANCE.registerMessage(PacketExtendedEntityProperties.class, PacketExtendedEntityProperties.class, PacketHandler.nextId(), Side.CLIENT);
 	    PacketHandler.INSTANCE.registerMessage(PacketInductor.class, PacketInductor.class, PacketHandler.nextId(), Side.CLIENT);
+	    PacketHandler.INSTANCE.registerMessage(PacketRecharger.class, PacketRecharger.class, PacketHandler.nextId(), Side.CLIENT);
 
+	    PacketHandler.INSTANCE.registerMessage(PacketRechargerGui.class, PacketRechargerGui.class, PacketHandler.nextId(), Side.SERVER);	
 	    PacketHandler.INSTANCE.registerMessage(PacketInductorGui.class, PacketInductorGui.class, PacketHandler.nextId(), Side.SERVER);	
 	    PacketHandler.INSTANCE.registerMessage(PacketSoundEmitterGui.class, PacketSoundEmitterGui.class, PacketHandler.nextId(), Side.SERVER);	    
 	    PacketHandler.INSTANCE.registerMessage(PacketMachine.class, PacketMachine.class, PacketHandler.nextId(), Side.SERVER);

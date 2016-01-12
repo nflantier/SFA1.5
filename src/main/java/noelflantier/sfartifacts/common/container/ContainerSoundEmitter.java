@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import noelflantier.sfartifacts.common.blocks.tiles.TileAsgardianMachine;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSoundEmitter;
 import noelflantier.sfartifacts.common.container.slot.FluidsSlots;
 import noelflantier.sfartifacts.common.handlers.ModFluids;

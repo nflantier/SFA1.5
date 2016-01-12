@@ -2,20 +2,13 @@ package noelflantier.sfartifacts.client.render;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import noelflantier.sfartifacts.References;
-import noelflantier.sfartifacts.SFArtifacts;
-import noelflantier.sfartifacts.common.helpers.PillarMaterials;
 
 public class RenderItemEnergyModule  implements IItemRenderer{
 

@@ -18,7 +18,6 @@ import net.minecraftforge.client.model.IModelCustom;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.common.blocks.BlockAsgardianGlass;
 import noelflantier.sfartifacts.common.blocks.BlockAsgardianSteel;
-import noelflantier.sfartifacts.common.blocks.BlockMaterialsTE;
 import noelflantier.sfartifacts.common.blocks.BlockSoundEmitter;
 import noelflantier.sfartifacts.common.handlers.ModBlocks;
 import noelflantier.sfartifacts.common.helpers.RenderBlocksHelper;

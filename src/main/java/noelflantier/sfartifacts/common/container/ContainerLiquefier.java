@@ -2,18 +2,13 @@ package noelflantier.sfartifacts.common.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
-import noelflantier.sfartifacts.References;
-import noelflantier.sfartifacts.common.blocks.tiles.TileControlPannel;
 import noelflantier.sfartifacts.common.blocks.tiles.TileLiquefier;
 import noelflantier.sfartifacts.common.container.slot.FluidsSlots;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
-import noelflantier.sfartifacts.common.items.ItemAsgardite;
 
 public class ContainerLiquefier extends ContainerMachine{
 

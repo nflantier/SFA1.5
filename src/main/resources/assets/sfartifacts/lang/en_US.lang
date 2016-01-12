@@ -36,13 +36,19 @@ item.itemSilicon.raw.name=Raw silicon
 item.itemSilicon.clear.name=Clear silicon
 item.itemSilicon.pure.name=Pure silicon
 item.itemGlassCutter.name=Glass cutter
+item.itemMicroChip.blank.name=Blank core chip
 item.itemMicroChip.single.name=One core chip
 item.itemMicroChip.dual.name=Dual core chip
 item.itemMicroChip.quad.name=Quad core chip
 item.itemCircuitBoard.single.name=One core circuit board
 item.itemCircuitBoard.dual.name=Dual core circuit board
 item.itemCircuitBoard.quad.name=Quad core circuit board
-item.itemHoverBoard.name=HoverBoard
+item.itemStabilizer.name=Stabilizer
+item.itemHoverBoard.marty.name=Mattel HoverBoard
+item.itemHoverBoard.biff.name=PitBull HoverBoard
+item.itemThruster.name=Thruster
+item.itemEnergeticConvector.name=Energetic Convector
+item.itemMuonBoosterCasing.name=Muon Booster Casing
 
 entity.sfartifacts.thorhammerinvoking.name=Falling Hammer
 entity.sfartifacts.thorhammerthrow.name=Mining Hammer
@@ -84,6 +90,7 @@ tile.blockInductor.basic.name=Inductor (Basic)
 tile.blockInductor.advanced.name=Inductor (Advanced)
 tile.blockInductor.basicenergized.name=Inductor (Basic Energized)
 tile.blockInductor.advancedenergized.name=Inductor (Advanced Energized)
+tile.blockRecharger.name=Recharger
 
 fluid.liquefiedAsgardite=Liquefied Asgardite
 

@@ -9,8 +9,6 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import noelflantier.sfartifacts.References;
-import noelflantier.sfartifacts.common.handlers.ModConfig;
-import noelflantier.sfartifacts.common.handlers.ModEvents;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 
 public class RenderItemVibraniumShield  implements IItemRenderer{

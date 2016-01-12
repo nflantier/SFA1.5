@@ -2,9 +2,7 @@ package noelflantier.sfartifacts.common.items;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.item.Item;
 import noelflantier.sfartifacts.References;
-import noelflantier.sfartifacts.SFArtifacts;
 
 public class ItemVibraniumAlloySheet  extends ItemSFA{
 

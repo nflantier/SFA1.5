@@ -1,9 +1,5 @@
 package noelflantier.sfartifacts.common.recipes.handler;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import noelflantier.sfartifacts.common.handlers.ModBlocks;
 import noelflantier.sfartifacts.common.recipes.AUsageRecipes;
 import noelflantier.sfartifacts.common.recipes.RecipeBase;
 

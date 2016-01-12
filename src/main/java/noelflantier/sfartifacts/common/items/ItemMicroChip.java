@@ -14,7 +14,7 @@ import noelflantier.sfartifacts.References;
 public class ItemMicroChip  extends ItemSFA{
 
 	public IIcon[] metaIcons;
-	public static String[] typeChip = new String[] {"single", "dual", "quad"};
+	public static String[] typeChip = new String[] {"blank", "single", "dual", "quad"};
 	
 	public ItemMicroChip() {
 		super("Micro chip");
@@ -37,6 +37,7 @@ public class ItemMicroChip  extends ItemSFA{
     	list.add(new ItemStack(item, 1, 0));
     	list.add(new ItemStack(item, 1, 1));
     	list.add(new ItemStack(item, 1, 2));
+    	list.add(new ItemStack(item, 1, 3));
 	}
 	
 	@Override

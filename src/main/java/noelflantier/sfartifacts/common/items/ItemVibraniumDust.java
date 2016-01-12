@@ -1,7 +1,6 @@
 package noelflantier.sfartifacts.common.items;
 
 import noelflantier.sfartifacts.References;
-import noelflantier.sfartifacts.SFArtifacts;
 
 public class ItemVibraniumDust extends ItemSFA{
 

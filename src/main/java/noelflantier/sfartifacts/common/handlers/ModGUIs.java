@@ -14,6 +14,7 @@ import noelflantier.sfartifacts.client.gui.GuiLiquefier;
 import noelflantier.sfartifacts.client.gui.GuiMightyFoundry;
 import noelflantier.sfartifacts.client.gui.GuiMoldMaking;
 import noelflantier.sfartifacts.client.gui.GuiMrFusion;
+import noelflantier.sfartifacts.client.gui.GuiRecharger;
 import noelflantier.sfartifacts.client.gui.GuiSoundEmitter;
 import noelflantier.sfartifacts.client.gui.GuiTeleport;
 import noelflantier.sfartifacts.client.gui.manual.BTTFManual;
@@ -29,6 +30,7 @@ import noelflantier.sfartifacts.common.blocks.tiles.TileLightningRodStand;
 import noelflantier.sfartifacts.common.blocks.tiles.TileLiquefier;
 import noelflantier.sfartifacts.common.blocks.tiles.TileMightyFoundry;
 import noelflantier.sfartifacts.common.blocks.tiles.TileMrFusion;
+import noelflantier.sfartifacts.common.blocks.tiles.TileRecharger;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSoundEmitter;
 import noelflantier.sfartifacts.common.container.ContainerControlPanel;
 import noelflantier.sfartifacts.common.container.ContainerHammerStandInvoked;
@@ -40,6 +42,7 @@ import noelflantier.sfartifacts.common.container.ContainerLiquefier;
 import noelflantier.sfartifacts.common.container.ContainerMightyFoundry;
 import noelflantier.sfartifacts.common.container.ContainerMoldMaking;
 import noelflantier.sfartifacts.common.container.ContainerMrFusion;
+import noelflantier.sfartifacts.common.container.ContainerRecharger;
 import noelflantier.sfartifacts.common.container.ContainerSoundEmitter;
 
 public class ModGUIs implements IGuiHandler{
@@ -58,6 +61,7 @@ public class ModGUIs implements IGuiHandler{
 	public static final int guiIDSoundEmiter= 12;
 	public static final int guiIDMrFusion= 13;
 	public static final int guiIDInductor= 14;
+	public static final int guiIDRecharger= 15;
 	
 
 	public static final int guiIDThorManual= 60;
@@ -120,6 +124,11 @@ public class ModGUIs implements IGuiHandler{
 						return new ContainerInductor(player.inventory, (TileInductor)tile);
 					}
 					return null;
+				case ModGUIs.guiIDRecharger :
+					if(tile instanceof TileRecharger){
+						return new ContainerRecharger(player.inventory, (TileRecharger)tile);
+					}
+					return null;
 			}
 		}else if(ID == ModGUIs.guiIDMold){
 			return new ContainerMoldMaking(player);
@@ -180,6 +189,11 @@ public class ModGUIs implements IGuiHandler{
 				case ModGUIs.guiIDInductor :
 					if(tile instanceof TileInductor){
 						return new GuiInductor(player.inventory, (TileInductor)tile);
+					}
+					return null;
+				case ModGUIs.guiIDRecharger :
+					if(tile instanceof TileRecharger){
+						return new GuiRecharger(player.inventory, (TileRecharger)tile);
 					}
 					return null;
 			}

@@ -59,11 +59,17 @@ public class ModConfig {
 	public static int minVainSizeAsgardite;
 	public static int maxVainSizeAsgardite;
 	public static int chanceAsgardite;
-	public static int capacityHoverBoard;
-	public static int rfPerSecondHoverBoard;
+	
+	public static int capacityHoverBoardMarty;
+	public static int rfPerSecondHoverBoardMarty;
+	public static int capacityHoverBoardBiff;
+	public static int rfPerSecondHoverBoardBiff;
+	public static int rfAddedPerCapacityUpgradeOnHoverboards;
 	
 	public static boolean areFrequenciesShown;
 	public static int maxAmountPillarCanExtract;
+	
+	public static int rangeOfRecharger;
 
 	public final static String CAT_UTILS = "Utils";
 	public final static String CAT_ORES = "Ores";
@@ -150,17 +156,23 @@ public class ModConfig {
 			capacityLiquidMrFusion = config.get(CAT_MACHINES, "mr fusion liquid capacity", 1000000, "Mr fudion liquid capacity").getInt();
 			
 
-			transfertCapacityInductorBasic = config.get(Configuration.CATEGORY_GENERAL, "basic inductor transfert RF/T", 150, "Transfert rate RF/T").getInt();
-			transfertCapacityInductorAdvanced = config.get(Configuration.CATEGORY_GENERAL, "advanced inductor transfert RF/T", 500, "Transfert rate RF/T").getInt();
-			transfertCapacityInductorBasicEnergized = config.get(Configuration.CATEGORY_GENERAL, "basic energized inductor transfert RF/T", 1500, "Transfert rate RF/T").getInt();
-			transfertCapacityInductorAdvancedEnergized = config.get(Configuration.CATEGORY_GENERAL, "advanced energized inductor transfert RF/T", 5000, "Transfert rate RF/T").getInt();
+			transfertCapacityInductorBasic = config.get(Configuration.CATEGORY_GENERAL, "basic inductor transfert RF/T", 300, "Transfert rate RF/T").getInt();
+			transfertCapacityInductorAdvanced = config.get(Configuration.CATEGORY_GENERAL, "advanced inductor transfert RF/T", 1500, "Transfert rate RF/T").getInt();
+			transfertCapacityInductorBasicEnergized = config.get(Configuration.CATEGORY_GENERAL, "basic energized inductor transfert RF/T", 5000, "Transfert rate RF/T").getInt();
+			transfertCapacityInductorAdvancedEnergized = config.get(Configuration.CATEGORY_GENERAL, "advanced energized inductor transfert RF/T", 10000, "Transfert rate RF/T").getInt();
 			
 			pureSiliconLifeSpan = config.get(Configuration.CATEGORY_GENERAL, "lifespan silicon", 150, "Lifespan of pure silicon before it decay in ticks 20 tick = 1 s").getInt();
 			
-			capacityHoverBoard = config.get(CAT_HOVERBOARD, "hoverboard rf capacity", 100000, "HoverBoard energy capacity").getInt();
-			rfPerSecondHoverBoard = config.get(CAT_HOVERBOARD, "rf/second hoverboard", 10, "The amount of rf used by the overboard each second you are using it").getInt();
+			capacityHoverBoardMarty = config.get(CAT_HOVERBOARD, "mattel hoverboard rf capacity", 30000, "Mattel hoverBoard energy capacity").getInt();
+			rfPerSecondHoverBoardMarty = config.get(CAT_HOVERBOARD, "mattel rf/second hoverboard", 10, "The amount of rf used by the mattel overboard each second you are using it").getInt();
+			capacityHoverBoardBiff= config.get(CAT_HOVERBOARD, "pitbull hoverboard rf capacity", 60000, "PitBull hoverBoard energy capacity").getInt();
+			rfPerSecondHoverBoardBiff = config.get(CAT_HOVERBOARD, "pitbull rf/second hoverboard", 20, "The amount of rf used by the pitbull overboard each second you are using it").getInt();
+			rfAddedPerCapacityUpgradeOnHoverboards = config.get(CAT_HOVERBOARD, "capacity added on hoveboard/capacity upgrade", 10000, "The amount of RF capacity upgrade add to the hoveboard").getInt();
 			
 			useOldRegistration = config.get(CAT_UTILS, "Use old registration", false, "In the newer version registered name have changed so if you have an id error set this to true").getBoolean();
+			
+			rangeOfRecharger = config.get(Configuration.CATEGORY_GENERAL, "block range recharger", 10, "The range in block where the recharger can recharge rf item in the player inventory").getInt();
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();

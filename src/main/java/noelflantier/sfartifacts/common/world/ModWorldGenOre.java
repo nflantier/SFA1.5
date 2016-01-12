@@ -2,6 +2,7 @@ package noelflantier.sfartifacts.common.world;
 
 import java.util.Random;
 
+import cpw.mods.fml.common.IWorldGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
@@ -10,7 +11,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import noelflantier.sfartifacts.common.handlers.ModBlocks;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
-import cpw.mods.fml.common.IWorldGenerator;
 
 public class ModWorldGenOre implements IWorldGenerator {
 
@@ -46,8 +46,9 @@ public class ModWorldGenOre implements IWorldGenerator {
 
 		if(ModConfig.isVibraniumOreSpawnEnable){
 			BiomeGenBase b = world.getBiomeGenForCoords(x, z);
-			if(b.biomeID==35 || b.biomeID==36 || b.biomeID==163 || b.biomeID==164)
+			if(b.biomeID==35 || b.biomeID==36 || b.biomeID==163 || b.biomeID==164){
 				addOreSpawn(ModBlocks.blockOreVibranium, Blocks.stone, world, random, x, z, ModConfig.minVainSizeVibranium, ModConfig.maxVainSizeVibranium, ModConfig.chanceVibranium, ModConfig.minYVibranium, ModConfig.maxYVibranium);
+			}
 		}
 	}
 	

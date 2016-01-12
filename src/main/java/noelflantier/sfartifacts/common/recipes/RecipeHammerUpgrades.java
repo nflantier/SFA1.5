@@ -3,10 +3,6 @@ package noelflantier.sfartifacts.common.recipes;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import noelflantier.sfartifacts.common.recipes.RecipeHammerUpgrades.NbtTagToAdd;
-
 public class RecipeHammerUpgrades extends RecipeBase{
 
 	private List<NbtTagToAdd> listNbt = new ArrayList<NbtTagToAdd>();

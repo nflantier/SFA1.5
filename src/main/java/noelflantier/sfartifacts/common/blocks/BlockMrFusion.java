@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.SFArtifacts;
-import noelflantier.sfartifacts.common.blocks.tiles.TileInjector;
 import noelflantier.sfartifacts.common.blocks.tiles.TileMrFusion;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSFA;
 import noelflantier.sfartifacts.common.handlers.ModGUIs;

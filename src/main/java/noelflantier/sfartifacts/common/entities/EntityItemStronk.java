@@ -1,6 +1,5 @@
 package noelflantier.sfartifacts.common.entities;
 
-import net.minecraft.enchantment.EnchantmentProtection;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;

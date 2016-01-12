@@ -1,38 +1,27 @@
 package noelflantier.sfartifacts.client.render;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
-import noelflantier.sfartifacts.References;
-import noelflantier.sfartifacts.common.blocks.BlockAsgardite;
-import noelflantier.sfartifacts.common.blocks.BlockLightningRodStand;
-import noelflantier.sfartifacts.common.blocks.tiles.TileLightningRodStand;
-import noelflantier.sfartifacts.common.handlers.ModBlocks;
-import noelflantier.sfartifacts.common.handlers.ModItems;
-import noelflantier.sfartifacts.common.helpers.PillarMaterials;
-import noelflantier.sfartifacts.common.helpers.RenderBlocksHelper;
-
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.model.AdvancedModelLoader;
+import net.minecraftforge.client.model.IModelCustom;
+import noelflantier.sfartifacts.References;
+import noelflantier.sfartifacts.common.blocks.BlockLightningRodStand;
+import noelflantier.sfartifacts.common.blocks.tiles.TileLightningRodStand;
+import noelflantier.sfartifacts.common.helpers.PillarMaterials;
 
 @SideOnly(Side.CLIENT)
 public class RenderBlockLightningRodStand extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler,IItemRenderer {

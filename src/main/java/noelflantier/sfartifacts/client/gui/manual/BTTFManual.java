@@ -3,6 +3,7 @@ package noelflantier.sfartifacts.client.gui.manual;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
+import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.handlers.ModGUIs;
 
 public class BTTFManual  extends BaseManual{
@@ -64,6 +65,33 @@ public class BTTFManual  extends BaseManual{
 					}}
 				);
 
+		}else if(cat.equals("hboard")){
+			this.componentList.put("p1", 
+					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
+						defColor = EnumChatFormatting.BLACK;
+						addText("HoverBoards make you move easily on terrain,",0,0);
+						addText("you can go faster and climb tall step, it",0,0);
+						addText("prevent fall damages and depending on the model",0,0);
+						addText("can make you hover fluids !",0,0);
+						addText("You can upgrade their energy capacity in the anvil",0,0);
+						addText("with energy module.",0,0);
+						addText("To start moving with the hoverboard right click it,",0,0);
+						addText("then you'll be able to do everything you do normaly",0,0);
+						addText("except you are on an hoverboard. To stop moving with",0,0);
+						addText("the hoverboard press shift or right click it.",0,0);
+						addText("To recharge them you can make a recharger.",0,0);
+					}}
+				);
+
+		}else if(cat.equals("recharger")){
+			this.componentList.put("p1", 
+					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
+						defColor = EnumChatFormatting.BLACK;
+						addText("Recharger can recharge your rf items.",0,0);
+						addText("If you are close enough : "+(Math.round(ModConfig.rangeOfRecharger/10))+" blocks",0,0);
+						addText("around, it will recharge them wirelessly.",0,0);
+					}}
+				);
 		}else if(cat.equals("silicon")){
 			this.componentList.put("p1", 
 					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
@@ -102,6 +130,20 @@ public class BTTFManual  extends BaseManual{
 				isLink = true;
 			}});
 			this.links.put("silicon", -1);
+			
+			this.componentList.put("hboard", new GuiComponent(this.guiLeft+10, this.guiTop+60, 100, 10){{
+				defColor = EnumChatFormatting.BLACK;
+				addText("HoverBoards", 0, 0);
+				isLink = true;
+			}});
+			this.links.put("hboard", -1);
+			
+			this.componentList.put("recharger", new GuiComponent(this.guiLeft+10, this.guiTop+70, 100, 10){{
+				defColor = EnumChatFormatting.BLACK;
+				addText("Recharger", 0, 0);
+				isLink = true;
+			}});
+			this.links.put("recharger", -1);
 			
 		}
 	}

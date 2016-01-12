@@ -397,7 +397,7 @@ public class GuiSoundEmitter extends GuiMachine{
 	protected void drawGuiContainerBackgroundLayer(float partialTickTime, int x, int y) {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(bground);
 		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
-		GuiRender.renderEnergy(tile.energyCapacity, tile.getEnergyStored(ForgeDirection.UNKNOWN), guiLeft+25, guiTop+23,this.zLevel, 14, 47, 176, 0);
+		GuiRender.renderEnergy(tile.storage.getMaxEnergyStored(), tile.getEnergyStored(ForgeDirection.UNKNOWN), guiLeft+25, guiTop+23,this.zLevel, 14, 47, 176, 0);
 		GuiRender.renderFluid(tile.tank, guiLeft+8, guiTop+23, this.zLevel, 14, 47);
 		super.drawGuiContainerBackgroundLayer(partialTickTime, x, y);
 	}

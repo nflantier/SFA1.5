@@ -12,16 +12,13 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
-import noelflantier.sfartifacts.common.helpers.DamageSourceHelper;
-import noelflantier.sfartifacts.common.helpers.HammerHelper;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.items.ItemVibraniumShield;
-import noelflantier.sfartifacts.common.items.baseclasses.MiningHammerBase;
-import noelflantier.sfartifacts.common.items.baseclasses.ToolHammerBase;
 
 public class EntityShieldThrow extends EntityThrowable implements IEntityAdditionalSpawnData{
 
 	private int theSlot;
+	private int typeShield;
 	private double orX,orY,orZ,curhyp;
 	public int tickTravel = 20;
 	public int currentTickTravel = 0;
@@ -52,6 +49,11 @@ public class EntityShieldThrow extends EntityThrowable implements IEntityAdditio
 		this.theSlot = slot;
 	}
 	
+	public EntityShieldThrow(World w, EntityLivingBase p, int slot, int typeShield){
+		this(w,p,slot);
+		this.typeShield = typeShield;
+	}
+	
 	public void setV(double vx, double vy, double vz){
         this.motionX = vx;
         this.motionY = vy;
@@ -63,6 +65,10 @@ public class EntityShieldThrow extends EntityThrowable implements IEntityAdditio
             this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(vx, vz) * 180.0D / Math.PI);
             this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(vy, (double)f) * 180.0D / Math.PI);
         }
+	}
+
+	public int getTypeShield() {
+		return typeShield;
 	}
 	
     public boolean canBeCollidedWith(){
@@ -98,8 +104,7 @@ public class EntityShieldThrow extends EntityThrowable implements IEntityAdditio
 						this.setShieldBack();
 				}
 			}
-		}/*else
-			System.out.println(this.rotationYaw+" ");*/
+		}
     }
 	
 	@Override
@@ -194,10 +199,12 @@ public class EntityShieldThrow extends EntityThrowable implements IEntityAdditio
 	@Override
 	public void writeSpawnData(ByteBuf data) {
 		data.writeInt(theSlot);
+		data.writeInt(typeShield);
 	}
 
 	@Override
 	public void readSpawnData(ByteBuf data) {
 		theSlot = data.readInt();
+		typeShield = data.readInt();
 	}
 }

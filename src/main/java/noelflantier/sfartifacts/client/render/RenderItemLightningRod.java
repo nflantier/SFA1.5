@@ -3,12 +3,9 @@ package noelflantier.sfartifacts.client.render;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import noelflantier.sfartifacts.References;
@@ -69,7 +66,7 @@ public class RenderItemLightningRod  implements IItemRenderer{
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 				break;
 			case INVENTORY:
-				GL11.glScalef(0.6F, 0.6F, 0.6F);
+				GL11.glScalef(0.4F, 0.4F, 0.4F);
 				GL11.glTranslatef(-0.0F,-1.0F,+0.0F);
 				GL11.glRotatef(45, 0.0F, 1.0F, 0.0F);
 				break;

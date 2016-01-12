@@ -1,20 +1,14 @@
 package noelflantier.sfartifacts.common.recipes;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
-import java.util.function.Predicate;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.items.baseclasses.ToolHammerBase;
 import noelflantier.sfartifacts.common.recipes.RecipeHammerUpgrades.NbtTagToAdd;

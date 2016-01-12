@@ -3,7 +3,6 @@ package noelflantier.sfartifacts.common.handlers;
 import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
 

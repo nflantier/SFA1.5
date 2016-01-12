@@ -10,10 +10,7 @@ import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
 import noelflantier.sfartifacts.client.gui.bases.GuiRender;
 import noelflantier.sfartifacts.client.gui.bases.GuiToolTips;
-import noelflantier.sfartifacts.common.blocks.tiles.TileLiquefier;
 import noelflantier.sfartifacts.common.blocks.tiles.TileMrFusion;
-import noelflantier.sfartifacts.common.container.ContainerLiquefier;
-import noelflantier.sfartifacts.common.container.ContainerMachine;
 import noelflantier.sfartifacts.common.container.ContainerMrFusion;
 
 public class GuiMrFusion extends GuiMachine{
@@ -65,7 +62,7 @@ public class GuiMrFusion extends GuiMachine{
 	protected void drawGuiContainerBackgroundLayer(float partialTickTime, int x, int y) {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(bground);
 		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
-		GuiRender.renderEnergy(tile.energyCapacity, tile.getEnergyStored(ForgeDirection.UNKNOWN), guiLeft+210, guiTop+16,this.zLevel, 14, 124, 232, 0);
+		GuiRender.renderEnergy(tile.storage.getMaxEnergyStored(), tile.getEnergyStored(ForgeDirection.UNKNOWN), guiLeft+210, guiTop+16,this.zLevel, 14, 124, 232, 0);
 		if(tile.tank.getFluid()!=null)
 			GuiRender.renderFluid(tile.tank, guiLeft+178, guiTop+15, this.zLevel, 14, 95);
 		super.drawGuiContainerBackgroundLayer(partialTickTime, x, y);

@@ -7,13 +7,9 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.EntityList;
 import net.minecraft.inventory.Container;
 
 public abstract class GuiSFA  extends GuiContainer{

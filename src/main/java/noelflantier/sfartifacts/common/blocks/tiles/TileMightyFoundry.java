@@ -41,7 +41,7 @@ public class TileMightyFoundry extends TileAsgardianMachine implements ITileGlob
 	public int initialTickToMelt = 1000;
 	public int tickToMelt = 1000;
 	public int currentTickToMelt = 0;
-	public FluidStack fluidNeededPerOneItem = new FluidStack(FluidRegistry.LAVA, 500);
+	public FluidStack fluidNeededPerOneItem = new FluidStack(FluidRegistry.LAVA, 200);
 	
 	//INVENTORY
 	public ItemStack[] items = new ItemStack[7];

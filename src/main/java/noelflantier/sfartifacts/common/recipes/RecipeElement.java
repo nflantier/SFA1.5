@@ -5,7 +5,6 @@ import java.util.function.Predicate;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 
 public abstract class RecipeElement {
 

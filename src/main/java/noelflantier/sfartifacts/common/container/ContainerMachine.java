@@ -3,7 +3,6 @@ package noelflantier.sfartifacts.common.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import noelflantier.sfartifacts.common.blocks.tiles.TileAsgardianMachine;
 import noelflantier.sfartifacts.common.blocks.tiles.TileMachine;
 
 public abstract class ContainerMachine  extends Container{

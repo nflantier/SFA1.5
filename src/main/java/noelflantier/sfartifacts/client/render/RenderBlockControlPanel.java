@@ -2,7 +2,6 @@ package noelflantier.sfartifacts.client.render;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -20,7 +19,6 @@ import noelflantier.sfartifacts.common.handlers.ModBlocks;
 
 public class RenderBlockControlPanel extends TileEntitySpecialRenderer  implements IItemRenderer {
 
-	private Block bl;
 	private ResourceLocation objControlPanel= new ResourceLocation(References.MODID+":textures/blocks/models/controlpanel.obj");
 	private ResourceLocation textureControlPanel= new ResourceLocation(References.MODID+":textures/blocks/models/controlpanel.png");
 	private IModelCustom modelControlPanel;
@@ -34,10 +32,6 @@ public class RenderBlockControlPanel extends TileEntitySpecialRenderer  implemen
 		this.modelControlPanel = AdvancedModelLoader.loadModel(this.objControlPanel);
 	}
 	
-	public RenderBlockControlPanel(Block b) {
-		this();
-		this.bl = b;
-	}
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
 		return true;

@@ -30,10 +30,8 @@ import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketSound;
 import noelflantier.sfartifacts.common.recipes.ISFARecipe;
 import noelflantier.sfartifacts.common.recipes.IUseSFARecipes;
-import noelflantier.sfartifacts.common.recipes.RecipeInput;
 import noelflantier.sfartifacts.common.recipes.RecipeOnHammerStand;
 import noelflantier.sfartifacts.common.recipes.RecipesRegistry;
-import noelflantier.sfartifacts.common.recipes.handler.HammerUpgradesRecipesHandler;
 
 public class BlockHammerStand extends BlockSFAContainer {
 

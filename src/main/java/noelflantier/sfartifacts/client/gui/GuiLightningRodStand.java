@@ -1,18 +1,14 @@
 package noelflantier.sfartifacts.client.gui;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Locale;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
 import noelflantier.sfartifacts.client.gui.bases.GuiRender;
-import noelflantier.sfartifacts.client.gui.bases.GuiSFA;
 import noelflantier.sfartifacts.client.gui.bases.GuiToolTips;
 import noelflantier.sfartifacts.common.blocks.tiles.TileLightningRodStand;
 import noelflantier.sfartifacts.common.container.ContainerLightningRodStand;
@@ -66,7 +62,7 @@ public class GuiLightningRodStand extends GuiMachine{
 
 		Minecraft.getMinecraft().getTextureManager().bindTexture(bground);
 		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
-		GuiRender.renderEnergy(tile.energyCapacity, tile.getEnergyStored(ForgeDirection.UNKNOWN), guiLeft+61, guiTop+16,this.zLevel, 14, 47, 176, 0);
+		GuiRender.renderEnergy(tile.storage.getMaxEnergyStored(), tile.getEnergyStored(ForgeDirection.UNKNOWN), guiLeft+61, guiTop+16,this.zLevel, 14, 47, 176, 0);
 		super.drawGuiContainerBackgroundLayer(partialTickTime, x, y);
 	}
 

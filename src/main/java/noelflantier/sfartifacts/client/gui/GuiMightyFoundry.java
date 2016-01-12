@@ -178,7 +178,7 @@ public class GuiMightyFoundry extends GuiMachine{
 	protected void drawGuiContainerBackgroundLayer(float partialTickTime, int x, int y) {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(bground);
 		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
-		GuiRender.renderEnergy(tile.energyCapacity, tile.getEnergyStored(ForgeDirection.UNKNOWN), guiLeft+25, guiTop+23,this.zLevel, 14, 47, 176, 0);
+		GuiRender.renderEnergy(tile.storage.getMaxEnergyStored(), tile.getEnergyStored(ForgeDirection.UNKNOWN), guiLeft+25, guiTop+23,this.zLevel, 14, 47, 176, 0);
 		if(tile.progression>0)
 			GuiRender.renderTask(100, 100-(int)(tile.progression*100), guiLeft+119, guiTop+76, this.zLevel, 22, 16, 176, 47);
 		GuiRender.renderFluid(tile.tank, guiLeft+8, guiTop+23, this.zLevel, 14, 47);

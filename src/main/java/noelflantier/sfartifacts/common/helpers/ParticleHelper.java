@@ -4,18 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.client.particles.ParticleAsgardite;
 import noelflantier.sfartifacts.client.particles.ParticleLightning;
 import noelflantier.sfartifacts.client.particles.ParticlePillarToWirelessPowerBlock;
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ParticleHelper {

@@ -55,11 +55,6 @@ public class TileInductor extends TileSFA implements ITileCanBeMaster,ITileWirel
 	}
 
 	@Override
-	public void init(){
-		super.init();	
-	}
-
-	@Override
 	public void updateEntity(){
 		super.updateEntity();
 		if(this.worldObj.isRemote)

@@ -1,11 +1,8 @@
 package noelflantier.sfartifacts.common.container;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import noelflantier.sfartifacts.common.blocks.tiles.TileControlPannel;
 
 public class ContainerControlPanel extends Container {

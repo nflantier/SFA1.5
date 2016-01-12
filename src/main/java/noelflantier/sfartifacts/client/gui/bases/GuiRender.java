@@ -1,13 +1,13 @@
 package noelflantier.sfartifacts.client.gui.bases;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-
-import org.lwjgl.opengl.GL11;
 
 public class GuiRender {
 

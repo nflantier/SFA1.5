@@ -1,17 +1,11 @@
 package noelflantier.sfartifacts.client.gui;
 
-import java.util.Enumeration;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.client.gui.bases.GuiImage;
 import noelflantier.sfartifacts.client.gui.bases.GuiSFA;
-import noelflantier.sfartifacts.client.gui.bases.GuiToolTips;
 import noelflantier.sfartifacts.common.container.ContainerMoldMaking;
 
 public class GuiMoldMaking  extends GuiSFA{

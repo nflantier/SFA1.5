@@ -6,15 +6,10 @@ import org.lwjgl.opengl.GL12;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.IItemRenderer;
-import noelflantier.sfartifacts.client.particles.ParticleLightning;
-import noelflantier.sfartifacts.common.helpers.ParticleHelper;
 
 public class RenderItemAsgardite implements IItemRenderer {
 

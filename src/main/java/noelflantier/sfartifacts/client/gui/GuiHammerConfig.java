@@ -1,10 +1,7 @@
 package noelflantier.sfartifacts.client.gui;
 
 import java.util.Enumeration;
-import java.util.Locale;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;

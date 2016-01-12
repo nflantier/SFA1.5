@@ -1,14 +1,14 @@
 package noelflantier.sfartifacts.common.network.messages;
 
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import noelflantier.sfartifacts.common.blocks.tiles.TileHammerStand;
 import noelflantier.sfartifacts.common.handlers.ModItems;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketUpgradeHammer implements IMessage, IMessageHandler<PacketUpgradeHammer, IMessage> {
 	public int x;

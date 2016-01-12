@@ -1,14 +1,12 @@
 package noelflantier.sfartifacts.common.container;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import noelflantier.sfartifacts.common.blocks.tiles.TileMightyFoundry;
 import noelflantier.sfartifacts.common.items.baseclasses.ItemInventoryMold;
 
 public class ContainerMoldMaking extends Container{

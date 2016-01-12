@@ -1,6 +1,5 @@
 package noelflantier.sfartifacts.common.items;
 
-import net.minecraft.item.Item;
 import noelflantier.sfartifacts.References;
 
 public class ItemVibraniumAlloy extends ItemSFA{

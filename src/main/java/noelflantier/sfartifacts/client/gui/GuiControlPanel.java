@@ -11,7 +11,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.References;
-import noelflantier.sfartifacts.client.gui.bases.GuiButtonSFA;
 import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
 import noelflantier.sfartifacts.client.gui.bases.GuiRender;
 import noelflantier.sfartifacts.client.gui.bases.GuiSFA;

@@ -1,11 +1,7 @@
 package noelflantier.sfartifacts.common.helpers;
 
-import java.util.Hashtable;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
-import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.common.blocks.BlockAsgardianBronze;
 import noelflantier.sfartifacts.common.blocks.BlockAsgardianSteel;
 import noelflantier.sfartifacts.common.blocks.BlockAsgardite;

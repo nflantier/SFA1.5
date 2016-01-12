@@ -32,4 +32,17 @@ To use your molds just set the itemMeta of your mold input in the mighty foundy 
 			<moldline shape="111111111"/>
 		</mold>
     </recipe>
+    <recipe name="Muon Booster Casing">
+		<mold itemMeta="3">
+			<moldline shape="111111111"/>
+			<moldline shape="100010001"/>
+			<moldline shape="100010001"/>
+			<moldline shape="100010001"/>
+			<moldline shape="111111111"/>
+			<moldline shape="100010001"/>
+			<moldline shape="100010001"/>
+			<moldline shape="100010001"/>
+			<moldline shape="111111111"/>
+		</mold>
+    </recipe>
 </recipes>

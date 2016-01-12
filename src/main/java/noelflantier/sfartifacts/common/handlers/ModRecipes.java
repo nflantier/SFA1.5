@@ -1,18 +1,11 @@
 package noelflantier.sfartifacts.common.handlers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import noelflantier.sfartifacts.common.blocks.BlockAsgardianBronze;
 import noelflantier.sfartifacts.common.helpers.PillarMaterials;
 
 public class ModRecipes {
@@ -79,15 +72,22 @@ public class ModRecipes {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.itemSilicon,3,0),new ItemStack(Items.water_bucket,1,0),new ItemStack(Items.quartz,1,0),new ItemStack(Items.quartz,1,0),new ItemStack(Blocks.sand,1,0),new ItemStack(Blocks.sand,1,0),new ItemStack(Blocks.sand,1,0),new ItemStack(Blocks.sand,1,0),new ItemStack(Blocks.sand,1,0), new ItemStack(Blocks.sand,1,0)));
 		GameRegistry.addSmelting(new ItemStack(ModItems.itemSilicon,1,0), new ItemStack(ModItems.itemSilicon,1,1), 0);
 		GameRegistry.addSmelting(new ItemStack(ModItems.itemSilicon,1,1), new ItemStack(ModItems.itemSilicon,1,2), 0);
-		GameRegistry.addSmelting(new ItemStack(ModItems.itemSilicon,1,2), new ItemStack(ModItems.itemMicroChip,2,0), 0);
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.itemMicroChip,2,0),new ItemStack(ModItems.itemSilicon,1,2),new ItemStack(ModItems.itemGlassCutter,1,0)));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemMicroChip,1,1),  "QCQ", "QRQ", "QCQ", 'Q', Items.quartz,'C',new ItemStack(ModItems.itemMicroChip,1,0), 'R', Blocks.redstone_block));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemMicroChip,1,2),  "CQC", "QRQ", "CQC", 'Q', Items.quartz,'C',new ItemStack(ModItems.itemMicroChip,1,0), 'R', Blocks.redstone_block));
-
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCircuitBoard,1,0),  "RRR", "CPC", "RRR",'P',new ItemStack(ModItems.itemMicroChip,1,0) , 'C', new ItemStack(ModItems.itemCable,1,0),'R',Items.redstone));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCircuitBoard,1,1),  "RRR", "CPC", "RRR",'P',new ItemStack(ModItems.itemMicroChip,1,1) , 'C', new ItemStack(ModItems.itemCable,1,1),'R',Items.redstone));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCircuitBoard,1,2),  "CCC", "RPR", "CCC",'P',new ItemStack(ModItems.itemMicroChip,1,2) , 'C', new ItemStack(ModItems.itemCable,1,1),'R',Items.redstone));
 		
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.itemMicroChip,2,0),new ItemStack(ModItems.itemSilicon,1,2),new ItemStack(ModItems.itemGlassCutter,1,0)));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemMicroChip,1,1),  "RQR", "RCR", "RRR", 'Q', Items.quartz,'C',new ItemStack(ModItems.itemMicroChip,1,0), 'R', Items.redstone));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemMicroChip,1,2),  "QCQ", "QRQ", "QCQ", 'Q', Items.redstone,'C',new ItemStack(ModItems.itemMicroChip,1,1), 'R', Items.diamond));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemMicroChip,1,3),  "CQC", "QRQ", "CQC", 'Q', Items.diamond,'C',new ItemStack(ModItems.itemMicroChip,1,1), 'R', Items.redstone));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCircuitBoard,1,0),  "RRR", "CPC", "RRR",'P',new ItemStack(ModItems.itemMicroChip,1,1) , 'C', new ItemStack(ModItems.itemCable,1,0),'R',Items.redstone));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCircuitBoard,1,1),  "RRR", "CPC", "RRR",'P',new ItemStack(ModItems.itemMicroChip,1,2) , 'C', new ItemStack(ModItems.itemCable,1,1),'R',Items.redstone));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCircuitBoard,1,2),  "CCC", "RPR", "CCC",'P',new ItemStack(ModItems.itemMicroChip,1,3) , 'C', new ItemStack(ModItems.itemCable,1,1),'R',Items.redstone));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemStabilizer,1,0),  "CCC", "RPR", "CCC",'P',ModItems.itemMagnet , 'C', Items.iron_ingot,'R', new ItemStack(ModItems.itemCircuitBoard,1,1)));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemHoverboard,1,0),  "PSP", "QEQ", "PSP",'P', Items.emerald , 'S', ModItems.itemStabilizer,'Q',new ItemStack(ModItems.itemCircuitBoard,1,2),'E',ModItems.itemEnergeticConvector));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemHoverboard,1,2),  "PSP", "QEQ", "CSC",'C', ModItems.itemThruster,'P', Items.emerald , 'S', ModItems.itemStabilizer,'Q',new ItemStack(ModItems.itemCircuitBoard,1,2),'E',ModItems.itemEnergeticConvector));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemThruster,1,0),  "VVV", "VFV", "VCV",'C', Items.fire_charge,'F', ModItems.itemEnergeticConvector , 'V', ModItems.itemVibraniumAlloySheet));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemEnergeticConvector,1,0),  "DDD", "ECE", "OSO",'C', ModItems.itemMuonBoosterCasing,'D', Items.diamond , 'E', ModItems.itemEnergyModule, 'O',new ItemStack(ModItems.itemCircuitBoard,1,0),'S',ModItems.itemMagnet ));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockRecharger,1,0),  " I ", "RER", "RCR",'C', new ItemStack(ModItems.itemCircuitBoard,1,0),'R', Items.iron_ingot , 'E', ModItems.itemEnergyModule, 'I',new ItemStack(ModBlocks.blockInductor,1,1)));
 		
 	}
 	

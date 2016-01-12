@@ -59,6 +59,7 @@ public class CaptainManual extends BaseManual{
 					addText("it's to surround them with lava, they will start heating",0,0);
 					addText("and become cooked after some time. Then you will be",0,0);
 					addText("able to mine them into their precious dust.",0,0);
+					addText("You can find them between the Y levels 3 to 18.",0,0);
 				}}
 			);
 		}else if(cat.equals("foundry")){

@@ -128,7 +128,7 @@ public class GuiInjector extends GuiMachine{
 
 		Minecraft.getMinecraft().getTextureManager().bindTexture(bground);
 		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
-		GuiRender.renderEnergy(tile.energyCapacity, tile.getEnergyStored(ForgeDirection.UNKNOWN), guiLeft+25, guiTop+23,this.zLevel, 14, 47, 176, 0);
+		GuiRender.renderEnergy(tile.storage.getMaxEnergyStored(), tile.getEnergyStored(ForgeDirection.UNKNOWN), guiLeft+25, guiTop+23,this.zLevel, 14, 47, 176, 0);
 		for(int i =0;i<tile.isRunning.length;i++){
 			if(tile.isRunning[i]){
 				GuiRender.renderTask(tile.tickToInject, tile.currentTickToInject[i], guiLeft+94, guiTop+23+i*25, this.zLevel, 22, 16, 176, 47);

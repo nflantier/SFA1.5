@@ -1,9 +1,9 @@
 package noelflantier.sfartifacts.compatibilities.nei;
 
-import noelflantier.sfartifacts.References;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import cpw.mods.fml.common.Optional;
+import noelflantier.sfartifacts.References;
 
 @Optional.Interface(iface = "codechicken.nei.api.API", modid = "NotEnoughItems")
 public class NEIsfaConfig  implements IConfigureNEI {

@@ -6,17 +6,11 @@ import java.util.List;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import noelflantier.sfartifacts.common.handlers.ModBlocks;
-import noelflantier.sfartifacts.common.handlers.ModItems;
-import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.recipes.AUsageRecipes;
 import noelflantier.sfartifacts.common.recipes.CustomHandler;
 import noelflantier.sfartifacts.common.recipes.RecipeBase;
 import noelflantier.sfartifacts.common.recipes.RecipeHammerUpgrades;
 import noelflantier.sfartifacts.common.recipes.RecipeHammerUpgrades.NbtTagToAdd;
-import noelflantier.sfartifacts.common.recipes.RecipeMightyFoundry;
 import noelflantier.sfartifacts.common.recipes.RecipeParser;
 
 public class HammerUpgradesRecipesHandler extends AUsageRecipes{

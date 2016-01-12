@@ -1,14 +1,9 @@
 package noelflantier.sfartifacts.common.entities;
 
-import java.util.Random;
-
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import noelflantier.sfartifacts.client.particles.ParticleLightning;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.helpers.ParticleHelper;
 

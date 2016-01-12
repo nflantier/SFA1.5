@@ -9,16 +9,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
-import org.xml.sax.Attributes;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-import noelflantier.sfartifacts.common.recipes.AUsageRecipes;
 import noelflantier.sfartifacts.common.recipes.CustomHandler;
 import noelflantier.sfartifacts.common.recipes.ISFARecipe;
 import noelflantier.sfartifacts.common.recipes.RecipeBase;

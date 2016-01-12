@@ -5,7 +5,6 @@ import java.util.List;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,23 +13,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.SFArtifacts;
-import noelflantier.sfartifacts.common.blocks.tiles.ITileGlobalNBT;
-import noelflantier.sfartifacts.common.blocks.tiles.TileControlPannel;
 import noelflantier.sfartifacts.common.blocks.tiles.TileInductor;
-import noelflantier.sfartifacts.common.blocks.tiles.TileMightyFoundry;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSFA;
 import noelflantier.sfartifacts.common.handlers.ModGUIs;
-import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
-import noelflantier.sfartifacts.common.network.PacketHandler;
-import noelflantier.sfartifacts.common.network.messages.PacketInductor;
-import noelflantier.sfartifacts.common.network.messages.PacketInjector;
 
 public class BlockInductor extends BlockSFAContainer {
 
@@ -120,7 +110,7 @@ public class BlockInductor extends BlockSFAContainer {
     public void addCollisionBoxesToList(World w, int x, int y, int z, AxisAlignedBB abb, List list, Entity entity){
         this.setBlockBoundsBasedOnState(w, x, y, z);
         super.addCollisionBoxesToList(w, x, y, z, abb, list, entity);
-   }
+    }
     
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {

@@ -7,7 +7,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import noelflantier.sfartifacts.common.blocks.tiles.TileRenderPillarModel;
-import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileMasterPillar;
 
 public class PacketRenderPillarModel implements IMessage, IMessageHandler<PacketRenderPillarModel, IMessage> {
 	

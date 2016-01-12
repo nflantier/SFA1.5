@@ -7,7 +7,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import noelflantier.sfartifacts.common.blocks.tiles.TileInductor;
-import noelflantier.sfartifacts.common.blocks.tiles.TileInjector;
 
 public class PacketInductor implements IMessage, IMessageHandler<PacketInductor, IMessage> {
 	

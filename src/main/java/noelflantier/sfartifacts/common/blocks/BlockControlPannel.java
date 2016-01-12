@@ -1,7 +1,6 @@
 package noelflantier.sfartifacts.common.blocks;
 
 import java.util.List;
-import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

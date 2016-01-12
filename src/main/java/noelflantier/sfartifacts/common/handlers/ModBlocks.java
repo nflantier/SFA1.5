@@ -16,14 +16,15 @@ import noelflantier.sfartifacts.common.blocks.BlockMightyFoundry;
 import noelflantier.sfartifacts.common.blocks.BlockMrFusion;
 import noelflantier.sfartifacts.common.blocks.BlockOreAsgardite;
 import noelflantier.sfartifacts.common.blocks.BlockOreVibranium;
+import noelflantier.sfartifacts.common.blocks.BlockRecharger;
 import noelflantier.sfartifacts.common.blocks.BlockSoundEmitter;
 import noelflantier.sfartifacts.common.helpers.RegisterHelper;
-import noelflantier.sfartifacts.common.items.FilledBucket;
 import noelflantier.sfartifacts.common.items.ItemBlockMachine;
 import noelflantier.sfartifacts.common.items.ItemHammerStand;
 import noelflantier.sfartifacts.common.items.ItemInductor;
 import noelflantier.sfartifacts.common.items.ItemMrFusion;
 import noelflantier.sfartifacts.common.items.ItemOreVibranium;
+import noelflantier.sfartifacts.common.items.ItemRecharger;
 
 public class ModBlocks {
 
@@ -42,6 +43,7 @@ public class ModBlocks {
 	public static Block blockAsgardianGlass;
 	public static Block blockMrFusion;
 	public static Block blockInductor;
+	public static Block blockRecharger;
 	
 	public static void loadBlocks() {
 
@@ -89,6 +91,9 @@ public class ModBlocks {
     	
     	blockInductor = new BlockInductor(Material.rock);
     	RegisterHelper.registerBlock(blockInductor, ItemInductor.class);
+    	
+    	blockRecharger = new BlockRecharger(Material.rock);
+    	RegisterHelper.registerBlock(blockRecharger, ItemRecharger.class);
     	
 	}	
 

@@ -3,7 +3,6 @@ package noelflantier.sfartifacts.common.recipes;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;

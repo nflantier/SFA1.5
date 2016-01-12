@@ -1,8 +1,5 @@
 package noelflantier.sfartifacts.common.handlers;
 
-import java.util.ArrayList;
-
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class ModOreDictionary {

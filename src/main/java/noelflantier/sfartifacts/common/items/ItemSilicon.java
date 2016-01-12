@@ -2,8 +2,6 @@ package noelflantier.sfartifacts.common.items;
 
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -12,13 +10,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import noelflantier.sfartifacts.References;
-import noelflantier.sfartifacts.SFArtifacts;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
-import noelflantier.sfartifacts.common.handlers.ModEvents;
 import noelflantier.sfartifacts.common.handlers.ModItems;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 

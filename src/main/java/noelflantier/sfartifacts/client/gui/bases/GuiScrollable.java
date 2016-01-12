@@ -5,7 +5,6 @@ import java.util.Hashtable;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import noelflantier.sfartifacts.References;
 

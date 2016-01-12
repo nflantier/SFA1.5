@@ -3,7 +3,6 @@ package noelflantier.sfartifacts.common.blocks;
 import java.util.ArrayList;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,11 +33,6 @@ public abstract class ABlockNBT  extends BlockSFAContainer {
 		    dropBlockAsItem(world, x, y, z, itemStack);
 		}
 		return super.removedByPlayer(world, player, x, y, z, false);
-	}
-	
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-	    super.onBlockPlacedBy(world, x, y, z, player, stack);
 	}
 	
 	@Override

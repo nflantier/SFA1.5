@@ -39,8 +39,6 @@ import noelflantier.sfartifacts.common.handlers.ModGUIs;
 import noelflantier.sfartifacts.common.handlers.ModPlayerStats;
 import noelflantier.sfartifacts.common.items.ItemThorHammer;
 import noelflantier.sfartifacts.common.items.baseclasses.MiningHammerBase;
-import noelflantier.sfartifacts.common.network.PacketHandler;
-import noelflantier.sfartifacts.common.network.messages.PacketExtendedEntityProperties;
 
 public class HammerHelper {
 	

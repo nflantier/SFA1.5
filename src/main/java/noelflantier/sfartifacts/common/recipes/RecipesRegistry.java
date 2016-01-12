@@ -1,10 +1,8 @@
 package noelflantier.sfartifacts.common.recipes;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -16,7 +14,6 @@ import net.minecraftforge.fluids.FluidTank;
 import noelflantier.sfartifacts.common.items.ItemMold;
 import noelflantier.sfartifacts.common.recipes.handler.MightyFoundryRecipesHandler;
 import noelflantier.sfartifacts.common.recipes.handler.MoldRecipesHandler;
-import scala.actors.threadpool.Arrays;
 
 public class RecipesRegistry {
 	public static final RecipesRegistry instance = new RecipesRegistry();
@@ -238,7 +235,7 @@ public class RecipesRegistry {
 	public ItemStack getResultForRecipe(ISFARecipe recipe){
 		if(recipe!=null){
 			for(RecipeOutput ri : recipe.getOutputs()){
-				return ri.getItemStack();
+				return ri.getItemStack().copy();
 			}
 		}
 		return null;

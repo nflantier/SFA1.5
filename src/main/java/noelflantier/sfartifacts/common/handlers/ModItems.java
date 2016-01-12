@@ -12,6 +12,7 @@ import noelflantier.sfartifacts.common.items.ItemAsgardiumPearl;
 import noelflantier.sfartifacts.common.items.ItemBasicHammer;
 import noelflantier.sfartifacts.common.items.ItemCable;
 import noelflantier.sfartifacts.common.items.ItemCircuitBoard;
+import noelflantier.sfartifacts.common.items.ItemEnergeticConvector;
 import noelflantier.sfartifacts.common.items.ItemEnergyModule;
 import noelflantier.sfartifacts.common.items.ItemFluidModule;
 import noelflantier.sfartifacts.common.items.ItemFusionCasing;
@@ -26,8 +27,11 @@ import noelflantier.sfartifacts.common.items.ItemMicroChip;
 import noelflantier.sfartifacts.common.items.ItemMightyFeather;
 import noelflantier.sfartifacts.common.items.ItemMightyHulkRing;
 import noelflantier.sfartifacts.common.items.ItemMold;
+import noelflantier.sfartifacts.common.items.ItemMuonBoosterCasing;
 import noelflantier.sfartifacts.common.items.ItemSilicon;
+import noelflantier.sfartifacts.common.items.ItemStabilizer;
 import noelflantier.sfartifacts.common.items.ItemThorHammer;
+import noelflantier.sfartifacts.common.items.ItemThruster;
 import noelflantier.sfartifacts.common.items.ItemUberMightyFeather;
 import noelflantier.sfartifacts.common.items.ItemVibraniumAlloy;
 import noelflantier.sfartifacts.common.items.ItemVibraniumAlloySheet;
@@ -66,6 +70,10 @@ public class ModItems {
 	public static Item itemMicroChip;
 	public static Item itemCircuitBoard;
 	public static Item itemHoverboard;
+	public static Item itemStabilizer;
+	public static Item itemThruster;
+	public static Item itemEnergeticConvector;
+	public static Item itemMuonBoosterCasing;
 	
 	public static void loadItems() {
 
@@ -160,6 +168,17 @@ public class ModItems {
     	itemHoverboard = new ItemHoverBoard();
     	RegisterHelper.registerItem(itemHoverboard);
     	
+    	itemStabilizer = new ItemStabilizer();
+    	RegisterHelper.registerItem(itemStabilizer);
+    	
+    	itemThruster = new ItemThruster();
+    	RegisterHelper.registerItem(itemThruster);
+    	
+    	itemEnergeticConvector = new ItemEnergeticConvector();
+    	RegisterHelper.registerItem(itemEnergeticConvector);
+    	
+    	itemMuonBoosterCasing = new ItemMuonBoosterCasing();
+    	RegisterHelper.registerItem(itemMuonBoosterCasing);
 	}
 	
 	

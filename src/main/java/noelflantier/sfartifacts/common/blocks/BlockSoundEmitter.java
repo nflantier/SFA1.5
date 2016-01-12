@@ -1,7 +1,5 @@
 package noelflantier.sfartifacts.common.blocks;
 
-import java.util.Random;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -13,7 +11,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.SFArtifacts;
-import noelflantier.sfartifacts.common.blocks.tiles.TileInjector;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSoundEmitter;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
 import noelflantier.sfartifacts.common.handlers.ModGUIs;

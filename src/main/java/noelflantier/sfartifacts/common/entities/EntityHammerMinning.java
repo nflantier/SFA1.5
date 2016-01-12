@@ -1,31 +1,19 @@
 package noelflantier.sfartifacts.common.entities;
 
-import java.util.List;
-
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import noelflantier.sfartifacts.common.helpers.HammerHelper;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
-import noelflantier.sfartifacts.common.items.ItemVibraniumShield;
 import noelflantier.sfartifacts.common.items.baseclasses.MiningHammerBase;
 import noelflantier.sfartifacts.common.items.baseclasses.ToolHammerBase;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import io.netty.buffer.ByteBuf;
 
 public class EntityHammerMinning extends EntityThrowable implements IEntityAdditionalSpawnData{
 

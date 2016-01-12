@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -26,7 +25,6 @@ import noelflantier.sfartifacts.common.blocks.tiles.TileMightyFoundry;
 
 public class RenderBlockMightyFoundry  extends TileEntitySpecialRenderer implements IItemRenderer {
 
-	private Block bl;
 	private ResourceLocation objBase= new ResourceLocation(References.MODID+":textures/blocks/models/mightyfoundrybase.obj");
 	private ResourceLocation textureBase= new ResourceLocation(References.MODID+":textures/blocks/models/mightyfoundrybase.png");
 	private ResourceLocation objGlass= new ResourceLocation(References.MODID+":textures/blocks/models/mightyfoundryglass.obj");
@@ -46,11 +44,6 @@ public class RenderBlockMightyFoundry  extends TileEntitySpecialRenderer impleme
 		this.modelGlass = AdvancedModelLoader.loadModel(this.objGlass);
 		this.modelMold = AdvancedModelLoader.loadModel(this.objMold);
 		this.modelMoldDone = AdvancedModelLoader.loadModel(this.objMoldDone);
-	}
-	
-	public RenderBlockMightyFoundry(Block block) {
-		this();
-		this.bl = block;
 	}
 	
 	public void renderItems(TileEntity tile){
@@ -109,10 +102,10 @@ public class RenderBlockMightyFoundry  extends TileEntitySpecialRenderer impleme
 	                tessellator.addVertexWithUV(-0.48, -0.39+0.5*ratio, 0.47, d8, d10-ts*0.64*rt);*/
 	                tessellator.draw();
 	                tessellator.startDrawingQuads();
-	                tessellator.addVertexWithUV(0.42, -0.39, -0.47, maxU, maxV);
+	                tessellator.addVertexWithUV(0.42, -0.39, -0.47, maxU, minV+rt*ts*ratio);
 	                tessellator.addVertexWithUV(0.42, -0.39+0.5*ratio, -0.47, maxU, minV);
 	                tessellator.addVertexWithUV(0.42, -0.39+0.5*ratio, 0.47, minU, minV);
-	                tessellator.addVertexWithUV(0.42, -0.39, 0.47, minU, maxV);
+	                tessellator.addVertexWithUV(0.42, -0.39, 0.47, minU, minV+rt*ts*ratio);
 	                /*tessellator.addVertexWithUV(0.42, -0.39, -0.47, maxU-ts*0.64*rt, maxV-ts*(1-0.3*ratio)*rt);
 	                tessellator.addVertexWithUV(0.42, -0.39+0.5*ratio, -0.47, d7-ts*0.64*rt, d9);
 	                tessellator.addVertexWithUV(0.42, -0.39+0.5*ratio, 0.47, minU, minV);

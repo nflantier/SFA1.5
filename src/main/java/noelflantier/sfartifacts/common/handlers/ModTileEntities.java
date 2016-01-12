@@ -10,6 +10,7 @@ import noelflantier.sfartifacts.common.blocks.tiles.TileLiquefier;
 import noelflantier.sfartifacts.common.blocks.tiles.TileMachine;
 import noelflantier.sfartifacts.common.blocks.tiles.TileMightyFoundry;
 import noelflantier.sfartifacts.common.blocks.tiles.TileMrFusion;
+import noelflantier.sfartifacts.common.blocks.tiles.TileRecharger;
 import noelflantier.sfartifacts.common.blocks.tiles.TileRenderPillarModel;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSFA;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSoundEmitter;
@@ -33,6 +34,7 @@ public class ModTileEntities {
     	RegisterHelper.registerTileEntity(TileSoundEmitter.class,"TileSoundEmiter");
     	RegisterHelper.registerTileEntity(TileMrFusion.class,"TileMrFusion");
     	RegisterHelper.registerTileEntity(TileInductor.class,"TileInductor");
+    	RegisterHelper.registerTileEntity(TileRecharger.class,"TileRecharger");
     	
     	RegisterHelper.registerTileEntity(TileRenderPillarModel.class,"TileRenderPillarModel");
     	RegisterHelper.registerTileEntity(TileBlockPillar.class,"TileBlockPillar");

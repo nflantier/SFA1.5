@@ -2,7 +2,6 @@ package noelflantier.sfartifacts.common.blocks;
 
 
 import java.util.List;
-import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,7 +21,6 @@ import noelflantier.sfartifacts.SFArtifacts;
 import noelflantier.sfartifacts.common.blocks.tiles.TileInjector;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
 import noelflantier.sfartifacts.common.handlers.ModGUIs;
-import noelflantier.sfartifacts.common.helpers.ParticleHelper;
 import noelflantier.sfartifacts.common.helpers.PillarMaterials;
 
 public class BlockInjector extends ABlockNBT implements IBlockUsingMaterials{

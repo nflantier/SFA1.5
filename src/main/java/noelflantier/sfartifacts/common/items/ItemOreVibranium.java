@@ -2,18 +2,12 @@ package noelflantier.sfartifacts.common.items;
 
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
-import noelflantier.sfartifacts.common.helpers.PillarMaterials;
-
-import org.apache.commons.lang3.StringUtils;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemOreVibranium  extends ItemBlockSFA{
 	public static String[] typeVibranium = new String[] {"0", "35", "75", "100"};

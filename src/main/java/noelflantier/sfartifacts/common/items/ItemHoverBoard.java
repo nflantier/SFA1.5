@@ -6,71 +6,104 @@ import java.util.Map;
 import com.google.common.collect.MapMaker;
 
 import cofh.api.energy.IEnergyContainerItem;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.common.entities.EntityHoverBoard;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
-import noelflantier.sfartifacts.common.handlers.ModPlayerStats;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
-import noelflantier.sfartifacts.common.helpers.Utils;
 
 public class ItemHoverBoard extends ItemSFA implements IEnergyContainerItem{
 
-	private int capacity = ModConfig.capacityHoverBoard;
-	private int maxReceive = ModConfig.capacityHoverBoard;
-	private int maxExtract = ModConfig.capacityHoverBoard;  
+	public IIcon[] metaIcons;
+	private static int[] capacity = new int[]{ModConfig.capacityHoverBoardMarty,ModConfig.capacityHoverBoardBiff};
+	private static int[] maxReceive = new int[]{ModConfig.capacityHoverBoardMarty,ModConfig.capacityHoverBoardBiff};
+	private static int[] maxExtract = new int[]{ModConfig.capacityHoverBoardMarty,ModConfig.capacityHoverBoardBiff};
+	public static int[] rfPerSecongHoverboard = new int[]  {ModConfig.rfPerSecondHoverBoardMarty, ModConfig.rfPerSecondHoverBoardBiff};
+	public static String[] typeHoverBoard = new String[]  {"marty", "biff"};
+	public static final int MATTEL_HOVERBOARD = 0;
+	public static final int PITBULL_HOVERBOARD = 1;
+	
 	private static Map<EntityPlayer, EntityHoverBoard> spawnedHoverBoardsMap = new MapMaker().weakKeys().weakValues().makeMap();
 
 	public ItemHoverBoard() {
 		super("Hoverboard");
 		this.setUnlocalizedName("itemHoverBoard");
-		this.setTextureName(References.MODID+":hoverboard");
+		this.setHasSubtypes(true);
 		this.setMaxStackSize(1);
 	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IIcon getIconFromDamage(int metadata) {
+		return this.metaIcons[metadata>>1];
+	}
+
+	@Override
+    public int getMetadata(int meta){
+		return meta;
+    }
+	
+	@Override
+	public void registerIcons(IIconRegister iconRegister) {
+        this.metaIcons = new IIcon[this.typeHoverBoard.length];
+		for (int i = 0; i < metaIcons.length; i++) {
+			metaIcons[i] = iconRegister.registerIcon(References.MODID + ":hoverboard_" + this.typeHoverBoard[i]);
+		}
+	}
+	
+	@Override
+    public String getUnlocalizedName(ItemStack itemstack){
+        return super.getUnlocalizedName()+"."+this.typeHoverBoard[itemstack.getItemDamage()>>1];
+    }
 	
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 		if (!world.isRemote && player != null) {
 			EntityHoverBoard hoverboard = spawnedHoverBoardsMap.get(player);
-			if (hoverboard != null) despawnHoverBoard(player, hoverboard);
-			else {
-				if(this.getEnergyStored(stack)>0)
-					spawnHoverBoard(player);
+			if (hoverboard != null){
+				if(hoverboard.getTypeHoverBoard()==stack.getItemDamage()>>1 && hoverboard.getSlot()==player.inventory.currentItem)
+					despawnHoverBoard(player, hoverboard);
+			}else {
+				if(this.getEnergyStored(stack)>0){
+					spawnHoverBoard(player,stack);
+				}
 			}
 		}
 		return stack;
 	}
-
+	
 	private static void despawnHoverBoard(EntityPlayer player, EntityHoverBoard hoverboard) {
 		hoverboard.setDead();
 		spawnedHoverBoardsMap.remove(player);
 	}
 
-	private static void spawnHoverBoard(EntityPlayer player) {
-		EntityHoverBoard hoverboard = new EntityHoverBoard(player.worldObj, player, player.inventory.currentItem);
+	private static void spawnHoverBoard(EntityPlayer player, ItemStack stack) {
+		EntityHoverBoard hoverboard = new EntityHoverBoard(player.worldObj, player);
 		hoverboard.setPositionAndRotation(player.posX, player.posY, player.posZ, player.rotationPitch, player.rotationYaw);
 		player.worldObj.spawnEntityInWorld(hoverboard);
 		spawnedHoverBoardsMap.put(player, hoverboard);
 	}
 	
-	public int getCapacity(ItemStack stack){ return capacity; }
-	public int getMaxExtract(ItemStack stack){ return maxExtract; }
-	public int getMaxReceive(ItemStack stack){ return maxReceive; }
+	public int getCapacity(ItemStack stack){ return capacity[stack.getItemDamage()>>1]+ItemNBTHelper.getInteger(stack, "AddedCapacityLevel", 0)*ModConfig.rfAddedPerCapacityUpgradeOnHoverboards; }
+	public int getMaxExtract(ItemStack stack){ return maxExtract[stack.getItemDamage()>>1]; }
+	public int getMaxReceive(ItemStack stack){ return maxReceive[stack.getItemDamage()>>1]; }
 	
 	@Override
 	public boolean onDroppedByPlayer(ItemStack stack, EntityPlayer player){
 		if (player != null && !player.worldObj.isRemote) {
 			EntityHoverBoard hoverboard = spawnedHoverBoardsMap.get(player);
-			if (hoverboard != null) despawnHoverBoard(player, hoverboard);
+			if (hoverboard != null){
+				if(hoverboard.getTypeHoverBoard()==stack.getItemDamage()>>1 && hoverboard.getSlot()==player.inventory.currentItem)
+					despawnHoverBoard(player, hoverboard);
+			}
 		}
         return true;
     }
@@ -121,15 +154,15 @@ public class ItemHoverBoard extends ItemSFA implements IEnergyContainerItem{
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
-
-		ItemStack it = new ItemStack(item, 1, 0);
-		it = ItemNBTHelper.setInteger(it, "Energy", 0);
-		list.add(it);
-		
-		if (capacity > 0){
-			ItemStack it2 = new ItemStack(item, 1, 1);
-			it2 = ItemNBTHelper.setInteger(it2, "Energy", capacity);
-			list.add(it2);
+		for(int i = 0; i<typeHoverBoard.length;i++){
+			ItemStack it = new ItemStack(item, 1, i+1*i);
+			it = ItemNBTHelper.setInteger(it, "AddedCapacityLevel", 0);
+			list.add(ItemNBTHelper.setInteger(it, "Energy", 0));
+			if (capacity[i] > 0){
+				ItemStack it2 = new ItemStack(item, 1, i+1*i+1);
+				it2 = ItemNBTHelper.setInteger(it2, "AddedCapacityLevel", 0);
+				list.add(ItemNBTHelper.setInteger(it2, "Energy", capacity[i]));
+			}
 		}
 	}
 

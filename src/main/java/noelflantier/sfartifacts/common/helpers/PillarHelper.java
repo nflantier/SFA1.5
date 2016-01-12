@@ -10,7 +10,6 @@ import noelflantier.sfartifacts.common.blocks.tiles.ITileMaster;
 import noelflantier.sfartifacts.common.blocks.tiles.TileRenderPillarModel;
 import noelflantier.sfartifacts.common.blocks.tiles.pillar.TileMasterPillar;
 import noelflantier.sfartifacts.common.network.PacketHandler;
-import noelflantier.sfartifacts.common.network.messages.PacketPillar;
 import noelflantier.sfartifacts.common.network.messages.PacketUnsetPillar;
 import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig;
 import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig.Pillar;

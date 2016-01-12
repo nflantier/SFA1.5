@@ -18,7 +18,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import noelflantier.sfartifacts.References;
-import noelflantier.sfartifacts.SFArtifacts;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.handlers.ModItems;
 

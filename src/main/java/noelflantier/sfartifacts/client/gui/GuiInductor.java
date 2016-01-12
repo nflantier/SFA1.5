@@ -9,11 +9,9 @@ import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
 import noelflantier.sfartifacts.client.gui.bases.GuiSFA;
 import noelflantier.sfartifacts.common.blocks.tiles.TileInductor;
-import noelflantier.sfartifacts.common.blocks.tiles.TileLiquefier;
 import noelflantier.sfartifacts.common.container.ContainerInductor;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketInductorGui;
-import noelflantier.sfartifacts.common.network.messages.PacketSoundEmitterGui;
 
 public class GuiInductor  extends GuiSFA{
 	

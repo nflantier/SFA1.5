@@ -1,14 +1,9 @@
 package noelflantier.sfartifacts.common.recipes;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.handlers.RecipeHandler;
-import noelflantier.sfartifacts.common.recipes.handler.HammerUpgradesRecipesHandler;
 
 public abstract class AUsageRecipes {
 	private final List<ISFARecipe> recipes = new ArrayList<ISFARecipe>();

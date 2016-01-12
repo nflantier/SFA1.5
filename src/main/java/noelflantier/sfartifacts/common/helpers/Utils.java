@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 
-import baubles.api.IBauble;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,10 +54,28 @@ public class Utils {
 	
 	
 	public static float isPlayerInFluid(EntityPlayer player, float speed){
-		float f = 1;
+		float f = 0;
         int i = MathHelper.floor_double(player.posX);
         int j = player.worldObj.isRemote?MathHelper.floor_double(player.posY-1):MathHelper.floor_double(player.posY);
         int k = MathHelper.floor_double(player.posZ);
+        Block block = player.worldObj.getBlock(i, j, k);
+        Material m= block.getMaterial();
+        boolean lavab = player.worldObj.isMaterialInBB(player.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.lava);
+        boolean waterb = player.worldObj.isMaterialInBB(player.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.water);
+        if (block instanceof IFluidBlock || m==Material.water || m==Material.lava || lavab || waterb){
+        	f = speed;
+        	if(m==Material.lava || lavab)
+        		f *= 1.6;
+        	return f;
+        }
+        return f;
+	}
+	
+	public static float isPlayerInFluid(EntityPlayer player, double decx, double decy, double decz, float speed){
+		float f = 0;
+        int i = MathHelper.floor_double(player.posX+decx);
+        int j = player.worldObj.isRemote?MathHelper.floor_double(player.posY-1+decy):MathHelper.floor_double(player.posY+decy);
+        int k = MathHelper.floor_double(player.posZ+decz);
         Block block = player.worldObj.getBlock(i, j, k);
         Material m= block.getMaterial();
         boolean lavab = player.worldObj.isMaterialInBB(player.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.lava);

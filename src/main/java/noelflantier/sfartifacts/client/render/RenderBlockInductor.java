@@ -2,30 +2,21 @@ package noelflantier.sfartifacts.client.render;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.SFArtifacts;
 import noelflantier.sfartifacts.common.blocks.tiles.TileInductor;
-import noelflantier.sfartifacts.common.blocks.tiles.TileLiquefier;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSFA;
-import noelflantier.sfartifacts.common.handlers.ModItems;
 
 public class RenderBlockInductor extends TileEntitySpecialRenderer implements IItemRenderer {
 
-	private Block bl;
 	private ResourceLocation objBase= new ResourceLocation(References.MODID+":textures/blocks/models/inductor-base.obj");
 	private ResourceLocation textureBase= new ResourceLocation(References.MODID+":textures/blocks/models/inductor-base.png");
 	private IModelCustom modelBase;
@@ -36,10 +27,6 @@ public class RenderBlockInductor extends TileEntitySpecialRenderer implements II
 	public RenderBlockInductor(){
 		this.modelBase = AdvancedModelLoader.loadModel(this.objBase);
 		this.modelStaff = AdvancedModelLoader.loadModel(this.objStaff);
-	}
-	public RenderBlockInductor(Block block) {
-		this();
-		this.bl = block;
 	}
 	
 	@Override

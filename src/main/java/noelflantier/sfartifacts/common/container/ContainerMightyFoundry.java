@@ -2,17 +2,12 @@ package noelflantier.sfartifacts.common.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
-import noelflantier.sfartifacts.common.blocks.tiles.TileLiquefier;
 import noelflantier.sfartifacts.common.blocks.tiles.TileMightyFoundry;
 import noelflantier.sfartifacts.common.container.slot.FluidsSlots;
-import noelflantier.sfartifacts.common.handlers.ModFluids;
-import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
-import noelflantier.sfartifacts.common.items.ItemMold;
 
 public class ContainerMightyFoundry extends ContainerMachine{
 

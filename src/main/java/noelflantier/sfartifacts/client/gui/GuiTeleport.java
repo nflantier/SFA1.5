@@ -3,15 +3,9 @@ package noelflantier.sfartifacts.client.gui;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -20,18 +14,13 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
-import noelflantier.sfartifacts.client.gui.bases.GuiRender;
 import noelflantier.sfartifacts.client.gui.bases.GuiSFA;
-import noelflantier.sfartifacts.client.gui.bases.GuiSFAScreen;
 import noelflantier.sfartifacts.client.gui.bases.GuiScrollable;
 import noelflantier.sfartifacts.common.container.ContainerTeleport;
-import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketTeleport;
-import noelflantier.sfartifacts.common.network.messages.PacketUpgradeHammer;
 
 public class GuiTeleport  extends GuiSFA{
 	

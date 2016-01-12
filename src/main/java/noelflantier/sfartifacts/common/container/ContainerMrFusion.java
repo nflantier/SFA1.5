@@ -4,11 +4,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import noelflantier.sfartifacts.common.blocks.tiles.TileMachine;
 import noelflantier.sfartifacts.common.blocks.tiles.TileMrFusion;
 import noelflantier.sfartifacts.common.container.slot.FluidContainerSlot;
 
-public class ContainerMrFusion  extends ContainerMachine{
+public class ContainerMrFusion extends ContainerMachine{
 
 	private int slotId = -1;
 	

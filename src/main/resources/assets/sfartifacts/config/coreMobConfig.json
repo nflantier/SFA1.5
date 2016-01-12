@@ -124,7 +124,7 @@
 			"fluidCost":"50000",
 			"customXYZ":"0,50,0",
 			"isAttractedToSpawner":"false",
-			"isSpawningOnce":"true",
+			"isSpawningOnce":"false",
 			"nbMaxSpawning":"1"
 			},
 		"WitherBoss": {
@@ -140,7 +140,7 @@
 			"fluidCost":"100000",
 			"customXYZ":"0,200,0",
 			"isAttractedToSpawner":"false",
-			"isSpawningOnce":"true",
+			"isSpawningOnce":"false",
 			"nbMaxSpawning":"1"
 			}
 	}

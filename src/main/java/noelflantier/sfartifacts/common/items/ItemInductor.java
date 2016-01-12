@@ -2,43 +2,55 @@ package noelflantier.sfartifacts.common.items;
 
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemMultiTexture;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.common.blocks.tiles.TileInductor;
-import noelflantier.sfartifacts.common.blocks.tiles.TileSFA;
 
-public class ItemInductor extends ItemMultiTexture{
+public class ItemInductor extends ItemBlockSFA{
 
 	protected IIcon[] metaIcons;
 	public static String[] typeInductor = new String[]  {"basic", "advanced", "basicenergized", "advancedenergized"};
-	String name;
 	
 	public ItemInductor(Block b) {
-		super(b,b, typeInductor);
-		this.name = "Inductor";
+		super(b, "Inductor", true);
 	}
+
+	@Override
+    public String getUnlocalizedName(ItemStack itemstack){
+    	int i = itemstack.getItemDamage();
+    	if (i < 0 || i >= this.typeInductor.length){
+        	i = 0;
+        }
+        return super.getUnlocalizedName()+"."+this.typeInductor[i];
+    }
 	
 	@Override
-	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata){
-		boolean flag = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
-		TileEntity te = world.getTileEntity(x, y, z);
-		if(te instanceof TileSFA){
-			((TileSFA)te).side = ForgeDirection.getOrientation(side).getOpposite().ordinal();
-			world.markBlockForUpdate(x, y,z);
+	@SideOnly(Side.CLIENT)
+	public IIcon getIconFromDamage(int metadata) {
+		return this.metaIcons[metadata];
+	}
+
+	/*@Override
+	public void registerIcons(IIconRegister iconRegister) {
+        this.metaIcons = new IIcon[this.typeInductor.length];
+		for (int i = 0; i < metaIcons.length; i++) {
+			metaIcons[i] = iconRegister.registerIcon(References.MODID + ":inductor_" + this.typeInductor[i]);
 		}
-		return flag;
+	}*/
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(Item item, CreativeTabs creaT, List list){
+    	list.add(new ItemStack(item, 1, 0));
+    	list.add(new ItemStack(item, 1, 1));
+    	list.add(new ItemStack(item, 1, 2));
+    	list.add(new ItemStack(item, 1, 3));
 	}
 	
 	@SideOnly(Side.CLIENT)

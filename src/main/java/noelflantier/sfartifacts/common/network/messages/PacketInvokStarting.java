@@ -1,12 +1,11 @@
 package noelflantier.sfartifacts.common.network.messages;
 
-import net.minecraft.client.Minecraft;
-import noelflantier.sfartifacts.common.blocks.tiles.TileHammerStand;
-import noelflantier.sfartifacts.common.helpers.HammerHelper;
-import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import io.netty.buffer.ByteBuf;
+import noelflantier.sfartifacts.common.blocks.tiles.TileHammerStand;
+import noelflantier.sfartifacts.common.helpers.HammerHelper;
 
 public class PacketInvokStarting implements IMessage, IMessageHandler<PacketInvokStarting, IMessage> {
 		

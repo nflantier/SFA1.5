@@ -4,7 +4,6 @@ import baubles.api.BaublesApi;
 import baubles.api.IBauble;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 
 public class BaublesHelper {
 

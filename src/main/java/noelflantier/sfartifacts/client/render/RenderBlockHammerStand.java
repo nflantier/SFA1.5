@@ -1,5 +1,8 @@
 package noelflantier.sfartifacts.client.render;
 
+import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -14,10 +17,6 @@ import net.minecraftforge.client.model.IModelCustom;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.common.blocks.tiles.TileHammerStand;
 import noelflantier.sfartifacts.common.handlers.ModItems;
-
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.client.FMLClientHandler;
 
 public class RenderBlockHammerStand extends TileEntitySpecialRenderer  implements IItemRenderer{
 

@@ -1,11 +1,9 @@
 package noelflantier.sfartifacts.client.gui;
 
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -17,7 +15,6 @@ import net.minecraft.util.ResourceLocation;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
 import noelflantier.sfartifacts.client.gui.bases.GuiSFA;
-import noelflantier.sfartifacts.common.blocks.tiles.TileAsgardianMachine;
 import noelflantier.sfartifacts.common.blocks.tiles.TileMachine;
 import noelflantier.sfartifacts.common.container.ContainerMachine;
 import noelflantier.sfartifacts.common.network.PacketHandler;
@@ -77,7 +74,7 @@ public abstract class GuiMachine extends GuiSFA{
 		super.loadComponents();
 		this.componentManual.put("ma", new GuiComponent(guiLeft+18, guiTop+90, 100, 10){{
 			globalScale = 0.6F;
-			addText("Asgardian machine processing task can be turned", 0, 0);
+			addText("Machine processing task can be turned", 0, 0);
 			addText("on and off by clicking the appropriate button.", 0, 0);
 			addText("If you want to stop their extract and recieve", 0, 0);
 			addText("task of fluid and rf, you have to apply a", 0, 0);

@@ -1,18 +1,5 @@
 package noelflantier.sfartifacts;
 
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.world.gen.structure.MapGenStructureIO;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.common.MinecraftForge;
-import noelflantier.sfartifacts.common.CommonProxy;
-import noelflantier.sfartifacts.common.handlers.ModItems;
-
-import org.lwjgl.input.Keyboard;
-
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -23,6 +10,10 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import noelflantier.sfartifacts.common.CommonProxy;
+import noelflantier.sfartifacts.common.handlers.ModItems;
 
 @Mod(modid = References.MODID, name = References.NAME, version = References.VERSION)
 public class SFArtifacts

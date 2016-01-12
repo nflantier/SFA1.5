@@ -2,12 +2,12 @@ package noelflantier.sfartifacts.common.network.messages;
 
 import java.util.Random;
 
-import io.netty.buffer.ByteBuf;
-import noelflantier.sfartifacts.common.handlers.ModConfig;
-import noelflantier.sfartifacts.common.helpers.ParticleHelper;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import io.netty.buffer.ByteBuf;
+import noelflantier.sfartifacts.common.handlers.ModConfig;
+import noelflantier.sfartifacts.common.helpers.ParticleHelper;
 
 public class PacketParticleGlobal implements IMessage, IMessageHandler<PacketParticleGlobal, IMessage> {
 	

@@ -98,7 +98,6 @@ public abstract class BaseManual extends GuiSFAScreen{
 				int r = this.history.size()-1;
 				this.history.remove(r);
 				this.currentCat = this.history.get(r-1);
-				System.out.println("gg "+this.history.get(r-1));
     			this.catOpen = true;
     			this.initGui();
 			}

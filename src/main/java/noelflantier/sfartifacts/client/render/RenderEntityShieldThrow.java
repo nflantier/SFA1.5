@@ -1,5 +1,7 @@
 package noelflantier.sfartifacts.client.render;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -8,11 +10,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import noelflantier.sfartifacts.References;
-import noelflantier.sfartifacts.common.entities.EntityHammerMinning;
 import noelflantier.sfartifacts.common.entities.EntityShieldThrow;
 import noelflantier.sfartifacts.common.handlers.ModItems;
-
-import org.lwjgl.opengl.GL11;
 
 public class RenderEntityShieldThrow extends Render{
 	
@@ -28,7 +27,7 @@ public class RenderEntityShieldThrow extends Render{
 	}
 	
 	public void doRender(EntityShieldThrow entity, double x, double y, double z, float f2) {
-		EntityItem itemEntity = new EntityItem(entity.worldObj, 0, 0, 0, new ItemStack(ModItems.itemVibraniumShield, 1,0 ));
+		EntityItem itemEntity = new EntityItem(entity.worldObj, 0, 0, 0, new ItemStack(ModItems.itemVibraniumShield, 1,entity.getTypeShield() ));
 		itemEntity.hoverStart = 0.0F;
 		
         GL11.glPushMatrix();

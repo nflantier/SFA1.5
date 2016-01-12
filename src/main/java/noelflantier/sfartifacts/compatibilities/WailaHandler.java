@@ -14,18 +14,15 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.chunk.IChunkProvider;
 import noelflantier.sfartifacts.common.blocks.BlockOreVibranium;
 import noelflantier.sfartifacts.common.blocks.tiles.IHasWailaContent;
-import noelflantier.sfartifacts.common.blocks.tiles.TileControlPannel;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSFA;
 
 @Optional.Interface(iface = "mcp.mobius.waila.api.IWailaDataProvider", modid = "Waila")

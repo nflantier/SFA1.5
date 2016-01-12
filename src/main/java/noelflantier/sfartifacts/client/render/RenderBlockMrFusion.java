@@ -2,7 +2,6 @@ package noelflantier.sfartifacts.client.render;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
@@ -12,12 +11,10 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import noelflantier.sfartifacts.References;
-import noelflantier.sfartifacts.SFArtifacts;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSFA;
 
 public class RenderBlockMrFusion  extends TileEntitySpecialRenderer implements IItemRenderer {
 
-	private Block bl;
 	private ResourceLocation objBottom= new ResourceLocation(References.MODID+":textures/blocks/models/mrfusion-bottom.obj");
 	private ResourceLocation textureBottom= new ResourceLocation(References.MODID+":textures/blocks/models/mrfusion-bottom.png");
 	private IModelCustom modelBottom;
@@ -40,10 +37,6 @@ public class RenderBlockMrFusion  extends TileEntitySpecialRenderer implements I
 		this.modelLock = AdvancedModelLoader.loadModel(this.objLock);
 		this.modelGouj = AdvancedModelLoader.loadModel(this.objGouj);
 		this.modelGourd = AdvancedModelLoader.loadModel(this.objGourd);
-	}
-	public RenderBlockMrFusion(Block block) {
-		this();
-		this.bl = block;
 	}
 	
 	@Override

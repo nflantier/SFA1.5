@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
@@ -13,6 +15,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -25,6 +28,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.S20PacketEntityProperties;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
@@ -33,9 +38,12 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
+import noelflantier.sfartifacts.common.entities.EntityHoverBoard;
 import noelflantier.sfartifacts.common.entities.EntityItemStronk;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.helpers.Utils;
+import noelflantier.sfartifacts.common.items.ItemEnergyModule;
+import noelflantier.sfartifacts.common.items.ItemHoverBoard;
 import noelflantier.sfartifacts.common.items.ItemVibraniumShield;
 import noelflantier.sfartifacts.common.items.baseclasses.MiningHammerBase;
 import noelflantier.sfartifacts.common.network.PacketHandler;
@@ -246,10 +254,6 @@ public class ModEvents {
     	}
     }
     
-    /*@SubscribeEvent   //No need because respawn call clone
-    public void playerRespawn(PlayerRespawnEvent event){
-    	//syncExtendedProperties(event.player, event.player.worldObj);
-    }*/
     
     @SubscribeEvent    //Not really needed because it call entityjoinworld
     public void playerChangedDimension(PlayerChangedDimensionEvent event){
@@ -292,7 +296,62 @@ public class ModEvents {
 	    	syncAttributes(event.entityPlayer);
     	}
     }
-    
+
+    @SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void onRenderPlayerPre(RenderPlayerEvent.Pre event) {
+		if(event.entityLiving instanceof EntityPlayer) {
+			if(event.entityPlayer == null)
+				return;
+			if(!EntityHoverBoard.isHoverBoardDeployed(event.entityPlayer)){
+				if(EntityHoverBoard.getHoverBoardType(event.entityPlayer)==ItemHoverBoard.PITBULL_HOVERBOARD)
+					GL11.glTranslatef(0, 0.125F, 0);
+				else
+					GL11.glTranslatef(0, 0.065F, 0);
+			}
+		}
+	}
+
+    @SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void onRenderPlayerPost(RenderPlayerEvent.Post event) {
+		if(event.entityLiving instanceof EntityPlayer) {
+			if(event.entityPlayer == null)
+				return;
+			if(!EntityHoverBoard.isHoverBoardDeployed(event.entityPlayer)){
+				if(EntityHoverBoard.getHoverBoardType(event.entityPlayer)==ItemHoverBoard.PITBULL_HOVERBOARD)
+					GL11.glTranslatef(0, -0.125F, 0);
+				else
+					GL11.glTranslatef(0, -0.065F, 0);
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onAvilSwag(AnvilUpdateEvent event) {
+	    if(event.left == null || event.right == null) {
+	        return;
+	    }
+		if(event.left.getItem() instanceof ItemHoverBoard){
+			if(event.right.getItem() instanceof ItemEnergyModule){
+				event.cost = 5;
+				event.materialCost = 1;
+				int r = ItemNBTHelper.getInteger(event.left,"AddedCapacityLevel",0)+1;
+				ItemStack o = event.left.copy();
+				if(!event.name.isEmpty())
+					o.setStackDisplayName(event.name);
+				event.output = ItemNBTHelper.setInteger(o, "AddedCapacityLevel", r);
+			}
+			/*if(event.left.getItemDamage()>>1 == ItemHoverBoard.PITBULL_HOVERBOARD && event.right.getItem() instanceof ItemEnergyModule){
+				event.cost = 40;
+				event.materialCost = 1;
+				ItemStack o = event.left.copy();
+				if(!event.name.isEmpty())
+					o.setStackDisplayName(event.name);
+			}*/
+		}
+	}
+	
     @SubscribeEvent
     public void bucketFill (FillBucketEvent evt){
         if (evt.current.getItem() == Items.bucket && evt.target.typeOfHit == MovingObjectType.BLOCK){

@@ -1,12 +1,12 @@
 package noelflantier.sfartifacts.common.helpers;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class RegisterHelper {
 		
