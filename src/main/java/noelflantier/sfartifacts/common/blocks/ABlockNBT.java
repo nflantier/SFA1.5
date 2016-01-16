@@ -10,7 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import noelflantier.sfartifacts.common.blocks.tiles.ITileGlobalNBT;
 
-public abstract class ABlockNBT  extends BlockSFAContainer {
+public abstract class ABlockNBT extends BlockSFAContainer {
 
 	public ABlockNBT(Material material, String name) {
 		super(material, name);

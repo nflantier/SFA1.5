@@ -47,17 +47,10 @@ public class TileInjector extends TileAsgardianMachine implements ITileUsingMate
 		super("Injector");
 		this.hasFL = true;
 		this.hasRF = true;
-    	this.energyCapacity = ModConfig.capacityInjector;
-    	this.storage.setCapacity(this.energyCapacity);
-    	this.storage.setMaxReceive(this.energyCapacity/100);
-    	this.storage.setMaxExtract(this.energyCapacity);
-		this.tankCapacity = ModConfig.capacityAsgarditeInjector;
-		this.tank.setCapacity(this.tankCapacity);
-	}	
-	
-	@Override
-	public void init(){
-		super.init();
+    	this.storage.setCapacity(ModConfig.capacityInjector);
+    	this.storage.setMaxReceive(ModConfig.capacityInjector/100);
+    	this.storage.setMaxExtract(ModConfig.capacityInjector);
+		this.tank.setCapacity(ModConfig.capacityAsgarditeInjector);
 		for(ForgeDirection f:ForgeDirection.values()){
 			this.recieveSides.add(f);
 			this.extractSides.add(f);
@@ -65,7 +58,6 @@ public class TileInjector extends TileAsgardianMachine implements ITileUsingMate
 		this.fluidAndSide =  new Hashtable<Fluid, List<Integer>>();
 		List<Integer> ar = new ArrayList<Integer>();
 		ar.add(ForgeDirection.getOrientation(this.side).getOpposite().ordinal());
-		ar.add(ForgeDirection.UNKNOWN.ordinal());
 		this.fluidAndSide.put(ModFluids.fluidLiquefiedAsgardite, ar);
 	}
 

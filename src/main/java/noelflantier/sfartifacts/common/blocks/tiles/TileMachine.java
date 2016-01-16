@@ -29,7 +29,6 @@ public abstract class TileMachine extends TileSFA implements ISFAFluid,ISFAEnerg
 	public boolean hasFL = false;
 	
 	//ENERGY
-    public int energyCapacity = 0;
     public EnergyStorage storage = new EnergyStorage(0,0,0);
     public List<ForgeDirection> recieveSides = new ArrayList<>();
     public List<ForgeDirection> extractSides = new ArrayList<>();
@@ -37,7 +36,6 @@ public abstract class TileMachine extends TileSFA implements ISFAFluid,ISFAEnerg
 	
 	//FLUID
    	public FluidTank tank = new FluidTank(0);
-   	public int tankCapacity;
 	public Hashtable<Fluid, List<Integer>> fluidAndSide;
 	
 	//machine
@@ -77,11 +75,6 @@ public abstract class TileMachine extends TileSFA implements ISFAFluid,ISFAEnerg
     @SideOnly(Side.CLIENT)
 	public void processClientMachine(){
 		
-	}
-	
-	@Override
-	public void init(){
-		super.init();
 	}
 
 	@Override

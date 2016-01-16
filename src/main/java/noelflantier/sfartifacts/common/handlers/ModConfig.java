@@ -20,6 +20,7 @@ public class ModConfig {
 	public static int capacityMightyFoundry;
 	public static int capacityLavaMightyFoundry;
 	public static int capacitySoundEmiter;
+	public static int capacityLightningRodStand;
 	public static int capacityAsgarditeSoundEmitter;
 	public static int capacityMrFusion;
 	public static int capacityLiquidMrFusion;
@@ -155,6 +156,7 @@ public class ModConfig {
 			capacityMrFusion = config.get(CAT_MACHINES, "mr fusion rf capacity", 1210000000, "Mr fudion energy capacity").getInt();
 			capacityLiquidMrFusion = config.get(CAT_MACHINES, "mr fusion liquid capacity", 1000000, "Mr fudion liquid capacity").getInt();
 			
+			capacityLightningRodStand = config.get(CAT_MACHINES, "lightningrod stand rf capacity", 100000, "Lightningrod stand energy capacity").getInt();
 
 			transfertCapacityInductorBasic = config.get(Configuration.CATEGORY_GENERAL, "basic inductor transfert RF/T", 300, "Transfert rate RF/T").getInt();
 			transfertCapacityInductorAdvanced = config.get(Configuration.CATEGORY_GENERAL, "advanced inductor transfert RF/T", 1500, "Transfert rate RF/T").getInt();

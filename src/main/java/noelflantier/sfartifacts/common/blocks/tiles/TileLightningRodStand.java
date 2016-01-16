@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.items.ItemLightningRod;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
@@ -30,7 +31,6 @@ public class TileLightningRodStand extends TileAsgardianMachine implements ITile
 	public Random rdL = new Random();
 	public int lightningTick = 20;
 	public int currentLightningTick = 0;
-	public float materialEnergyRatio = -1;
 	
     //RENDERING
     public float yrotupring = 0.0F;
@@ -57,17 +57,10 @@ public class TileLightningRodStand extends TileAsgardianMachine implements ITile
 		super("Lightning Rod Stand");
 		this.hasFL = false;
 		this.hasRF = true;
-    	this.energyCapacity = 100000;
-    	this.storage.setCapacity(this.energyCapacity);
-    	this.storage.setMaxReceive(this.energyCapacity/100);
-    	this.storage.setMaxExtract(this.energyCapacity);
-	}
-
-	@Override
-	public void init(){
-		super.init();
+    	this.storage.setCapacity(ModConfig.capacityLightningRodStand);
+    	this.storage.setMaxReceive(ModConfig.capacityLightningRodStand/100);
+    	this.storage.setMaxExtract(ModConfig.capacityLightningRodStand);
     	this.extractSides.add(ForgeDirection.DOWN);
-		this.materialEnergyRatio = this.getEnergyRatio(this.getBlockMetadata());
 	}
 	
 	@Override
@@ -80,7 +73,7 @@ public class TileLightningRodStand extends TileAsgardianMachine implements ITile
 	@Override
 	public void processMachine() {        
         if(this.items[0] != null && this.items[0].getItem() instanceof ItemLightningRod){
-        	this.lightningRodEnergy = (int) (efficiencyLightningRod[this.items[0].getItemDamage()] * materialEnergyRatio);
+        	this.lightningRodEnergy = (int) (efficiencyLightningRod[this.items[0].getItemDamage()] * this.getEnergyRatio(this.getBlockMetadata()));
         	this.receiveEnergy(ForgeDirection.UNKNOWN,this.lightningRodEnergy/this.energyTick, false);
         	
         	this.currentLightningTick--;

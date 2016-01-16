@@ -39,19 +39,11 @@ public class TileMrFusion extends TileMachine{
 		super("MrFusion");
 		this.hasFL = true;
 		this.hasRF = true;
-    	this.energyCapacity = ModConfig.capacityMrFusion;
-    	this.storage.setCapacity(this.energyCapacity);
-    	this.storage.setMaxReceive(this.energyCapacity);
-    	this.storage.setMaxExtract(this.energyCapacity);
-		this.tankCapacity = ModConfig.capacityLiquidMrFusion;
-		this.tank.setCapacity(this.tankCapacity);
-	}	
-
-	@Override
-	public void init(){
-		super.init();
-		this.extractSides.add(ForgeDirection.getOrientation(side));
-		PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this);
+    	this.storage.setCapacity(ModConfig.capacityMrFusion);
+    	this.storage.setMaxReceive(ModConfig.capacityMrFusion);
+    	this.storage.setMaxExtract(ModConfig.capacityMrFusion);
+		this.tank.setCapacity(ModConfig.capacityLiquidMrFusion);this.extractSides.add(ForgeDirection.getOrientation(side));	
+		//PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this);
 	}
 	
 	@Override
@@ -117,15 +109,15 @@ public class TileMrFusion extends TileMachine{
 	}
 
 	public void processRfGain(){
-		if(this.getEnergyStored(ForgeDirection.UNKNOWN)>=this.energyCapacity)
+		if(this.getEnergyStored(ForgeDirection.UNKNOWN)>=this.storage.getMaxEnergyStored())
 			return;
 		float rfg = (float)0;
 		rfg += (float)this.tank.getFluidAmount()*this.ratioLiquid;
-		int m  = (int)(this.tank.getFluidAmount()/this.tankCapacity)*10;
+		int m  = (int)(this.tank.getFluidAmount()/this.tank.getCapacity())*10;
 		m = m<=0?1:m;
-		this.tank.drain(this.tankCapacity, true);
+		this.tank.drain(this.tank.getCapacity(), true);
 		this.storage.receiveEnergy((int)rfg, false);
-		if(this.getEnergyStored(ForgeDirection.UNKNOWN)>=this.energyCapacity)
+		if(this.getEnergyStored(ForgeDirection.UNKNOWN)>=this.storage.getMaxEnergyStored())
 			return;
 
 		for(int i = 0 ; i < this.items.length-1 ; i++){
@@ -139,7 +131,7 @@ public class TileMrFusion extends TileMachine{
 			}
 			this.items[i] = null;
 			this.storage.receiveEnergy((int)rfg*m, false);
-			if(this.getEnergyStored(ForgeDirection.UNKNOWN)>=this.energyCapacity)
+			if(this.getEnergyStored(ForgeDirection.UNKNOWN)>=this.storage.getMaxEnergyStored())
 				return;
 		}
 	}

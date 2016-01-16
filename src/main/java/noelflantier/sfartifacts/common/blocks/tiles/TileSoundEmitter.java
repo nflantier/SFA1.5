@@ -127,22 +127,10 @@ public class TileSoundEmitter extends TileAsgardianMachine implements ITileGloba
 		super("Sound Emitter");
 		this.hasFL = true;
 		this.hasRF = true;
-    	this.energyCapacity = ModConfig.capacitySoundEmiter;
-    	this.storage.setCapacity(this.energyCapacity);
-    	this.storage.setMaxReceive(this.energyCapacity/100);
-    	this.storage.setMaxExtract(this.energyCapacity);
-		this.tankCapacity = ModConfig.capacityAsgarditeSoundEmitter;
-		this.tank.setCapacity(this.tankCapacity);
-	}
-	
-	@Override
-	public EnergyStorage getEnergyStorage() {
-		return this.storage;
-	}
-	
-	@Override
-	public void init(){
-		super.init();
+    	this.storage.setCapacity(ModConfig.capacitySoundEmiter);
+    	this.storage.setMaxReceive(ModConfig.capacitySoundEmiter/100);
+    	this.storage.setMaxExtract(ModConfig.capacitySoundEmiter);
+		this.tank.setCapacity(ModConfig.capacityAsgarditeSoundEmitter);
 		for(ForgeDirection f:ForgeDirection.values()){
 			this.recieveSides.add(f);
 			this.extractSides.add(f);
@@ -150,6 +138,11 @@ public class TileSoundEmitter extends TileAsgardianMachine implements ITileGloba
 		this.fluidAndSide =  new Hashtable<Fluid, List<Integer>>();
 		List<Integer> ar2 = new ArrayList<Integer>(){{add(0);add(1);add(2);add(3);add(4);add(5);add(ForgeDirection.UNKNOWN.ordinal());}};
 		this.fluidAndSide.put(ModFluids.fluidLiquefiedAsgardite, ar2);
+	}
+	
+	@Override
+	public EnergyStorage getEnergyStorage() {
+		return this.storage;
 	}
 	
 	@Override

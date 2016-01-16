@@ -50,17 +50,10 @@ public class TileMightyFoundry extends TileAsgardianMachine implements ITileGlob
 		super("Mighty Foundry");
 		this.hasFL = true;
 		this.hasRF = true;
-    	this.energyCapacity = ModConfig.capacityMightyFoundry;
-    	this.storage.setCapacity(this.energyCapacity);
-    	this.storage.setMaxReceive(this.energyCapacity/100);
-    	this.storage.setMaxExtract(this.energyCapacity);
-		this.tankCapacity = ModConfig.capacityLavaMightyFoundry;
-		this.tank.setCapacity(this.tankCapacity);
-	}
-	
-	@Override
-	public void init(){
-		super.init();
+    	this.storage.setCapacity(ModConfig.capacityMightyFoundry);
+    	this.storage.setMaxReceive(ModConfig.capacityMightyFoundry/100);
+    	this.storage.setMaxExtract(ModConfig.capacityMightyFoundry);
+		this.tank.setCapacity(ModConfig.capacityLavaMightyFoundry);
 		for(ForgeDirection f:ForgeDirection.values()){
 			this.recieveSides.add(f);
 			this.extractSides.add(f);

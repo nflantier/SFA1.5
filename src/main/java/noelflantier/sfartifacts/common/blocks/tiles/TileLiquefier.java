@@ -53,17 +53,10 @@ public class TileLiquefier extends TileAsgardianMachine implements ITileUsingMat
 		super("Liquefier");
 		this.hasFL = true;
 		this.hasRF = true;
-    	this.energyCapacity = ModConfig.capacityLiquefier;
-    	this.storage.setCapacity(this.energyCapacity);
-    	this.storage.setMaxReceive(this.energyCapacity/100);
-    	this.storage.setMaxExtract(this.energyCapacity);
-		this.tankCapacity = ModConfig.capacityAsgarditeLiquefier;
-		this.tank.setCapacity(this.tankCapacity);
-	}
-
-	@Override
-	public void init(){
-		super.init();
+    	this.storage.setCapacity(ModConfig.capacityLiquefier);
+    	this.storage.setMaxReceive(ModConfig.capacityLiquefier/100);
+    	this.storage.setMaxExtract(ModConfig.capacityLiquefier);
+		this.tank.setCapacity(ModConfig.capacityAsgarditeLiquefier);
 		for(ForgeDirection f:ForgeDirection.values()){
 			this.recieveSides.add(f);
 			this.extractSides.add(f);
