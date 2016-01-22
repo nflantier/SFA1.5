@@ -65,8 +65,6 @@ public class TileLightningRodStand extends TileAsgardianMachine implements ITile
 	
 	@Override
 	public void processPackets() {
-		//if(this.getEnergyStored(ForgeDirection.UNKNOWN)!=this.lastEnergyStoredAmount)
-			PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this); 
 		PacketHandler.sendToAllAround(new PacketLightningRodStand(this), this);
 	}
 

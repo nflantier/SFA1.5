@@ -207,15 +207,14 @@ public class GuiHammerConfig extends GuiSFA{
 	        for(int i = 0 ; i<nbttaglist.tagCount() ; i++){
 				Enchantment enchant = Enchantment.enchantmentsList[nbttaglist.getCompoundTagAt(i).getInteger("id")];
 				String n = enchant.getTranslatedName(nbttaglist.getCompoundTagAt(i).getInteger("lvl"));
-		    	GuiComponent gce = new GuiComponent(35, y+25, 150,10);
+		    	GuiComponent gce = new GuiComponent(36, y+26, 150,10);
 		    	gce.isLink=true;
 		    	gce.defColor=EnumChatFormatting.DARK_GRAY;
 				gce.addText(n, 0,0);
 				this.enchantSc.addComponent(i, gce);
 				y += 10;
 	        }
-			this.enchantSc.showArrows = true;
-			this.enchantSc.setArrowsPositionAndAlpha(guiLeft+167, guiTop+25, 83, 0.3F);
+	        this.enchantSc.setPositionSizeAndAlpha(guiLeft+34, guiTop+34, 154, 98, 0.4F);
 		}
 	}
 
@@ -244,8 +243,10 @@ public class GuiHammerConfig extends GuiSFA{
 	}
 
 	public void drawOver(int x, int y){
-		if(this.enchantOpen)
+		if(this.enchantOpen){
 			this.enchantSc.showTheArrows(x, y);
+			this.enchantSc.showTheBorders(x, y);
+		}
 	}
 	@Override
     public void drawGuiContainerForegroundLayer(int x, int y){

@@ -367,7 +367,7 @@ public class GuiSoundEmitter extends GuiMachine{
 	
 	public void loadListFrequency(){
 		this.listFrequency = new GuiScrollable(10);
-        int y = 10;
+        int y = 12;
         int i = 0;
 
 		Iterator <Map.Entry<Integer, String>>iterator;
@@ -389,8 +389,7 @@ public class GuiSoundEmitter extends GuiMachine{
 			y += 10;
 			i +=1;
         }
-        this.listFrequency.showArrows = true;
-        this.listFrequency.setArrowsPositionAndAlpha(this.guiLeft+142,this.guiTop-1,93,0.3F);
+        this.listFrequency.setPositionSizeAndAlpha(guiLeft+11, guiTop+10, 152, 103, 0.4F);
 	}
 	
 	@Override

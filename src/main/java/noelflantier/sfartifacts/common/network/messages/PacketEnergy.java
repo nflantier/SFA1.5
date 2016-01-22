@@ -14,28 +14,25 @@ public class PacketEnergy  implements IMessage, IMessageHandler<PacketEnergy, IM
 	public int y;
 	public int z;
 	public int energy;
-	//public int capacity;
 	public int lastenergystored;
 	
 	public PacketEnergy(){
 	
 	}
 
-	public PacketEnergy(int x, int y, int z, int energy, int capacity){
+	public PacketEnergy(int x, int y, int z, int energy){
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.energy = energy;
-		//this.capacity = capacity;
 		this.lastenergystored = -1;
 	}
 
-	public PacketEnergy(int x, int y, int z, int energy, int capacity, int lastenergystored){
+	public PacketEnergy(int x, int y, int z, int energy, int lastenergystored){
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.energy = energy;
-		//this.capacity = capacity;
 		this.lastenergystored = lastenergystored;
 	}
 	
@@ -55,7 +52,6 @@ public class PacketEnergy  implements IMessage, IMessageHandler<PacketEnergy, IM
 	    y = buf.readInt();
 	    z = buf.readInt();
 	    energy = buf.readInt();
-	    //capacity = buf.readInt();
 	    lastenergystored = buf.readInt();
 		
 	}
@@ -65,7 +61,6 @@ public class PacketEnergy  implements IMessage, IMessageHandler<PacketEnergy, IM
 	    buf.writeInt(y);
 	    buf.writeInt(z);
 	    buf.writeInt(energy);
-	    //buf.writeInt(capacity);
 	    buf.writeInt(lastenergystored);
 		
 	}

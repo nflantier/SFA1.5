@@ -3,6 +3,7 @@ package noelflantier.sfartifacts.common.network;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -18,7 +19,11 @@ public class PacketHandler {
 	public static void sendToAllAround(IMessage message, TileEntity entity){
     	INSTANCE.sendToAllAround(message, new NetworkRegistry.TargetPoint(entity.getWorldObj().provider.dimensionId,entity.xCoord,entity.yCoord,entity.zCoord,64));
 	}
-
+	
+	public static void sendToAllAroundPlayer(IMessage message, EntityPlayer player){
+    	INSTANCE.sendToAllAround(message, new NetworkRegistry.TargetPoint(player.worldObj.provider.dimensionId,player.posX,player.posY,player.posZ,16));
+	}
+	
 	public static void sendToPlayerMP(IMessage message, EntityPlayerMP player){
     	INSTANCE.sendTo(message, player);
 	}

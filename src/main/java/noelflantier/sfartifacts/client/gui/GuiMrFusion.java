@@ -28,7 +28,7 @@ public class GuiMrFusion extends GuiMachine{
 	public void loadComponents(){
 		super.loadComponents();
 
-		GuiComponent gc = new GuiToolTips(guiLeft+145, guiTop+23, 14, 70, this.width);
+		GuiComponent gc = new GuiToolTips(guiLeft+210, guiTop+16, 14, 124, this.width);
 		this.componentList.put("energy", gc);
 		
 		this.componentList.put("mf", new GuiComponent(6, 5, 100, 10){{

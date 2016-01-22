@@ -87,9 +87,9 @@ public class BTTFManual  extends BaseManual{
 			this.componentList.put("p1", 
 					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 						defColor = EnumChatFormatting.BLACK;
-						addText("Recharger can recharge your rf items.",0,0);
+						addText("Recharger can recharge your energy RF or EU items.",0,0);
 						addText("If you are close enough : "+(Math.round(ModConfig.rangeOfRecharger/10))+" blocks",0,0);
-						addText("around, it will recharge them wirelessly.",0,0);
+						addText("around, it can recharge them wirelessly.",0,0);
 					}}
 				);
 		}else if(cat.equals("silicon")){

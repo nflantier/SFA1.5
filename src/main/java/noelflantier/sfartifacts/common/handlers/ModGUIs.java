@@ -33,6 +33,7 @@ import noelflantier.sfartifacts.common.blocks.tiles.TileMrFusion;
 import noelflantier.sfartifacts.common.blocks.tiles.TileRecharger;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSoundEmitter;
 import noelflantier.sfartifacts.common.container.ContainerControlPanel;
+import noelflantier.sfartifacts.common.container.ContainerHammerConfig;
 import noelflantier.sfartifacts.common.container.ContainerHammerStandInvoked;
 import noelflantier.sfartifacts.common.container.ContainerHammerStandNonInvoked;
 import noelflantier.sfartifacts.common.container.ContainerInductor;
@@ -44,6 +45,7 @@ import noelflantier.sfartifacts.common.container.ContainerMoldMaking;
 import noelflantier.sfartifacts.common.container.ContainerMrFusion;
 import noelflantier.sfartifacts.common.container.ContainerRecharger;
 import noelflantier.sfartifacts.common.container.ContainerSoundEmitter;
+import noelflantier.sfartifacts.common.container.ContainerTeleport;
 
 public class ModGUIs implements IGuiHandler{
 	
@@ -132,6 +134,10 @@ public class ModGUIs implements IGuiHandler{
 			}
 		}else if(ID == ModGUIs.guiIDMold){
 			return new ContainerMoldMaking(player);
+		}else if(ID == ModGUIs.guiIDTeleport){
+			return new ContainerTeleport(player.inventory);
+		}else if(ID == ModGUIs.guiIDHammerConfig){
+			return new ContainerHammerConfig(player.inventory);
 		}
 		return null;
 	}

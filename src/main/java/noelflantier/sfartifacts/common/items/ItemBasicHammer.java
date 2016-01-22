@@ -8,6 +8,7 @@ import org.lwjgl.input.Keyboard;
 import cofh.api.energy.IEnergyConnection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.energy.tile.IEnergySink;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -26,8 +27,12 @@ import noelflantier.sfartifacts.common.blocks.tiles.TileSFA;
 import noelflantier.sfartifacts.common.helpers.Coord4;
 import noelflantier.sfartifacts.common.helpers.HammerHelper;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
+import noelflantier.sfartifacts.common.helpers.SoundHelper;
 import noelflantier.sfartifacts.common.items.baseclasses.IItemHasModes;
 import noelflantier.sfartifacts.common.items.baseclasses.ItemMode;
+import noelflantier.sfartifacts.common.network.PacketHandler;
+import noelflantier.sfartifacts.common.network.messages.PacketSound;
+import noelflantier.sfartifacts.compatibilities.InterMods;
 
 public class ItemBasicHammer extends ItemSFA implements IItemHasModes{
 
@@ -58,6 +63,7 @@ public class ItemBasicHammer extends ItemSFA implements IItemHasModes{
 		if(mode!=0)
 			return false;
 		if(t!=null && t instanceof ITileMustHaveMaster){
+			PacketHandler.sendToAllAroundPlayer(new PacketSound(x, y, z,  SoundHelper.Sounds.BASICHAMMER.ordinal(), 0.7F),player);
 			if(t instanceof TileInductor){
 				if(ItemNBTHelper.getBoolean(stack, "hasmaster", false) 
 				&& !(t.xCoord==ItemNBTHelper.getInteger(stack, "mx", -1) && t.yCoord==ItemNBTHelper.getInteger(stack, "my", -1)
@@ -73,7 +79,7 @@ public class ItemBasicHammer extends ItemSFA implements IItemHasModes{
 					ItemNBTHelper.setInteger(stack, "mz", t.zCoord);
 	
 					ItemNBTHelper.setBoolean(stack, "hasmaster", true);
-					player.addChatComponentMessage(new ChatComponentText("Inductor at "+ItemNBTHelper.getInteger(stack, "mx", -1)+" "+
+					player.addChatComponentMessage(new ChatComponentText("Master inductor at "+ItemNBTHelper.getInteger(stack, "mx", -1)+" "+
 													ItemNBTHelper.getInteger(stack, "my", -1)+" "+ItemNBTHelper.getInteger(stack, "mz", -1)));
 				}
 			}else{
@@ -88,7 +94,8 @@ public class ItemBasicHammer extends ItemSFA implements IItemHasModes{
 													ItemNBTHelper.getInteger(stack, "my", -1)+" "+ItemNBTHelper.getInteger(stack, "mz", -1)));
 				}
 			}
-		}else if(t!=null && ( t instanceof ITileCanHavePillar || t instanceof IEnergyConnection )){
+		}else if(t!=null && ( t instanceof ITileCanHavePillar || t instanceof IEnergyConnection  || (InterMods.hasIc2 && t instanceof IEnergySink))){
+			PacketHandler.sendToAllAroundPlayer(new PacketSound(x, y, z,  SoundHelper.Sounds.BASICHAMMER.ordinal(), 0.7F),player);
 			ItemNBTHelper.setInteger(stack, "cx", t.xCoord);
 			ItemNBTHelper.setInteger(stack, "cy", t.yCoord);
 			ItemNBTHelper.setInteger(stack, "cz", t.zCoord);
@@ -113,11 +120,9 @@ public class ItemBasicHammer extends ItemSFA implements IItemHasModes{
 				ITileCanBeMaster tcbm2 = (ITileCanBeMaster)tc;
 				if(tcbm.getChildsList().stream().anyMatch((c)->tc.xCoord==c.x && tc.yCoord==c.y && tc.zCoord==c.z)){
 					tcbm.getChildsList().removeIf((c)->tc.xCoord==c.x && tc.yCoord==c.y && tc.zCoord==c.z);
-					//tcbm2.getChildsList().removeIf((c)->tm.xCoord==c.x && tm.yCoord==c.y && tm.zCoord==c.z);
 					player.addChatComponentMessage(new ChatComponentText("Inductor removed"));
 				}else{
 					tcbm.getChildsList().add(new Coord4(tc.xCoord,tc.yCoord,tc.zCoord));
-					//tcbm2.getChildsList().add(new Coord4(tm.xCoord,tm.yCoord,tm.zCoord));
 					player.addChatComponentMessage(new ChatComponentText("Inductor connected"));
 				}
 				ItemNBTHelper.setBoolean(stack, "haschild", false);

@@ -7,6 +7,7 @@ import java.util.List;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import ic2.api.energy.tile.IEnergySink;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -21,6 +22,7 @@ import noelflantier.sfartifacts.common.helpers.Utils;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
 import noelflantier.sfartifacts.common.network.messages.PacketFluid;
+import noelflantier.sfartifacts.compatibilities.InterMods;
 
 public class TileMrFusion extends TileMachine{
 
@@ -42,8 +44,7 @@ public class TileMrFusion extends TileMachine{
     	this.storage.setCapacity(ModConfig.capacityMrFusion);
     	this.storage.setMaxReceive(ModConfig.capacityMrFusion);
     	this.storage.setMaxExtract(ModConfig.capacityMrFusion);
-		this.tank.setCapacity(ModConfig.capacityLiquidMrFusion);this.extractSides.add(ForgeDirection.getOrientation(side));	
-		//PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this);
+		this.tank.setCapacity(ModConfig.capacityLiquidMrFusion);
 	}
 	
 	@Override
@@ -63,12 +64,23 @@ public class TileMrFusion extends TileMachine{
 
 	@Override
 	public void processPackets() {
-		//if(this.getEnergyStored(ForgeDirection.UNKNOWN)!=this.lastEnergyStoredAmount)
-    		PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this);
-		PacketHandler.sendToAllAround(new PacketFluid(this.xCoord, this.yCoord, this.zCoord, new int[]{this.tank.getFluidAmount()}, new int[]{this.tank.getCapacity()}, new int[]{ModFluids.fluidLiquefiedAsgardite.getID()}),this);
-		
+		PacketHandler.sendToAllAround(new PacketFluid(this.xCoord, this.yCoord, this.zCoord, new int[]{this.tank.getFluidAmount()}, new int[]{this.tank.getCapacity()}, new int[]{ModFluids.fluidLiquefiedAsgardite.getID()}),this);	
+	}
+
+	@Override
+	public void init(){
+		super.init();
+		this.extractSides.add(ForgeDirection.getOrientation(side));	
 	}
 	
+	@Override
+	public void processMachine() {
+		processInventory();
+		processRfGain();
+		extractEnergyToSides(true,true);
+	}
+
+
 	public boolean processInventory(){
 		if(this.items[12]!=null){
 			if(this.tank.getFluidAmount()<this.tank.getCapacity()){
@@ -88,26 +100,7 @@ public class TileMrFusion extends TileMachine{
 		}
 		return false;
 	}
-	@Override
-	public void processMachine() {
-		processInventory();
-		processRfGain();
-		if(!this.extractSides.isEmpty()){
-    		for(ForgeDirection fd : this.extractSides){
-        		int maxAvailable = this.extractEnergy(fd, this.getEnergyStored(fd), true);
-        		int energyTransferred = 0;
-    			TileEntity tile = worldObj.getTileEntity(xCoord+fd.offsetX, yCoord+fd.offsetY, zCoord+fd.offsetZ);
-    			if(tile!=null && tile instanceof IEnergyHandler){
-    				energyTransferred = ((IEnergyHandler) tile).receiveEnergy(fd.getOpposite(), maxAvailable, true);
-    				if(energyTransferred!=0){
-    					energyTransferred = ((IEnergyHandler) tile).receiveEnergy(fd.getOpposite(), maxAvailable, false);
-        				this.extractEnergy(fd, energyTransferred, false);
-    				}
-    			}
-    		}
-    	}
-	}
-
+	
 	public void processRfGain(){
 		if(this.getEnergyStored(ForgeDirection.UNKNOWN)>=this.storage.getMaxEnergyStored())
 			return;

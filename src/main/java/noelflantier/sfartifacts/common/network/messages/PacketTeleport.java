@@ -4,6 +4,8 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -64,27 +66,15 @@ public class PacketTeleport implements IMessage, IMessageHandler<PacketTeleport,
 					String[] st = message.coord.split(",");
 					if(st.length==4){
 						if (st[0].matches("[+-]?[0-9]+") && st[1].matches("[+-]?[0-9]+") && st[2].matches("[+-]?[0-9]+") && st[3].matches("[+-]?[0-9]+")){
-							/*int dimid = Integer.parseInt(st[0]);
-							double cx = ctx.getServerHandler().playerEntity.posX;
-							double cy = ctx.getServerHandler().playerEntity.posY;
-							double cz = ctx.getServerHandler().playerEntity.posZ;
-							double tx = (double)Integer.parseInt(st[1]);
-							double ty = (double)Integer.parseInt(st[2]);
-							double tz = (double)Integer.parseInt(st[3]);
-							EntityPlayerMP player = ctx.getServerHandler().playerEntity;
-							
-							if(!DimensionManager.isDimensionRegistered(dimid))
-								return null;
-							if(player.dimension!=dimid)
-								player.mcServer.getConfigurationManager().transferPlayerToDimension(player, dimid);
-							*/	
-							ctx.getServerHandler().playerEntity.worldObj.playSoundEffect(ctx.getServerHandler().playerEntity.posX, ctx.getServerHandler().playerEntity.posY, ctx.getServerHandler().playerEntity.posZ, SoundHelper.PORTALTRAVEL.sound, 0.1F, ctx.getServerHandler().playerEntity.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+							SoundHelper.playPositionedSound(SoundHelper.Sounds.PORTALTRAVEL, Minecraft.getMinecraft(), ctx.getServerHandler().playerEntity.posX, ctx.getServerHandler().playerEntity.posY, ctx.getServerHandler().playerEntity.posZ, 0.1F);
+		                	ctx.getServerHandler().playerEntity.worldObj.addWeatherEffect(new EntityLightningBolt(ctx.getServerHandler().playerEntity.worldObj, ctx.getServerHandler().playerEntity.posX+3, ctx.getServerHandler().playerEntity.posY, ctx.getServerHandler().playerEntity.posZ+3));
+							//ctx.getServerHandler().playerEntity.worldObj.playSoundEffect(ctx.getServerHandler().playerEntity.posX, ctx.getServerHandler().playerEntity.posY, ctx.getServerHandler().playerEntity.posZ, SoundHelper.Sounds.PORTALTRAVEL.sound, 0.1F, ctx.getServerHandler().playerEntity.worldObj.rand.nextFloat() * 0.1F + 0.9F);
 							HammerHelper.startTeleporting(ctx.getServerHandler().playerEntity, st);
-							ctx.getServerHandler().playerEntity.worldObj.playSoundEffect((double)Integer.parseInt(st[1]), (double)Integer.parseInt(st[2]), (double)Integer.parseInt(st[3]), SoundHelper.PORTALTRAVEL.sound, 0.1F, ctx.getServerHandler().playerEntity.worldObj.rand.nextFloat() * 0.1F + 0.9F);
-							
-							/*ctx.getServerHandler().setPlayerLocation(tx, ty,tz, 0.0F, 0.0F);
-							player.closeScreen();*/
-							//ctx.getServerHandler().playerEntity.travelToDimension(Integer.parseInt(st[0]));
+							SoundHelper.playPositionedSound(SoundHelper.Sounds.PORTALTRAVEL, Minecraft.getMinecraft(), (double)Integer.parseInt(st[1]), (double)Integer.parseInt(st[2]), (double)Integer.parseInt(st[3]), 0.1F);
+
+		            		HammerHelper.extractEnergyInHammer(hammer,((ItemThorHammer)hammer.getItem()).energyTeleporting);
+							//ctx.getServerHandler().playerEntity.worldObj.playSoundEffect((double)Integer.parseInt(st[1]), (double)Integer.parseInt(st[2]), (double)Integer.parseInt(st[3]), SoundHelper.Sounds.PORTALTRAVEL.sound, 0.1F, ctx.getServerHandler().playerEntity.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+
 						}
 					}
 					break;

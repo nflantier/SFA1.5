@@ -7,12 +7,15 @@ import java.util.List;
 import java.util.Random;
 
 import cofh.api.energy.EnergyStorage;
+import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.energy.tile.IEnergySink;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -21,6 +24,9 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.helpers.Coord4;
+import noelflantier.sfartifacts.common.network.PacketHandler;
+import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
+import noelflantier.sfartifacts.compatibilities.InterMods;
 
 public abstract class TileMachine extends TileSFA implements ISFAFluid,ISFAEnergyHandler,ISidedInventory{
 	//CONTROL
@@ -61,10 +67,32 @@ public abstract class TileMachine extends TileSFA implements ISFAFluid,ISFAEnerg
         	processMachine();
         if(randomMachine.nextFloat()<getRandomTickChance())
         	processAtRandomTicks();
-        processPackets();
+
+        processPackets();	
+        if(this.storage.getEnergyStored()!=this.lastEnergyStoredAmount)
+			PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.lastEnergyStoredAmount),this);
+	
 		this.lastEnergyStoredAmount = this.getEnergyStored(ForgeDirection.UNKNOWN);
     }
-
+	
+	public void extractEnergyToSides(boolean rf, boolean eu){
+		if(this.extractSides.isEmpty() || this.getEnergyStored(ForgeDirection.UNKNOWN)<=0)
+			return;
+		for(ForgeDirection fd : this.extractSides){
+    		int maxAvailable = this.extractEnergy(fd, this.getEnergyStored(fd), true);
+    		double energyTransferred = 0;
+			TileEntity tile = worldObj.getTileEntity(xCoord+fd.offsetX, yCoord+fd.offsetY, zCoord+fd.offsetZ);
+			
+			if(rf && tile!=null && tile instanceof IEnergyHandler){
+				energyTransferred = ((IEnergyHandler) tile).receiveEnergy(fd.getOpposite(), maxAvailable, false);
+				this.extractEnergy(fd, (int)energyTransferred, false);
+			}else if(eu && tile!=null && InterMods.hasIc2 && tile instanceof IEnergySink && ((IEnergySink)tile).acceptsEnergyFrom(this, fd.getOpposite())){
+				energyTransferred = InterMods.injectEnergy(tile, fd.getOpposite(), InterMods.convertRFtoEU(maxAvailable,5), false);
+    			this.extractEnergy(fd, InterMods.convertEUtoRF(InterMods.convertRFtoEU(maxAvailable,5)-energyTransferred), false);
+			}
+		}
+	}
+	
     public float getRandomTickChance(){
     	return 0F;
     }

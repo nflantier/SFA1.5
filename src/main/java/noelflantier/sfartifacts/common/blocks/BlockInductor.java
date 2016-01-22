@@ -1,5 +1,10 @@
 package noelflantier.sfartifacts.common.blocks;
 
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
+
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
@@ -54,7 +59,7 @@ public class BlockInductor extends BlockSFAContainer {
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
 	}
-
+	
     public int damageDropped(int damage){
         return damage;
     }
@@ -73,7 +78,7 @@ public class BlockInductor extends BlockSFAContainer {
 	public boolean canPlaceTorchOnTop(World arg0, int arg1, int arg2, int arg3) {
 		return false;
 	}
-	
+    
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess ib, int x, int y, int z){        
     	TileEntity tile = ib.getTileEntity(x, y, z);

@@ -67,8 +67,6 @@ public class TileMightyFoundry extends TileAsgardianMachine implements ITileGlob
 	
 	@Override
 	public void processPackets() {
-		//if(this.getEnergyStored(ForgeDirection.UNKNOWN)!=this.lastEnergyStoredAmount)
-			PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this);
 		PacketHandler.sendToAllAround(new PacketFluid(this.xCoord, this.yCoord, this.zCoord, new int[]{this.tank.getFluidAmount()}, new int[]{this.tank.getCapacity()}, new int[]{FluidRegistry.LAVA.getID()}),this);
 		PacketHandler.sendToAllAround(new PacketMightyFoundry(this),this);  
 	}

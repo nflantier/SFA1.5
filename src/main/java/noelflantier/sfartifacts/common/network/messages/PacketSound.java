@@ -13,21 +13,24 @@ public class PacketSound implements IMessage, IMessageHandler<PacketSound, IMess
 	public int y;
 	public int z;
 	public int sound;
+	public float volume;
 
 	public PacketSound(){
 	
 	}
 
-	public PacketSound(int x, int y, int z, int sound){
+	public PacketSound(int x, int y, int z, int sound, float volume){
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.sound = sound;
+		this.volume = volume;
 	}
 	
 	@Override
 	public IMessage onMessage(PacketSound message, MessageContext ctx) {
-		Minecraft.getMinecraft().theWorld.playSound((double)message.x, (double)message.y, (double)message.z,  SoundHelper.values()[message.sound].sound,  5.0F, 0.8F + 0.1F * 0.3F, false);
+		//Minecraft.getMinecraft().theWorld.playSound((double)message.x, (double)message.y, (double)message.z,  SoundHelper.values()[message.sound].sound,  5.0F, 0.8F + 0.1F * 0.3F, false);
+		SoundHelper.playPositionedSound(SoundHelper.Sounds.values()[message.sound], Minecraft.getMinecraft(), (double)message.x, (double)message.y, (double)message.z, message.volume);
 		return null;
 	}
 
@@ -37,6 +40,7 @@ public class PacketSound implements IMessage, IMessageHandler<PacketSound, IMess
 	    y = buf.readInt();
 	    z = buf.readInt();
 	    sound = buf.readInt();
+	    volume = buf.readFloat();
 	}
 
 	@Override
@@ -45,6 +49,7 @@ public class PacketSound implements IMessage, IMessageHandler<PacketSound, IMess
 	    buf.writeInt(y);
 	    buf.writeInt(z);
 	    buf.writeInt(sound);
+	    buf.writeFloat(volume);
 	}
 
 }

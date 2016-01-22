@@ -21,7 +21,6 @@ public class GuiComponent {
 	public List<GuiTextField> textFieldList  = new ArrayList<GuiTextField>();
 	public Hashtable<Integer,String> stringList = new Hashtable<Integer,String>();
 	public Hashtable<Integer,Integer[]> cStringList = new Hashtable<Integer,Integer[]>();
-	public String text;
 	public int strX,strY;
 	public float globalScale = 1;
 	public boolean visible = true;
@@ -86,6 +85,15 @@ public class GuiComponent {
 		this.buttonList.add(bt);
 	}
 	
+	public void addImageButton(GuiButtonImage bt, float baseU, float baseV, int elW, int elH, boolean enable){
+		bt.baseU = baseU;
+		bt.baseV = baseV;
+		bt.elemPHeight = elH;
+		bt.elemPWidth = elW;
+		bt.enable = enable;
+		this.buttonList.add(bt);
+	}
+	
 	public void addButton(GuiButton bt){
 		this.buttonList.add(bt);
 	}
@@ -137,10 +145,6 @@ public class GuiComponent {
 				GL11.glPopMatrix();
 		}
 		this.color = this.defColor;
-	}
-	
-	public void setText(String txt){
-		this.text = txt;
 	}
 	
 	public boolean isMouseHover(int mx, int my){

@@ -12,17 +12,18 @@ public class GuiScrollable {
 
 	public int maxComponent = 10;
 	public int currentIndex = 0;
-	public int dir = 0;
 	public Hashtable<Integer, GuiComponent> componentList = new Hashtable<Integer, GuiComponent>();
-	public int x,y;
 	public int tickDelay = 2;
 	public int tickInput = 0;
-	public boolean showArrows = false;
-	public int tickInputWheel = 0;
-	public int tickDelayWheel = 10;
+	public boolean showArrows = true;
+	public boolean showBorders = true;
+	public int x,y;
+	public int width, height;
 	private static final ResourceLocation guiselements = new ResourceLocation(References.MODID+":textures/gui/guisElements.png");
-	public GuiImage arrowUp = new GuiImage(64, 16, 32,32 , 0F, 0.5F, 0.5F, 1F, guiselements);
-	public GuiImage arrowDown = new GuiImage(64, 16, 32,32 , 0.5F, 0.5F, 1F, 1F, guiselements);
+	public GuiImage arrowUp = new GuiImage(0, 0, 32,32 , 0F, 0.25F, 0.25F, 0.5F, guiselements);
+	public GuiImage arrowDown = new GuiImage(0, 0, 32,32 , 0.25F, 0.25F, 0.5F, 0.5F, guiselements);
+	public GuiImage topbot = new GuiImage(0, 0, 32,2 , 0F, 0.75F, 0.25F, 0.75F+2/128F, guiselements);
+	public GuiImage rightleft = new GuiImage(0, 0, 2,32 , 0F, 0.75F, 2/128F, 1F, guiselements);
 	
 	
 	public GuiScrollable(int maxComponent){
@@ -55,19 +56,11 @@ public class GuiScrollable {
 	}
 	
 	public void inputMouse(){
-		this.tickInputWheel--;
-		if(tickInputWheel>0)return;
-		
-		this.tickInputWheel = 0;
-		int w = Mouse.getEventDWheel();
-		if(w<0){
+		int w = Mouse.getDWheel();
+		if(w<0)
 			this.incIndex();
-			this.tickInputWheel = tickDelayWheel;
-		}
-		if(w>0){
+		if(w>0)
 			this.decIndex();
-			this.tickInputWheel = tickDelayWheel;
-		}
 		return;
 	}
 	
@@ -88,6 +81,39 @@ public class GuiScrollable {
 		arrowDown.alpha = alpha;
 	} 
 	
+	public void setPositionSizeAndAlpha(int x, int y, int width, int height, float alpha){
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		topbot.width = width;
+		topbot.height = 1;
+		rightleft.width = 1;
+		rightleft.height = height;
+		arrowUp.x = x+width-23;
+		arrowUp.y = y-8;
+		arrowDown.x = x+width-23;
+		arrowDown.y = y+height-25;
+		arrowUp.alpha = alpha;
+		arrowDown.alpha = alpha;
+	} 
+
+	public void showTheBorders(int x, int y){
+		topbot.x = this.x;
+		topbot.y = this.y;
+		topbot.draw(x, y);
+		topbot.x = this.x;
+		topbot.y = this.y+height;
+		topbot.draw(x, y);
+		
+		rightleft.x = this.x;
+		rightleft.y = this.y;
+		rightleft.draw(x, y);
+		rightleft.x = this.x+width-1;
+		rightleft.y = this.y;
+		rightleft.draw(x, y);
+	}
+	
 	public void showTheArrows(int x, int y){
 		arrowUp.draw(x, y);
 		arrowDown.draw(x, y);
@@ -96,6 +122,8 @@ public class GuiScrollable {
 	public void show(int x, int y){
 		if(showArrows)
 			showTheArrows(x,y);
+		if(showBorders)
+			showTheBorders(x,y);
 		for(int i = this.currentIndex ; i < this.currentIndex + this.maxComponent ; i++){
 			if(this.componentList.get(i)==null)break;
 	    	this.componentList.get(i).scrolableMarge = this.currentIndex*10;

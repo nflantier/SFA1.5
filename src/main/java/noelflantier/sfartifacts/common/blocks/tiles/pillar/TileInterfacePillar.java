@@ -6,6 +6,7 @@ import java.util.List;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import ic2.api.energy.tile.IEnergySink;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -17,6 +18,7 @@ import noelflantier.sfartifacts.common.blocks.tiles.ISFAEnergyHandler;
 import noelflantier.sfartifacts.common.blocks.tiles.ISFAFluid;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
 import noelflantier.sfartifacts.common.helpers.Coord4;
+import noelflantier.sfartifacts.compatibilities.InterMods;
 
 public class TileInterfacePillar extends TileBlockPillar implements ISFAFluid,ISFAEnergyHandler{
 	
@@ -40,21 +42,22 @@ public class TileInterfacePillar extends TileBlockPillar implements ISFAFluid,IS
         super.updateEntity();
         if(this.worldObj.isRemote)
         	return;
-        if(!this.extractSides.isEmpty()){
-    		for(ForgeDirection fd : this.extractSides){
-        		int maxExtract = this.getEnergyStored(fd);
-        		int maxAvailable = this.extractEnergy(fd, maxExtract, true);
-        		int energyTransferred = 0;
-    			TileEntity tile = worldObj.getTileEntity(xCoord+fd.offsetX, yCoord+fd.offsetY, zCoord+fd.offsetZ);
-    			if(tile!=null && tile instanceof IEnergyHandler){
-    				energyTransferred = ((IEnergyHandler) tile).receiveEnergy(fd.getOpposite(), maxAvailable, true);
-    				if(energyTransferred!=0){
-    					energyTransferred = ((IEnergyHandler) tile).receiveEnergy(fd.getOpposite(), maxAvailable, false);
-        				this.extractEnergy(fd, energyTransferred, false);
-    				}
-    			}
-    		}
-    	}
+        if(this.extractSides.isEmpty())
+        	return;
+        
+		for(ForgeDirection fd : this.extractSides){
+    		int maxExtract = this.getEnergyStored(fd);
+    		int maxAvailable = this.extractEnergy(fd, maxExtract, true);
+    		double energyTransferred = 0;
+			TileEntity tile = worldObj.getTileEntity(xCoord+fd.offsetX, yCoord+fd.offsetY, zCoord+fd.offsetZ);
+			if(tile!=null && tile instanceof IEnergyHandler){
+				energyTransferred = ((IEnergyHandler) tile).receiveEnergy(fd.getOpposite(), maxAvailable, false);
+				this.extractEnergy(fd, (int)energyTransferred, false);
+			}else if(tile!=null && InterMods.hasIc2 && tile instanceof IEnergySink && ((IEnergySink)tile).acceptsEnergyFrom(this, fd.getOpposite())){
+				energyTransferred = InterMods.injectEnergy(tile, fd.getOpposite(), InterMods.convertRFtoEU(maxAvailable,5), false);
+    			this.extractEnergy(fd, InterMods.convertEUtoRF(InterMods.convertRFtoEU(maxAvailable,5)-energyTransferred), false);
+			}
+		}
     	
     }
     
@@ -167,12 +170,12 @@ public class TileInterfacePillar extends TileBlockPillar implements ISFAFluid,IS
 
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-		return this.isRedStoneEnable?0:this.getMasterTile().getEnergyStorage().receiveEnergy(maxReceive, simulate);
+		return this.isRedStoneEnable || this.getMasterTile()==null?0:this.getMasterTile().getEnergyStorage().receiveEnergy(maxReceive, simulate);
 	}
 
 	@Override
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-		return this.isRedStoneEnable?0:this.getMasterTile().getEnergyStorage().extractEnergy(maxExtract, simulate);
+		return this.isRedStoneEnable || this.getMasterTile()==null?0:this.getMasterTile().getEnergyStorage().extractEnergy(maxExtract, simulate);
 	}
 
 	@Override
@@ -187,7 +190,7 @@ public class TileInterfacePillar extends TileBlockPillar implements ISFAFluid,IS
 
 	@Override
 	public EnergyStorage getEnergyStorage(){
-		return null;
+		return this.getMasterTile().getEnergyStorage();
 	}
 	
 	@Override

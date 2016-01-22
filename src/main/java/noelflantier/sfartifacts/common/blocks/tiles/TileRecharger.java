@@ -4,8 +4,11 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import baubles.api.BaublesApi;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyContainerItem;
+import ic2.api.item.ElectricItem;
+import ic2.api.item.IElectricItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,8 +16,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.network.PacketHandler;
-import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
 import noelflantier.sfartifacts.common.network.messages.PacketRecharger;
+import noelflantier.sfartifacts.compatibilities.InterMods;
 
 public class TileRecharger extends TileMachine implements ITileGlobalNBT{
 
@@ -29,7 +32,7 @@ public class TileRecharger extends TileMachine implements ITileGlobalNBT{
 		super("Recharger");
 		hasRF = true;
 		hasFL = false;
-		this.storage.setCapacity(100000);
+		this.storage.setCapacity(500000);
 		this.storage.setMaxTransfer(5000);
 	}
 	
@@ -60,18 +63,14 @@ public class TileRecharger extends TileMachine implements ITileGlobalNBT{
 	}
 
 	@Override
-	public void processPackets() {	
-		PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN)),this);
-	}
-
-	@Override
 	public void processMachine() {
 		if(this.getEnergyStored(ForgeDirection.UNKNOWN)<=0)
 			return;
 
 		tmpRecharging = false;
 		for(int i=0;i<this.items.length;i++){
-			if(this.items[i]!=null && this.items[i].getItem() instanceof IEnergyContainerItem){
+			if(this.items[i]!=null && ( this.items[i].getItem() instanceof IEnergyContainerItem 
+					|| (InterMods.hasIc2 && this.items[i].getItem() instanceof IElectricItem) )){
 				this.rechargeItemStack(this.items[i]);
 			}
 		}
@@ -85,16 +84,31 @@ public class TileRecharger extends TileMachine implements ITileGlobalNBT{
 	}
 
 	public void rechargeItemStack(ItemStack stack){
-		int s = ((IEnergyContainerItem)stack.getItem()).getEnergyStored(stack);
-		int c = ((IEnergyContainerItem)stack.getItem()).getMaxEnergyStored(stack);
-		if(s<c){
-    		int maxAvailable = this.extractEnergy(ForgeDirection.UNKNOWN, this.getEnergyStored(ForgeDirection.UNKNOWN), true);
-    		int energyTransferred = ((IEnergyContainerItem)stack.getItem()).receiveEnergy(stack, maxAvailable, true);
-    		if(energyTransferred!=0){
-    			this.tmpRecharging = true;
-				energyTransferred = ((IEnergyContainerItem)stack.getItem()).receiveEnergy(stack, maxAvailable, false);
-				this.extractEnergy(ForgeDirection.UNKNOWN, energyTransferred, false);
+		if(stack.getItem() instanceof IEnergyContainerItem){
+			int s = ((IEnergyContainerItem)stack.getItem()).getEnergyStored(stack);
+			int c = ((IEnergyContainerItem)stack.getItem()).getMaxEnergyStored(stack);
+			if(s<c){
+	    		int maxAvailable = this.extractEnergy(ForgeDirection.UNKNOWN, this.getEnergyStored(ForgeDirection.UNKNOWN), true);
+	    		int energyTransferred = ((IEnergyContainerItem)stack.getItem()).receiveEnergy(stack, maxAvailable, true);
+	    		if(energyTransferred!=0){
+	    			this.tmpRecharging = true;
+					energyTransferred = ((IEnergyContainerItem)stack.getItem()).receiveEnergy(stack, maxAvailable, false);
+					this.extractEnergy(ForgeDirection.UNKNOWN, energyTransferred, false);
+				}
 			}
+		}else if(InterMods.hasIc2 && stack.getItem() instanceof IElectricItem){
+			double s = ElectricItem.manager.getCharge(stack);
+			double c = ((IElectricItem)stack.getItem()).getMaxCharge(stack);
+			if(s<c){
+	    		int maxAvailable = this.extractEnergy(ForgeDirection.UNKNOWN, this.getEnergyStored(ForgeDirection.UNKNOWN), true);
+	    		double energyTransferred = ElectricItem.manager.charge(stack, InterMods.convertRFtoEU(maxAvailable,5), 5, true, true);
+	    		if(energyTransferred!=0){
+	    			this.tmpRecharging = true;
+					energyTransferred = ElectricItem.manager.charge(stack, InterMods.convertRFtoEU(maxAvailable,5), 5, true, false);
+					this.extractEnergy(ForgeDirection.UNKNOWN, InterMods.convertEUtoRF(energyTransferred), false);
+				}
+			}
+			
 		}
 	}
 	
@@ -102,14 +116,26 @@ public class TileRecharger extends TileMachine implements ITileGlobalNBT{
 		for(int i = 0;i<p.inventory.armorInventory.length;i++){
 			if(this.getEnergyStored(ForgeDirection.UNKNOWN)<=0)
 				break;
-			if(p.inventory.armorInventory[i]!=null && p.inventory.armorInventory[i].getItem() instanceof IEnergyContainerItem)
+			if(p.inventory.armorInventory[i]!=null && ( p.inventory.armorInventory[i].getItem() instanceof IEnergyContainerItem 
+					|| (InterMods.hasIc2 && p.inventory.armorInventory[i].getItem() instanceof IElectricItem)) )
 				this.rechargeItemStack(p.inventory.armorInventory[i]);
 		}
 		for(int i = 0;i<p.inventory.mainInventory.length;i++){
 			if(this.getEnergyStored(ForgeDirection.UNKNOWN)<=0)
 				break;
-			if(p.inventory.mainInventory[i]!=null && p.inventory.mainInventory[i].getItem() instanceof IEnergyContainerItem)
+			if(p.inventory.mainInventory[i]!=null && ( p.inventory.mainInventory[i].getItem() instanceof IEnergyContainerItem 
+					|| (InterMods.hasIc2 && p.inventory.mainInventory[i].getItem() instanceof IElectricItem)))
 				this.rechargeItemStack(p.inventory.mainInventory[i]);	
+		}
+		
+		if(BaublesApi.getBaubles(p)!=null){
+			for(int i = 0;i<BaublesApi.getBaubles(p).getSizeInventory();i++){
+				if(this.getEnergyStored(ForgeDirection.UNKNOWN)<=0)
+					break;
+				if(BaublesApi.getBaubles(p).getStackInSlot(i)!=null && ( BaublesApi.getBaubles(p).getStackInSlot(i).getItem() instanceof IEnergyContainerItem 
+						|| (InterMods.hasIc2 && BaublesApi.getBaubles(p).getStackInSlot(i).getItem() instanceof IElectricItem)))
+					this.rechargeItemStack(BaublesApi.getBaubles(p).getStackInSlot(i));	
+			}
 		}
 	}
 	
@@ -130,7 +156,7 @@ public class TileRecharger extends TileMachine implements ITileGlobalNBT{
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-		return stack.getItem() instanceof IEnergyContainerItem || ItemNBTHelper.verifyExistance(stack, "Energy");
+		return stack.getItem() instanceof IEnergyContainerItem || ItemNBTHelper.verifyExistance(stack, "Energy") || stack.getItem() instanceof IElectricItem;
 	}
 	
 	@Override
@@ -168,5 +194,11 @@ public class TileRecharger extends TileMachine implements ITileGlobalNBT{
         this.isRecharging = nbt.getBoolean("isRecharging");
         this.wirelessRechargingEnable = nbt.getBoolean("wirelessRechargingEnable");
     }
+
+	@Override
+	public void processPackets() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

@@ -29,7 +29,6 @@ public class ModConfig {
 	public static int transfertCapacityInductorBasicEnergized;
 	public static int transfertCapacityInductorAdvancedEnergized;
 	public static int pureSiliconLifeSpan;
-	
 	public static int rfNeededThorHammer;
 	public static int rfMining;
 	public static int rfLightning;
@@ -46,7 +45,6 @@ public class ModConfig {
 	public static boolean isItemsEmitParticles;
 	public static double chanceToSpawnMightyFeather;
 	public static boolean isShieldBlockOnlyWhenShift;
-
 	public static boolean isAsgarditeOreSpawnEnable;
 	public static boolean isVibraniumOreSpawnEnable;
 	public static int tickToCookVibraniumOres;
@@ -60,17 +58,15 @@ public class ModConfig {
 	public static int minVainSizeAsgardite;
 	public static int maxVainSizeAsgardite;
 	public static int chanceAsgardite;
-	
 	public static int capacityHoverBoardMarty;
 	public static int rfPerSecondHoverBoardMarty;
 	public static int capacityHoverBoardBiff;
 	public static int rfPerSecondHoverBoardBiff;
 	public static int rfAddedPerCapacityUpgradeOnHoverboards;
-	
 	public static boolean areFrequenciesShown;
 	public static int maxAmountPillarCanExtract;
-	
 	public static int rangeOfRecharger;
+	public static int oneEuToRf;
 
 	public final static String CAT_UTILS = "Utils";
 	public final static String CAT_ORES = "Ores";
@@ -172,8 +168,9 @@ public class ModConfig {
 			rfAddedPerCapacityUpgradeOnHoverboards = config.get(CAT_HOVERBOARD, "capacity added on hoveboard/capacity upgrade", 10000, "The amount of RF capacity upgrade add to the hoveboard").getInt();
 			
 			useOldRegistration = config.get(CAT_UTILS, "Use old registration", false, "In the newer version registered name have changed so if you have an id error set this to true").getBoolean();
+			oneEuToRf = config.get(CAT_UTILS, "Eu conversion", 4, "The amount of RF that equal 1 EU. 4 by default, so 4RF == 1EU").getInt();
 			
-			rangeOfRecharger = config.get(Configuration.CATEGORY_GENERAL, "block range recharger", 10, "The range in block where the recharger can recharge rf item in the player inventory").getInt();
+			rangeOfRecharger = config.get(Configuration.CATEGORY_GENERAL, "block range recharger", 10, "The range in block where the recharger can recharge energy items in the player, armor and bauble inventory").getInt();
 			
 		}
 		catch (Exception e) {

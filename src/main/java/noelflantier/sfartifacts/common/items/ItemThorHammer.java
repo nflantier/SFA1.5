@@ -142,7 +142,7 @@ public class ItemThorHammer extends MiningHammerBase implements IItemHasModes{
     {
         return !ItemNBTHelper.getBoolean(stack, "IsThrown", false);
     }
-
+	
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void getSubItems(Item item, CreativeTabs tab, List list) {

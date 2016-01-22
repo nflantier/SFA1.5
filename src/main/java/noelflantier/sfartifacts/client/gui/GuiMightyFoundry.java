@@ -9,6 +9,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.References;
+import noelflantier.sfartifacts.client.gui.bases.GuiButtonImage;
 import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
 import noelflantier.sfartifacts.client.gui.bases.GuiImage;
 import noelflantier.sfartifacts.client.gui.bases.GuiRender;
@@ -28,6 +29,7 @@ public class GuiMightyFoundry extends GuiMachine{
 	TileMightyFoundry tile;
 	public int stId = 36;
 	public boolean hasMold = false;
+	public final GuiImage guiElements = new GuiImage(0, 0, 128,128 , 0F, 0F, 1F, 1F,guiselements);
 	
 	public GuiMightyFoundry(InventoryPlayer inventory, TileMightyFoundry tile) {
 		super(new ContainerMightyFoundry(inventory, tile));
@@ -40,18 +42,6 @@ public class GuiMightyFoundry extends GuiMachine{
 	public void updateScreen() {
 		super.updateScreen();
 		this.hasMold = this.inventorySlots.getSlot(this.stId+1).getHasStack();
-		
-		if(this.tile.isLocked){
-			((GuiImage)this.componentList.get("im")).minu=0F;
-			((GuiImage)this.componentList.get("im")).minv=0F;
-			((GuiImage)this.componentList.get("im")).maxu=0.5F;
-			((GuiImage)this.componentList.get("im")).maxv=0.5F;
-		}else{
-			((GuiImage)this.componentList.get("im")).minu=0.5F;
-			((GuiImage)this.componentList.get("im")).minv=0F;
-			((GuiImage)this.componentList.get("im")).maxu=1F;
-			((GuiImage)this.componentList.get("im")).maxv=0.5F;	
-		}
 		
 		if(this.hasMold){
 			this.getButtonById(0).enabled = true;
@@ -73,12 +63,7 @@ public class GuiMightyFoundry extends GuiMachine{
 	@Override
 	public void initGui() {
 		super.initGui();
-
 		this.hasMold = this.inventorySlots.getSlot(this.stId+1).getHasStack();
-		
-		this.getButtonById(0).visible = true;
-		if(!this.hasMold)
-			this.getButtonById(0).enabled = false;
 	}
 
 	@Override
@@ -122,25 +107,10 @@ public class GuiMightyFoundry extends GuiMachine{
 				new GuiToolTips(guiLeft+25, guiTop+23, 14, 47, this.width)
 				);
 		
-		GuiComponent gc = new GuiComponent(68, 22);
-		gc.addSfaButton(0,this.guiLeft,this.guiTop,22,20,"");
-		this.componentList.put("lock", gc);
+		this.componentList.put("btblock", new GuiComponent(0,0){{
+			addImageButton(new GuiButtonImage(0,guiLeft+68,guiTop+22, 22, 20, new GuiImage(64, 16, 32,32 , 0F, 0F, 1F, 1F,guiselements)), 0,0,4,4, !tile.isLocked);
+		}});
 		
-		this.componentList.put("im", 
-				new GuiImage(64, 16, 32,32 , 0F, 0F, 0.5F, 0.5F,
-						guiselements)
-				);
-		if(this.tile.isLocked){
-			((GuiImage)this.componentList.get("im")).minu=0F;
-			((GuiImage)this.componentList.get("im")).minv=0F;
-			((GuiImage)this.componentList.get("im")).maxu=0.5F;
-			((GuiImage)this.componentList.get("im")).maxv=0.5F;
-		}else{
-			((GuiImage)this.componentList.get("im")).minu=0.5F;
-			((GuiImage)this.componentList.get("im")).minv=0F;
-			((GuiImage)this.componentList.get("im")).maxu=1F;
-			((GuiImage)this.componentList.get("im")).maxv=0.5F;	
-		}
 		this.componentList.put("mf", new GuiComponent(6, 5, 100, 10){{
 			addText("Mighty Foundry :", 0, 0);
 		}});

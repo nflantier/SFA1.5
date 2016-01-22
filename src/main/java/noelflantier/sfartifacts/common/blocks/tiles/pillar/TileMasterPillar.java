@@ -4,10 +4,12 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Random;
 
 import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyConnection;
+import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
+import ic2.api.energy.tile.IEnergySink;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -15,10 +17,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import noelflantier.sfartifacts.common.blocks.tiles.ITileCanBeMaster;
-import noelflantier.sfartifacts.common.blocks.tiles.ITileCanHavePillar;
 import noelflantier.sfartifacts.common.blocks.tiles.ITileCanTakeRFonlyFromPillars;
 import noelflantier.sfartifacts.common.blocks.tiles.ITileWirelessEnergy;
-import noelflantier.sfartifacts.common.blocks.tiles.TileInductor;
 import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
 import noelflantier.sfartifacts.common.helpers.Coord4;
@@ -29,12 +29,14 @@ import noelflantier.sfartifacts.common.network.messages.PacketFluid;
 import noelflantier.sfartifacts.common.network.messages.PacketParticleMoving;
 import noelflantier.sfartifacts.common.network.messages.PacketPillar;
 import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig;
+import noelflantier.sfartifacts.compatibilities.InterMods;
 
 public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeMaster,ITileWirelessEnergy{
 
 	//STRUCTURE & MATERIAL
     public String namePillar;
     public int materialId;
+    public Random random = new Random();
 
 	//ENERGY
 	public boolean isTransferCaped = false;
@@ -77,11 +79,41 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
         if(!this.hasMaster())
         	return;
     	if(!this.energyChild.isEmpty()){
-    		this.energyChild.removeIf((d)->worldObj.getTileEntity(d.x, d.y, d.z)==null || worldObj.getTileEntity(d.x, d.y, d.z) instanceof IEnergyReceiver == false);
+    		this.energyChild.removeIf((d)->worldObj.getTileEntity(d.x, d.y, d.z)==null 
+    				||  ( worldObj.getTileEntity(d.x, d.y, d.z) instanceof IEnergyReceiver == false 
+    				&& ( InterMods.hasIc2 && worldObj.getTileEntity(d.x, d.y, d.z) instanceof IEnergySink == false) ) );
         	if(!this.energyChild.isEmpty()){
         		for(Coord4 c : this.energyChild){
         			TileEntity te = worldObj.getTileEntity(c.x, c.y, c.z);
-        			if(te instanceof IEnergyReceiver && ((IEnergyReceiver)te).getEnergyStored(ForgeDirection.UNKNOWN)<((IEnergyReceiver)te).getMaxEnergyStored(ForgeDirection.UNKNOWN)){
+        			int maxAc = this.extractEnergy(ForgeDirection.UNKNOWN, this.getEnergyStored(ForgeDirection.UNKNOWN)/this.energyChild.size(), true);
+    				
+        			if(te!=null && te instanceof IEnergyHandler && ((IEnergyReceiver)te).getEnergyStored(ForgeDirection.UNKNOWN)<((IEnergyReceiver)te).getMaxEnergyStored(ForgeDirection.UNKNOWN)){
+        				for(ForgeDirection fd : ForgeDirection.VALID_DIRECTIONS){
+	        				int energyTc = 0;
+	        				if(ModConfig.isAMachinesWorksOnlyWithPillar && te instanceof ITileCanTakeRFonlyFromPillars){
+	    						ITileCanTakeRFonlyFromPillars iop = (ITileCanTakeRFonlyFromPillars)te;
+	    						energyTc = iop.receiveOnlyFromPillars( maxAc, true);
+	    						if(energyTc!=0){
+	    							energyTc = iop.receiveOnlyFromPillars(maxAc, false);
+		            				this.extractEnergyWireless(energyTc, false, te.xCoord, te.yCoord, te.zCoord);
+		        				}
+	    					}else{
+			                	energyTc = ((IEnergyReceiver) te).receiveEnergy(fd.getOpposite(), maxAc, false);
+		            			this.extractEnergyWireless(energyTc, false, te.xCoord, te.yCoord, te.zCoord);
+	    					}
+	        				if(energyTc>0)
+	            				break;
+	    				}
+        			}else if(te!=null && InterMods.hasIc2 && te instanceof IEnergySink ){
+        				for(ForgeDirection fd : ForgeDirection.VALID_DIRECTIONS){
+        					double energyTc = InterMods.injectEnergy(te, fd.getOpposite(), InterMods.convertRFtoEU(maxAc,5), false);
+	            			this.extractEnergyWireless(InterMods.convertEUtoRF(InterMods.convertRFtoEU(maxAc,5)-energyTc), false, te.xCoord, te.yCoord, te.zCoord);
+	        				if(InterMods.convertEUtoRF(InterMods.convertRFtoEU(maxAc,5)-energyTc)>0)
+	            				break;
+        				}
+        			}
+        			
+        			/*if(te instanceof IEnergyReceiver && ((IEnergyReceiver)te).getEnergyStored(ForgeDirection.UNKNOWN)<((IEnergyReceiver)te).getMaxEnergyStored(ForgeDirection.UNKNOWN)){
         				for(ForgeDirection fd : ForgeDirection.VALID_DIRECTIONS){
 	        				int maxAc = this.extractEnergy(ForgeDirection.UNKNOWN, this.getEnergyStored(ForgeDirection.UNKNOWN)/this.energyChild.size(), true);
 	        				int energyTc = 0;
@@ -102,7 +134,7 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
 	        				if(energyTc>0)
 	            				break;
 	    				}
-        			}
+        			}*/
         		}
         	}
     	}
@@ -126,7 +158,7 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
     	//this.extractEnergy(ForgeDirection.UNKNOWN, 150000, false);
     	this.receiveEnergy(ForgeDirection.UNKNOWN,(int)this.passiveEnergy+(int)this.fluidEnergy, false);
     	
-        PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.getMaxEnergyStored(ForgeDirection.UNKNOWN), this.lastEnergyStoredAmount),this);
+        PacketHandler.sendToAllAround(new PacketEnergy(this.xCoord, this.yCoord, this.zCoord, this.getEnergyStored(ForgeDirection.UNKNOWN), this.lastEnergyStoredAmount),this);
         PacketHandler.sendToAllAround(new PacketFluid(this.xCoord, this.yCoord, this.zCoord, new int[]{this.tank.getFluidAmount()}, new int[]{this.tank.getCapacity()}, new int[]{ModFluids.fluidLiquefiedAsgardite.getID()}),this);
         PacketHandler.sendToAllAround(new PacketPillar(this), this);
     	this.lastEnergyStoredAmount = this.getEnergyStored(ForgeDirection.UNKNOWN);
@@ -232,7 +264,7 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
 	@Override
 	public int receiveEnergyWireless(int maxReceive, boolean simulate, int x, int y, int z) {
 		int re = this.storage.receiveEnergy(maxReceive, true);
-		if(maxReceive>0 && re>0 && !simulate)
+		if(maxReceive>0 && re>0 && !simulate && random.nextFloat()<0.5F)
 			PacketHandler.sendToAllAround(new PacketParticleMoving((double)this.xCoord,(double)this.yCoord,(double)this.zCoord,(double)x,(double)y,(double)z),this);
 		return this.isRedStoneEnable?0:this.storage.receiveEnergy(maxReceive, simulate);
 	
@@ -241,7 +273,7 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
 	@Override
 	public int extractEnergyWireless(int maxExtract, boolean simulate, int x, int y, int z) {
 		int ex = this.storage.extractEnergy(maxExtract, true);
-		if(maxExtract>0 && ex>0 && !simulate){
+		if(maxExtract>0 && ex>0 && !simulate && random.nextFloat()<0.5F){
             PacketHandler.sendToAllAround(new PacketParticleMoving((double)x,(double)y,(double)z,(double)this.xCoord,(double)this.yCoord,(double)this.zCoord),this);
 		}
 		return this.isRedStoneEnable?0:this.storage.extractEnergy(maxExtract, simulate);

@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import cpw.mods.fml.client.GuiScrollingList;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
 
 public abstract class GuiSFA  extends GuiContainer{
@@ -31,7 +35,15 @@ public abstract class GuiSFA  extends GuiContainer{
 	public GuiSFA(Container container) {
 		super(container);
 	}
-
+	
+	@Override
+	protected void actionPerformed(GuiButton button) {
+		super.actionPerformed(button);
+		if(button instanceof GuiButtonImage){
+			((GuiButtonImage)button).enable = !((GuiButtonImage)button).enable;
+		}
+	} 
+	
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
@@ -88,7 +100,6 @@ public abstract class GuiSFA  extends GuiContainer{
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
 		super.mouseClicked(x, y, button);
-
 		if(txtFieldComponent.size()>0){		
 			Iterator <Map.Entry<String,Integer>>iterator = txtFieldComponent.entrySet().iterator();
 	        while (iterator.hasNext()){
@@ -110,13 +121,26 @@ public abstract class GuiSFA  extends GuiContainer{
 	//DRAW FIRST PLAN COORD RELATIVE TO SCREEN
 	@Override
     public void drawScreen(int x, int y, float f){
-    	super.drawScreen(x, y, f);
 		Locale.setDefault(Locale.US);
+		curentToolTipComponent = "";
+    	super.drawScreen(x, y, f);
+    	drawToolTips(x,y);
+		drawOver(x,y);
+	}
+
+	public void drawImageButtons(int x, int y){
+		for (int k = 0; k < this.buttonList.size(); ++k){
+			if(this.buttonList.get(k) instanceof GuiButtonImage){
+				((GuiButtonImage)this.buttonList.get(k)).drawImage();
+			}
+		}
+	}
+	
+	public void drawToolTips(int x, int y){
 		if(curentToolTipComponent != ""){
 	    	this.updateToolTips(curentToolTipComponent);
     		((GuiToolTips)this.componentList.get(curentToolTipComponent)).showToolTips(x, y);
 		}
-		drawOver(x,y);
 	}
 	
 	public void drawOver(int x, int y){
@@ -126,18 +150,15 @@ public abstract class GuiSFA  extends GuiContainer{
 	//DRAW MIDDLE PLAN COORD RELATIVE TO GUILEFT & GUITOP
 	@Override
     public void drawGuiContainerForegroundLayer(int x, int y){
-		boolean ttk = false;
 		Enumeration<String> enumKey = this.componentList.keys();
 		while (enumKey.hasMoreElements()) {
 		    String key = enumKey.nextElement();
 		    this.componentList.get(key).draw(x, y);
 	    	if(this.componentList.get(key) instanceof GuiToolTips && this.componentList.get(key).isMouseHover(x,y)){
 	    		curentToolTipComponent = key;
-	    		ttk = true;
 	    	}
 		}
-		if(!ttk)
-			curentToolTipComponent="";
+    	drawImageButtons(x,y);
     }
 
 	//DRAW BACK PLAN COORD RELATIVE TO GUILEFT & GUITOP
@@ -149,8 +170,9 @@ public abstract class GuiSFA  extends GuiContainer{
 	public GuiButton getButtonById(int id){
 		GuiButton tbt = null;
 		for(int i = 0;i<this.buttonList.size();i++)
-			if(this.buttonList.get(i) instanceof GuiButton && ((GuiButton)this.buttonList.get(i)).id==id)
+			if(this.buttonList.get(i) instanceof GuiButton && ((GuiButton)this.buttonList.get(i)).id==id){
 				tbt = (GuiButton)this.buttonList.get(i);
+			}
 		return tbt;
 	}
 	

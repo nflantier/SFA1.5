@@ -274,8 +274,7 @@ public class HammerHelper {
 				return;
 			}
 		}
-				
-		//((MiningHammerBase)stack.getItem()).extractEnergy(stack, ((MiningHammerBase)stack.getItem()).energyPerO, false);
+		
 		extractEnergyInHammer(stack,((ItemThorHammer)stack.getItem()).energyMining );
 		
 		if (!world.isRemote) {

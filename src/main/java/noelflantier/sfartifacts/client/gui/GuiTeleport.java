@@ -22,7 +22,7 @@ import noelflantier.sfartifacts.common.container.ContainerTeleport;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketTeleport;
 
-public class GuiTeleport  extends GuiSFA{
+public class GuiTeleport extends GuiSFA{
 	
 	public ResourceLocation bground = new ResourceLocation(References.MODID+":textures/gui/guiTeleport.png");
 	public EntityPlayer player;
@@ -70,7 +70,7 @@ public class GuiTeleport  extends GuiSFA{
 		
 		this.componentList.put("li", new GuiComponent(10, 55, 50, 10){{
 			defColor = EnumChatFormatting.DARK_GRAY;
-			addText("List :", 0, 0);
+			addText("Stored :", 0, 0);
 		}});
 		this.componentList.put("btadd", new GuiComponent(this.xSize/2-83, 15, 10, 10){{
 			addSfaButton(0,guiLeft+134,guiTop-7,20,20,"+");
@@ -99,19 +99,19 @@ public class GuiTeleport  extends GuiSFA{
 			int[] ct = new int[st.length];
 			for(int k=0;k<st.length;k++)
 				ct[k] = Integer.parseInt(st[k]);
-	    	GuiComponent gce = new GuiComponent(10, y+55, 150,10);
+	    	GuiComponent gce = new GuiComponent(10, y+58, 150,10);
 			gce.defColor = EnumChatFormatting.DARK_GRAY;
 	    	gce.isLink=true;
 			gce.addText(name+" "+Minecraft.getMinecraft().theWorld.provider.getProviderForDimension(ct[0]).getDimensionName()+" "+ct[1]+" "+ct[2]+" "+ct[3], 0,0);
 			this.coord.addComponent(i, gce);
 			y += 10;
         }
-		this.coord.showArrows = true;
-		this.coord.setArrowsPositionAndAlpha(guiLeft+170, guiTop+42, 106, 0.3F);
+        this.coord.setPositionSizeAndAlpha(guiLeft+8, guiTop+65, 182, 102, 0.4F);
 	}
 
 	public void drawOver(int x, int y){
 		this.coord.showTheArrows(x, y);
+		this.coord.showTheBorders(x,y);
 	}
 	
 	@Override
@@ -193,7 +193,7 @@ public class GuiTeleport  extends GuiSFA{
 			PacketHandler.INSTANCE.sendToServer(new PacketTeleport(1, this.selectedCoord));
 			this.tmpsc = -1;
 			this.selectedCoord = -1;
-			
+			this.coord.currentIndex = 0;
 		}else if (button.id == 2 && this.selectedCoord!=-1){//TELEPORTING
             //this.player.travelToDimension(0);
 			NBTTagList nbttaglist = hammer.stackTagCompound.getTagList("TeleportCoord", 10);

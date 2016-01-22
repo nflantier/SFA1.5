@@ -55,10 +55,10 @@ public class GuiRecharger  extends GuiMachine{
 		}});
 		this.componentManual.put("so", new GuiComponent(guiLeft+18, guiTop+12, 100, 10){{
 			globalScale = 0.6F;
-			addText("This machine can recharge all your rf items,", 0, 0);
-			addText("if you are close enough it will recharge", 0, 0);
-			addText("them wirelessly. To disable the wireless", 0, 0);
-			addText("recharging click on the W button.", 0, 0);
+			addText("This machine can recharge all your energy items", 0, 0);
+			addText("(RF and EU), if you are close enough it will recharge", 0, 0);
+			addText("them wirelessly directly from player, armor and bauble inventory.", 0, 0);
+			addText("To disable the wireless recharging click on the W button.", 0, 0);
 		}});
 	}
 	
