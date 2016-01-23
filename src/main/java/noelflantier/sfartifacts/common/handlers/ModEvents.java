@@ -52,8 +52,9 @@ import noelflantier.sfartifacts.common.network.messages.PacketExtendedEntityProp
 public class ModEvents {
 	protected long serverTickCount = 0;
 	protected long clientTickCount = 0;
+	Random rand = new Random();
 	public List<EntityChicken> listChick = new ArrayList<EntityChicken>();
-	public List<EntityChicken> listChickToRemove = new ArrayList<EntityChicken>();
+	//public List<EntityChicken> listChickToRemove = new ArrayList<EntityChicken>();
     
 	public long getServerTick(){
 		return this.serverTickCount;
@@ -67,7 +68,9 @@ public class ModEvents {
 	public void LivingAttackEvent(LivingAttackEvent event) {
 		if(event.entityLiving instanceof EntityPlayer){
 			EntityPlayer player = (EntityPlayer)event.entityLiving;
-			if(player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemVibraniumShield && ItemNBTHelper.getBoolean(player.getCurrentEquippedItem(), "CanBlock", false) && !ItemNBTHelper.getBoolean(player.getCurrentEquippedItem(), "IsThrown", false)){
+			if(player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemVibraniumShield 
+					&& ItemNBTHelper.getBoolean(player.getCurrentEquippedItem(), "CanBlock", false) 
+					&& !ItemNBTHelper.getBoolean(player.getCurrentEquippedItem(), "IsThrown", false)){
 				if(event.source!=null && event.source.getSourceOfDamage()!=null){
 					double cop = (double)player.posZ - (double)event.source.getSourceOfDamage().posZ;
 					double coa = (double)player.posX - (double)event.source.getSourceOfDamage().posX;
@@ -89,12 +92,13 @@ public class ModEvents {
 	
 	@SubscribeEvent
 	public void ExplosionEventDetonate(ExplosionEvent.Detonate event) {
-		List<Entity> le = event.getAffectedEntities();
 		List<Entity> toRemove = new ArrayList<Entity>();
-		for(Entity e : le){
+		for(Entity e : event.getAffectedEntities()){
 			if(e instanceof EntityPlayer){
 				EntityPlayer player = (EntityPlayer)e;
-				if(player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemVibraniumShield  && ItemNBTHelper.getBoolean(player.getCurrentEquippedItem(), "CanBlock", false) && !ItemNBTHelper.getBoolean(player.getCurrentEquippedItem(), "IsThrown", false)){
+				if(player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemVibraniumShield  
+						&& ItemNBTHelper.getBoolean(player.getCurrentEquippedItem(), "CanBlock", false) 
+						&& !ItemNBTHelper.getBoolean(player.getCurrentEquippedItem(), "IsThrown", false)){
 					double cop = (double)player.posZ - (double)event.explosion.explosionZ;
 					double coa = (double)player.posX - (double)event.explosion.explosionX;
 					double a = 360-(Math.toDegrees(Math.atan2(coa,cop))+180);
@@ -105,9 +109,8 @@ public class ModEvents {
 				}
 			}
 		}
-		if(toRemove.size()>0){
+		if(toRemove.size()>0)
 			event.getAffectedEntities().removeAll(toRemove);
-		}
 	}
 	
     @SubscribeEvent
@@ -132,27 +135,22 @@ public class ModEvents {
     	}
     }
     
+    public void chikenIsDad(EntityChicken ec, TickEvent.WorldTickEvent event){
+    	if(rand.nextFloat()<(float)ModConfig.chanceToSpawnMightyFeather){
+			float f1 = rand.nextFloat() * 0.8F+0.1F;
+			float f2 = rand.nextFloat() * 0.8F+0.1F;
+			float f3 = rand.nextFloat() * 0.8F+0.1F;
+			event.world.spawnEntityInWorld(new EntityItemStronk(event.world, ec.posX+f1, ec.posY+f2, ec.posZ+f3, new ItemStack(ModItems.itemMightyFeather,1,0)));
+		}
+    }
+    
     @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent event) {
     	if(event.phase == Phase.END) {
-	    	if(this.listChick.size()>0){
-	    		for(EntityChicken ec :this.listChick){
-	    			if(ec.isDead){
-						Random rand = new Random();
-						if(rand.nextFloat()<(float)ModConfig.chanceToSpawnMightyFeather){
-	    					float f1 = rand.nextFloat() * 0.8F+0.1F;
-	    					float f2 = rand.nextFloat() * 0.8F+0.1F;
-	    					float f3 = rand.nextFloat() * 0.8F+0.1F;
-	    					event.world.spawnEntityInWorld(new EntityItemStronk(event.world, ec.posX+f1, ec.posY+f2, ec.posZ+f3, new ItemStack(ModItems.itemMightyFeather,1,0)));
-	    				}
-    					this.listChickToRemove.add(ec);
-	    			}
-	    		}
-	    		for(EntityChicken ecr :this.listChickToRemove){
-	    			this.listChick.remove(ecr);
-	    		}
-	    		this.listChickToRemove.clear();
-	    	}
+	    	if(this.listChick.isEmpty())
+	    		return;
+	    	this.listChick.stream().filter((c)->c.isDead).forEach((c)->chikenIsDad(c,event));
+	    	this.listChick.removeIf((c)->c.isDead || c.getAge()>6000);
     	}
     }
 
@@ -328,7 +326,7 @@ public class ModEvents {
 	}
 
 	@SubscribeEvent
-	public void onAvilSwag(AnvilUpdateEvent event) {
+	public void onAnvilSwag(AnvilUpdateEvent event) {
 	    if(event.left == null || event.right == null) {
 	        return;
 	    }
@@ -342,13 +340,6 @@ public class ModEvents {
 					o.setStackDisplayName(event.name);
 				event.output = ItemNBTHelper.setInteger(o, "AddedCapacityLevel", r);
 			}
-			/*if(event.left.getItemDamage()>>1 == ItemHoverBoard.PITBULL_HOVERBOARD && event.right.getItem() instanceof ItemEnergyModule){
-				event.cost = 40;
-				event.materialCost = 1;
-				ItemStack o = event.left.copy();
-				if(!event.name.isEmpty())
-					o.setStackDisplayName(event.name);
-			}*/
 		}
 	}
 	

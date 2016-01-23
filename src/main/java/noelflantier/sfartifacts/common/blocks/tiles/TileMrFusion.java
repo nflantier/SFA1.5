@@ -26,6 +26,7 @@ import noelflantier.sfartifacts.compatibilities.InterMods;
 
 public class TileMrFusion extends TileMachine{
 
+	public int orientation = 1;
 	//RATIO
 	public static float ratioFood = 3;
 	public static float ratioLiquid = 2.5F;

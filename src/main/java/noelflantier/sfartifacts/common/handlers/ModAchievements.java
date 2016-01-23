@@ -11,38 +11,26 @@ public class ModAchievements {
 	private static AchievementPage achievementsPage;
 	private static HashMap<String, Achievement> achievementsList = new HashMap<String, Achievement>();
 
-	public static void addAchievement (String name, Achievement achievement)
-	{
+	public static void addAchievement (String name, Achievement achievement){
 		achievementsList.put(name, achievement.registerStat());
 	}
 
-	public static Achievement getAchievement (String name)
-	{
+	public static Achievement getAchievement (String name){
 		return achievementsList.get(name);
 	}
 
-	public static void triggerAchievement (EntityPlayer player, String name)
-	{
-
+	public static void triggerAchievement (EntityPlayer player, String name){
 		Achievement ach = getAchievement(name);
-
 		if (ach != null)
-		{
 			player.triggerAchievement(ach);
-		}
 	}
 
-	public static void addModAchievements()
-	{
+	public static void addModAchievements(){
 		addAchievement("sfartifacts.manual", new Achievement("sfartifacts.manual", "sfartifacts.manual", 0, 0, ModItems.itemManual, null).initIndependentStat());
-
 	}
 
-	public static void registerAchievementPane ()
-	{
-		Achievement[] achievements = new Achievement[achievementsList.size()];
-		achievements = achievementsList.values().toArray(achievements);
-		achievementsPage = new AchievementPage("SFArtifacts Achievements", achievements);
+	public static void registerAchievementPane (){
+		achievementsPage = new AchievementPage("SFArtifacts", achievementsList.values().toArray(new Achievement[achievementsList.size()]));
 		AchievementPage.registerAchievementPage(achievementsPage);
 	}
 }

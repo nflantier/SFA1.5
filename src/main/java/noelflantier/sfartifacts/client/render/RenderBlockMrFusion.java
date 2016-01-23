@@ -11,6 +11,7 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import noelflantier.sfartifacts.References;
+import noelflantier.sfartifacts.common.blocks.tiles.TileMrFusion;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSFA;
 
 public class RenderBlockMrFusion  extends TileEntitySpecialRenderer implements IItemRenderer {
@@ -74,6 +75,7 @@ public class RenderBlockMrFusion  extends TileEntitySpecialRenderer implements I
 		 GL11.glPushMatrix();
 			GL11.glTranslatef((float)x+0.5F, (float)y, (float)z+0.5F);
 
+			
 			int side = -1;
 			if(tile instanceof TileSFA)side=((TileSFA)tile).side;
 			switch(side){
@@ -105,6 +107,29 @@ public class RenderBlockMrFusion  extends TileEntitySpecialRenderer implements I
 				default:
 					break;
 			}
+			
+
+			int orientation = 2;
+			if(tile instanceof TileMrFusion)orientation=((TileMrFusion)tile).orientation;
+			switch(orientation){
+				case 2:
+					GL11.glRotatef(0, 0F, 1F, 0F);
+					break;
+				case 3:
+					GL11.glRotatef(180, 0F, 1F, 0F);
+					break;
+				case 4:
+					GL11.glRotatef(90, 0F, 1F, 0F);
+					break;
+				case 5:
+					GL11.glRotatef(270, 0F, 1F, 0F);
+					break;
+				case -1:
+					break;
+				default:
+					break;
+			}
+			
 	        GL11.glPushMatrix();
 				Minecraft.getMinecraft().renderEngine.bindTexture(this.textureBottom);
 				this.modelBottom.renderAll();

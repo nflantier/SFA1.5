@@ -9,11 +9,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.SFArtifacts;
+import noelflantier.sfartifacts.common.blocks.tiles.ITileGlobalNBT;
 import noelflantier.sfartifacts.common.blocks.tiles.TileMrFusion;
 import noelflantier.sfartifacts.common.blocks.tiles.TileSFA;
 import noelflantier.sfartifacts.common.handlers.ModGUIs;
@@ -27,11 +29,21 @@ public class BlockMrFusion extends BlockSFAContainer {
 		this.setBlockTextureName(References.MODID+":mrfusion");
 		this.setHardness(2.0F);
 		this.setResistance(10000.0F);
-    	
 	}
 
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+		TileEntity te = world.getTileEntity(x, y, z);
+		if(te instanceof TileMrFusion){
+			int l = MathHelper.floor_double((double) (player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+			int s = -1;
+			if(l == 0)s=2;
+			if(l == 1)s=5;
+			if(l == 2)s=3;
+			if(l == 3)s=4;
+			if(s!=-1)((TileMrFusion)te).orientation = s;
+			world.markBlockForUpdate(x, y,z);
+		}
 	}
 	
 	@Override
