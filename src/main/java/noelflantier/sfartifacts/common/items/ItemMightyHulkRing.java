@@ -125,9 +125,11 @@ public class ItemMightyHulkRing  extends ItemBaubles implements IBauble{
 						player.heal(0.17F);
 				}
 					
-		    	float f = Utils.isPlayerInFluid(player,1.22F);
-				player.motionX *= f;
-				player.motionZ *= f;
+		    	float f = Utils.getSpeedHoverFluid(player,1.22F);
+		    	if(f>0){
+		    		player.motionX *= f;
+					player.motionZ *= f;
+		    	}
 			}
 		}
 	}

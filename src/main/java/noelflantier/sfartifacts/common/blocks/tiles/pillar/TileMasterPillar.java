@@ -9,7 +9,6 @@ import java.util.Random;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
-import ic2.api.energy.tile.IEnergySink;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -29,6 +28,7 @@ import noelflantier.sfartifacts.common.network.messages.PacketFluid;
 import noelflantier.sfartifacts.common.network.messages.PacketParticleMoving;
 import noelflantier.sfartifacts.common.network.messages.PacketPillar;
 import noelflantier.sfartifacts.common.recipes.handler.PillarsConfig;
+import noelflantier.sfartifacts.compatibilities.IC2Handler;
 import noelflantier.sfartifacts.compatibilities.InterMods;
 
 public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeMaster,ITileWirelessEnergy{
@@ -81,7 +81,7 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
     	if(!this.energyChild.isEmpty()){
     		this.energyChild.removeIf((d)->worldObj.getTileEntity(d.x, d.y, d.z)==null 
     				||  ( worldObj.getTileEntity(d.x, d.y, d.z) instanceof IEnergyReceiver == false 
-    				&& ( InterMods.hasIc2 && worldObj.getTileEntity(d.x, d.y, d.z) instanceof IEnergySink == false) ) );
+    				&& ( InterMods.hasIc2 && IC2Handler.isEnergySink(worldObj.getTileEntity(d.x, d.y, d.z))== false) ) );
         	if(!this.energyChild.isEmpty()){
         		for(Coord4 c : this.energyChild){
         			TileEntity te = worldObj.getTileEntity(c.x, c.y, c.z);
@@ -104,11 +104,11 @@ public class TileMasterPillar extends TileInterfacePillar implements ITileCanBeM
 	        				if(energyTc>0)
 	            				break;
 	    				}
-        			}else if(te!=null && InterMods.hasIc2 && te instanceof IEnergySink ){
+        			}else if(te!=null && InterMods.hasIc2 && IC2Handler.isEnergySink(te) ){
         				for(ForgeDirection fd : ForgeDirection.VALID_DIRECTIONS){
-        					double energyTc = InterMods.injectEnergy(te, fd.getOpposite(), InterMods.convertRFtoEU(maxAc,5), false);
-	            			this.extractEnergyWireless(InterMods.convertEUtoRF(InterMods.convertRFtoEU(maxAc,5)-energyTc), false, te.xCoord, te.yCoord, te.zCoord);
-	        				if(InterMods.convertEUtoRF(InterMods.convertRFtoEU(maxAc,5)-energyTc)>0)
+        					double energyTc = IC2Handler.injectEnergy(te, fd.getOpposite(), IC2Handler.convertRFtoEU(maxAc,5), false);
+	            			this.extractEnergyWireless(IC2Handler.convertEUtoRF(IC2Handler.convertRFtoEU(maxAc,5)-energyTc), false, te.xCoord, te.yCoord, te.zCoord);
+	        				if(IC2Handler.convertEUtoRF(IC2Handler.convertRFtoEU(maxAc,5)-energyTc)>0)
 	            				break;
         				}
         			}

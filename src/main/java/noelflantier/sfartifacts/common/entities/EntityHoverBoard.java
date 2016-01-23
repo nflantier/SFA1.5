@@ -102,7 +102,7 @@ public class EntityHoverBoard  extends Entity implements IEntityAdditionalSpawnD
 			fixPositions(player, false);
 		}
 		
-		boolean isInFluid = Utils.isPlayerInFluid(player, 1)>0 || player.isInWater();
+		boolean isInFluid = Utils.isPlayerHoverFuid(player, 0, 0, 0) || player.isInWater();
 		
 		if (this.typeHoverBoard==ItemHoverBoard.MATTEL_HOVERBOARD && isInFluid)
 			return;
@@ -159,7 +159,7 @@ public class EntityHoverBoard  extends Entity implements IEntityAdditionalSpawnD
 			worldObj.spawnParticle("smoke", this.posX-Math.cos(Math.toRadians(rotationYaw + 40))*0.4, this.posY-1.5, this.posZ-Math.sin(Math.toRadians(rotationYaw + 40))*0.4, 0.0D, 0.0D, 0.0D);
 		}
 		
-		if(this.typeHoverBoard==ItemHoverBoard.PITBULL_HOVERBOARD && (Utils.isPlayerInFluid(player, 0, -1, 0, 1)>0 || isInFluid )){
+		if(this.typeHoverBoard==ItemHoverBoard.PITBULL_HOVERBOARD && (Utils.isPlayerHoverFuid(player, 0, -1, 0) || isInFluid )){
 			player.motionY+=0.08;
 			player.onGround = true;
 		}

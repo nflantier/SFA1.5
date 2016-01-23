@@ -126,7 +126,7 @@ public class BlockHammerStand extends BlockSFAContainer {
 	    				if(ths.curentRecipe.itemStillHere()){
 		    				ths.curentRecipe.age++;
 		    				if(ths.curentRecipe.age%3==0)
-		    					PacketHandler.sendToAllAroundPlayer(new PacketSound(x, y, z,  SoundHelper.Sounds.ANVIL.ordinal(), 0.2F),player);
+		    					PacketHandler.sendToAllAroundPlayer(new PacketSound(x, y, z,  SoundHelper.Sounds.ANVIL.ordinal(), 0.3F),player);
 			    			if(ths.curentRecipe.isDone()){
 			    				ths.curentRecipe.end(ths.items[0]);				
 			    				ths.curentRecipe = null;

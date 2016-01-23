@@ -1,7 +1,6 @@
 package noelflantier.sfartifacts.common.container;
 
 import cofh.api.energy.IEnergyContainerItem;
-import ic2.api.item.IElectricItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -9,6 +8,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import noelflantier.sfartifacts.common.blocks.tiles.TileRecharger;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
+import noelflantier.sfartifacts.compatibilities.IC2Handler;
+import noelflantier.sfartifacts.compatibilities.InterMods;
 
 public class ContainerRecharger extends ContainerMachine{
 
@@ -37,7 +38,9 @@ public class ContainerRecharger extends ContainerMachine{
 		@Override
 	    public boolean isItemValid(ItemStack stack)
 	    {
-	        return stack.getItem() instanceof IEnergyContainerItem || ItemNBTHelper.verifyExistance(stack, "Energy") || stack.getItem() instanceof IElectricItem;
+	        return stack.getItem() instanceof IEnergyContainerItem 
+	        		|| ItemNBTHelper.verifyExistance(stack, "Energy") 
+	        		|| ( InterMods.hasIc2 && IC2Handler.isElectricItem(stack) );
 	    }    
 
 		@Override

@@ -9,7 +9,6 @@ import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
-import ic2.api.energy.tile.IEnergySink;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -19,10 +18,11 @@ import noelflantier.sfartifacts.common.helpers.Coord4;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
 import noelflantier.sfartifacts.common.network.messages.PacketParticleMoving;
+import noelflantier.sfartifacts.compatibilities.IC2Handler;
 import noelflantier.sfartifacts.compatibilities.InterMods;
 
 @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "IC2")
-public class TileInductor extends TileSFA implements ITileCanBeMaster,ITileWirelessEnergy,ISFAEnergyHandler, ic2.api.energy.tile.IEnergySink{
+public class TileInductor extends TileSFA implements ic2.api.energy.tile.IEnergySink,ITileCanBeMaster,ITileWirelessEnergy,ISFAEnergyHandler{
 	
 	public Coord4 master;
     public List<Coord4> energyChild = new ArrayList<>();
@@ -56,7 +56,7 @@ public class TileInductor extends TileSFA implements ITileCanBeMaster,ITileWirel
 	public void preinit(){
 		super.preinit();
 		if(InterMods.hasIc2 && !FMLCommonHandler.instance().getEffectiveSide().isClient())
-			InterMods.loadIC2Tile(this);
+			IC2Handler.loadIC2Tile(this);
 	}
 	@Override
 	public void invalidate(){
@@ -65,7 +65,7 @@ public class TileInductor extends TileSFA implements ITileCanBeMaster,ITileWirel
 	}
 	void unload(){
 		if(InterMods.hasIc2){
-			InterMods.unloadIC2Tile(this);
+			IC2Handler.unloadIC2Tile(this);
 		}
 	}
 	@Override
@@ -95,9 +95,9 @@ public class TileInductor extends TileSFA implements ITileCanBeMaster,ITileWirel
 			if(tile instanceof IEnergyHandler){
 				int energyTransferred = ((IEnergyHandler) tile).receiveEnergy(fd.getOpposite(), maxAvailable, false);
 				this.extractEnergy(fd, energyTransferred, false);
-			}else if(InterMods.hasIc2 && tile instanceof IEnergySink ){
-				double energyTransferred = InterMods.injectEnergy(tile, fd.getOpposite(), InterMods.convertRFtoEU(maxAvailable,5), false);
-				this.extractEnergy(fd, InterMods.convertEUtoRF(InterMods.convertRFtoEU(maxAvailable,5)-energyTransferred), false);
+			}else if(InterMods.hasIc2 && IC2Handler.isEnergySink(tile)){
+				double energyTransferred = IC2Handler.injectEnergy(tile, fd.getOpposite(), IC2Handler.convertRFtoEU(maxAvailable,5), false);
+				this.extractEnergy(fd, IC2Handler.convertEUtoRF(IC2Handler.convertRFtoEU(maxAvailable,5)-energyTransferred), false);
 			}
 		}
 
@@ -243,30 +243,27 @@ public class TileInductor extends TileSFA implements ITileCanBeMaster,ITileWirel
         }
     }
 
-
-	@Override
 	@Optional.Method(modid = "IC2")
 	public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction) {
 		return InterMods.hasIc2 && this.canConnectEnergy(direction);
 	}
 
-	@Override
 	@Optional.Method(modid = "IC2")
 	public double getDemandedEnergy() {
-		return InterMods.convertRFtoEU(this.getMaxEnergyStored(ForgeDirection.UNKNOWN),5);
+		return InterMods.hasIc2?IC2Handler.convertRFtoEU(this.getMaxEnergyStored(ForgeDirection.UNKNOWN),5):0;
 	}
 
-	@Override
 	@Optional.Method(modid = "IC2")
 	public int getSinkTier() {
 		return 5;
 	}
 
-	@Override
 	@Optional.Method(modid = "IC2")
 	public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
-		int c = this.receiveEnergy(directionFrom, InterMods.convertEUtoRF(amount), false);
-		return amount-InterMods.convertRFtoEU(c,5);
+		if(!InterMods.hasIc2)
+			return 0;
+		int c = this.receiveEnergy(directionFrom, IC2Handler.convertEUtoRF(amount), false);
+		return amount-IC2Handler.convertRFtoEU(c,5);
 	}
 
 }

@@ -6,7 +6,6 @@ import java.util.List;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
-import ic2.api.energy.tile.IEnergySink;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -17,7 +16,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import noelflantier.sfartifacts.common.blocks.tiles.ISFAEnergyHandler;
 import noelflantier.sfartifacts.common.blocks.tiles.ISFAFluid;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
-import noelflantier.sfartifacts.common.helpers.Coord4;
+import noelflantier.sfartifacts.compatibilities.IC2Handler;
 import noelflantier.sfartifacts.compatibilities.InterMods;
 
 public class TileInterfacePillar extends TileBlockPillar implements ISFAFluid,ISFAEnergyHandler{
@@ -53,9 +52,9 @@ public class TileInterfacePillar extends TileBlockPillar implements ISFAFluid,IS
 			if(tile!=null && tile instanceof IEnergyHandler){
 				energyTransferred = ((IEnergyHandler) tile).receiveEnergy(fd.getOpposite(), maxAvailable, false);
 				this.extractEnergy(fd, (int)energyTransferred, false);
-			}else if(tile!=null && InterMods.hasIc2 && tile instanceof IEnergySink && ((IEnergySink)tile).acceptsEnergyFrom(this, fd.getOpposite())){
-				energyTransferred = InterMods.injectEnergy(tile, fd.getOpposite(), InterMods.convertRFtoEU(maxAvailable,5), false);
-    			this.extractEnergy(fd, InterMods.convertEUtoRF(InterMods.convertRFtoEU(maxAvailable,5)-energyTransferred), false);
+			}else if(tile!=null && InterMods.hasIc2 && IC2Handler.isEnergySink(tile) && IC2Handler.isAcceptingEnergySink(tile, this, fd.getOpposite())){
+				energyTransferred = IC2Handler.injectEnergy(tile, fd.getOpposite(), IC2Handler.convertRFtoEU(maxAvailable,5), false);
+    			this.extractEnergy(fd, IC2Handler.convertEUtoRF(IC2Handler.convertRFtoEU(maxAvailable,5)-energyTransferred), false);
 			}
 		}
     	

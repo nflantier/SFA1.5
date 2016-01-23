@@ -10,22 +10,19 @@ import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import ic2.api.energy.tile.IEnergySink;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
-import noelflantier.sfartifacts.common.handlers.ModConfig;
-import noelflantier.sfartifacts.common.helpers.Coord4;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
+import noelflantier.sfartifacts.compatibilities.IC2Handler;
 import noelflantier.sfartifacts.compatibilities.InterMods;
 
 public abstract class TileMachine extends TileSFA implements ISFAFluid,ISFAEnergyHandler,ISidedInventory{
@@ -86,9 +83,9 @@ public abstract class TileMachine extends TileSFA implements ISFAFluid,ISFAEnerg
 			if(rf && tile!=null && tile instanceof IEnergyHandler){
 				energyTransferred = ((IEnergyHandler) tile).receiveEnergy(fd.getOpposite(), maxAvailable, false);
 				this.extractEnergy(fd, (int)energyTransferred, false);
-			}else if(eu && tile!=null && InterMods.hasIc2 && tile instanceof IEnergySink && ((IEnergySink)tile).acceptsEnergyFrom(this, fd.getOpposite())){
-				energyTransferred = InterMods.injectEnergy(tile, fd.getOpposite(), InterMods.convertRFtoEU(maxAvailable,5), false);
-    			this.extractEnergy(fd, InterMods.convertEUtoRF(InterMods.convertRFtoEU(maxAvailable,5)-energyTransferred), false);
+			}else if(eu && tile!=null && InterMods.hasIc2 && IC2Handler.isEnergySink(tile) && IC2Handler.isAcceptingEnergySink(tile, this, fd.getOpposite())){
+				energyTransferred = IC2Handler.injectEnergy(tile, fd.getOpposite(), IC2Handler.convertRFtoEU(maxAvailable,5), false);
+    			this.extractEnergy(fd, IC2Handler.convertEUtoRF(IC2Handler.convertRFtoEU(maxAvailable,5)-energyTransferred), false);
 			}
 		}
 	}

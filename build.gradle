@@ -15,7 +15,6 @@ buildscript {
     }
 }
 
-
 apply plugin: 'java'
 apply plugin: 'forge'
 
@@ -28,6 +27,10 @@ repositories {
         name "Mobius Repo"
         url "http://mobiusstrip.eu/maven"
     }
+	maven {
+		name = "ic2"
+		url = "http://maven.ic2.player.to/"
+	}
 }
 
 ext.configFile = file "build.properties"
@@ -39,7 +42,7 @@ configFile.withReader {
 }
 
 version = config.mod_version
-group = "noelflantier.sfartifacts" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = "noelflantier.sfartifacts"
 archivesBaseName = "SFArtifacts"
 
 tasks.withType(JavaCompile)
@@ -68,10 +71,11 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 	compile "mcp.mobius.waila:Waila:1.5.9b_dev2_1.7.10"
+	compile 'net.industrial-craft:industrialcraft-2:2.2.811-experimental:api'
 
 }
 
-version = "${config.minecraft_version}-${config.mod_version}.${System.getenv("BUILD_NUMBER") ?: 0}"
+version = "${config.minecraft_version}-${config.mod_version}"
 processResources
 {
 	exclude '**/*.psd'

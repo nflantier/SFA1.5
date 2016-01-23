@@ -8,7 +8,6 @@ import org.lwjgl.input.Keyboard;
 import cofh.api.energy.IEnergyConnection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import ic2.api.energy.tile.IEnergySink;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -32,6 +31,7 @@ import noelflantier.sfartifacts.common.items.baseclasses.IItemHasModes;
 import noelflantier.sfartifacts.common.items.baseclasses.ItemMode;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketSound;
+import noelflantier.sfartifacts.compatibilities.IC2Handler;
 import noelflantier.sfartifacts.compatibilities.InterMods;
 
 public class ItemBasicHammer extends ItemSFA implements IItemHasModes{
@@ -94,7 +94,7 @@ public class ItemBasicHammer extends ItemSFA implements IItemHasModes{
 													ItemNBTHelper.getInteger(stack, "my", -1)+" "+ItemNBTHelper.getInteger(stack, "mz", -1)));
 				}
 			}
-		}else if(t!=null && ( t instanceof ITileCanHavePillar || t instanceof IEnergyConnection  || (InterMods.hasIc2 && t instanceof IEnergySink))){
+		}else if(t!=null && ( t instanceof ITileCanHavePillar || t instanceof IEnergyConnection  || (InterMods.hasIc2 && IC2Handler.isEnergySink(t)))){
 			PacketHandler.sendToAllAroundPlayer(new PacketSound(x, y, z,  SoundHelper.Sounds.BASICHAMMER.ordinal(), 0.7F),player);
 			ItemNBTHelper.setInteger(stack, "cx", t.xCoord);
 			ItemNBTHelper.setInteger(stack, "cy", t.yCoord);

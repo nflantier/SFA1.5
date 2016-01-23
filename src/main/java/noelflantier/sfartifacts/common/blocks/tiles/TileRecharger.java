@@ -7,8 +7,6 @@ import java.util.List;
 import baubles.api.BaublesApi;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyContainerItem;
-import ic2.api.item.ElectricItem;
-import ic2.api.item.IElectricItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,6 +15,7 @@ import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.helpers.ItemNBTHelper;
 import noelflantier.sfartifacts.common.network.PacketHandler;
 import noelflantier.sfartifacts.common.network.messages.PacketRecharger;
+import noelflantier.sfartifacts.compatibilities.IC2Handler;
 import noelflantier.sfartifacts.compatibilities.InterMods;
 
 public class TileRecharger extends TileMachine implements ITileGlobalNBT{
@@ -70,7 +69,7 @@ public class TileRecharger extends TileMachine implements ITileGlobalNBT{
 		tmpRecharging = false;
 		for(int i=0;i<this.items.length;i++){
 			if(this.items[i]!=null && ( this.items[i].getItem() instanceof IEnergyContainerItem 
-					|| (InterMods.hasIc2 && this.items[i].getItem() instanceof IElectricItem) )){
+					|| (InterMods.hasIc2 && IC2Handler.isElectricItem(this.items[i])) )){
 				this.rechargeItemStack(this.items[i]);
 			}
 		}
@@ -96,16 +95,16 @@ public class TileRecharger extends TileMachine implements ITileGlobalNBT{
 					this.extractEnergy(ForgeDirection.UNKNOWN, energyTransferred, false);
 				}
 			}
-		}else if(InterMods.hasIc2 && stack.getItem() instanceof IElectricItem){
-			double s = ElectricItem.manager.getCharge(stack);
-			double c = ((IElectricItem)stack.getItem()).getMaxCharge(stack);
+		}else if(InterMods.hasIc2 && IC2Handler.isElectricItem(stack)){
+			double s = IC2Handler.getCharge(stack);
+			double c = IC2Handler.getMaxCharge(stack);
 			if(s<c){
 	    		int maxAvailable = this.extractEnergy(ForgeDirection.UNKNOWN, this.getEnergyStored(ForgeDirection.UNKNOWN), true);
-	    		double energyTransferred = ElectricItem.manager.charge(stack, InterMods.convertRFtoEU(maxAvailable,5), 5, true, true);
+	    		double energyTransferred = IC2Handler.charge(stack, IC2Handler.convertRFtoEU(maxAvailable,5), 5, true, true);
 	    		if(energyTransferred!=0){
 	    			this.tmpRecharging = true;
-					energyTransferred = ElectricItem.manager.charge(stack, InterMods.convertRFtoEU(maxAvailable,5), 5, true, false);
-					this.extractEnergy(ForgeDirection.UNKNOWN, InterMods.convertEUtoRF(energyTransferred), false);
+					energyTransferred = IC2Handler.charge(stack, IC2Handler.convertRFtoEU(maxAvailable,5), 5, true, false);
+					this.extractEnergy(ForgeDirection.UNKNOWN, IC2Handler.convertEUtoRF(energyTransferred), false);
 				}
 			}
 			
@@ -117,14 +116,14 @@ public class TileRecharger extends TileMachine implements ITileGlobalNBT{
 			if(this.getEnergyStored(ForgeDirection.UNKNOWN)<=0)
 				break;
 			if(p.inventory.armorInventory[i]!=null && ( p.inventory.armorInventory[i].getItem() instanceof IEnergyContainerItem 
-					|| (InterMods.hasIc2 && p.inventory.armorInventory[i].getItem() instanceof IElectricItem)) )
+					|| (InterMods.hasIc2 && IC2Handler.isElectricItem(p.inventory.armorInventory[i]) ) ) )
 				this.rechargeItemStack(p.inventory.armorInventory[i]);
 		}
 		for(int i = 0;i<p.inventory.mainInventory.length;i++){
 			if(this.getEnergyStored(ForgeDirection.UNKNOWN)<=0)
 				break;
 			if(p.inventory.mainInventory[i]!=null && ( p.inventory.mainInventory[i].getItem() instanceof IEnergyContainerItem 
-					|| (InterMods.hasIc2 && p.inventory.mainInventory[i].getItem() instanceof IElectricItem)))
+					|| (InterMods.hasIc2 && IC2Handler.isElectricItem(p.inventory.mainInventory[i]))))
 				this.rechargeItemStack(p.inventory.mainInventory[i]);	
 		}
 		
@@ -133,7 +132,7 @@ public class TileRecharger extends TileMachine implements ITileGlobalNBT{
 				if(this.getEnergyStored(ForgeDirection.UNKNOWN)<=0)
 					break;
 				if(BaublesApi.getBaubles(p).getStackInSlot(i)!=null && ( BaublesApi.getBaubles(p).getStackInSlot(i).getItem() instanceof IEnergyContainerItem 
-						|| (InterMods.hasIc2 && BaublesApi.getBaubles(p).getStackInSlot(i).getItem() instanceof IElectricItem)))
+						|| (InterMods.hasIc2 && IC2Handler.isElectricItem(BaublesApi.getBaubles(p).getStackInSlot(i)))))
 					this.rechargeItemStack(BaublesApi.getBaubles(p).getStackInSlot(i));	
 			}
 		}
@@ -156,7 +155,9 @@ public class TileRecharger extends TileMachine implements ITileGlobalNBT{
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-		return stack.getItem() instanceof IEnergyContainerItem || ItemNBTHelper.verifyExistance(stack, "Energy") || stack.getItem() instanceof IElectricItem;
+		return stack.getItem() instanceof IEnergyContainerItem 
+				|| ItemNBTHelper.verifyExistance(stack, "Energy") 
+				|| (InterMods.hasIc2 && IC2Handler.isElectricItem(stack));
 	}
 	
 	@Override

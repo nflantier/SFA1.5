@@ -1,17 +1,11 @@
 package noelflantier.sfartifacts.common.blocks.tiles;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 
 import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyHandler;
-import ic2.api.energy.tile.IEnergySink;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -20,9 +14,7 @@ import noelflantier.sfartifacts.common.handlers.ModConfig;
 import noelflantier.sfartifacts.common.handlers.ModFluids;
 import noelflantier.sfartifacts.common.helpers.Utils;
 import noelflantier.sfartifacts.common.network.PacketHandler;
-import noelflantier.sfartifacts.common.network.messages.PacketEnergy;
 import noelflantier.sfartifacts.common.network.messages.PacketFluid;
-import noelflantier.sfartifacts.compatibilities.InterMods;
 
 public class TileMrFusion extends TileMachine{
 

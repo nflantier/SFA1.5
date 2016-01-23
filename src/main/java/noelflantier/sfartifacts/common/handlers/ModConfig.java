@@ -155,9 +155,9 @@ public class ModConfig {
 			capacityLightningRodStand = config.get(CAT_MACHINES, "lightningrod stand rf capacity", 100000, "Lightningrod stand energy capacity").getInt();
 
 			transfertCapacityInductorBasic = config.get(Configuration.CATEGORY_GENERAL, "basic inductor transfert RF/T", 300, "Transfert rate RF/T").getInt();
-			transfertCapacityInductorAdvanced = config.get(Configuration.CATEGORY_GENERAL, "advanced inductor transfert RF/T", 1500, "Transfert rate RF/T").getInt();
-			transfertCapacityInductorBasicEnergized = config.get(Configuration.CATEGORY_GENERAL, "basic energized inductor transfert RF/T", 5000, "Transfert rate RF/T").getInt();
-			transfertCapacityInductorAdvancedEnergized = config.get(Configuration.CATEGORY_GENERAL, "advanced energized inductor transfert RF/T", 10000, "Transfert rate RF/T").getInt();
+			transfertCapacityInductorAdvanced = config.get(Configuration.CATEGORY_GENERAL, "advanced inductor transfert RF/T", 2000, "Transfert rate RF/T").getInt();
+			transfertCapacityInductorBasicEnergized = config.get(Configuration.CATEGORY_GENERAL, "basic energized inductor transfert RF/T", 10000, "Transfert rate RF/T").getInt();
+			transfertCapacityInductorAdvancedEnergized = config.get(Configuration.CATEGORY_GENERAL, "advanced energized inductor transfert RF/T", 20000, "Transfert rate RF/T").getInt();
 			
 			pureSiliconLifeSpan = config.get(Configuration.CATEGORY_GENERAL, "lifespan silicon", 150, "Lifespan of pure silicon before it decay in ticks 20 tick = 1 s").getInt();
 			

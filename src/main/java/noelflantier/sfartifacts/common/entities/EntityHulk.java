@@ -93,7 +93,7 @@ public class EntityHulk extends EntityMob implements IBossDisplayData, IRangedAt
     
     protected void applyEntityAttributes(){
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(800.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(1000.0D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.8D);
         this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(100.0D);
         this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(12.0D);

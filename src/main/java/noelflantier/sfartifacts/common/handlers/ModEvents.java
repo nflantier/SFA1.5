@@ -192,9 +192,11 @@ public class ModEvents {
 					stats.tickHasHulkFleshEffect-=1;
 					if(event.side==Side.CLIENT)
 						player.stepHeight = 2F;
-					float f = Utils.isPlayerInFluid(player,1.22F);
-					player.motionX *= f;
-					player.motionZ *= f;
+					float f = Utils.getSpeedHoverFluid(player,1.22F);
+					if(f>0){
+						player.motionX *= f;
+						player.motionZ *= f;
+					}
 				}else if(stats.tickHasHulkFleshEffect==0){
 					stats.tickHasHulkFleshEffect=-1;
 					if(event.side==Side.CLIENT)
