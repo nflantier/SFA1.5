@@ -75,13 +75,13 @@ public class GuiInjector extends GuiMachine{
 			addText("Inventory :", 0, 0);
 		}});
 		
-		this.componentManual.put("so", new GuiComponent(guiLeft+18, guiTop+12, 100, 10){{
+		this.componentManual.put("so", new GuiComponent(guiLeft+12, guiTop+12, 100, 10){{
 			globalScale = 0.6F;
 			addText("This machine is used to inject liquefied asgardite", 0, 0);
 			addText("into items, it use RF and liquefied asgardite.", 0, 0);
 		}});
 
-		this.componentRecipe.put("re", new GuiComponent(guiLeft+18, guiTop+12, 100, 10){{
+		this.componentRecipe.put("re", new GuiComponent(guiLeft+12, guiTop+12, 100, 10){{
 			globalScale = 0.6F;
 			addText("Recipe you can do in the injector :",0,0);
 			addText("",0,0);

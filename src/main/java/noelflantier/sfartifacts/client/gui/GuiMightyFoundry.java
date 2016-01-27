@@ -133,7 +133,7 @@ public class GuiMightyFoundry extends GuiMachine{
 			addText("0%", 0, 0);
 		}});
 
-		this.componentManual.put("so", new GuiComponent(guiLeft+18, guiTop+12, 100, 10){{
+		this.componentManual.put("so", new GuiComponent(guiLeft+12, guiTop+12, 100, 10){{
 			globalScale = 0.6F;
 			addText("This machine is used to forge items.", 0, 0);
 			addText("To do so you need a valid mold and the materials", 0, 0);

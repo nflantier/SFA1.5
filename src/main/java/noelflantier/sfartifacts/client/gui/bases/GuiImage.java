@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiImage extends GuiComponent{
+public class GuiImage extends GuiComponentBase{
 
 	public ResourceLocation rl;
 	public boolean useUV = false;
@@ -35,7 +35,6 @@ public class GuiImage extends GuiComponent{
 		this.minv  = minv;
 	}
 	
-	@Override
 	public void draw(int x, int y){
 		renderImage(x,y,minu,minv,maxu,maxv);
 	}
@@ -77,5 +76,10 @@ public class GuiImage extends GuiComponent{
 			GL11.glDisable(GL11.GL_BLEND);
             GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glPopMatrix();
+	}
+
+	@Override
+	public boolean isMouseHover(int mx, int my){
+		return mx<=this.x+this.width && mx>=this.x && my<this.y-this.height && my>this.y;
 	}
 }

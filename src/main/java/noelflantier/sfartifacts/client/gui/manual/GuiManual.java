@@ -39,24 +39,24 @@ public class GuiManual extends GuiSFAScreen{
 		gc.addText("Thor manual", 0, 0);
 		gc.isLink = true;
 		gc.defColor = EnumChatFormatting.BLACK;
-		this.componentList.put("thor", gc);
+		this.fullComponentList.put("thor", gc);
 		this.manuals.put("thor", ModGUIs.guiIDThorManual);
 
-		this.componentList.put("captain", new GuiComponent(this.guiLeft+10, this.guiTop+20, 60, 10){{
+		this.fullComponentList.put("captain", new GuiComponent(this.guiLeft+10, this.guiTop+20, 60, 10){{
 			addText("Captain manual", 0, 0);
 			isLink = true;
 			defColor = EnumChatFormatting.BLACK;
 		}});
 		this.manuals.put("captain", ModGUIs.guiIDCaptainManual);
 
-		this.componentList.put("hulk", new GuiComponent(this.guiLeft+10, this.guiTop+30, 60, 10){{
+		this.fullComponentList.put("hulk", new GuiComponent(this.guiLeft+10, this.guiTop+30, 60, 10){{
 			addText("Hulk manual", 0, 0);
 			isLink = true;
 			defColor = EnumChatFormatting.BLACK;
 		}});
 		this.manuals.put("hulk", ModGUIs.guiIDHulkManual);
 
-		this.componentList.put("bttf", new GuiComponent(this.guiLeft+10, this.guiTop+40, 60, 10){{
+		this.fullComponentList.put("bttf", new GuiComponent(this.guiLeft+10, this.guiTop+40, 60, 10){{
 			addText("Back to the future", 0, 0);
 			isLink = true;
 			defColor = EnumChatFormatting.BLACK;
@@ -72,10 +72,10 @@ public class GuiManual extends GuiSFAScreen{
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
 		super.mouseClicked(x, y, button);
-		Enumeration<String> enumKey = this.componentList.keys();
+		Enumeration<String> enumKey = this.fullComponentList.keys();
 		while (enumKey.hasMoreElements()) {
 		    String key = enumKey.nextElement();
-		    if(this.componentList.get(key).clicked(x, y)){
+		    if(this.fullComponentList.get(key).clicked(x, y)){
 	            this.mc.thePlayer.closeScreen();
 	    		player.openGui(SFArtifacts.instance, this.manuals.get(key), Minecraft.getMinecraft().theWorld, (int)player.posX, (int)player.posY, (int)player.posZ);
 	    		break;	
@@ -100,10 +100,10 @@ public class GuiManual extends GuiSFAScreen{
 			GL11.glDisable(GL11.GL_BLEND);
 		GL11.glPopMatrix();
 
-		Enumeration<String> enumKey = this.componentList.keys();
+		Enumeration<String> enumKey = this.fullComponentList.keys();
 		while (enumKey.hasMoreElements()) {
 		    String key = enumKey.nextElement();
-		    this.componentList.get(key).draw(x, y);
+		    this.fullComponentList.get(key).draw(x, y);
 		}
     }
 }

@@ -55,7 +55,7 @@ public class GuiToolTips extends GuiComponent{
     
     public void showToolTips(int x, int y){
 		if(this.isMouseHover(x,y)){
-			this.showContent(this.fr, x, y, 0, 0, 50);
+			this.showContent(this.FR, x, y, 0, 0, 50);
 			this.content.clear();
 		}
     }

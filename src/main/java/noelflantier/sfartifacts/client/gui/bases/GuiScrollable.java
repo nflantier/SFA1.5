@@ -126,7 +126,7 @@ public class GuiScrollable {
 			showTheBorders(x,y);
 		for(int i = this.currentIndex ; i < this.currentIndex + this.maxComponent ; i++){
 			if(this.componentList.get(i)==null)break;
-	    	this.componentList.get(i).scrolableMarge = this.currentIndex*10;
+	    	this.componentList.get(i).scrollingYMarge = this.currentIndex*10;
 		    this.componentList.get(i).draw(x,y);
 		}
 	}

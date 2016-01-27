@@ -19,8 +19,8 @@ import noelflantier.sfartifacts.client.gui.GuiSoundEmitter;
 import noelflantier.sfartifacts.client.gui.GuiTeleport;
 import noelflantier.sfartifacts.client.gui.manual.BTTFManual;
 import noelflantier.sfartifacts.client.gui.manual.CaptainManual;
-import noelflantier.sfartifacts.client.gui.manual.GuiManual;
 import noelflantier.sfartifacts.client.gui.manual.HulkManual;
+import noelflantier.sfartifacts.client.gui.manual.NGuiManual;
 import noelflantier.sfartifacts.client.gui.manual.ThorManual;
 import noelflantier.sfartifacts.common.blocks.tiles.TileControlPannel;
 import noelflantier.sfartifacts.common.blocks.tiles.TileHammerStand;
@@ -206,7 +206,7 @@ public class ModGUIs implements IGuiHandler{
 		}else if(ID == ModGUIs.guiIDHammerConfig){
 			return new GuiHammerConfig(player.inventory);
 		}else if(ID == ModGUIs.guiIDManual){
-			return new GuiManual(player);
+			return new NGuiManual(player);
 		}else if(ID == ModGUIs.guiIDThorManual){
 			return new ThorManual(player);
 		}else if(ID == ModGUIs.guiIDCaptainManual){

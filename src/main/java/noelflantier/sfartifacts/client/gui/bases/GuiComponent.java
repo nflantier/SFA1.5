@@ -14,38 +14,34 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.util.EnumChatFormatting;
 
-public class GuiComponent {
+public class GuiComponent extends GuiComponentBase{
 
-	public int x,y;
 	public List<GuiButton> buttonList = new ArrayList<GuiButton>();
 	public List<GuiTextField> textFieldList  = new ArrayList<GuiTextField>();
+	public List<GuiImage> imageList = new ArrayList<GuiImage>();
+	public List<GuiItemStack> itemStackList = new ArrayList<GuiItemStack>();
 	public Hashtable<Integer,String> stringList = new Hashtable<Integer,String>();
 	public Hashtable<Integer,Integer[]> cStringList = new Hashtable<Integer,Integer[]>();
-	public int strX,strY;
+	public int stringX;
+	public int stringY;
 	public float globalScale = 1;
-	public boolean visible = true;
-	public int width,height;
+	public boolean isVisible = true;
 	public boolean isLink = false;
 	public boolean isScrolable = false;
-	public int scrolableMarge = 0;
-	public int globalDecY = 0;
-	public final int ystr = 10;
-    public FontRenderer fr;
+	public int scrollingYMarge = 0;
+	public int globalYMarge = 0;
+	public final int fontHeight = 10;
     public int stringID = -1;
     public EnumChatFormatting defColor = EnumChatFormatting.DARK_GRAY;
     public EnumChatFormatting color = EnumChatFormatting.DARK_GRAY;
     public EnumChatFormatting linkColor = EnumChatFormatting.GRAY;
 	
 	public GuiComponent(int x, int y){
-		this.x = x;
-		this.y = y;
-        this.fr = Minecraft.getMinecraft().fontRenderer;
+		super(x,y);
 	}
 
 	public GuiComponent(int x, int y, int w, int h){
-		this(x,y);
-		this.width = w;
-		this.height = h;
+		super(x,y,w,h);
 	}
 	
 	public void reset(){
@@ -53,10 +49,10 @@ public class GuiComponent {
 		this.textFieldList.clear();
 		this.stringList.clear();
 		this.cStringList.clear();
-		this.globalDecY = 0;
+		this.globalYMarge = 0;
 		this.stringID = -1;
-		this.strY = 0;
-		this.strX = 0;
+		this.stringY = 0;
+		this.stringX = 0;
 	}
 	
 	public void addTextField(int decx, int decy, int width, int height){
@@ -84,6 +80,14 @@ public class GuiComponent {
 		bt.visible = false;
 		this.buttonList.add(bt);
 	}
+
+	public void addImage(GuiImage img){
+		this.imageList.add(img);
+	}
+
+	public void addItemStack(GuiItemStack st){
+		this.itemStackList.add(st);
+	}
 	
 	public void addImageButton(GuiButtonImage bt, float baseU, float baseV, int elW, int elH, boolean enable){
 		bt.baseU = baseU;
@@ -106,10 +110,10 @@ public class GuiComponent {
 	public void addText(String str, int decx, int decy){
 		int nid = this.nextStringId();
 		this.stringList.put(nid,str);
-		this.cStringList.put(nid, new Integer[]{decx,decy+strY+globalDecY});
+		this.cStringList.put(nid, new Integer[]{decx,decy+stringY+globalYMarge});
 		
-		this.globalDecY+=decy;
-		this.strY += this.ystr;
+		this.globalYMarge+=decy;
+		this.stringY += this.fontHeight;
 	}
 	
 	public boolean clicked(int x, int y){
@@ -122,32 +126,28 @@ public class GuiComponent {
 	
 	public void draw(int x, int y){
 		this.color = this.defColor;
-		if(this.isLink && this.isMouseHover(x, y)){
+		if(this.isLink && this.isMouseHover(x, y))
     		this.color = this.linkColor;
-		}
-		Iterator<GuiTextField> tfl = textFieldList.iterator();
-		while (tfl.hasNext()) {
-		    tfl.next().drawTextBox();
-		}
-		
 		Iterator<Map.Entry<Integer,String>> it = stringList.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry<Integer,String> entry = it.next();
 			Integer[] t = this.cStringList.get(entry.getKey());
-			if(globalScale!=1){
-				GL11.glPushMatrix();
-				GL11.glScalef(globalScale, globalScale, globalScale);
-			}
-			int xp = globalScale!=1?(int) (this.x+t[0]+((globalScale)*this.x)):this.x+t[0];
-			int yp = globalScale!=1?(int) (this.y-this.scrolableMarge+t[1]+((globalScale)*this.y)):this.y-this.scrolableMarge+t[1];
-			this.fr.drawString(String.format("%s%s%s",this.color,entry.getValue(), EnumChatFormatting.RESET), xp, yp, 4210752);
-			if(globalScale!=1)
-				GL11.glPopMatrix();
+			
+			GL11.glPushMatrix();
+				GL11.glScalef(globalScale, globalScale, 1);
+				int xp = (int) (this.x+t[0]+(this.x-this.x*globalScale)/globalScale);
+				int yp = (int) (this.y-this.scrollingYMarge+t[1]+((this.y-this.scrollingYMarge)-(this.y-this.scrollingYMarge)*globalScale)/globalScale);
+				FR.drawString(String.format("%s%s%s", this.color, entry.getValue(), EnumChatFormatting.RESET), xp, yp, 4210752);
+			GL11.glPopMatrix();
 		}
 		this.color = this.defColor;
+
+		this.textFieldList.forEach((t)->t.drawTextBox());
+		this.imageList.forEach((i)->i.draw(x, y));
+		this.itemStackList.forEach((i)->i.draw(x, y));
 	}
 	
 	public boolean isMouseHover(int mx, int my){
-		return mx<=this.x+this.width && mx>=this.x && my<this.y-this.scrolableMarge+this.height && my>this.y-this.scrolableMarge;
+		return mx<=this.x+this.width && mx>=this.x && my<this.y-this.scrollingYMarge+this.height && my>this.y-this.scrollingYMarge;
 	}
 }

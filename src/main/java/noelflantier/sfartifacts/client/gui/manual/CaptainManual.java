@@ -21,25 +21,25 @@ public class CaptainManual extends BaseManual{
 	}
 
 	public void drawCat(String cat, int x, int y, float f){
-		this.componentList.put("manuals", new GuiComponent(this.guiLeft+this.xSize/2-60, this.guiTop+10, 50, 10){{
+		this.fullComponentList.put("manuals", new GuiComponent(this.guiLeft+this.xSize/2-60, this.guiTop+10, 50, 10){{
 			addText("MANUALS", 0, 0);
 			isLink = true;
 			defColor = EnumChatFormatting.BLACK;
 		}});
 		this.links.put("manuals", ModGUIs.guiIDManual);		
 		
-		this.componentList.put("slash", new GuiComponent(this.guiLeft+this.xSize/2-12, this.guiTop+10, 50, 10){{
+		this.fullComponentList.put("slash", new GuiComponent(this.guiLeft+this.xSize/2-12, this.guiTop+10, 50, 10){{
 			addText("  /", 0, 0);
 			defColor = EnumChatFormatting.BLACK;
 		}});
 		
 		if(cat.equals("index")){
-			this.componentList.put("title", new GuiComponent(this.guiLeft+this.xSize/2+10, this.guiTop+10, 100, 10){{
+			this.fullComponentList.put("title", new GuiComponent(this.guiLeft+this.xSize/2+10, this.guiTop+10, 100, 10){{
 				addText("Captain Manual", 0, 0);
 				defColor = EnumChatFormatting.BLACK;
 			}});
 		}else{
-			this.componentList.put("index", new GuiComponent(this.guiLeft+this.xSize/2+10, this.guiTop+10, 100, 10){{
+			this.fullComponentList.put("index", new GuiComponent(this.guiLeft+this.xSize/2+10, this.guiTop+10, 100, 10){{
 				addText(">Captain Manual<", 0, 0);
 				isLink = true;
 				defColor = EnumChatFormatting.BLACK;
@@ -49,7 +49,7 @@ public class CaptainManual extends BaseManual{
 		
 		
 		if(cat.equals("vore")){
-			this.componentList.put("p1", 
+			this.fullComponentList.put("p1", 
 				new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 					defColor = EnumChatFormatting.BLACK;
 					addText("Vibranium ores are found only under Savanna biomes",0,0);
@@ -64,7 +64,7 @@ public class CaptainManual extends BaseManual{
 			);
 		}else if(cat.equals("foundry")){
 
-			this.componentList.put("p1", 
+			this.fullComponentList.put("p1", 
 				new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 					defColor = EnumChatFormatting.BLACK;
 					addText("To use the foundry you need Molds.",0,0);
@@ -79,7 +79,7 @@ public class CaptainManual extends BaseManual{
 			);
 		}else if(cat.equals("molds")){
 
-			this.componentList.put("p1", 
+			this.fullComponentList.put("p1", 
 				new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 					defColor = EnumChatFormatting.BLACK;
 					addText("Molds are used in the Mighty Foundry.",0,0);
@@ -90,7 +90,7 @@ public class CaptainManual extends BaseManual{
 				}}
 			);
 		}else if(cat.equals("foundryr")){
-			this.componentList.put("p1", 
+			this.fullComponentList.put("p1", 
 					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 						defColor = EnumChatFormatting.BLACK;
 						addText("Recipe you can do in the foundry :",0,0);
@@ -103,7 +103,7 @@ public class CaptainManual extends BaseManual{
 					}}
 				);
 		}else if(cat.equals("moldp")){
-			this.componentList.put("p1", 
+			this.fullComponentList.put("p1", 
 				new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 					defColor = EnumChatFormatting.BLACK;
 					addText("1 = piece of sand | 0 = nothing",0,0);
@@ -111,7 +111,7 @@ public class CaptainManual extends BaseManual{
 			);
 			int k = 0;
 			for(Map.Entry<String, ISFARecipe> entry : RecipesRegistry.instance.getRecipesForUsage(MoldRecipesHandler.USAGE_MOLD).entrySet()){
-				this.componentList.put("pm"+k, 
+				this.fullComponentList.put("pm"+k, 
 					new GuiComponent(this.guiLeft+10+k*100, this.guiTop+40, 100, 10){{
 						defColor = EnumChatFormatting.BLACK;
 						addText(""+entry.getValue().getUid()+" :",0,0);
@@ -128,7 +128,7 @@ public class CaptainManual extends BaseManual{
 			}
 		}else if(cat.equals("shield")){
 
-			this.componentList.put("p1", 
+			this.fullComponentList.put("p1", 
 				new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 					defColor = EnumChatFormatting.BLACK;
 					addText("Vibranium shield can block damages from ennemies.",0,0);
@@ -145,42 +145,42 @@ public class CaptainManual extends BaseManual{
 			);
 		}else if(cat.equals("index")){
 
-			this.componentList.put("vore", new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
+			this.fullComponentList.put("vore", new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Vibranium ore", 0, 0);
 				isLink = true;
 			}});
 			this.links.put("vore", -1);
 
-			this.componentList.put("molds", new GuiComponent(this.guiLeft+10, this.guiTop+40, 100, 10){{
+			this.fullComponentList.put("molds", new GuiComponent(this.guiLeft+10, this.guiTop+40, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Molds", 0, 0);
 				isLink = true;
 			}});
 			this.links.put("molds", -1);
 			
-			this.componentList.put("foundry", new GuiComponent(this.guiLeft+10, this.guiTop+50, 100, 10){{
+			this.fullComponentList.put("foundry", new GuiComponent(this.guiLeft+10, this.guiTop+50, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Mighty foundry", 0, 0);
 				isLink = true;
 			}});
 			this.links.put("foundry", -1);
 			
-			this.componentList.put("foundryr", new GuiComponent(this.guiLeft+10, this.guiTop+60, 120, 10){{
+			this.fullComponentList.put("foundryr", new GuiComponent(this.guiLeft+10, this.guiTop+60, 120, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Molding Recipe", 0, 0);
 				isLink = true;
 			}});
 			this.links.put("foundryr", -1);
 			
-			this.componentList.put("moldp", new GuiComponent(this.guiLeft+10, this.guiTop+70, 100, 10){{
+			this.fullComponentList.put("moldp", new GuiComponent(this.guiLeft+10, this.guiTop+70, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Molds pattern", 0, 0);
 				isLink = true;
 			}});
 			this.links.put("moldp", -1);
 			
-			this.componentList.put("shield", new GuiComponent(this.guiLeft+10, this.guiTop+80, 100, 10){{
+			this.fullComponentList.put("shield", new GuiComponent(this.guiLeft+10, this.guiTop+80, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Vibranium Shield", 0, 0);
 				isLink = true;

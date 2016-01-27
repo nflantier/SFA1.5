@@ -44,7 +44,7 @@ public class GuiLiquefier extends GuiMachine{
 			addText("Inventory :", 0, 0);
 		}});
 		
-		this.componentManual.put("so", new GuiComponent(guiLeft+18, guiTop+12, 100, 10){{
+		this.componentManual.put("so", new GuiComponent(guiLeft+12, guiTop+12, 100, 10){{
 			globalScale = 0.6F;
 			addText("This machine will turn asgardite into liquefied", 0, 0);
 			addText("asgardite, it will use RF an water to do so.", 0, 0);

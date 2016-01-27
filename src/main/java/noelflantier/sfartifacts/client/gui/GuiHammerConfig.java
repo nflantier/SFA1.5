@@ -281,7 +281,7 @@ public class GuiHammerConfig extends GuiSFA{
 			    	}
 		    	}
 		    	this.enchantSc.componentList.get(i).defColor = color;
-		    	this.enchantSc.componentList.get(i).scrolableMarge = this.enchantSc.currentIndex*10;
+		    	this.enchantSc.componentList.get(i).scrollingYMarge = this.enchantSc.currentIndex*10;
 			    this.enchantSc.componentList.get(i).draw(x-guiLeft,y-guiTop);
 		    
 			}

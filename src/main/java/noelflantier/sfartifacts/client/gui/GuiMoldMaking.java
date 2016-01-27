@@ -2,9 +2,13 @@ package noelflantier.sfartifacts.client.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import noelflantier.sfartifacts.References;
+import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
 import noelflantier.sfartifacts.client.gui.bases.GuiImage;
+import noelflantier.sfartifacts.client.gui.bases.GuiRecipe;
 import noelflantier.sfartifacts.client.gui.bases.GuiSFA;
 import noelflantier.sfartifacts.common.container.ContainerMoldMaking;
 
@@ -26,9 +30,12 @@ public class GuiMoldMaking  extends GuiSFA{
 	
 	@Override
 	public void loadComponents(){
-		super.loadComponents();this.componentList.put("im", 
-				new GuiImage(8+18*this.currentSlot, 176, 16,16 , 0F, 0F, 1F, 1F,moldMeta==0?moldEmpty:moldFilled)
-				);
+		super.loadComponents();
+		this.componentList.put("im", new GuiComponent(6, 108, 100, 10){{
+			addImage(new GuiImage(8+18*currentSlot, 176, 16,16 , 0F, 0F, 1F, 1F,moldMeta==0?moldEmpty:moldFilled));
+			}}
+		);
+		//GuiRecipe gr = new GuiRecipe(new ItemStack(Blocks.furnace),GuiRecipe.TYPE.VANILLA);
 	}
 	
 	@Override

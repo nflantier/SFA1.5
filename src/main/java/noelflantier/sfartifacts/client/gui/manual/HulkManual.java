@@ -12,25 +12,25 @@ public class HulkManual extends BaseManual{
 	}
 	@Override
 	public void drawCat(String cat, int x, int y, float f) {
-		this.componentList.put("manuals", new GuiComponent(this.guiLeft+this.xSize/2-60, this.guiTop+10, 50, 10){{
+		this.fullComponentList.put("manuals", new GuiComponent(this.guiLeft+this.xSize/2-60, this.guiTop+10, 50, 10){{
 			addText("MANUALS", 0, 0);
 			isLink = true;
 			defColor = EnumChatFormatting.BLACK;
 		}});
 		this.links.put("manuals", ModGUIs.guiIDManual);		
 		
-		this.componentList.put("slash", new GuiComponent(this.guiLeft+this.xSize/2-12, this.guiTop+10, 50, 10){{
+		this.fullComponentList.put("slash", new GuiComponent(this.guiLeft+this.xSize/2-12, this.guiTop+10, 50, 10){{
 			addText("  /", 0, 0);
 			defColor = EnumChatFormatting.BLACK;
 		}});
 		
 		if(cat.equals("index")){
-			this.componentList.put("title", new GuiComponent(this.guiLeft+this.xSize/2+10, this.guiTop+10, 100, 10){{
+			this.fullComponentList.put("title", new GuiComponent(this.guiLeft+this.xSize/2+10, this.guiTop+10, 100, 10){{
 				addText("Hulk Manual", 0, 0);
 				defColor = EnumChatFormatting.BLACK;
 			}});
 		}else{
-			this.componentList.put("index", new GuiComponent(this.guiLeft+this.xSize/2+10, this.guiTop+10, 100, 10){{
+			this.fullComponentList.put("index", new GuiComponent(this.guiLeft+this.xSize/2+10, this.guiTop+10, 100, 10){{
 				addText(">Hulk Manual<", 0, 0);
 				isLink = true;
 				defColor = EnumChatFormatting.BLACK;
@@ -40,7 +40,7 @@ public class HulkManual extends BaseManual{
 		
 		
 		if(cat.equals("sound")){
-			this.componentList.put("p1", 
+			this.fullComponentList.put("p1", 
 				new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 					defColor = EnumChatFormatting.BLACK;
 					addText("This machine will emit sound on a certain", 0, 0);
@@ -58,7 +58,7 @@ public class HulkManual extends BaseManual{
 				}}
 			);
 		}else if(cat.equals("hulk")){
-			this.componentList.put("p1", 
+			this.fullComponentList.put("p1", 
 				new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 					defColor = EnumChatFormatting.BLACK;
 					addText("Hulk can be lure with the sound emitter,",0,0);
@@ -71,7 +71,7 @@ public class HulkManual extends BaseManual{
 				}}
 			);
 		}else if(cat.equals("hulkring")){
-			this.componentList.put("p1", 
+			this.fullComponentList.put("p1", 
 					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 						defColor = EnumChatFormatting.BLACK;
 						addText("The  Mighty Hulk Ring give you more health regen,",0,0);
@@ -85,7 +85,7 @@ public class HulkManual extends BaseManual{
 				);
 
 		}else if(cat.equals("freq")){
-			this.componentList.put("p1", 
+			this.fullComponentList.put("p1", 
 					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 						defColor = EnumChatFormatting.BLACK;
 						addText("If you want all the frequencies of all the mobs",0,0);
@@ -96,28 +96,28 @@ public class HulkManual extends BaseManual{
 
 		}else if(cat.equals("index")){
 
-			this.componentList.put("sound", new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
+			this.fullComponentList.put("sound", new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Sound Emitter", 0, 0);
 				isLink = true;
 			}});
 			this.links.put("sound", -1);
 
-			this.componentList.put("hulk", new GuiComponent(this.guiLeft+10, this.guiTop+40, 100, 10){{
+			this.fullComponentList.put("hulk", new GuiComponent(this.guiLeft+10, this.guiTop+40, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Hulk", 0, 0);
 				isLink = true;
 			}});
 			this.links.put("hulk", -1);
 			
-			this.componentList.put("hulkring", new GuiComponent(this.guiLeft+10, this.guiTop+50, 100, 10){{
+			this.fullComponentList.put("hulkring", new GuiComponent(this.guiLeft+10, this.guiTop+50, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Mighty Hulk Ring", 0, 0);
 				isLink = true;
 			}});
 			this.links.put("hulkring", -1);
 			
-			this.componentList.put("freq", new GuiComponent(this.guiLeft+10, this.guiTop+60, 100, 10){{
+			this.fullComponentList.put("freq", new GuiComponent(this.guiLeft+10, this.guiTop+60, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Mob frequencies", 0, 0);
 				isLink = true;

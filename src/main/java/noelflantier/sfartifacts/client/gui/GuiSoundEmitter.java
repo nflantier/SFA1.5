@@ -326,7 +326,7 @@ public class GuiSoundEmitter extends GuiMachine{
 			addButton(3,guiLeft,guiTop,42,20,tile.isEmitting?"STOP":"EMIT");
 		}});
 
-		this.componentList.put("txta", new GuiComponent(48, 58, 100, 10){{
+		this.componentList.put("txta", new GuiComponent(45, 55, 100, 10){{
 			defColor = EnumChatFormatting.DARK_GRAY;
 			globalScale = 0.6F;
 		}});
@@ -346,13 +346,12 @@ public class GuiSoundEmitter extends GuiMachine{
 		this.componentList.get("tffreq").textFieldList.get(0).setText(""+this.tile.frequencySelected);
 		this.txtFieldComponent.put("tffreq", 0);
 		
-		this.componentManual.put("so", new GuiComponent(guiLeft+18, guiTop+12, 100, 10){{
+		this.componentManual.put("so", new GuiComponent(guiLeft+12, guiTop+12, 100, 10){{
 			globalScale = 0.6F;
 			addText("This machine will emit sound on a certain", 0, 0);
 			addText("frequency. Different frequency will spawn", 0, 0);
 			addText("different creature so be carefull.", 0, 0);
-			addText("All the frequency discovered are saved in your", 0, 0);
-			addText("list. To emit sounds, it use some RF and liquefied", 0, 0);
+			addText("To emit sounds, it use some RF and liquefied", 0, 0);
 			addText("asgardite depending on the frequency.", 0, 0);
 			addText("The majority of the creatures spawned will be", 0, 0);
 			addText("attracted to the source of the sound.", 0, 0);
@@ -384,7 +383,6 @@ public class GuiSoundEmitter extends GuiMachine{
 	    	GuiComponent gce = new GuiComponent(guiLeft+15, guiTop+y, 130,10);
 			gce.addText(entry.getKey()+" : "+StatCollector.translateToLocal("entity."+entry.getValue()+".name"), 0,0);
 	    	gce.isLink=true;
-	    	gce.defColor=EnumChatFormatting.DARK_GRAY;
 			this.listFrequency.addComponent(i, gce);
 			y += 10;
 			i +=1;

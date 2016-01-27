@@ -52,7 +52,7 @@ public abstract class BaseManual extends GuiSFAScreen{
 	@Override
 	public void initGui() {
 		this.links = new Hashtable<String,Integer>();
-		this.componentList = new Hashtable<String, GuiComponent>();
+		this.fullComponentList = new Hashtable<String, GuiComponent>();
 		super.initGui();
 	}
 	
@@ -70,10 +70,10 @@ public abstract class BaseManual extends GuiSFAScreen{
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
 		super.mouseClicked(x, y, button);
-		Enumeration<String> enumKey = this.componentList.keys();
+		Enumeration<String> enumKey = this.fullComponentList.keys();
 		while (enumKey.hasMoreElements()) {
 		    String key = enumKey.nextElement();
-		    if(this.componentList.get(key).clicked(x, y)){
+		    if(this.fullComponentList.get(key).clicked(x, y)){
 	    		if(this.links.get(key)>0){
 	    			this.history.clear();
 	    			this.mc.thePlayer.closeScreen();
@@ -127,10 +127,10 @@ public abstract class BaseManual extends GuiSFAScreen{
 			GL11.glDisable(GL11.GL_BLEND);
 		GL11.glPopMatrix();
 		    	
-		Enumeration<String> enumKey = this.componentList.keys();
+		Enumeration<String> enumKey = this.fullComponentList.keys();
 		while (enumKey.hasMoreElements()) {
 		    String key = enumKey.nextElement();
-		    this.componentList.get(key).draw(x, y);
+		    this.fullComponentList.get(key).draw(x, y);
 		}
     }
 }

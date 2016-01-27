@@ -30,7 +30,7 @@ public class ItemMold extends ItemSFA{
 		super("Mold");
 		this.setUnlocalizedName("itemMold");
 		//this.setTextureName(References.MODID+":mold_empty");
-		this.setMaxStackSize(16);
+		this.setMaxStackSize(1);
 		this.hasSubtypes = true;
 	}
 	
@@ -57,7 +57,8 @@ public class ItemMold extends ItemSFA{
 	
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World w, EntityPlayer player){
-		player.openGui(SFArtifacts.instance, ModGUIs.guiIDMold, w, (int)player.posX, (int)player.posY, (int)player.posZ);
+		if(!w.isRemote)
+			player.openGui(SFArtifacts.instance, ModGUIs.guiIDMold, w, (int)player.posX, (int)player.posY, (int)player.posZ);
 		return stack;
 	}
 	

@@ -52,7 +52,7 @@ public abstract class GuiSFA  extends GuiContainer{
 		Iterator <Map.Entry<String,Integer>>iterator = txtFieldComponent.entrySet().iterator();
         while (iterator.hasNext()){
         	Map.Entry<String,Integer> entry = iterator.next();
-		    if(this.componentList.containsKey(entry.getKey()))
+		    if(this.componentList.containsKey(entry.getKey()) )
 		    	this.componentList.get(entry.getKey()).textFieldList.get(entry.getValue()).updateCursorCounter();
         }
 	}

@@ -72,7 +72,7 @@ public abstract class GuiMachine extends GuiSFA{
 	@Override
 	public void loadComponents(){
 		super.loadComponents();
-		this.componentManual.put("ma", new GuiComponent(guiLeft+18, guiTop+90, 100, 10){{
+		this.componentManual.put("ma", new GuiComponent(guiLeft+12, guiTop+85, 100, 10){{
 			globalScale = 0.6F;
 			addText("Machine processing task can be turned", 0, 0);
 			addText("on and off by clicking the appropriate button.", 0, 0);

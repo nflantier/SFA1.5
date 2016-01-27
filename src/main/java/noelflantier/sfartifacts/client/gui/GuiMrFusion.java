@@ -37,7 +37,7 @@ public class GuiMrFusion extends GuiMachine{
 		this.componentList.put("in", new GuiComponent(6, 148, 100, 10){{
 			addText("Inventory :", 0, 0);
 		}});
-		this.componentManual.put("so", new GuiComponent(guiLeft+18, guiTop+12, 100, 10){{
+		this.componentManual.put("so", new GuiComponent(guiLeft+12, guiTop+12, 100, 10){{
 			globalScale = 0.6F;
 			addText("This machine will produce RF with all the garbage", 0, 0);
 			addText("you can have, it works better with foods", 0, 0);

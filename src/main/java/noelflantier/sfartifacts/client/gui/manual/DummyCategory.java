@@ -1,0 +1,29 @@
+package noelflantier.sfartifacts.client.gui.manual;
+
+import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
+
+public class DummyCategory extends ABaseCategory{
+
+	public DummyCategory(String name, int x, int y) {
+		super(name, x, y);
+		initComponent();
+	}
+
+	public DummyCategory(String name, int x, int y, ABaseCategory master) {
+		super(name,x,y, master);
+		initComponent();
+	}
+	
+	public void addComponent(String s, GuiComponent c){
+		this.componentList.put(s, c);
+	}
+	public void addCategory(String s,ABaseCategory ca){
+		this.listCategory.put(s, ca);
+	}
+	
+	@Override
+	public void initComponent() {
+		
+	}
+
+}

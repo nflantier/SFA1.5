@@ -7,11 +7,11 @@ import net.minecraft.client.gui.GuiScreen;
 public class GuiSFAScreen extends GuiScreen{
 
 	public boolean componentloaded = false;
-	public Hashtable<String, GuiComponent> componentList = new Hashtable<String, GuiComponent>();
+	public Hashtable<String, GuiComponent> fullComponentList = new Hashtable<String, GuiComponent>();
 	public int guiLeft;
 	public int guiTop;
-	public int xSize = 176;
-	public int ySize = 166;
+	public int xSize = 150;
+	public int ySize = 150;
 	
 	public GuiSFAScreen(){
 		super();

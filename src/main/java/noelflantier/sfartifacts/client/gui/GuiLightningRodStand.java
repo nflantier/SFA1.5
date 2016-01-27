@@ -37,7 +37,7 @@ public class GuiLightningRodStand extends GuiMachine{
 		this.componentList.put("in", new GuiComponent(6, 68, 100, 10){{
 			addText("Inventory :", 0, 0);
 		}});
-		this.componentManual.put("so", new GuiComponent(guiLeft+18, guiTop+12, 100, 10){{
+		this.componentManual.put("so", new GuiComponent(guiLeft+12, guiTop+12, 100, 10){{
 			globalScale = 0.6F;
 			addText("This machine will passively generate RF if there is", 0, 0);
 			addText("a lightning rod in it.", 0, 0);

@@ -13,25 +13,25 @@ public class BTTFManual  extends BaseManual{
 	}
 
 	public void drawCat(String cat, int x, int y, float f){
-		this.componentList.put("manuals", new GuiComponent(this.guiLeft+this.xSize/2-60, this.guiTop+10, 50, 10){{
+		this.fullComponentList.put("manuals", new GuiComponent(this.guiLeft+this.xSize/2-60, this.guiTop+10, 50, 10){{
 			addText("MANUALS", 0, 0);
 			isLink = true;
 			defColor = EnumChatFormatting.BLACK;
 		}});
 		this.links.put("manuals", ModGUIs.guiIDManual);		
 		
-		this.componentList.put("slash", new GuiComponent(this.guiLeft+this.xSize/2-12, this.guiTop+10, 50, 10){{
+		this.fullComponentList.put("slash", new GuiComponent(this.guiLeft+this.xSize/2-12, this.guiTop+10, 50, 10){{
 			addText("  /", 0, 0);
 			defColor = EnumChatFormatting.BLACK;
 		}});
 		
 		if(cat.equals("index")){
-			this.componentList.put("title", new GuiComponent(this.guiLeft+this.xSize/2+10, this.guiTop+10, 100, 10){{
+			this.fullComponentList.put("title", new GuiComponent(this.guiLeft+this.xSize/2+10, this.guiTop+10, 100, 10){{
 				addText("BTTF Manual", 0, 0);
 				defColor = EnumChatFormatting.BLACK;
 			}});
 		}else{
-			this.componentList.put("index", new GuiComponent(this.guiLeft+this.xSize/2+10, this.guiTop+10, 100, 10){{
+			this.fullComponentList.put("index", new GuiComponent(this.guiLeft+this.xSize/2+10, this.guiTop+10, 100, 10){{
 				addText(">BTTF Manual<", 0, 0);
 				isLink = true;
 				defColor = EnumChatFormatting.BLACK;
@@ -40,7 +40,7 @@ public class BTTFManual  extends BaseManual{
 		}
 		
 		if(cat.equals("mrfusion")){
-			this.componentList.put("p1", 
+			this.fullComponentList.put("p1", 
 					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 						defColor = EnumChatFormatting.BLACK;
 						addText("Mr Fusion is a powerfull generator it can provide",0,0);
@@ -51,7 +51,7 @@ public class BTTFManual  extends BaseManual{
 				);
 
 		}else if(cat.equals("inductor")){
-			this.componentList.put("p1", 
+			this.fullComponentList.put("p1", 
 					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 						defColor = EnumChatFormatting.BLACK;
 						addText("Inductor can transmit power wirelessly.",0,0);
@@ -66,7 +66,7 @@ public class BTTFManual  extends BaseManual{
 				);
 
 		}else if(cat.equals("hboard")){
-			this.componentList.put("p1", 
+			this.fullComponentList.put("p1", 
 					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 						defColor = EnumChatFormatting.BLACK;
 						addText("HoverBoards make you move easily on terrain,",0,0);
@@ -84,7 +84,7 @@ public class BTTFManual  extends BaseManual{
 				);
 
 		}else if(cat.equals("recharger")){
-			this.componentList.put("p1", 
+			this.fullComponentList.put("p1", 
 					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 						defColor = EnumChatFormatting.BLACK;
 						addText("Recharger can recharge your energy RF or EU items.",0,0);
@@ -93,7 +93,7 @@ public class BTTFManual  extends BaseManual{
 					}}
 				);
 		}else if(cat.equals("silicon")){
-			this.componentList.put("p1", 
+			this.fullComponentList.put("p1", 
 					new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 						defColor = EnumChatFormatting.BLACK;
 						addText("To makes chips you will need some pure silicon.",0,0);
@@ -110,35 +110,35 @@ public class BTTFManual  extends BaseManual{
 
 		}else if(cat.equals("index")){
 
-			this.componentList.put("mrfusion", new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
+			this.fullComponentList.put("mrfusion", new GuiComponent(this.guiLeft+10, this.guiTop+30, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Mr Fusion", 0, 0);
 				isLink = true;
 			}});
 			this.links.put("mrfusion", -1);
 
-			this.componentList.put("inductor", new GuiComponent(this.guiLeft+10, this.guiTop+40, 100, 10){{
+			this.fullComponentList.put("inductor", new GuiComponent(this.guiLeft+10, this.guiTop+40, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Inductor", 0, 0);
 				isLink = true;
 			}});
 			this.links.put("inductor", -1);
 
-			this.componentList.put("silicon", new GuiComponent(this.guiLeft+10, this.guiTop+50, 100, 10){{
+			this.fullComponentList.put("silicon", new GuiComponent(this.guiLeft+10, this.guiTop+50, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Silicon and Chips", 0, 0);
 				isLink = true;
 			}});
 			this.links.put("silicon", -1);
 			
-			this.componentList.put("hboard", new GuiComponent(this.guiLeft+10, this.guiTop+60, 100, 10){{
+			this.fullComponentList.put("hboard", new GuiComponent(this.guiLeft+10, this.guiTop+60, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("HoverBoards", 0, 0);
 				isLink = true;
 			}});
 			this.links.put("hboard", -1);
 			
-			this.componentList.put("recharger", new GuiComponent(this.guiLeft+10, this.guiTop+70, 100, 10){{
+			this.fullComponentList.put("recharger", new GuiComponent(this.guiLeft+10, this.guiTop+70, 100, 10){{
 				defColor = EnumChatFormatting.BLACK;
 				addText("Recharger", 0, 0);
 				isLink = true;

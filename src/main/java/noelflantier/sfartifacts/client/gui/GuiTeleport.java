@@ -8,6 +8,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -16,6 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.DimensionManager;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
+import noelflantier.sfartifacts.client.gui.bases.GuiItemStack;
 import noelflantier.sfartifacts.client.gui.bases.GuiSFA;
 import noelflantier.sfartifacts.client.gui.bases.GuiScrollable;
 import noelflantier.sfartifacts.common.container.ContainerTeleport;
@@ -119,7 +121,7 @@ public class GuiTeleport extends GuiSFA{
 		super.drawGuiContainerForegroundLayer(x-guiLeft,y-guiTop);
 		for(int i = this.coord.currentIndex ; i < this.coord.currentIndex + this.coord.maxComponent ; i++){
 			if(this.coord.componentList.get(i)==null)break;
-	    	this.coord.componentList.get(i).scrolableMarge = this.coord.currentIndex*10;
+	    	this.coord.componentList.get(i).scrollingYMarge = this.coord.currentIndex*10;
 		    this.coord.componentList.get(i).draw(x-guiLeft,y-guiTop);
 		}
 	}
