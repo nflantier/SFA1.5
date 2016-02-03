@@ -62,7 +62,7 @@ public class GuiImage extends GuiComponentBase{
 	public void renderImage(int x, int y, float minu, float minv, float maxu, float maxv) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(this.rl);
 		GL11.glPushMatrix();
-			GL11.glDisable(GL11.GL_LIGHTING);
+			//GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glColor4f(1f, 1f, 1f, alpha);
 	        float f = 0.015625F;
@@ -74,7 +74,7 @@ public class GuiImage extends GuiComponentBase{
 	        tessellator.addVertexWithUV((double)(this.x + 0), (double)(this.y + 0), (double)1, (double)((float)minu), (double)((float)minv));
 	        tessellator.draw();
 			GL11.glDisable(GL11.GL_BLEND);
-            GL11.glEnable(GL11.GL_LIGHTING);
+			//GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glPopMatrix();
 	}
 

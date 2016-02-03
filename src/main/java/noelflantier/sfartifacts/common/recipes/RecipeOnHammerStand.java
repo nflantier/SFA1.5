@@ -84,10 +84,10 @@ public class RecipeOnHammerStand {
 		itemOnSpot.clear();
 		this.age = 0;
 	}
-
-	public void addTagToHammer(NbtTagToAdd tag, ItemStack stack){
+	
+	public static void addTagToHammer(NbtTagToAdd tag, ItemStack stack){
 		if(tag.type.equals("boolean")){
-			hammer = ItemNBTHelper.setBoolean(hammer, tag.name, tag.value.equals("true"));
+			stack = ItemNBTHelper.setBoolean(stack, tag.name, tag.value.equals("true"));
 		}else if(tag.type.equals("int")){
 			if(tag.process.equals("adding"))
 				stack = ItemNBTHelper.setInteger(stack, tag.name, ItemNBTHelper.getInteger(stack, tag.name, 0)+Integer.parseInt(tag.value));

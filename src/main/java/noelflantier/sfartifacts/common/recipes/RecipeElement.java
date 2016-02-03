@@ -81,6 +81,10 @@ public abstract class RecipeElement {
 		return stack.getItem()!=null && getItemStack().getItem()!=null && getItemStack().getItem()==stack.getItem() 
 				&& getItemStack().getItemDamage()==stack.getItemDamage() && getItemStack().stackSize>=stack.stackSize;
 	}
+	public boolean isItemStackSameNoSize(ItemStack stack){
+		return stack.getItem()!=null && getItemStack().getItem()!=null && getItemStack().getItem()==stack.getItem() 
+				&& getItemStack().getItemDamage()==stack.getItemDamage();
+	}
 	public boolean isFluidStackSame(FluidStack stack){
 		return stack.getFluid()==getFluidStack().getFluid();
 	}
@@ -122,6 +126,15 @@ public abstract class RecipeElement {
     	return it;
     }
 
+    public boolean isRecipeElementSameNoSize(RecipeElement ri){//the object should always be the potential input or output / ri should awlays be the recipeelement of the choosen recipe
+		if(ri!=null && ri.getItemStack()!=null){
+			return getItemStack()!=null && isItemStackSameNoSize(ri.getItemStack());
+		}
+		if(ri!=null && ri.getFluidStack()!=null){
+			return getFluidStack()!=null && isFluidStackSame(ri.getFluidStack());
+		}
+		return false;
+	}
     
 	public boolean isRecipeElementSame(RecipeElement ri){//the object should always be the potential input or output / ri should awlays be the recipeelement of the choosen recipe
 		if(ri!=null && ri.getItemStack()!=null){

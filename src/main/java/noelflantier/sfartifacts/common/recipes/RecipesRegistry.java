@@ -61,7 +61,19 @@ public class RecipesRegistry {
 			return ri;
 		ri.setItemStack(it);
 		return ri;
-	}	
+	}
+	public List<RecipeOutput> getOutputFromItemStacks(List<ItemStack> list){
+		List<RecipeOutput> ro = null;
+		if(list==null || list.isEmpty())
+			return ro;
+		
+		ro = new ArrayList<RecipeOutput>();
+		for(ItemStack ei: list){
+			if(ei!=null)
+				ro.add(new RecipeOutput(ei));
+		}
+		return ro;
+	}
 	public List<RecipeInput> getInputFromItemStacks(List<ItemStack> list){
 		List<RecipeInput> ri = null;
 		if(list==null || list.isEmpty())
@@ -87,7 +99,7 @@ public class RecipesRegistry {
 		}
 		return ri;
 	}
-		
+	
 	public ISFARecipe getBestRecipeWithItemStacks(IUseSFARecipes iuse, List<ItemStack> inputs){
 		return inputs!=null && inputs.size()>0?getBestRecipe(iuse, getInputFromItemStacks(inputs)):null;
 	}
@@ -165,7 +177,28 @@ public class RecipesRegistry {
 		}
 		return daRecipe;
 	}
-	
+
+	public ISFARecipe getFirstRecipeForUsageAndOutputsItemStacks(String usageName,List<ItemStack> outputs){
+		return getFirstRecipeForUsageAndOutputs(usageName, getOutputFromItemStacks(outputs));
+	}
+	public ISFARecipe getFirstRecipeForUsageAndOutputs(String usageName,List<RecipeOutput> outputs){
+		if(outputs==null)
+			return null;
+		List<ISFARecipe> r = getRecipesForUsageAndOutputs(usageName, outputs);
+		return r!=null?r.get(0):null;
+	}
+	public List<ISFARecipe> getRecipeForUsageAndOutputsItemStacks(String usageName,List<ItemStack> outputs){
+		return getRecipesForUsageAndOutputs(usageName, getOutputFromItemStacks(outputs));
+	}
+	public List<ISFARecipe> getRecipesForUsageAndOutputs(String usageName,List<RecipeOutput> outputs){
+		ArrayList<ISFARecipe> flag = new ArrayList<ISFARecipe>();
+		for (Map.Entry<String, ISFARecipe> entry : instance.getRecipesForUsage(usageName).entrySet()){
+			if(entry.getValue().isStacksOutputs(outputs)){
+				flag.add(entry.getValue());
+			}
+		}
+		return flag.size()>0?flag:null;
+	}
 	public static List<ISFARecipe> getRecipesForUsageAndInputs(String usageName, List<RecipeInput> inputs){
 		ArrayList<ISFARecipe> flag = new ArrayList<ISFARecipe>();
 		for (Map.Entry<String, ISFARecipe> entry : instance.getRecipesForUsage(usageName).entrySet()){

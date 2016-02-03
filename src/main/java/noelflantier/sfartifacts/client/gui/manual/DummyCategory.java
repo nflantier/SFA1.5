@@ -8,11 +8,6 @@ public class DummyCategory extends ABaseCategory{
 		super(name, x, y);
 		initComponent();
 	}
-
-	public DummyCategory(String name, int x, int y, ABaseCategory master) {
-		super(name,x,y, master);
-		initComponent();
-	}
 	
 	public void addComponent(String s, GuiComponent c){
 		this.componentList.put(s, c);

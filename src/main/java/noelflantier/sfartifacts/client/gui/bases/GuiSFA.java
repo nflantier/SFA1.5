@@ -181,8 +181,10 @@ public abstract class GuiSFA  extends GuiContainer{
 		super.initGui();
 		this.loadComponents();
 		Enumeration<String> enumKey = this.componentList.keys();
+		this.buttonList.clear();
 		while (enumKey.hasMoreElements()) {
 		    String key = enumKey.nextElement();
+		    this.componentList.get(key).init(key);
 		    for (GuiButton gb : this.componentList.get(key).buttonList){
 		    	gb.visible = true;
     			this.buttonList.add(gb);

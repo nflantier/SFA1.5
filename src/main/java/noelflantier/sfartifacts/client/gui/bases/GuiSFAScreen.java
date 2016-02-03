@@ -1,8 +1,18 @@
 package noelflantier.sfartifacts.client.gui.bases;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 public class GuiSFAScreen extends GuiScreen{
 
@@ -37,5 +47,48 @@ public class GuiSFAScreen extends GuiScreen{
         this.guiLeft = (this.width - this.xSize) / 2;
         this.guiTop = (this.height - this.ySize) / 2;
 		this.loadComponents();
+		this.buttonList.clear();
+		Enumeration<String> enumKey = this.fullComponentList.keys();
+		while (enumKey.hasMoreElements()) {
+		    String key = enumKey.nextElement();
+		    this.fullComponentList.get(key).init(key);
+		    for (GuiButton gb : this.fullComponentList.get(key).buttonList){
+		    	gb.visible = true;
+    			this.buttonList.add(gb);
+    		}
+		}
+	}	
+
+	
+	protected void renderToolTip(ItemStack p_146285_1_, int p_146285_2_, int p_146285_3_){
+		if (p_146285_1_==null)
+			return;
+		List list = p_146285_1_.getTooltip(Minecraft.getMinecraft().thePlayer, Minecraft.getMinecraft().gameSettings.advancedItemTooltips);
+
+        for (int k = 0; k < list.size(); ++k)
+        {
+            if (k == 0)
+            {
+                list.set(k, p_146285_1_.getRarity().rarityColor + (String)list.get(k));
+            }
+            else
+            {
+                list.set(k, EnumChatFormatting.GRAY + (String)list.get(k));
+            }
+        }
+
+        FontRenderer font = p_146285_1_.getItem().getFontRenderer(p_146285_1_); 
+        GL11.glPushMatrix();
+        	drawHoveringText(list, p_146285_2_, p_146285_3_, (font == null ? this.fontRendererObj : font));
+        	GL11.glDisable(GL11.GL_LIGHTING);
+	    GL11.glPopMatrix();
+    }
+	
+	public void drawImageButtons(int x, int y){
+		for (int k = 0; k < this.buttonList.size(); ++k){
+			if(this.buttonList.get(k) instanceof GuiButtonImage){
+				((GuiButtonImage)this.buttonList.get(k)).drawImage();
+			}
+		}
 	}
 }

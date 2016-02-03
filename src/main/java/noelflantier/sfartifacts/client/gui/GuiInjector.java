@@ -3,15 +3,19 @@ package noelflantier.sfartifacts.client.gui;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import noelflantier.sfartifacts.References;
 import noelflantier.sfartifacts.client.gui.bases.GuiComponent;
+import noelflantier.sfartifacts.client.gui.bases.GuiRecipe;
 import noelflantier.sfartifacts.client.gui.bases.GuiRender;
 import noelflantier.sfartifacts.client.gui.bases.GuiToolTips;
 import noelflantier.sfartifacts.common.blocks.tiles.TileInjector;
@@ -26,30 +30,21 @@ public class GuiInjector extends GuiMachine{
 
 	private static final ResourceLocation bground = new ResourceLocation(References.MODID+":textures/gui/guiInjector.png");
 	public TileInjector tile;
-	public Hashtable<String, GuiComponent> componentRecipe = new Hashtable<String, GuiComponent>();
 	
 	public GuiInjector(InventoryPlayer inventory, TileInjector tile) {
 		super(new ContainerInjector(inventory, tile));
 		this.xSize = 176;
 		this.ySize = 200;
 		this.tile = tile;
-		hasSidedBt[sidedButton.get(machineButtonO1)] = true;
-		sidedBtHasPopUp[sidedButton.get(machineButtonO1)] = true;
-		sidedBtTick[sidedButton.get(machineButtonO1)] = "R";
-		sidedBtTock[sidedButton.get(machineButtonO1)] = "R";
 	}
-
+	@Override
+	public void initGui() {
+		super.initGui();
+	}
+	
 	@Override
 	public void drawPopUp(int x, int y, int key){
 		super.drawPopUp(x,y,key);
-		if(key == machineButtonO1){
-			this.drawBackgroundPopUp(guiLeft+7, guiTop+5);
-			Enumeration<String> enumKey = this.componentRecipe.keys();
-			while (enumKey.hasMoreElements()) {
-			    String tkey = enumKey.nextElement();
-			    this.componentRecipe.get(tkey).draw(x,y);
-			}
-		}
 	}
 
 	@Override
@@ -79,28 +74,6 @@ public class GuiInjector extends GuiMachine{
 			globalScale = 0.6F;
 			addText("This machine is used to inject liquefied asgardite", 0, 0);
 			addText("into items, it use RF and liquefied asgardite.", 0, 0);
-		}});
-
-		this.componentRecipe.put("re", new GuiComponent(guiLeft+12, guiTop+12, 100, 10){{
-			globalScale = 0.6F;
-			addText("Recipe you can do in the injector :",0,0);
-			addText("",0,0);
-			for(Map.Entry<String, ISFARecipe> entry : RecipesRegistry.instance.getRecipesForUsage(InjectorRecipesHandler.USAGE_INJECTOR).entrySet()){
-				String str = "";
-				for(RecipeOutput o : entry.getValue().getOutputs()){
-					str+=StatCollector.translateToLocal(o.getName()+".name");
-				}
-				str+=" ( ";
-				int k = 0;
-				for(RecipeInput i : entry.getValue().getInputs()){
-					str+=i.getStackSize()+"  "+StatCollector.translateToLocal(i.getName()+".name");
-					if(k+1!= entry.getValue().getInputs().size())
-						str+=", ";
-					k+=1;
-				}
-				addText(str,0,0);
-				addText(" | "+entry.getValue().getEnergyCost()+" RF | "+entry.getValue().getFluidCost()+" MB )",0,0);
-			}
 		}});
 	}
 

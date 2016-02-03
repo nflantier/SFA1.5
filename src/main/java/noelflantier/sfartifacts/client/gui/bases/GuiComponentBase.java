@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 
@@ -14,6 +15,7 @@ public abstract class GuiComponentBase {
 	public int y;
 	public int width;
 	public int height;
+	public static Gui GUIH = new Gui();
     public static FontRenderer FR = Minecraft.getMinecraft().fontRenderer;
 	
 	public GuiComponentBase(int x, int y){
