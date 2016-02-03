@@ -17,11 +17,7 @@ import noelflantier.sfartifacts.client.gui.GuiMrFusion;
 import noelflantier.sfartifacts.client.gui.GuiRecharger;
 import noelflantier.sfartifacts.client.gui.GuiSoundEmitter;
 import noelflantier.sfartifacts.client.gui.GuiTeleport;
-import noelflantier.sfartifacts.client.gui.manual.BTTFManual;
-import noelflantier.sfartifacts.client.gui.manual.CaptainManual;
-import noelflantier.sfartifacts.client.gui.manual.HulkManual;
 import noelflantier.sfartifacts.client.gui.manual.NGuiManual;
-import noelflantier.sfartifacts.client.gui.manual.ThorManual;
 import noelflantier.sfartifacts.common.blocks.tiles.TileControlPannel;
 import noelflantier.sfartifacts.common.blocks.tiles.TileHammerStand;
 import noelflantier.sfartifacts.common.blocks.tiles.TileInductor;
@@ -64,12 +60,6 @@ public class ModGUIs implements IGuiHandler{
 	public static final int guiIDMrFusion= 13;
 	public static final int guiIDInductor= 14;
 	public static final int guiIDRecharger= 15;
-	
-
-	public static final int guiIDThorManual= 60;
-	public static final int guiIDCaptainManual= 61;
-	public static final int guiIDHulkManual= 62;
-	public static final int guiIDBackToTheFuture= 63;
 
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world,int x, int y, int z) {
@@ -207,14 +197,6 @@ public class ModGUIs implements IGuiHandler{
 			return new GuiHammerConfig(player.inventory);
 		}else if(ID == ModGUIs.guiIDManual){
 			return new NGuiManual(player);
-		}else if(ID == ModGUIs.guiIDThorManual){
-			return new ThorManual(player);
-		}else if(ID == ModGUIs.guiIDCaptainManual){
-			return new CaptainManual(player);
-		}else if(ID == ModGUIs.guiIDHulkManual){
-			return new HulkManual(player);
-		}else if(ID == ModGUIs.guiIDBackToTheFuture){
-			return new BTTFManual(player);
 		}else if(ID == ModGUIs.guiIDTeleport){
 			return new GuiTeleport(player);
 		}else if(ID == ModGUIs.guiIDMold){
