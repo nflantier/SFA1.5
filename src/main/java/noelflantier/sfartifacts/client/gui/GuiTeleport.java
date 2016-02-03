@@ -35,8 +35,6 @@ public class GuiTeleport extends GuiSFA{
 	public int tickInput = 0;
 	public int tmpti = -1;
 	public int tickUpdateList = 0;
-	private GuiTextField nameTf;
-	private GuiTextField coordTf;
 	
 	public GuiTeleport(InventoryPlayer inventory){
 		super(new ContainerTeleport(inventory));
@@ -57,18 +55,17 @@ public class GuiTeleport extends GuiSFA{
 		this.componentList.put("tfname", new GuiComponent(10, 15, 50, 10){{
 			defColor = EnumChatFormatting.DARK_GRAY;
 			addText("Name :", 0, 0);
-			addTextField(35,-5,68,16);
+			addTextField(35,-5,95,16);
 		}});
-		this.txtFieldComponent.put("tfname", 0);
 		
 		this.componentList.put("tfcoord", new GuiComponent(10, 35, 50, 10){{
 			defColor = EnumChatFormatting.DARK_GRAY;
 			addText("D,X,Y,Z :", 0, 0);
-			addTextField(41,-5,68,16);
+			addTextField(41,-5,95,16);
 		}});
 		this.componentList.get("tfcoord").textFieldList.get(0).setMaxStringLength(20);
 		this.componentList.get("tfcoord").textFieldList.get(0).setText(this.player.dimension+","+((int)this.player.posX)+","+((int)this.player.posY)+","+((int)this.player.posZ));
-		this.txtFieldComponent.put("tfcoord", 0);
+		this.componentList.get("tfcoord").textFieldReadOnly.add(this.componentList.get("tfcoord").textFieldList.get(0));
 		
 		this.componentList.put("li", new GuiComponent(10, 55, 50, 10){{
 			defColor = EnumChatFormatting.DARK_GRAY;

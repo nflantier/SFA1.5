@@ -21,6 +21,7 @@ public class GuiComponent extends GuiComponentBase{
 
 	public List<GuiButton> buttonList = new ArrayList<GuiButton>();
 	public List<GuiTextField> textFieldList  = new ArrayList<GuiTextField>();
+	public List<GuiTextField> textFieldReadOnly  = new ArrayList<GuiTextField>();
 	public List<GuiImage> imageList = new ArrayList<GuiImage>();
 	public List<GuiItemStack> itemStackList = new ArrayList<GuiItemStack>();
 	public List<GuiRecipe> recipeList = new ArrayList<GuiRecipe>();
@@ -74,14 +75,14 @@ public class GuiComponent extends GuiComponentBase{
 	}
 	
 	public void addTextField(int decx, int decy, int width, int height){
-		GuiTextField tf = new GuiTextField(Minecraft.getMinecraft().fontRenderer,this.x+decx,this.y+decy,width,height);
+		GuiTextField tf = new GuiTextField(FR,this.x+decx,this.y+decy,width,height);
 		tf.setCanLoseFocus(true);
 		tf.setMaxStringLength(10);
 		tf.setFocused(false);
 		this.textFieldList.add(tf);
 	}
 	public void addSFATextField(int decx, int decy, int width, int height){
-		GuiSFATextField tf = new GuiSFATextField(Minecraft.getMinecraft().fontRenderer,this.x+decx,this.y+decy,width,height);
+		GuiSFATextField tf = new GuiSFATextField(FR,this.x+decx,this.y+decy,width,height);
 		tf.setCanLoseFocus(true);
 		tf.setMaxStringLength(10);
 		tf.setFocused(false);

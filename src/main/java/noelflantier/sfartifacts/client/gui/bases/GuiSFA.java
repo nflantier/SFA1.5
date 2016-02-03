@@ -7,6 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import cpw.mods.fml.client.GuiScrollingList;
 import net.minecraft.client.Minecraft;
@@ -15,6 +19,7 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
+import noelflantier.sfartifacts.client.gui.manual.ABaseCategory;
 
 public abstract class GuiSFA  extends GuiContainer{
 
@@ -24,7 +29,6 @@ public abstract class GuiSFA  extends GuiContainer{
 	public boolean componentloaded = false;
 	public Hashtable<String, GuiComponent> componentList = new Hashtable<String, GuiComponent>();
 	public String curentToolTipComponent = "";
-	public Hashtable<String, Integer> txtFieldComponent = new Hashtable<String, Integer>();
 	public ArrayList<Character> onlyNumericKey= new ArrayList<Character>(){{
 		add('0');add('1');add('2');add('3');add('4');add('5');add('6');add('7');add('8');add('9');add('+');add('-');
 		}};
@@ -47,70 +51,59 @@ public abstract class GuiSFA  extends GuiContainer{
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
-		if(txtFieldComponent.size()<=0)
-			return;		
-		Iterator <Map.Entry<String,Integer>>iterator = txtFieldComponent.entrySet().iterator();
-        while (iterator.hasNext()){
-        	Map.Entry<String,Integer> entry = iterator.next();
-		    if(this.componentList.containsKey(entry.getKey()) )
-		    	this.componentList.get(entry.getKey()).textFieldList.get(entry.getValue()).updateCursorCounter();
-        }
+		this.componentList.forEach((s,g)->g.textFieldList.forEach((tf)->tf.updateCursorCounter()));
 	}
 	
 	public GuiTextField getTFFocused(){
 		GuiTextField f = null;
-		boolean flag = false;
-		Iterator <Map.Entry<String,Integer>>iterator = txtFieldComponent.entrySet().iterator();
-        while (iterator.hasNext()){
-        	Map.Entry<String,Integer> entry = iterator.next();
-		    if(this.componentList.containsKey(entry.getKey()))
-		    	flag = this.componentList.get(entry.getKey()).textFieldList.get(entry.getValue()).isFocused();
-		    if(flag){
-		    	f = this.componentList.get(entry.getKey()).textFieldList.get(entry.getValue());
-		    	break;
-		    }
-        }
+		for (Map.Entry<String,GuiComponent> entry : componentList.entrySet()){
+			f = handleTFFocused(entry.getValue());
+			if(f!=null)
+				break;
+		}
         return f;
+	}
+	
+	public GuiTextField handleTFFocused(GuiComponent g){
+		if(g.textFieldList.isEmpty())
+			return null;
+		return g.textFieldList.stream().filter((tf)->tf.isFocused()).findFirst().orElse(null);
 	}
 	
 	@Override
 	protected void keyTyped(char par1, int par2) {
-		if(txtFieldComponent.size()<=0){
+		GuiTextField tf = getTFFocused();
+		if(( par2 == this.mc.gameSettings.keyBindInventory.getKeyCode() || par2 == 1 ) && tf==null) {
 			super.keyTyped(par1, par2);
-			return;
-		}else{
-			GuiTextField tf = getTFFocused();
-			if(( par2 == this.mc.gameSettings.keyBindInventory.getKeyCode() || par2 == 1 ) && tf==null) {
-				super.keyTyped(par1, par2);
-	    	}
-			if(tf!=null){
-				if(tf instanceof GuiSFATextField){
-					boolean flag = false;
-					if( ((GuiSFATextField)tf).isOnlyNumeric ){
-						flag = genericKey.contains(par2) || onlyNumericKey.contains(par1);
-					}
-					if(flag)
-						tf.textboxKeyTyped(par1, par2);
-				}else
+    	}
+		if(tf==null){
+			super.keyTyped(par1, par2);
+		}
+		if(tf!=null){
+			if(tf instanceof GuiSFATextField){
+				boolean flag = false;
+				if( ((GuiSFATextField)tf).isOnlyNumeric ){
+					flag = genericKey.contains(par2) || onlyNumericKey.contains(par1);
+				}
+				if(flag)
 					tf.textboxKeyTyped(par1, par2);
-			}
+			}else
+				tf.textboxKeyTyped(par1, par2);
 		}
 	}
 
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
 		super.mouseClicked(x, y, button);
-		if(txtFieldComponent.size()>0){		
-			Iterator <Map.Entry<String,Integer>>iterator = txtFieldComponent.entrySet().iterator();
-	        while (iterator.hasNext()){
-	        	Map.Entry<String,Integer> entry = iterator.next();
-			    if(this.componentList.containsKey(entry.getKey()))
-			    	this.componentList.get(entry.getKey()).textFieldList.get(entry.getValue()).mouseClicked(x-guiLeft, y-guiTop, button);
-	        }
-		}
-		
+		this.componentList.forEach((s,g)->handleTFClicked(g,x,y,button));
 	}
 	
+	public void handleTFClicked(GuiComponent g, int x, int y, int button) {
+		if(g.textFieldList.isEmpty())
+			return;
+		g.textFieldList.forEach((t)->{if(!g.textFieldReadOnly.contains(t)){t.mouseClicked(x-guiLeft, y-guiTop, button);}});
+	}
+
 	public void loadComponents(){
 		if(this.componentloaded)return;
 		this.componentloaded = true;

@@ -344,7 +344,6 @@ public class GuiSoundEmitter extends GuiMachine{
 		this.componentList.get("tffreq").textFieldList.get(0).setMaxStringLength(20);
 		((GuiSFATextField)this.componentList.get("tffreq").textFieldList.get(0)).isOnlyNumeric = true;
 		this.componentList.get("tffreq").textFieldList.get(0).setText(""+this.tile.frequencySelected);
-		this.txtFieldComponent.put("tffreq", 0);
 		
 		this.componentManual.put("so", new GuiComponent(guiLeft+12, guiTop+12, 100, 10){{
 			globalScale = 0.6F;
