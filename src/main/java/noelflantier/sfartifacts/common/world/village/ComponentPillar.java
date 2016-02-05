@@ -29,7 +29,8 @@ public class ComponentPillar  extends StructureVillagePieces.House1{
     }
     
 	public static Object buildComponent(Start startPiece, List pieces, Random random, int p1, int p2, int p3, int p4, int p5) {
-        StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p1, p2, p3, 0, 0, 0, 7, 19, 7, p4);
+		//test seed 104079552
+        StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p1, p2, p3, 10,0, 10, 10, 20, 10, p4);
         return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new ComponentPillar(startPiece, p5, random, structureboundingbox, p4) : null;
 	}
 
@@ -52,7 +53,6 @@ public class ComponentPillar  extends StructureVillagePieces.House1{
         Random rd = new Random();
         int material = rd.nextInt(PillarMaterials.values().length);
         int pillar = rd.nextInt(PillarsConfig.getInstance().nameOrderedBySize.size());
-        //int pillar = rd.nextInt(PillarStructures.values().length)+1;
         String name = PillarsConfig.getInstance().nameOrderedBySize.get(pillar);
 		if(name!=null && PillarsConfig.getInstance().nameToPillar.containsKey(name)){
 			Pillar p = PillarsConfig.getInstance().nameToPillar.get(name);
@@ -61,18 +61,6 @@ public class ComponentPillar  extends StructureVillagePieces.House1{
 	        		this.placeBlockAtCurrentPosition(world, PillarMaterials.values()[material].block, 0, entry.getValue().x, entry.getValue().y, entry.getValue().z, sbb);
 			}
 		}
-        /*PillarStructures ps = PillarStructures.getStructureFromId(pillar);
-        String str ="0_0_0";
-        while(!str.equals("end")){
-        	String[] strParts = str.split("_");
-        	int xT = Integer.parseInt(strParts[0]) + 3;
-        	int yT = Integer.parseInt(strParts[1]);
-        	int zT = Integer.parseInt(strParts[2]) + 3;
-            str = (String)ps.structure.get(str);
-            
-        	if(random.nextFloat()<0.80)
-        		this.placeBlockAtCurrentPosition(world, PillarMaterials.values()[material].block, 0, xT, yT, zT, sbb);
-        }*/
     	return true;
     }
 }
